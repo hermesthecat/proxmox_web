@@ -17,7 +17,7 @@
 </template>
 
 <script>
-//按钮组件
+//Button component
 export default {
   name: "Button",
   props: {
@@ -25,11 +25,11 @@ export default {
       type: String,
     },
     type: {
-      //按钮类型
+      //Button type
       type: String,
       default: "default",
       validator: function (value) {
-        //校验按钮类型
+        //Validate button type
         if (
           !["default", "danger", "info", "warning", "primary"].includes(value)
         ) {
@@ -43,7 +43,7 @@ export default {
     },
     size: {
       type: String,
-      default: "middle", //按钮大小
+      default: "middle", //Button size
     },
     disabled: {
       type: Boolean,

@@ -5,11 +5,11 @@
   </div>
 </template>
 <script>
-//1.引入上面 创建的 option.js
+//1. Import the previously created option.js
 
 import { getAnnulusOption } from "./options.js";
 
-//2.引入 echarts 图表插件
+//2. Import echarts chart plugin
 
 import echarts from "echarts";
 
@@ -19,7 +19,7 @@ export default {
     value: {
       type: Number,
       validate: (value) => {
-        if (!/\d/.test(String(value))) throw new Error("格式不正确");
+        if (!/\d/.test(String(value))) throw new Error("Invalid format");
       },
     },
     title: String,
@@ -31,23 +31,20 @@ export default {
     };
   },
   mounted() {
-    //初始化dom
+    //Initialize DOM
     let _this = this,
       el = document.querySelector(`.m-chart-instance-${_this._uid}`);
-    //设置dom的宽高
+    //Set DOM width and height
     el.style.width = el.parentNode.parentNode.clientWidth + "px";
     el.style.height = el.parentNode.parentNode.clientHeight + "px";
     this.chartsDom = echarts.init(el);
   },
   methods: {
     /**
-     * @param {String} id  获取HTML div元素的 ID,
-     * @param {Number} dividend  数值1 ，（成功个数）
-     * @param {Number} divisor   数值2，（总数）
+     * @param {String} id  Get HTML div element ID
+     * @param {Number} dividend  Value 1 (number of successes)
+     * @param {Number} divisor   Value 2 (total number)
      */
-    //id,
-    //dividend
-    //divisor
     renderChart(chartInstance, dividend, divisor) {
       if (!chartInstance) return;
       const data = [dividend, divisor - dividend];
@@ -70,13 +67,13 @@ export default {
     },
 
     /**
-     * @param {number or string} value 数值
-     * @param {Number} digits 保留小数位数
-     * @param {bool} returnStr 返回值是字符串（如果保留位数那么返回是一个string）
+     * @param {number or string} value The value
+     * @param {Number} digits Number of decimal places to keep
+     * @param {bool} returnStr Return value as string (if keeping decimal places then returns a string)
      */
     formatValue(value, digits, returnStr = false) {
       if (digits < 0) {
-        console.log("小数点后位数不能为负数");
+        console.log("Number of decimal places cannot be negative");
         value = 0;
       }
       if (!value) {

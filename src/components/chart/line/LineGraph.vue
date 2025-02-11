@@ -7,7 +7,7 @@
     <div class="m-chart-nodata" v-if="!loading && nodata">
       <div>
         <img src="~@images/noata.png" />
-        <p style="text-align: center">暂无数据</p>
+        <p style="text-align: center">No data available</p>
       </div>
     </div>
     <Loading v-if="loading"></Loading>
@@ -138,14 +138,14 @@ export default {
               colorStops: [
                 {
                   offset: 0,
-                  color: "red", // 0% 处的颜色
+                  color: "red", // Color at 0%
                 },
                 {
                   offset: 1,
-                  color: "blue", // 100% 处的颜色
+                  color: "blue", // Color at 100%
                 },
               ],
-              global: false, // 缺省为 false
+              global: false, // Default is false
             },
             lineStyle: {
               color: "#222",
@@ -165,7 +165,7 @@ export default {
     _this.setOption();
     _this._el = document.querySelector(".chart-content");
     /**
-     * 如果不是ie时触发
+     * Triggered if not IE
      * **/
     if (!isIE()) {
       _this._el.addEventListener(
@@ -179,7 +179,7 @@ export default {
         false
       );
     } else if (isIE() && ieVersion() !== "11") {
-      //ie11触发
+      // Triggered for IE11
       _this._el.attachEvent(
         "onresize",
         throttle(() => {
@@ -191,7 +191,7 @@ export default {
         false
       );
     } else {
-      //其余ie版本触发
+      // Triggered for other IE versions
       var oP = document.querySelector(".main-content");
       let MutationObserver =
         window.MutationObserver ||
@@ -211,9 +211,9 @@ export default {
     }
   },
   methods: {
-    //设置折线图的配置项
+    // Set line chart configuration options
     setOption() {
-      //省拷贝options
+      // Deep copy options
       let _options = deepCopy(this.options);
       this.loading = true;
       if (
@@ -228,7 +228,7 @@ export default {
       }
       this.nodata = false;
       this.loading = false;
-      //格式化x轴时间
+      // Format x-axis time
       _options.xAxis.data = this.param.time.map((item) => {
         return dateFormat(new Date(item * 1000), "yyyy-MM-dd hh:mm");
       });
@@ -237,7 +237,7 @@ export default {
         _options.xAxis.axisLabel.color = this.param.axisLabelColor;
         _options.legend.textStyle.color = this.param.axisLabelColor;
       }
-      //格式化y轴数据
+      // Format y-axis data
       _options.yAxis.axisLabel.formatter = (value) => {
         return (this.param.func && this.param.func(value)) || value;
       };
@@ -271,7 +271,7 @@ export default {
           batch: legend,
         });
       };
-      //点击label选中事件
+      // Click label selection event
       var isFirstUnSelect = (selected) => {
         var unSelectedCount = 0;
         for (name in selected) {
@@ -285,7 +285,7 @@ export default {
         }
         return unSelectedCount == 1;
       };
-      //所有label都没有选中
+      // All labels are unselected
       var isAllUnSelected = (selected) => {
         var selectedCount = 0;
         for (name in selected) {
@@ -293,7 +293,7 @@ export default {
             continue;
           }
 
-          // 所有 selected Object 里面 true 代表 selected， false 代表 unselected
+          // In all selected Objects, true means selected, false means unselected
           if (selected[name] == true) {
             ++selectedCount;
           }
@@ -305,8 +305,8 @@ export default {
         var selected = obj.selected;
         var legend = obj.name;
 
-        // 使用 legendToggleSelect Action 会重新触发 legendselectchanged Event，导致本函数重复运行
-        // 使得 无 selected 对象
+        // Using legendToggleSelect Action will retrigger legendselectchanged Event, causing this function to run repeatedly
+        // Resulting in no selected object
         if (selected != undefined) {
           if (isFirstUnSelect(selected)) {
             triggerAction("legendToggleSelect", selected);
@@ -326,7 +326,7 @@ export default {
   beforeDestroy() {
     let _this = this;
     /**
-     * 如果不是ie时触发
+     * Triggered if not IE
      * **/
     if (!isIE()) {
       _this._el.removeEventListener(
@@ -340,7 +340,7 @@ export default {
         false
       );
     } else if (isIE() && ieVersion() !== "11") {
-      //ie11触发
+      // Triggered for IE11
       _this._el.detachEvent(
         "onresize",
         throttle(() => {
@@ -352,7 +352,7 @@ export default {
         false
       );
     } else {
-      //其余ie版本触发
+      // Triggered for other IE versions
       _this.observer = null;
     }
     _this._el.removeEventListener("resize", this.setOption, false);

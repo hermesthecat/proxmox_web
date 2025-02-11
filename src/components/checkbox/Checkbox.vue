@@ -22,7 +22,7 @@
   </div>
 </template>
 <script>
-//多选框组件
+// Checkbox component
 export default {
   name: "Checkbox",
   props: {

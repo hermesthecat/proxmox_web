@@ -43,6 +43,7 @@ export default {
     __style: Object,
   },
   computed: {
+    // Calculate background color based on value percentage
     bgColor() {
       let value = Number(this.value).toFixed(1);
       if (value > 50 && value < 80) {

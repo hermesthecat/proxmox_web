@@ -1,6 +1,6 @@
 function deepCopy(obj) {
   let newObj
-  // 如果不是数组对象，并且对象存在，直接返回就可以
+  // If it's not an array object and the object exists, return directly
   if (obj && typeof obj !== 'object') {
     newObj = obj
     return newObj
@@ -57,11 +57,11 @@ const annulusOption = {
 
 
 /**
- * 获取环形图的data，这个图只用于半开环形图， 并且只能有两个数据输入
- * @param {Number[2]} data 两个数据，环形从做到右的数据
- * @param {string[2]} colors  两个数据的颜色
- * @param {*} text 中心的主标题
- * @param {*} subtext  中心的副标题
+ * Get the data for the annulus chart, this chart is only used for semi-open annulus chart and can only have two data inputs
+ * @param {Number[2]} data Two data points, data from left to right in the annulus
+ * @param {string[2]} colors Colors for the two data points
+ * @param {*} text Main title in the center
+ * @param {*} subtext Subtitle in the center
  * @param {Number} textFontSize
  * @param {Number} subTextFontSize
  */
@@ -80,7 +80,5 @@ function getAnnulusOption(data, colors, text, subtext, textFontSize, subTextFont
   resultOption.series[0].data[2].value = 45 * secondData / (firstData + secondData)
   return resultOption
 }
-
-
 
 export { getAnnulusOption }

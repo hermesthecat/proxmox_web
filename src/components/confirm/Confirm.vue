@@ -54,7 +54,7 @@
   </div>
 </template>
 <script>
-//icon组件
+// Icon component
 import BaseIcon from "../icon/BaseIcon";
 import { getDocument } from "@libs/utils";
 
@@ -63,7 +63,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: "提示",
+      default: "Tip",
     },
     msg: {
       type: String,
@@ -75,15 +75,15 @@ export default {
     },
     alertBtnText: {
       type: String,
-      default: "我知道了",
+      default: "I understand",
     },
     yesBtnText: {
       type: String,
-      default: "确定",
+      default: "Confirm",
     },
     noBtnText: {
       type: String,
-      default: "取消",
+      default: "Cancel",
     },
     hasMark: {
       type: Boolean,
@@ -97,7 +97,7 @@ export default {
     _style: Object,
   },
   computed: {
-    //计算messsgebox的位置
+    // Calculate message box position
     contentStyles() {
       let style = {};
       style.left = `${this.mouseEndPoint.left}px`;
@@ -107,9 +107,9 @@ export default {
   },
   data() {
     return {
-      promiseStatus: null, //点击alert的状态
-      show: false, //是否展示alert
-      isMounted: false, //是否已经在挂载阶段
+      promiseStatus: null, // Alert click status
+      show: false, // Whether to show alert
+      isMounted: false, // Whether already in mounting phase
       draggable: true,
       mouseStartPoint: { left: 0, top: 0 },
       mouseEndPoint: {
@@ -135,26 +135,26 @@ export default {
         _this.promiseStatus = { resolve, reject };
       });
     },
-    //点击取消触发的回调
+    // Callback triggered when clicking cancel
     noClick() {
       this.show = false;
       this.promiseStatus && this.promiseStatus.reject();
       document.body.removeChild(this.$el);
       document.body.classList.toggle("hidden");
     },
-    //点击确定触发的回调
+    // Callback triggered when clicking confirm
     yesClick() {
       this.show = false;
       this.promiseStatus && this.promiseStatus.resolve();
       if (!this.isClose) return;
       this.close();
     },
-    //点击关闭触发的回调
+    // Callback triggered when clicking close
     close() {
       document.body.removeChild(this.$el);
       document.body.classList.toggle("hidden");
     },
-    //点击alert框触发的回调
+    // Callback triggered when clicking alert box
     alertClick() {
       this.show = false;
       this.promiseStatus && this.promiseStatus.resolve();
@@ -163,31 +163,31 @@ export default {
     },
     handleMoveStart(event) {
       var dragDom = this.$refs["pop-header"];
-      //阻止所选dom内容被选中
+      // Prevent selected DOM content from being selected
       dragDom.onselectstart = dragDom.ondrag = function () {
         return false;
       };
       if (!this.draggable) return;
       if (event.target.hasOwnProperty("close"))
-        //点关闭按钮不能移动对话框
+        // Cannot move dialog when clicking close button
         return;
-      //判断是否可以移动
+      // Check if movable
       this.mouseDragDown = true;
-      //移动时x轴起始位置
+      // Starting x-axis position when moving
       this.mouseStartPoint.left = Number(
         this.$refs["pop-wrapper"].style.left.replace(/px/, "")
       );
-      //移动时y轴其实位置
+      // Starting y-axis position when moving
       this.mouseStartPoint.top = Number(
         this.$refs["pop-wrapper"].style.top.replace(/px/, "")
       );
-      //移动目标
+      // Move target
       this.moveTarget = this.$refs["pop-wrapper"];
-      //开始移动位置
+      // Starting move position
       this.basePoint = { left: event.pageX, top: event.pageY };
-      //监听移动事件
+      // Listen for move event
       document.addEventListener("mousemove", this.handleMoveMove, false);
-      //监听鼠标up事件
+      // Listen for mouse up event
       document.addEventListener("mouseup", this.handleMoveEnd, false);
       event.preventDefault();
       event.stopPropagation();
@@ -195,20 +195,20 @@ export default {
 
     handleMoveMove(event) {
       if (!this.mouseDragDown || this.moveTarget == undefined) return;
-      //移动x轴距离
+      // X-axis movement distance
       var mousX = event.pageX - this.basePoint.left;
-      //移动y轴距离
+      // Y-axis movement distance
       var mousY = event.pageY - this.basePoint.top;
-      //x轴距离起始位置距离
+      // Distance from starting position on x-axis
       let left = mousX + this.mouseStartPoint.left;
-      //y轴距离其实位置距离
+      // Distance from starting position on y-axis
       let top = mousY + this.mouseStartPoint.top;
-      //如果left， top的绝对值小于等于0证明没有发生移动
+      // If absolute value of left or top is less than or equal to 0, no movement occurred
       if (Math.abs(left) <= 0 || Math.abs(top) <= 0) return;
-      // offsetWidth、offsetHeight 当前元素的宽度
-      // innerWidth、innerHeight 浏览器可视区的宽度和高度
+      // offsetWidth, offsetHeight: current element width
+      // innerWidth, innerHeight: browser viewport width and height
 
-      // 获取弹窗在页面中距X轴的最小、最大 位置;
+      // Get minimum and maximum X-axis positions of dialog in page
       let minX = this.$refs["pop-wrapper"].clientWidth / 2;
       let maxX =
         getDocument().clientWidth - this.$refs["pop-wrapper"].clientWidth / 2;
@@ -217,7 +217,7 @@ export default {
       } else if (left >= maxX) {
         left = maxX;
       }
-      // 获取弹窗在页面中距Y轴的最小、最大 位置
+      // Get minimum and maximum Y-axis positions of dialog in page
       let minY = this.$refs["pop-wrapper"].clientHeight / 2;
       let maxY =
         getDocument().clientHeight - this.$refs["pop-wrapper"].clientHeight / 2;
@@ -234,13 +234,13 @@ export default {
     handleMoveEnd(event) {
       this.mouseDragDown = false;
       this.moveTarget = null;
-      //移除鼠标移动监听事件
+      // Remove mouse move event listener
       document.removeEventListener("mousemove", this.handleMoveMove);
-      //移除鼠标按下事件
+      // Remove mouse down event listener
       document.removeEventListener("mousedown", this.handleMoveStart);
-      //阻止事件默认行为
+      // Prevent default event behavior
       event.preventDefault();
-      //阻止事件冒泡
+      // Prevent event bubbling
       event.stopPropagation();
     },
   },

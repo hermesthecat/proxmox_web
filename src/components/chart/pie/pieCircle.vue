@@ -82,12 +82,12 @@ export default {
     };
   },
   mounted() {
-    //计算圆环大小
+    // Calculate ring size
     this.$refs["chart-canvas"].style.width =
       this.$el.parentElement.clientWidth + "px";
     this.$refs["chart-canvas"].style.height =
       this.$el.parentElement.clientHeight + "px";
-    //初始化圆
+    // Initialize circle
     this.chartInstance = echart.init(this.$refs["chart-canvas"]);
     this.setOptions();
   },

@@ -19,7 +19,7 @@ export default {
     },
   },
   computed: {
-    //计算不同百分比对应的颜色
+    // Calculate the color corresponding to different percentages
     bgColor() {
       let value = Number(this.value).toFixed(1);
       if (value > 50 && value < 80) {

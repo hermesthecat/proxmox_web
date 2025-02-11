@@ -7,8 +7,8 @@ function isvNode(node) {
 const VueComponent = Vue.extend(message);
 let init = false;
 let defaultOptions = {
-  yesBtnText: '确定',
-  noBtnText: '取消'
+  yesBtnText: 'Confirm',
+  noBtnText: 'Cancel'
 };
 
 class Confirm {
@@ -52,14 +52,13 @@ class Confirm {
   confirm(options) {
     debugger;
     /**
-     * 实例化组件
+     * Instantiate component
      * **/
-    //const vm = new VueComponent().$mount();
-    //合并所有选项
+    // Merge all options
     Object.assign(this.vm, defaultOptions, options, {
       type: 'confirm'
     });
-    //如果是虚拟dom节点的话默认将信息复制给插槽
+    // If it's a virtual DOM node, copy the message to the slot by default
     if (isVNode(this.vm.msg)) {
       this.vm.$slots.default = [this.vm.msg];
       this.vm.msg = null;
@@ -69,7 +68,7 @@ class Confirm {
     this.idList.push(this.vm._uid);
     document.body.appendChild(this.vm.$el);
     document.body.classList.toggle('hidden');
-    //调用confirm方法
+    // Call confirm method
     return this.vm.confirm();
   }
 
