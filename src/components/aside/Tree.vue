@@ -36,13 +36,13 @@ export default {
   mounted() {
     let _this = this;
     _this.queryResource();
-    //左侧导航树3秒刷新
+    // Refresh left navigation tree every 3 seconds
     this.interval = setInterval(() => {
       _this.queryResource();
     }, 3000);
   },
   data() {
-    //获取数据中心名称
+    // Get data center name
     let ticket = window.localStorage.getItem("ticket") || "{}",
       tic = JSON.parse(ticket);
     return {
@@ -80,7 +80,7 @@ export default {
       rootnode: {
         id: "root",
         data: {
-          text: `数据中心 ${
+          text: `Data Center ${
             tic.clustername ? "(" + tic.clustername + ")" : ""
           }`,
           root: true,
@@ -97,19 +97,19 @@ export default {
       viewTypeList: {
         server: {
           value: "server",
-          label: "服务器视图",
+          label: "Server View",
           iconCls: "fa-server",
           groups: ["node"],
         },
         // type: {
         //   value: "type",
-        //   label: "文件夹视图",
+        //   label: "Folder View",
         //   iconCls: "fa-building",
         //   groups: ["type"],
         // },
         storage: {
           value: "storage",
-          label: "存储视图",
+          label: "Storage View",
           groups: ["node"],
           iconCls: "fa-database",
           filterfn: function (node) {
@@ -118,7 +118,7 @@ export default {
         },
         pools: {
           value: "pools",
-          label: "资源池视图",
+          label: "Resource Pool View",
           iconCls: "fa-tags",
           groups: ["pool"],
           // Pool View only lists VMs and Containers
@@ -135,7 +135,7 @@ export default {
     };
   },
   methods: {
-    //查询所有资源
+    // Query all resources
     queryResource() {
       this.$http.get("/json/cluster/resources").then(async (res) => {
         if (res.data) {
@@ -150,17 +150,17 @@ export default {
         }
       });
     },
-    //过滤视图
+    // Filter view
     setViewFilter() {
       this.treeData = { dataIndex: {}, updateCount: 0 };
       this.updateTree();
     },
     updateTree() {
-      //构造根节点
+      // Construct root node
       let rootnode = {
           id: "root",
           data: {
-            text: "数据中心 (test)",
+            text: "Data Center (test)",
             root: true,
             index: 0,
             parentId: null,
@@ -172,15 +172,15 @@ export default {
           },
           childNodes: [],
         },
-        lastsel = JSON.parse(window.localStorage.getItem("lastsel")) || {}, //最后选择的节点
+        lastsel = JSON.parse(window.localStorage.getItem("lastsel")) || {}, // Last selected node
         defaultKeys = window.localStorage.getItem("defaultExpandKeys")
           ? JSON.parse(window.localStorage.getItem("defaultExpandKeys"))
           : [],
-        parents = [], //父节点
+        parents = [], // Parent nodes
         p = lastsel,
-        index = this.treeData.dataIndex, //下标
-        groups = this.viewTypeList[this.view].groups || [], //组
-        //初始化数据
+        index = this.treeData.dataIndex, // Index
+        groups = this.viewTypeList[this.view].groups || [], // Groups
+        // Initialize data
         restore = Object.assign(
           [],
           this.$store.state.db.resources.map((item) => {
@@ -205,7 +205,7 @@ export default {
           })
         ),
         filterfn = this.viewTypeList[this.view].filterfn,
-        //去重
+        // Remove duplicates
         rstore = restore.reduce((target, origin) => {
           if (!target.hasOwnProperty(origin.id)) {
             target[origin.id.replace(/^\//g, "")] = origin;
@@ -218,7 +218,7 @@ export default {
       this.rootnode.childNodes = [];
       this.defaultExpandKeys = defaultKeys;
       window.localStorage.setItem("lastselview", this.view || "");
-      //遍历源数据比较节点判断是否有数据节点更改
+      // Traverse source data to compare nodes and check if there are any data node changes
       for (key in index) {
         if (index.hasOwnProperty(key)) {
           let olditem = index[key],
@@ -360,7 +360,7 @@ export default {
       let rootnode = {
           id: "root",
           data: {
-            text: "数据中心 (test)",
+            text: "Data Center (test)",
             root: true,
             index: 0,
             parentId: null,

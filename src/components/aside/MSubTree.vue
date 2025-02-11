@@ -89,7 +89,7 @@ export default {
     document.addEventListener("click", this.handleHiddenContext, false);
   },
   methods: {
-    //处理选择节点,进行跳转
+    // Handle node selection and navigation
     handleSelect(node) {
       let loop = (item) => {
         item.forEach((it) => {
@@ -107,7 +107,7 @@ export default {
       this.$forceUpdate();
       this.$emit("reset-select", node);
     },
-    //如果类型时虚拟机时进行对虚拟机的管理操作
+    // Show modal for virtual machine management operations
     showModal(type) {
       if (!["file"].includes(type)) {
         this.modalType = type;
@@ -120,14 +120,14 @@ export default {
         }
       }
     },
-    //模板
+    // Template operations
     template() {
       this.$confirm
         .confirm({
-          title: "确定",
-          msg: `删除虚拟机\'${this.qemu.name}\'？`,
+          title: "Confirm",
+          msg: `Delete virtual machine '${this.qemu.name}'?`,
           icon: "icon-question",
-          yesBtnText: "确定",
+          yesBtnText: "Confirm",
         })
         .then(() =>
           this.makeTemplate().catch((res) => {
@@ -135,26 +135,26 @@ export default {
           })
         );
     },
-    /***
-     * 设置弹框标题
+    /**
+     * Set modal title
      */
     setTitle(type) {
       switch (type) {
         case "migrate":
-          this.title = "迁移";
+          this.title = "Migrate";
           break;
         case "delete":
-          this.title = `删除：${this.qemu.id}`;
+          this.title = `Delete: ${this.qemu.id}`;
           break;
         case "ha":
-          this.title = `管理HA： ${this.qemu.id}`;
+          this.title = `Manage HA: ${this.qemu.id}`;
           break;
         case "clone":
-          this.title = `克隆： ${this.qemu.id}`;
+          this.title = `Clone: ${this.qemu.id}`;
           break;
       }
     },
-    //重新选择
+    // Reset selection
     resetSelect(node) {
       let loop = (item) => {
         item.forEach((it) => {
@@ -171,10 +171,10 @@ export default {
       loop(this.renderData);
       this.$forceUpdate();
     },
-    //展示tips
+    // Show tooltip
     showTip(tree) {
       /**
-       * 解决有时出现上一次tips不隐藏的bug
+       * Fix for previous tooltip not hiding bug
        * **/
       let tips = document.querySelectorAll(".m-sub-item-tips");
       if (tips && tips.length > 0) {
@@ -198,13 +198,13 @@ export default {
       dom.style.color = "#222";
       dom.style.position = "absolute";
       dom.innerHTML = `<ul>
-   <li>名称：${tree.data.text ? tree.data.text : ""}</li>
-   <li>状态：${tree.data.status ? tree.data.status : ""}</li>
+   <li>Name: ${tree.data.text ? tree.data.text : ""}</li>
+   <li>Status: ${tree.data.status ? tree.data.status : ""}</li>
    ${
      tree.data.type === "storage"
        ? `
     <li>
-    <span style="display: inline-block;margin-right: 3px;">使用率:</span>
+    <span style="display: inline-block;margin-right: 3px;">Usage:</span>
     <span style="width: calc(100% - 47px); display: inline-block; height: 8px;line-height: 8px;border-radius: 50px;position: relative; background-color: #dde4ed;">
         <div style="position: absolute;top:0;height: 100%;border-radius: 50px;width:${
           tree.data.disk && tree.data.maxdisk && tree.data.maxdisk !== 0
@@ -243,12 +243,14 @@ export default {
       this.qemu = this.param.data;
       this.ele = this.$refs[`m$sub$item${tree.data.id}`][0];
     },
-    //隐藏tips
+    // Hide tooltip
     hiddenTip(tree) {
       let id = document.querySelector(`#${tree.data.id.replace(/\//g, "")}`);
       document.body.removeChild(id);
     },
-    //处理左键触发的contextMenu对应的事件
+    /**
+     * Handle left-click triggered contextMenu events
+     */
     handleContextMenu(event) {
       if (event.button === 2) {
         event.preventDefault();
@@ -259,87 +261,89 @@ export default {
         this.showContext = true;
       }
     },
-    //contextMenu
+    /**
+     * Context Menu
+     */
     getContextMenu() {
       if (this.param.data.template === 1) {
         this.menuData = [
           { text: this.param.data.name },
-          { text: "迁移", icon: "fa fa-paper-plane-o", operate: "migrate" },
-          { text: "克隆", icon: "fa fa-fw fa-clone", operate: "clone" },
+          { text: "Migrate", icon: "fa fa-paper-plane-o", operate: "migrate" },
+          { text: "Clone", icon: "fa fa-fw fa-clone", operate: "clone" },
         ];
         return true;
       } else if (this.param.data.type === "qemu") {
         this.menuData = [
           { text: this.param.data.name },
           {
-            text: "启动",
+            text: "Start",
             icon: "fa fa-play",
             operate: "start",
             disabled: (() => !this.inStatus("stopped", "paused"))(),
           },
           {
-            text: "关机",
+            text: "Shutdown",
             icon: "fa fa-power-off",
             operate: "off",
             disabled: (() => this.inStatus("stopped"))(),
           },
           {
-            text: "暂停",
+            text: "Pause",
             icon: "fa fa-pause",
             operate: "pause",
             disabled: (() => this.inStatus("paused"))(),
           },
           {
-            text: "立即停止",
+            text: "Immediately Stop",
             icon: "fa fa-stop",
             operate: "stop",
             disabled: (() => this.inStatus("stopped"))(),
           },
           {
-            text: "重置",
+            text: "Reset",
             icon: "fa fa-bolt",
             operate: "reset",
             disabled: (() => !this.inStatus("running"))(),
           },
           {
-            text: "转化成模板",
+            text: "Convert to Template",
             icon: "fa fa-fw fa-file-o",
             operate: "file",
             disabled: (() => this.inStatus("running"))(),
           },
-          { text: "控制台", icon: "fa fa-terminal", operate: "novnc" },
-          { text: "克隆", icon: "fa fa-fw fa-clone", operate: "clone" },
+          { text: "Console", icon: "fa fa-terminal", operate: "novnc" },
+          { text: "Clone", icon: "fa fa-fw fa-clone", operate: "clone" },
         ];
         return true;
       } else if (this.param.data.type === "lxc") {
         this.menuData = [
           { text: this.param.data.name },
           {
-            text: "启动",
+            text: "Start",
             icon: "fa fa-play",
             operate: "start",
             disabled: (() => !this.inLxcStatus("stopped", "paused"))(),
           },
           {
-            text: "重启",
+            text: "Reboot",
             icon: "fa fa-refresh",
             operate: "reboot",
             disabled: (() => !this.inLxcStatus("running"))(),
           },
           {
-            text: "停止",
+            text: "Shutdown",
             icon: "fa fa-stop",
             operate: "off",
             disabled: (() => this.inLxcStatus("stopped"))(),
           },
           {
-            text: "转化成模板",
+            text: "Convert to Template",
             icon: "fa fa-fw fa-file-o",
             operate: "file",
             disabled: (() => this.inStatus("running"))(),
           },
-          { text: "控制台", icon: "fa fa-terminal", operate: "novnc" },
-          { text: "克隆", icon: "fa fa-fw fa-clone", operate: "clone" },
+          { text: "Console", icon: "fa fa-terminal", operate: "novnc" },
+          { text: "Clone", icon: "fa fa-fw fa-clone", operate: "clone" },
         ];
         return true;
       } else {
@@ -347,7 +351,7 @@ export default {
       }
     },
     /**
-     * vnc操作
+     * VNC operations
      */
     handleConsole(e) {
       let options = {
@@ -371,7 +375,7 @@ export default {
       }
     },
     /**
-     * 虚拟机开关重启停用等操作
+     * Virtual machine start/stop/restart/disable operations
      */
     handleOperate() {
       let ev = event.srcElement || event.target,
@@ -424,15 +428,15 @@ export default {
       }
     },
     /**
-     * 删除虚拟机
+     * Delete virtual machine
      */
     delete() {
       this.$confirm
         .confirm({
-          title: "确定",
-          msg: `删除虚拟机\'${this.qemu.name && this.qemu.name}\'？`,
+          title: "Confirm",
+          msg: `Delete virtual machine '${this.qemu.name && this.qemu.name}'?`,
           icon: "icon-question",
-          yesBtnText: "确定",
+          yesBtnText: "Confirm",
         })
         .then(() => {
           this.deleteQemu().catch((res) => {
@@ -441,17 +445,15 @@ export default {
         });
     },
     /**
-     * 重置虚拟机
+     * Reset virtual machine
      */
     reset() {
       this.$confirm
         .confirm({
-          title: "确定",
-          msg: `重置虚拟机\'${
-            this.param.data.name && this.param.data.name
-          }\'？`,
+          title: "Confirm",
+          msg: `Reset virtual machine '${this.param.data.name && this.param.data.name}'?`,
           icon: "icon-question",
-          yesBtnText: "确定",
+          yesBtnText: "Confirm",
         })
         .then(() => {
           this.resetQemu()
@@ -471,7 +473,7 @@ export default {
         .catch(() => {});
     },
     /**
-     * 重启虚拟机
+     * Restart virtual machine
      */
     handleReset() {
       let _this = this;
@@ -541,24 +543,22 @@ export default {
       }
     },
     /**
-     * 初始请求
+     * Initial request
      */
     __init__() {
       this.queryResource();
       this.queryNodeList();
     },
     /**
-     * 克隆模板
+     * Clone template
      */
     handleClose() {
       this.$confirm
         .confirm({
-          title: "确定",
-          msg: `关闭虚拟机\'${
-            this.param.data.name && this.param.data.name
-          }\'？`,
+          title: "Confirm",
+          msg: `Shutdown virtual machine '${this.param.data.name && this.param.data.name}'?`,
           icon: "icon-question",
-          yesBtnText: "确定",
+          yesBtnText: "Confirm",
         })
         .then(() => {
           this.offQemu()
@@ -577,17 +577,15 @@ export default {
         .catch(() => {});
     },
     /**
-     * 暂停虚拟机
+     * Pause virtual machine
      */
     paused(params) {
       this.$confirm
         .confirm({
-          title: "确定",
-          msg: `${params ? "挂起" : "暂停"}虚拟机\'${
-            this.param.data.name && this.param.data.name
-          }\'？`,
+          title: "Confirm",
+          msg: `${params ? "Hibernate" : "Pause"} virtual machine '${this.param.data.name && this.param.data.name}'?`,
           icon: "icon-question",
-          yesBtnText: "确定",
+          yesBtnText: "Confirm",
         })
         .then(() => {
           this.pausedQemu()
@@ -599,17 +597,15 @@ export default {
         .catch(() => {});
     },
     /**
-     * 停用虚拟机
+     * Stop virtual machine
      */
     stop() {
       this.$confirm
         .confirm({
-          title: "确定",
-          msg: `停用虚拟机\'${
-            this.param.data.name && this.param.data.name
-          }\'？`,
+          title: "Confirm",
+          msg: `Stop virtual machine '${this.param.data.name && this.param.data.name}'?`,
           icon: "icon-question",
-          yesBtnText: "确定",
+          yesBtnText: "Confirm",
         })
         .then(() => {
           this.stopQemu()
@@ -623,15 +619,15 @@ export default {
         .catch(() => {});
     },
     /**
-     * 重启虚拟机
+     * Restart virtual machine
      */
     reboot() {
       this.$confirm
         .confirm({
-          title: "确定",
-          msg: `重启\'${this.param.data.name && this.param.data.name}\'？`,
+          title: "Confirm",
+          msg: `Restart '${this.param.data.name && this.param.data.name}'?`,
           icon: "icon-question",
-          yesBtnText: "确定",
+          yesBtnText: "Confirm",
         })
         .then(() => {
           this.rebootLxc()
@@ -651,26 +647,7 @@ export default {
       });
     },
     /**
-     * 删除虚拟机
-     */
-    delete() {
-      this.$confirm
-        .confirm({
-          title: "确定",
-          msg: `删除虚拟机\'${
-            this.param.data.name && this.param.data.name
-          }\'？`,
-          icon: "icon-question",
-          yesBtnText: "确定",
-        })
-        .then(() => {
-          this.deleteQemu().catch((res) => {
-            this.alertConfirm(res);
-          });
-        });
-    },
-    /**
-     * 判断是否在某个状态下
+     * Check if in certain status
      */
     inStatus() {
       let states = [];
@@ -680,7 +657,7 @@ export default {
       return states.some((status) => status === this.param.data.status);
     },
     /**
-     * 判断lxc容器是否在某个状态下
+     * Check if LXC container is in certain status
      */
     inLxcStatus() {
       let states = [];

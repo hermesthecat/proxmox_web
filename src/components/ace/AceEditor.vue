@@ -1,5 +1,5 @@
 <template>
-  <!-- 官方文档中使用 id，这里禁止使用，在后期打包后容易出现问题，使用 ref 或者 DOM 就行 -->
+  <!-- Do not use id as mentioned in official docs, it can cause issues during production build. Use ref or DOM instead -->
   <div class="ace-editor" ref="ace" style="height: 500px"></div>
 </template>
 <script>
@@ -22,14 +22,14 @@ export default {
       type: String,
       default: "javascript",
     },
-    // 主题，对应主题库 JS 需要提前引入
+    // Theme, corresponding theme JS needs to be imported in advance
     theme: {
       tyle: String,
       default: "chrome",
     },
-    // 最大行数
+    // Maximum number of lines
     maxLines: Number,
-    // 是否显示全屏按钮
+    // Whether to show fullscreen button
     withFullscreenBtn: {
       type: Boolean,
       default: false,
@@ -44,18 +44,18 @@ export default {
     event: "change",
   },
   mounted() {
-    //ace编辑器中的初始化
+    // Initialize Ace editor
     this.aceEditor = ace.edit(this.$refs.ace, {
       // mode: `ace/mode/${this.language}`,
       // theme: `ace/theme/${this.theme}`,
       fontSize: 12,
       tabSize: 2,
-      value: this.value, //ace中的值
+      value: this.value, // Value in Ace
       selectionStyle: "text",
       //autoScrollEditorIntoView: true,
       maxLines: this.maxLines,
-      readOnly: this.readOnly, //是否是只读
-      fontFamily: "Courier New,Courier,Microsoft Yahei", //字体
+      readOnly: this.readOnly, // Whether it's read-only
+      fontFamily: "Courier New,Courier,Microsoft Yahei", // Font family
     });
     this.aceEditor.setOptions({
       enableBasicAutocompletion: true,
@@ -66,7 +66,7 @@ export default {
     });
     this.aceEditor.session.setMode("ace/mode/text");
     this.aceEditor.setShowPrintMargin(false);
-    //监听input事件处理实时变化
+    // Add input event listener for real-time changes
     this.aceEditor.addEventListener("input", this.handleChange, false);
   },
   methods: {
@@ -75,7 +75,7 @@ export default {
     },
   },
   beforeDestroy() {
-    //清除监听
+    // Remove event listener
     this.aceEditor.removeEventListener("input", this.handleChange, false);
   },
   data() {

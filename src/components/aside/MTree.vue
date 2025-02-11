@@ -118,12 +118,12 @@ export default {
     window.addEventListener("resize", this.setTreeHeight, false);
   },
   methods: {
-    //设置左侧菜单的高度
+    // Set the height of the left menu
     setTreeHeight() {
       let el = document.documentElement || document.body;
       this.$refs["m-tree"].style.height = el.clientHeight - 100 + "px";
     },
-    //处理树展开事件
+    // Handle tree expansion event
     handleExpanded(node) {
       if (node.hasOwnProperty("expanded")) {
         Object.assign(node, { expanded: !node.expanded });
@@ -131,20 +131,20 @@ export default {
         Object.assign(node, { expanded: true });
       }
       if (node.expanded) {
-        //当node 为expanded true 的话证明已展开
+        // When node is expanded, add to expandedArr
         if (this.expandedArr.indexOf(node.id) === -1)
           this.expandedArr.push(node.id);
         this.$emit("changeExpand", this.expandedArr);
       } else {
-        //收起
+        // Collapse
         this.expandedArr.splice(this.expandedArr.indexOf(node.id), 1);
         this.$emit("changeExpand", this.expandedArr);
       }
     },
-    //选择树
+    // Select tree node
     handleSelect(node) {
       let _this = this;
-      //递归实现当前展开、选中哪个树
+      // Recursively implement which tree is currently expanded and selected
       let loop = (item) => {
         item.forEach((it) => {
           if (it.data.id === node.id) {
@@ -163,14 +163,14 @@ export default {
         this.$refs.mSubTree.forEach((item) => {
           item.resetSelect(node);
         });
-      //跳转到选中树对应的路由;
+      // Jump to the route corresponding to the selected tree
       _this.linkTo(node);
       _this.$parent.selectById(node.id, node);
-      //设置最终后选中的树节点
+      // Set the finally selected tree node
       window.localStorage.setItem("lastsel", JSON.stringify(node) || "");
       this.$forceUpdate();
     },
-    //默认跳转到哪个路由
+    // Default route navigation
     linkTo(node) {
       switch (node.type) {
         case "node":
@@ -209,7 +209,7 @@ export default {
       immediate: true,
       deep: true,
       handler: function (newVal, oldVal) {
-        //监听treeData的变化递归查找应该展开哪个树
+        // Monitor treeData changes and recursively find which tree should be expanded
         this.renderData = JSON.parse(JSON.stringify(newVal || "{}"));
         let loop = (item) => {
           item.forEach((it) => {
@@ -226,7 +226,7 @@ export default {
     },
     "$store.state.db.searchObject": function (newVal, oldVal) {
       let _this = this;
-      //设置默认打开的tree节点
+      // Set default open tree node
       if (newVal !== oldVal) {
         _this.handleSelect(newVal);
       }
