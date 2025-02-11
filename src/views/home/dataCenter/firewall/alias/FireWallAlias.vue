@@ -1,12 +1,23 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button type="primary" @on-click="showModal('create')" icon="el-icon-plus">添加</m-button>
-			<m-button type="danger" v-confirm="{
+      <m-button
+        type="primary"
+        @on-click="showModal('create')"
+        icon="el-icon-plus"
+        >添加</m-button
+      >
+      <m-button
+        type="danger"
+        v-confirm="{
           msg: '确定要删除已选择项?',
           ok: () => handleDelete(),
-          icon:'icon-question'
-        }" icon="el-icon-delete" :disabled="selectedList.length <=0 ">删除</m-button>
+          icon: 'icon-question',
+        }"
+        icon="el-icon-delete"
+        :disabled="selectedList.length <= 0"
+        >删除</m-button
+      >
       <m-button
         type="info"
         icon="el-icon-edit"
@@ -22,12 +33,9 @@
         @selection-change="handleSelect"
       >
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column
-          label="名称"
-          prop="name"
-        ></el-table-column>
+        <el-table-column label="名称" prop="name"></el-table-column>
         <el-table-column label="IP/CIDR" prop="cidr"></el-table-column>
-				<el-table-column label="备注" prop="comment"></el-table-column>
+        <el-table-column label="备注" prop="comment"></el-table-column>
       </el-table>
       <create-wall-alias-modal
         :title="title"
@@ -36,7 +44,10 @@
         :visible="visible"
         v-if="visible"
         :modal-type="type"
-        @close="visible = false; __init__()"
+        @close="
+          visible = false;
+          __init__();
+        "
       ></create-wall-alias-modal>
     </div>
   </page-template>
@@ -45,14 +56,14 @@
 import FireWallHttp from "@src/views/home/dataCenter/firewall/http";
 import PageTemplate from "@src/components/page/PageTemplate";
 import MButton from "@src/components/button/Button";
-import CreateWallAliasModal from './CreateWallAliasModal';
+import CreateWallAliasModal from "./CreateWallAliasModal";
 export default {
   name: "FireWallAlias",
   mixins: [FireWallHttp],
   components: {
     PageTemplate,
     MButton,
-    CreateWallAliasModal
+    CreateWallAliasModal,
   },
   data() {
     return {
@@ -62,7 +73,7 @@ export default {
       selectedList: [],
       isCreate: true,
       param: {},
-      isGroup: false
+      isGroup: false,
     };
   },
   mounted() {
@@ -91,11 +102,11 @@ export default {
     },
     handleDelete(type) {
       this.deleteFireWallAlias();
-		},
-		handleCommand(command) {
-			 this.type = command;
-			 this.visible = true;
-		}
+    },
+    handleCommand(command) {
+      this.type = command;
+      this.visible = true;
+    },
   },
 };
 </script>

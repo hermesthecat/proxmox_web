@@ -1,58 +1,58 @@
 <template>
   <div style="padding: 20px">
-     <Dialog
-        :visible="showLog"
-        @close="closeLog"
-        :_style="{
-          width: '800px',
-        }"
-        title="Task Viewer: 加入集群"
-      >
-        <template slot="content">
-          <m-tab v-model="tab" @tab-click="handleTabChange">
-            <m-tab-panel label="输出" name="log"></m-tab-panel>
-            <m-tab-panel label="状态" name="status"></m-tab-panel>
-          </m-tab>
-          <m-button
-            type="primary"
-            @on-click="stopTask1"
-						class="m-margin-top-10"
-            :disabled="db.addClusterStatusObj.status !== 'running'"
-            >停止</m-button
-          >
+    <Dialog
+      :visible="showLog"
+      @close="closeLog"
+      :_style="{
+        width: '800px',
+      }"
+      title="Task Viewer: 加入集群"
+    >
+      <template slot="content">
+        <m-tab v-model="tab" @tab-click="handleTabChange">
+          <m-tab-panel label="输出" name="log"></m-tab-panel>
+          <m-tab-panel label="状态" name="status"></m-tab-panel>
+        </m-tab>
+        <m-button
+          type="primary"
+          @on-click="stopTask1"
+          class="m-margin-top-10"
+          :disabled="db.addClusterStatusObj.status !== 'running'"
+          >停止</m-button
+        >
         <el-scrollbar style="height: 100%">
           <div class="taskmodal-content">
-          <div class="table" v-if="tab === 'log'">
-            <div
-              class="table-tr"
-              v-for="item in db.addClusterLogList"
-              :key="item.n"
-            >
-              {{ item.t }}
-            </div>
-          </div>
-          <div class="table" v-if="tab === 'status'">
-            <template v-for="(item, key) in db.addClusterStatusObj">
+            <div class="table" v-if="tab === 'log'">
               <div
                 class="table-tr"
-                v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-                :key="key"
+                v-for="item in db.addClusterLogList"
+                :key="item.n"
               >
-                <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
-                <div class="table-td" v-if="key === 'starttime'">
-                  {{ dateFormat(new Date(item * 1000), "yyyy-MM-dd hh:mm") }}
-                </div>
-                <div class="table-td" v-else>{{ item }}</div>
+                {{ item.t }}
               </div>
-            </template>
-          </div>
+            </div>
+            <div class="table" v-if="tab === 'status'">
+              <template v-for="(item, key) in db.addClusterStatusObj">
+                <div
+                  class="table-tr"
+                  v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
+                  :key="key"
+                >
+                  <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
+                  <div class="table-td" v-if="key === 'starttime'">
+                    {{ dateFormat(new Date(item * 1000), "yyyy-MM-dd hh:mm") }}
+                  </div>
+                  <div class="table-td" v-else>{{ item }}</div>
+                </div>
+              </template>
+            </div>
           </div>
         </el-scrollbar>
-        </template>
-        <template slot="footer">
-          <span></span>
-        </template>
-      </Dialog>
+      </template>
+      <template slot="footer">
+        <span></span>
+      </template>
+    </Dialog>
     <overview-card>
       <div slot="title">证书</div>
       <div
@@ -78,7 +78,7 @@
                 :disabled="!inStatus('pveproxy-ssl.pem')"
                 >删除自定义证书</m-button
               >
-							<m-button
+              <m-button
                 type="info"
                 @on-click="showModal('edit')"
                 icon="el-icon-view"
@@ -93,24 +93,48 @@
                 @selection-change="handleSelect"
               >
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column label="文件" prop="filename" show-overflow-tooltip></el-table-column>
-								<el-table-column label="发行者" prop="issuer" show-overflow-tooltip></el-table-column>
-								<el-table-column label="主题" prop="subject" show-overflow-tooltip></el-table-column>
-								<el-table-column label="有效期自" prop="notbefore">
-									<template slot-scope="scope">
-										<span>{{dateFormat(new Date(scope.row.notbefore * 1000), 'yyyy-MM-dd hh:mm')}}</span>
-									</template>
-								</el-table-column>
-								<el-table-column label="有效期至" prop="notafter">
-									<template slot-scope="scope">
-										<span>{{dateFormat(new Date(scope.row.notafter * 1000), 'yyyy-MM-dd hh:mm')}}</span>
-									</template>
-								</el-table-column>
-								<el-table-column label="主题名称代替" prop="name">
-										<template slot-scope="scope">
-										  <span v-for="(item, index) in scope.row.san" :key="index">{{item}}</span>
-									 </template>
-								</el-table-column>
+                <el-table-column
+                  label="文件"
+                  prop="filename"
+                  show-overflow-tooltip
+                ></el-table-column>
+                <el-table-column
+                  label="发行者"
+                  prop="issuer"
+                  show-overflow-tooltip
+                ></el-table-column>
+                <el-table-column
+                  label="主题"
+                  prop="subject"
+                  show-overflow-tooltip
+                ></el-table-column>
+                <el-table-column label="有效期自" prop="notbefore">
+                  <template slot-scope="scope">
+                    <span>{{
+                      dateFormat(
+                        new Date(scope.row.notbefore * 1000),
+                        "yyyy-MM-dd hh:mm"
+                      )
+                    }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="有效期至" prop="notafter">
+                  <template slot-scope="scope">
+                    <span>{{
+                      dateFormat(
+                        new Date(scope.row.notafter * 1000),
+                        "yyyy-MM-dd hh:mm"
+                      )
+                    }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="主题名称代替" prop="name">
+                  <template slot-scope="scope">
+                    <span v-for="(item, index) in scope.row.san" :key="index">{{
+                      item
+                    }}</span>
+                  </template>
+                </el-table-column>
               </el-table>
             </div>
           </page-template>
@@ -147,43 +171,46 @@
                 v-confirm="{
                   msg: '确认要删除已选择项?',
                   icon: 'icon-question',
-                  ok: () => handleAcmeDelete()
+                  ok: () => handleAcmeDelete(),
                 }"
                 icon="el-icon-delete"
                 :disabled="selectedAcmeList.length <= 0"
                 >删除</m-button
               >
-							<m-button
+              <m-button
                 type="danger"
                 @on-click="handleOrderCertificates"
                 icon="el-icon-delete"
-                :disabled="acmeList.length <=0 "
+                :disabled="acmeList.length <= 0"
                 >Order Certificates Now</m-button
               >
-               <span v-if="!isEdit && db.acmeAccountList.length > 0">使用账户&nbsp;:&nbsp;{{account}}</span>
-               <m-select
+              <span v-if="!isEdit && db.acmeAccountList.length > 0"
+                >使用账户&nbsp;:&nbsp;{{ account }}</span
+              >
+              <m-select
                 prop="account"
                 label="账户"
                 labelWidth="30px"
                 v-model="account"
-								@on-change="handleAccountSelect"
+                @on-change="handleAccountSelect"
                 v-else-if="isEdit && db.acmeAccountList.length > 0"
                 placeholder="请选择账户"
               >
                 <m-option
-                  v-for="(item) in db.acmeAccountList"
+                  v-for="item in db.acmeAccountList"
                   :key="item.name"
                   :label="item.name"
                   :value="item.name"
                 >
-                 
                 </m-option>
               </m-select>
               <span v-else class="no-account">没有可用的账户</span>
-              <span v-if="db.acmeAccountList.length > 0"
-                    class="edit"
-                    @click="handleEdit"
-                   :class="{'el-icon-edit': !isEdit, 'el-icon-check': isEdit}"></span>
+              <span
+                v-if="db.acmeAccountList.length > 0"
+                class="edit"
+                @click="handleEdit"
+                :class="{ 'el-icon-edit': !isEdit, 'el-icon-check': isEdit }"
+              ></span>
               <m-button
                 type="primary"
                 @on-click="showAcmeModal('create', 'account')"
@@ -201,7 +228,7 @@
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column label="域名" prop="domain"></el-table-column>
                 <el-table-column label="类别" prop="type"></el-table-column>
-								 <el-table-column label="plugin" prop="plugin"></el-table-column>
+                <el-table-column label="plugin" prop="plugin"></el-table-column>
               </el-table>
             </div>
           </page-template>
@@ -217,7 +244,7 @@
               __init__();
             "
           ></upload-self-certificates-modal>
-					 <create-acme-account-modal
+          <create-acme-account-modal
             :title="acmeTitle"
             :isCreate="acmeIsCreate"
             :param="acmeParam"
@@ -239,9 +266,9 @@ import OverviewCard from "@src/components/card/OverviewCard";
 import CertificatesHttp from "@src/views/home/node/system/certificates/http";
 import PageTemplate from "@src/components/page/PageTemplate";
 import MButton from "@src/components/button/Button";
-import { dateFormat, parseACME } from '@libs/utils/index';
+import { dateFormat, parseACME } from "@libs/utils/index";
 import UploadSelfCertificatesModal from "./UploadSelfCertificatesModal";
-import CreateAcmeAccountModal from './CreateAcmeAccountModal';
+import CreateAcmeAccountModal from "./CreateAcmeAccountModal";
 import Dialog from "@src/components/dialog/Dialog";
 export default {
   name: "Certificates",
@@ -250,9 +277,9 @@ export default {
     PageTemplate,
     OverviewCard,
     MButton,
-		UploadSelfCertificatesModal,
+    UploadSelfCertificatesModal,
     CreateAcmeAccountModal,
-    Dialog
+    Dialog,
   },
   data() {
     return {
@@ -265,49 +292,48 @@ export default {
       param: {},
       showStatus: true,
       showResource: true,
-			resourceList: [],
-			selectedAcmeList: [],
-		  acmeType: "domains",
+      resourceList: [],
+      selectedAcmeList: [],
+      acmeType: "domains",
       acmeVisible: false,
       acmeTitle: "创建：复制作业",
-			acmeIsCreate: true,
-			acmeParam: {},
-			acmePluginList: [],
+      acmeIsCreate: true,
+      acmeParam: {},
+      acmePluginList: [],
       acmeList: [],
-      account: '',
+      account: "",
       showLog: false,
       interVal: null,
-			tab: "log",
+      tab: "log",
     };
   },
   mounted() {
     this.__init__();
   },
   methods: {
-		dateFormat,
+    dateFormat,
     //初始化查找
     __init__() {
       this.acmeList = [];
       return Promise.all([
-				this.queryAcmeAccount(),
-				this.queryCertificatesInfoList(),
-				this.queryCertificatesConfig()
-				    .then(res => {
-							let obj = parseACME(this.db.certificatesConfigObj.acme);   
-							(obj.domains || []).forEach(domain => {
-	           	  if (domain === '') return;
-									let record = {
-											domain,
-											type: 'standalone',
-											configkey: 'acme',
-								     	};
-									   this.acmeList.push(record);
-										});
+        this.queryAcmeAccount(),
+        this.queryCertificatesInfoList(),
+        this.queryCertificatesConfig().then((res) => {
+          let obj = parseACME(this.db.certificatesConfigObj.acme);
+          (obj.domains || []).forEach((domain) => {
+            if (domain === "") return;
+            let record = {
+              domain,
+              type: "standalone",
+              configkey: "acme",
+            };
+            this.acmeList.push(record);
+          });
 
-								if (obj.account) {
-							    this.account = obj.account;
-								}
-						})
+          if (obj.account) {
+            this.account = obj.account;
+          }
+        }),
       ]);
     },
     //是否展示弹框
@@ -321,17 +347,19 @@ export default {
     //按钮是否可点击
     inStatus() {
       let status = [];
-      for(let i in arguments) {
+      for (let i in arguments) {
         status.push(arguments[i]);
       }
-      return this.db.certificatesInfoList.every(it => status.some(state => state === it.filename));
+      return this.db.certificatesInfoList.every((it) =>
+        status.some((state) => state === it.filename)
+      );
     },
     //选择
     handleAccountSelect(value) {
       this.account = value;
-		},
-		handlePluginDelete() {
-       this.$confirm
+    },
+    handlePluginDelete() {
+      this.$confirm
         .confirm({
           msg: `你确定你要删除已选择项吗？`,
           type: "info",
@@ -345,7 +373,7 @@ export default {
           });
         })
         .catch(() => {});
-		},
+    },
     //删除证书
     handleDelete() {
       this.$confirm
@@ -356,7 +384,9 @@ export default {
         .then(() => {
           this.deleteAcmeAccount().then((res) => {
             this.$confirm.confirm({
-              msg: this.db.addClusterStatusObj.exitstatus ?  this.db.addClusterStatusObj.exitstatus : '',
+              msg: this.db.addClusterStatusObj.exitstatus
+                ? this.db.addClusterStatusObj.exitstatus
+                : "",
               type: "info",
             });
           });
@@ -370,68 +400,78 @@ export default {
         this.showResource = !this.showResource;
       }
     },
-    handleAddAcmeAccount() {
-
-    },
+    handleAddAcmeAccount() {},
     handleOrderCertificates() {
       this.orderCertifices()
-          .then(res => {
-            debugger
-            this.showLog = true;
-            this.interVal = setInterval(() => {
-							 this.queryLog( 
-								  this.db.addClusterStatusObj.node,
-                  this.db.addClusterStatusObj.upid);
-							 this.queryStatus(
-                  this.db.addClusterStatusObj.node,
-                  this.db.addClusterStatusObj.upid
-                )
-						},3000);
-          }).catch((res) => {
-            this.$confirm
-              .info({
-                msg: res,
-              })
-              .then(() => this.close());
-          });
+        .then((res) => {
+          debugger;
+          this.showLog = true;
+          this.interVal = setInterval(() => {
+            this.queryLog(
+              this.db.addClusterStatusObj.node,
+              this.db.addClusterStatusObj.upid
+            );
+            this.queryStatus(
+              this.db.addClusterStatusObj.node,
+              this.db.addClusterStatusObj.upid
+            );
+          }, 3000);
+        })
+        .catch((res) => {
+          this.$confirm
+            .info({
+              msg: res,
+            })
+            .then(() => this.close());
+        });
     },
     handleAcmeSelect(row) {
       this.selectedAcmeList = row;
     },
     handleSelect(row) {
-     this.selectedList = row;
+      this.selectedList = row;
     },
     handleEdit() {
       this.isEdit = !this.isEdit;
-      if(!this.isEdit) {
-        let obj = parseACME(this.db.certificatesConfigObj.acme);   
-        this.updateAcme({acme: `account=${this.account},domains=${obj.domains.join(';')}`});
+      if (!this.isEdit) {
+        let obj = parseACME(this.db.certificatesConfigObj.acme);
+        this.updateAcme({
+          acme: `account=${this.account},domains=${obj.domains.join(";")}`,
+        });
       }
     },
     handleAcmeDelete() {
       let obj = parseACME(this.db.certificatesConfigObj.acme);
-      this.selectedAcmeList.forEach(async item => {
+      this.selectedAcmeList.forEach(async (item) => {
         obj.domains = await obj.domains.splice(obj.domains.indexOf(item), 1);
-      })
+      });
       let param;
-      if(obj.domains.length > 0) {
-        param = {acme: `account=${this.account},domains=${obj.domains.join(';')}`}
+      if (obj.domains.length > 0) {
+        param = {
+          acme: `account=${this.account},domains=${obj.domains.join(";")}`,
+        };
       } else {
-        param = {acme: `account=${this.account}`}
+        param = { acme: `account=${this.account}` };
       }
-      this.updateAcme(param)
-          .then(() => {
-            this.__init__();
-          });
+      this.updateAcme(param).then(() => {
+        this.__init__();
+      });
     },
-		showAcmeModal(type, modalType) {
-			this.acmeType = modalType;
+    showAcmeModal(type, modalType) {
+      this.acmeType = modalType;
       this.acmeIsCreate = type === "create";
-      this.acmeTitle = type === "create" ? "创建：ACME DNS Plugin" : "编辑：ACME DNS Plugin";
-      this.acmeParam = type === "create" ?  {acme: this.db.certificatesConfigObj.acme} : {acme: this.db.certificatesConfigObj.acme, current: this.selectedAcmeList[0]};
+      this.acmeTitle =
+        type === "create" ? "创建：ACME DNS Plugin" : "编辑：ACME DNS Plugin";
+      this.acmeParam =
+        type === "create"
+          ? { acme: this.db.certificatesConfigObj.acme }
+          : {
+              acme: this.db.certificatesConfigObj.acme,
+              current: this.selectedAcmeList[0],
+            };
       this.acmeVisible = true;
-		},
-  stopTask1() {
+    },
+    stopTask1() {
       this.stopTask(
         this.db.addClusterStatusObj.node,
         this.db.addClusterStatusObj.upid
@@ -440,10 +480,10 @@ export default {
     closeLog() {
       this.showLog = false;
       this.close();
-		},
-		handleTabChange(value) {
+    },
+    handleTabChange(value) {
       this.tab = value;
-    }
+    },
   },
   beforeDestroy() {
     if (this.interVal) {
@@ -496,18 +536,18 @@ export default {
 /deep/.card {
   min-height: auto !important;
 }
-.no-account{
+.no-account {
   display: inline-block;
 }
-.edit{
+.edit {
   color: #409eff;
   font-size: 16px;
   font-weight: 800;
 }
-/deep/.tool-bar-left /deep/.prefix-icon:after{
-  color: #525457!important;
+/deep/.tool-bar-left /deep/.prefix-icon:after {
+  color: #525457 !important;
 }
-/deep/.page-template__content{
-  height: auto!important;;
+/deep/.page-template__content {
+  height: auto !important;
 }
 </style>

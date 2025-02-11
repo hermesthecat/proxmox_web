@@ -15,9 +15,15 @@
         <dl>
           <dt>基本信息</dt>
           <dd>
-            <m-select labelWidth="100px" label="类别" v-model="bios" prop="cpu" @on-change="handleBiosChange">
+            <m-select
+              labelWidth="100px"
+              label="类别"
+              v-model="bios"
+              prop="cpu"
+              @on-change="handleBiosChange"
+            >
               <m-option
-                v-for="(item) in biosItems"
+                v-for="item in biosItems"
                 :key="item.value"
                 :value="item.value"
                 :label="item.label"
@@ -58,17 +64,17 @@ export default {
   },
   data() {
     return {
-      bios:'seabios',
+      bios: "seabios",
       biosItems: [
-			 {
-				 	label: 'Seabios',
-				 value: 'seabios'
-			 },
-			 {
-				 label: 'OVMF（UEFI）',
-				 value: 'ovmf'
-			 }
-		  ]
+        {
+          label: "Seabios",
+          value: "seabios",
+        },
+        {
+          label: "OVMF（UEFI）",
+          value: "ovmf",
+        },
+      ],
     };
   },
   mounted() {
@@ -77,16 +83,15 @@ export default {
   methods: {
     __init__() {
       let _this = this;
-			_this.queryConfig({ _dc: new Date().getTime() })
-			     .then(res => {
-						 this.bios = this.db.qemuConfigObj.bios;
-					 });
+      _this.queryConfig({ _dc: new Date().getTime() }).then((res) => {
+        this.bios = this.db.qemuConfigObj.bios;
+      });
     },
     confirm() {
       let param = {
         bios: this.bios,
-				digest: this.db.qemuConfigObj.digest,
-			};
+        digest: this.db.qemuConfigObj.digest,
+      };
       Object.keys(param).forEach((key) => {
         if (!param[key]) delete param[key];
       });
@@ -105,7 +110,7 @@ export default {
     },
     handleBiosChange(value) {
       this.bios = value;
-    }
+    },
   },
   watch: {
     visible: function (newVal, oldVal) {

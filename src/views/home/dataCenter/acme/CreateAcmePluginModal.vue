@@ -23,11 +23,11 @@
                 @validate="validate"
                 :show-error="rules.plugin.error"
                 :error-msg="rules.plugin.message"
-								:disabled="!isCreate"
+                :disabled="!isCreate"
                 placeholder="请输入名称"
               />
 
-               <m-input
+              <m-input
                 type="number"
                 prop="validationDelay"
                 labelWidth="100px"
@@ -40,7 +40,7 @@
                 :error-msg="rules.validationDelay.message"
                 placeholder="请输入Validation Delay"
               />
-                  <m-select
+              <m-select
                 prop="api"
                 label="DNS API"
                 labelWidth="100px"
@@ -135,7 +135,7 @@ export default {
         api: {
           error: false,
           message: "",
-        }
+        },
       },
     };
   },
@@ -147,17 +147,16 @@ export default {
     async __init__() {
       if (this.isCreate) {
         Object.assign(this.$data, this.$options.data());
-        this.queryDNSApiList()
+        this.queryDNSApiList();
       } else {
-				Object.assign(this.$data, this.$options.data());
-				this.queryDNSApiList();
-				this.queryAcmePluginById(this.param.plugin)
-				    .then(() => {
-						  Object.keys(this.db.acmePluginObj).forEach(it => {
-								this[it] = this.db.acmePluginObj[it];
-							})
-							this.validate('api');
-						})
+        Object.assign(this.$data, this.$options.data());
+        this.queryDNSApiList();
+        this.queryAcmePluginById(this.param.plugin).then(() => {
+          Object.keys(this.db.acmePluginObj).forEach((it) => {
+            this[it] = this.db.acmePluginObj[it];
+          });
+          this.validate("api");
+        });
       }
     },
     handleDnsApiSelect(value) {
@@ -188,9 +187,9 @@ export default {
       if (this.validateAll()) return;
       let param = {
         api: this.api,
-				data: this.data,
-				id: this.plugin,
-				type: 'dns',
+        data: this.data,
+        id: this.plugin,
+        type: "dns",
       };
       if (this.isCreate) {
         this.createPlugin(param)
@@ -205,10 +204,10 @@ export default {
               .then(() => this.close());
           });
       } else {
-				param['digist'] = this.db.acmePluginObj.digist;
-				let id = param.id;
-				delete param.id;
-				delete param.type;
+        param["digist"] = this.db.acmePluginObj.digist;
+        let id = param.id;
+        delete param.id;
+        delete param.type;
         this.updateDnsApiPlugin(id, param)
           .then((res) => {
             this.close();
@@ -221,7 +220,7 @@ export default {
               .then(() => this.close());
           });
       }
-    }
+    },
   },
   watch: {
     visible: function (newVal, oldVal) {

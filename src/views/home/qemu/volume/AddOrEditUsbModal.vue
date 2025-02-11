@@ -64,12 +64,21 @@
                     <div class="table-td">速度</div>
                   </div>
                   <div class="table-tr">
-                    <div class="table-td" :title="item.vendid + ':' + item.prodid ">
+                    <div
+                      class="table-td"
+                      :title="item.vendid + ':' + item.prodid"
+                    >
                       {{ item.vendid + ":" + item.prodid }}
                     </div>
-                    <div class="table-td" :title="item.manufacturer">{{ item.manufacturer }}</div>
-                    <div class="table-td" :title="item.product">{{ item.product }}</div>
-                    <div class="table-td" :title="renderSpeed(item.speed)">{{ renderSpeed(item.speed) }}</div>
+                    <div class="table-td" :title="item.manufacturer">
+                      {{ item.manufacturer }}
+                    </div>
+                    <div class="table-td" :title="item.product">
+                      {{ item.product }}
+                    </div>
+                    <div class="table-td" :title="renderSpeed(item.speed)">
+                      {{ renderSpeed(item.speed) }}
+                    </div>
                   </div>
                 </m-option>
               </div>
@@ -119,12 +128,21 @@
                     <div class="table-td">速度</div>
                   </div>
                   <div class="table-tr">
-                    <div class="table-td" :title="item.busnum + '-' + item.usbpath">
+                    <div
+                      class="table-td"
+                      :title="item.busnum + '-' + item.usbpath"
+                    >
                       {{ item.busnum + "-" + item.usbpath }}
                     </div>
-                    <div class="table-td" :title="item.manufacturer">{{ item.manufacturer }}</div>
-                    <div class="table-td" :title="item.product">{{ item.product }}</div>
-                    <div class="table-td" :title="renderSpeed(item.speed)">{{ renderSpeed(item.speed) }}</div>
+                    <div class="table-td" :title="item.manufacturer">
+                      {{ item.manufacturer }}
+                    </div>
+                    <div class="table-td" :title="item.product">
+                      {{ item.product }}
+                    </div>
+                    <div class="table-td" :title="renderSpeed(item.speed)">
+                      {{ renderSpeed(item.speed) }}
+                    </div>
                   </div>
                 </m-option>
               </div>

@@ -32,9 +32,12 @@ export default {
             tableName: "storageContentList",
             list: [],
           });
-          if(typeof (this.loading) !== 'undefined' && typeof (this.loadingText) !== 'undefined') {
-             this.loading = true;
-             this.loadingText = res;
+          if (
+            typeof this.loading !== "undefined" &&
+            typeof this.loadingText !== "undefined"
+          ) {
+            this.loading = true;
+            this.loadingText = res;
           }
         });
     },
@@ -187,22 +190,17 @@ export default {
     doRestore(url, params) {
       let event = this.createEvent(`action.storage.content.restore`);
       return this.$http
-        .post(
-          url,
-          params,
-          {
-            headers: {
-              "content-type":
-                "application/x-www-form-urlencoded; charset=utf8",
-            },
-          }
-        )
+        .post(url, params, {
+          headers: {
+            "content-type": "application/x-www-form-urlencoded; charset=utf8",
+          },
+        })
         .then(async (res) => {
-           this.incEventSuccess(event);
-          if(res.data) {
-             let upid = res.data;
-             await this.queryLog(this.node, upid);
-             await this.queryStatus(this.node, upid);
+          this.incEventSuccess(event);
+          if (res.data) {
+            let upid = res.data;
+            await this.queryLog(this.node, upid);
+            await this.queryStatus(this.node, upid);
           }
         })
         .catch((res) => {

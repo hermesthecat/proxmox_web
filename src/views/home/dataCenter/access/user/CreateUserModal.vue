@@ -96,8 +96,12 @@
                       </div>
                     </template>
                     <div class="table-tr">
-                      <span class="table-td" :title="item.groupid">{{ item.groupid }}</span>
-                      <span class="table-td" :title="item.comment">{{ item.comment }}</span>
+                      <span class="table-td" :title="item.groupid">{{
+                        item.groupid
+                      }}</span>
+                      <span class="table-td" :title="item.comment">{{
+                        item.comment
+                      }}</span>
                       <span class="table-td" :title="item.users">
                         {{ item.users }}
                       </span>
@@ -118,7 +122,12 @@
                 :error-msg="rules.email.message"
                 placeholder="请输入Email"
               />
-              <m-input prop="comment" labelWidth="100px" :__conStyle="{'width': '202px'}" label="选择日期">
+              <m-input
+                prop="comment"
+                labelWidth="100px"
+                :__conStyle="{ width: '202px' }"
+                label="选择日期"
+              >
                 <template slot="other">
                   <el-date-picker
                     v-model="expire"
@@ -195,62 +204,66 @@
       </div>
       <div class="m-form_content" v-else-if="modalType === 'tfa'">
         <m-tab v-model="tfa_type" @tab-click="handleTabChange">
-          <m-tab-panel name="totp" label="TOTP">
-          </m-tab-panel>
+          <m-tab-panel name="totp" label="TOTP"> </m-tab-panel>
           <m-tab-panel name="uf2" label="UF2"></m-tab-panel>
         </m-tab>
         <div v-show="tfa_type === 'totp'">
-            <div class="m-form__section" >
-              <dl>
-                <dt>基本信息</dt>
-                <dd>
-                  <m-input
-                    type="text"
-                    prop="username"
-                    labelWidth="100px"
-                    label="用户名"
-                    v-model="username"
-                    :disabled="true"
-                    placeholder="请输入用户名"
-                  />
-                  <m-input
-                    type="text"
-                    prop="issuer"
-                    labelWidth="100px"
-                    label="发行者名称"
-                    v-model="issuer"
-                    placeholder="请输入发行者名称"
-                  />
-                  <m-input
-                    type="text"
-                    prop="secret"
-                    labelWidth="100px"
-                    label="Secret"
-                    v-model="secret"
-                    validateEvent
-                    @validate="validate"
-                    :show-error="rules.secret.error"
-                    :error-msg="rules.secret.message"
-                    placeholder="请输入Secret"
-                  />
-                  <m-button type="primary" @on-click="randomizeSecret">随机化</m-button>
-                  <div id="canvas" style="margin: 0 auto; padding-bottom: 20px;width: 345px;"></div>
-                  <m-input
-                    type="text"
-                    prop="challenge"
-                    labelWidth="100px"
-                    label="验证码"
-                    v-model="challenge"
-                    validateEvent
-                    @validate="validate"
-                    required
-                    :show-error="rules.challenge.error"
-                    :error-msg="rules.challenge.message"
-                    placeholder="请输入验证码"
-                  />
-                </dd>
-              </dl>
-            </div>
+          <div class="m-form__section">
+            <dl>
+              <dt>基本信息</dt>
+              <dd>
+                <m-input
+                  type="text"
+                  prop="username"
+                  labelWidth="100px"
+                  label="用户名"
+                  v-model="username"
+                  :disabled="true"
+                  placeholder="请输入用户名"
+                />
+                <m-input
+                  type="text"
+                  prop="issuer"
+                  labelWidth="100px"
+                  label="发行者名称"
+                  v-model="issuer"
+                  placeholder="请输入发行者名称"
+                />
+                <m-input
+                  type="text"
+                  prop="secret"
+                  labelWidth="100px"
+                  label="Secret"
+                  v-model="secret"
+                  validateEvent
+                  @validate="validate"
+                  :show-error="rules.secret.error"
+                  :error-msg="rules.secret.message"
+                  placeholder="请输入Secret"
+                />
+                <m-button type="primary" @on-click="randomizeSecret"
+                  >随机化</m-button
+                >
+                <div
+                  id="canvas"
+                  style="margin: 0 auto; padding-bottom: 20px; width: 345px"
+                ></div>
+                <m-input
+                  type="text"
+                  prop="challenge"
+                  labelWidth="100px"
+                  label="验证码"
+                  v-model="challenge"
+                  validateEvent
+                  @validate="validate"
+                  required
+                  :show-error="rules.challenge.error"
+                  :error-msg="rules.challenge.message"
+                  placeholder="请输入验证码"
+                />
+              </dd>
+            </dl>
+          </div>
         </div>
         <div v-show="tfa_type == 'uf2'">
           要注册U2F设备，请连接设备，然后单击按钮并按照说明进行操作。
@@ -258,12 +271,15 @@
       </div>
       <div class="m-form_content" v-else>
         <el-tree :data="permissionTreeData">
-          <span slot-scope="{node, data}" style="display: flex; flex-grow: 1; justify-content: space-between;">
+          <span
+            slot-scope="{ node, data }"
+            style="display: flex; flex-grow: 1; justify-content: space-between"
+          >
             <div>
               <i :class="data.icon"></i>
-              <span>{{node.label}}</span>
+              <span>{{ node.label }}</span>
             </div>
-            <div v-if="data.value">{{data.value === 1 ?  '是' : '否'}}</div>
+            <div v-if="data.value">{{ data.value === 1 ? "是" : "否" }}</div>
           </span>
         </el-tree>
       </div>
@@ -290,16 +306,27 @@
           @on-click="registerUf2"
           >注册uf2设备</m-button
         >
-         <m-button
+        <m-button
           v-if="modalType === 'tfa' && tfa_type === 'totp'"
           class="create-btn"
           type="primary"
           @on-click="apply"
           >应用</m-button
         >
-        <m-button class="create-btn" type="primary" v-show="modalType !== 'permission'" @on-click="confirm" :disabled="modalType === 'tfa' && !canDeleteTFA()">{{
-          modalType === "create" ? "创建" : modalType === 'tfa' ? "删除" : "确定"
-        }}</m-button>
+        <m-button
+          class="create-btn"
+          type="primary"
+          v-show="modalType !== 'permission'"
+          @on-click="confirm"
+          :disabled="modalType === 'tfa' && !canDeleteTFA()"
+          >{{
+            modalType === "create"
+              ? "创建"
+              : modalType === "tfa"
+              ? "删除"
+              : "确定"
+          }}</m-button
+        >
       </template>
     </template>
   </Dialog>
@@ -309,7 +336,7 @@
 import Dialog from "@src/components/dialog/Dialog";
 import DataCenterAccessHttp from "@src/views/home/dataCenter/access/http";
 import { flotToFixed, percentToFixed, byteToSize } from "@libs/utils/index";
-import QRCode from 'qrcodejs2'
+import QRCode from "qrcodejs2";
 export default {
   name: "CreateAccessModal",
   mixins: [DataCenterAccessHttp],
@@ -357,7 +384,7 @@ export default {
       password: "",
       confirmPsw: "",
       challenge: "",
-      issuer:"Proxmox Web UI",
+      issuer: "Proxmox Web UI",
       tfa_type: "totp",
       u2f_available: false,
       tfa_required: false,
@@ -392,12 +419,12 @@ export default {
         },
         secret: {
           error: false,
-          message: ""
+          message: "",
         },
         challenge: {
-           error: false,
-          message: ""
-        }
+          error: false,
+          message: "",
+        },
       },
     };
   },
@@ -430,66 +457,77 @@ export default {
         Object.assign(_this.$data, _this.$options.data());
       } else if (_this.modalType === "tfa") {
         Object.assign(_this.$data, _this.$options.data());
-        if(_this.qrcode) _this.qrcode = null;
-        _this.qrcode = new QRCode(document.querySelector('#canvas'), {
-		     	 width: 256,
-		    	 height: 256,
-		    	 correctLevel: 0
-		     })
-         _this.queryTfa({ userid: _this.param.userid }).then(() => {
-         _this.afterLoading(_this.db.tfaObj.realm, _this.db.tfaObj.user);
-         _this.username = _this.param.userid;
-         _this.updateQrCode();
+        if (_this.qrcode) _this.qrcode = null;
+        _this.qrcode = new QRCode(document.querySelector("#canvas"), {
+          width: 256,
+          height: 256,
+          correctLevel: 0,
         });
-      } else if (_this.modalType === 'permission') {
-        _this.queryUserPermisson({userid: _this.param.userid, _dc: new Date().getTime()})
-             .then((res) => {
-               let loop = (item) => {
-                 return Object.keys(item).map((it) => {
-                   if(Object.keys(item[it]).length > 0) {
-                    loop(item[it]);
-                   }
-                   let setChildren = (children) => {
-                      if(Object.keys(children).length > 0) {
-                         return Object.keys(children).map(child => {
-                             return {
-                               label: child,
-                               icon: 'fa fa-fw fa-unlock',
-                               value: children[child]
-                             }
-                           })
-                      }
-                   }
-                  return {
-                       label: it,
-                       children: typeof (item[it]) === 'object' ? setChildren(item[it])  : [],
-                       icon: 'el-icon-folder-add'
-                     }
-                 })
-               }
-               _this.permissionTreeData = loop(_this.db.userPermissionObj);
-               _this.permissionTreeData.sort((a, b) => {
-                 if(a.label > b.label) return 1;
-                 else return -1;
-               })
-             })
+        _this.queryTfa({ userid: _this.param.userid }).then(() => {
+          _this.afterLoading(_this.db.tfaObj.realm, _this.db.tfaObj.user);
+          _this.username = _this.param.userid;
+          _this.updateQrCode();
+        });
+      } else if (_this.modalType === "permission") {
+        _this
+          .queryUserPermisson({
+            userid: _this.param.userid,
+            _dc: new Date().getTime(),
+          })
+          .then((res) => {
+            let loop = (item) => {
+              return Object.keys(item).map((it) => {
+                if (Object.keys(item[it]).length > 0) {
+                  loop(item[it]);
+                }
+                let setChildren = (children) => {
+                  if (Object.keys(children).length > 0) {
+                    return Object.keys(children).map((child) => {
+                      return {
+                        label: child,
+                        icon: "fa fa-fw fa-unlock",
+                        value: children[child],
+                      };
+                    });
+                  }
+                };
+                return {
+                  label: it,
+                  children:
+                    typeof item[it] === "object" ? setChildren(item[it]) : [],
+                  icon: "el-icon-folder-add",
+                };
+              });
+            };
+            _this.permissionTreeData = loop(_this.db.userPermissionObj);
+            _this.permissionTreeData.sort((a, b) => {
+              if (a.label > b.label) return 1;
+              else return -1;
+            });
+          });
       }
     },
     updateQrCode() {
       let _this = this,
-	    algorithm;
-	    if (!algorithm) {
-	      algorithm = 'SHA1';
-       }
-       _this.qrcode.clear();
-	     _this.qrcode.makeCode(
-	     'otpauth://totp/' + encodeURIComponent(_this.param.userid) +
-	     '?secret=' + _this.secret +
-	     '&period=' + this.step +
-	     '&digits=' + this.digits +
-	     '&algorithm=' + algorithm +
-       '&issuer=' + encodeURIComponent(_this.issuer)
-       )
+        algorithm;
+      if (!algorithm) {
+        algorithm = "SHA1";
+      }
+      _this.qrcode.clear();
+      _this.qrcode.makeCode(
+        "otpauth://totp/" +
+          encodeURIComponent(_this.param.userid) +
+          "?secret=" +
+          _this.secret +
+          "&period=" +
+          this.step +
+          "&digits=" +
+          this.digits +
+          "&algorithm=" +
+          algorithm +
+          "&issuer=" +
+          encodeURIComponent(_this.issuer)
+      );
     },
     handlePathSelect(value) {
       this.path = value;
@@ -548,10 +586,10 @@ export default {
           return;
         }
       }
-      if(value && prop === 'secret' && !/^[A-Z2-7=]+$/.test(value)) {
-         this.rules[prop].error = true;
-         this.rules[prop].message = "必须是 base32 [A-Z2-7=]";
-         return;
+      if (value && prop === "secret" && !/^[A-Z2-7=]+$/.test(value)) {
+        this.rules[prop].error = true;
+        this.rules[prop].message = "必须是 base32 [A-Z2-7=]";
+        return;
       }
     },
     randomizeSecret: function () {
@@ -585,7 +623,7 @@ export default {
         _this.randomizeSecret();
       }
 
-      _this.tfa_type = user_tfa_type || 'totp';
+      _this.tfa_type = user_tfa_type || "totp";
       if (!realm_tfa_type) {
         // There's no TFA enforced by the realm, everything works.
         _this.u2f_available = true;
@@ -596,7 +634,7 @@ export default {
           // user had a different tfa method, so
           // we have to change back to the totp tab and
           // generate a secret
-          _this.tfa_type = 'totp';
+          _this.tfa_type = "totp";
           _this.randomizeSecret();
         }
         _this.u2f_available = false;
@@ -609,38 +647,40 @@ export default {
     },
     //注册uf2设备
     registerUf2() {
-      this.updateTfa({userid: this.param.userid, action:'new'})
-          .catch((res) => {
-            this.$confirm.confirm({
-             msg: res,
-             type: 'error'
-            }).then(() => {
-
-            }).catch(() => {})
-          })
+      this.updateTfa({ userid: this.param.userid, action: "new" }).catch(
+        (res) => {
+          this.$confirm
+            .confirm({
+              msg: res,
+              type: "error",
+            })
+            .then(() => {})
+            .catch(() => {});
+        }
+      );
     },
     canDeleteTFA() {
-		    return this.tfa_type !== null && this.tfa_required;
-	    },
+      return this.tfa_type !== null && this.tfa_required;
+    },
     //应用
     apply() {
-      if(this.validateAll()) return;
+      if (this.validateAll()) return;
       let param = {
         userid: this.param.userid,
-        action: 'new',
+        action: "new",
         key: `v2-${this.secret}`,
         config: `digits=${this.digits},step=${this.step},type=oath`,
-        response: this.challenge
-      }
-      this.updateTfa(param)
-          .catch((res) => {
-            this.$confirm.confirm({
-             msg: res,
-             type: 'error'
-            }).then(() => {
-
-            }).catch(() => {})
+        response: this.challenge,
+      };
+      this.updateTfa(param).catch((res) => {
+        this.$confirm
+          .confirm({
+            msg: res,
+            type: "error",
           })
+          .then(() => {})
+          .catch(() => {});
+      });
     },
     validateAll() {
       let props = [];
@@ -648,17 +688,17 @@ export default {
         props = ["username", "realm", "email", "groups"];
       } else if (this.modalType === "modifyPsw") {
         props = ["password", "confirmPsw"];
-      } else if (this.modalType === 'tfa' && this.tfa_type === 'totp') {
-        props = ['secret', 'challenge']
+      } else if (this.modalType === "tfa" && this.tfa_type === "totp") {
+        props = ["secret", "challenge"];
       }
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
     },
     handleTabChange(name) {
-     this.tfa_type = name;
-     if(this.tfa_type ===  'totp') {
-       this.updateQrCode();
-     }
+      this.tfa_type = name;
+      if (this.tfa_type === "totp") {
+        this.updateQrCode();
+      }
     },
     confirm() {
       if (this.validateAll()) return;
@@ -690,23 +730,23 @@ export default {
         this.updateUserPsw(param).then((res) => {
           this.close();
         });
-      } else if (this.modalType === 'tfa')  {
-          let param = {
-		        userid: this.param.userid,
-		        action: 'delete'
-	        };
-	       if (this.param.userid !== 'root@pam') {
-		       params.password = this.param.password;
-         }
-        this.updateTfa(param)
-          .catch((res) => {
-            this.$confirm.confirm({
-             msg: res,
-             type: 'error'
-            }).then(() => {
-
-            }).catch(() => {})
-          })
+      } else if (this.modalType === "tfa") {
+        let param = {
+          userid: this.param.userid,
+          action: "delete",
+        };
+        if (this.param.userid !== "root@pam") {
+          params.password = this.param.password;
+        }
+        this.updateTfa(param).catch((res) => {
+          this.$confirm
+            .confirm({
+              msg: res,
+              type: "error",
+            })
+            .then(() => {})
+            .catch(() => {});
+        });
       }
     },
   },
@@ -732,7 +772,7 @@ export default {
   content: "\f114";
 }
 .expanded.el-tree-node__expand-icon {
-  -webkit-transform: rotate(0deg)!important;
-  transform: rotate(0deg)!important;
+  -webkit-transform: rotate(0deg) !important;
+  transform: rotate(0deg) !important;
 }
 </style>

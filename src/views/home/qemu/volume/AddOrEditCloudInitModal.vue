@@ -46,7 +46,7 @@
                     class="m-form__select_inner"
                     v-model="device"
                     style="width: 110px"
-										@change="setDefaultDeviceIndex"
+                    @change="setDefaultDeviceIndex"
                   >
                     <template v-for="item of deviceList">
                       <option
@@ -61,64 +61,72 @@
                 </div>
               </div>
             </m-input>
-                <m-select
-                  prop="storage"
-                  label="存储"
-                  labelWidth="100px"
-                  @on-change="handleStorageSelect"
-                  v-model="storage"
-                  validateEvent
-                  @validate="validate"
-                  required
-                  :show-error="rules['storage'].error"
-                  :error-msg="rules['storage'].message"
-                  :readonly="true"
-                  placeholder="请选存储"
-                >
-                  <div class="table">
-                    <m-option
-                      v-for="(item, index) in db.storageList"
-                      :key="item.storage"
-                      :value="item.storage"
-                      :label="item.storage"
-                    >
-                      <div v-if="index === 0" class="table-tr">
-                        <div class="table-td">名称</div>
-                        <div class="table-td">类别</div>
-                        <div class="table-td">可用</div>
-                        <div class="table-td">容量</div>
-                      </div>
-                      <div class="table-tr">
-                        <div class="table-td" :title="item.storage">{{ item.storage }}</div>
-                        <div class="table-td" :title="item.type">{{ item.type }}</div>
-                        <div class="table-td" :title="byteToSize(item.avail)">{{ byteToSize(item.avail) }}</div>
-                        <div class="table-td" :title="byteToSize(item.total)">{{ byteToSize(item.total) }}</div>
-                      </div>
-                    </m-option>
-                  </div>
-                </m-select>
-									<m-select
-                prop="format"
-                label="格式"
-                labelWidth="100px"
-                @on-change="handleFormatSelect"
-                v-model="format"
-                :readonly="false"
-								:disabled="!storageType || storageType !== 'dir'"
-                placeholder="请选格式"
-              >
+            <m-select
+              prop="storage"
+              label="存储"
+              labelWidth="100px"
+              @on-change="handleStorageSelect"
+              v-model="storage"
+              validateEvent
+              @validate="validate"
+              required
+              :show-error="rules['storage'].error"
+              :error-msg="rules['storage'].message"
+              :readonly="true"
+              placeholder="请选存储"
+            >
+              <div class="table">
                 <m-option
-                  v-for="(item, index) in formatList"
-									:key="index"
-                  :value="item.value"
-                  :label="item.label"
+                  v-for="(item, index) in db.storageList"
+                  :key="item.storage"
+                  :value="item.storage"
+                  :label="item.storage"
                 >
+                  <div v-if="index === 0" class="table-tr">
+                    <div class="table-td">名称</div>
+                    <div class="table-td">类别</div>
+                    <div class="table-td">可用</div>
+                    <div class="table-td">容量</div>
+                  </div>
+                  <div class="table-tr">
+                    <div class="table-td" :title="item.storage">
+                      {{ item.storage }}
+                    </div>
+                    <div class="table-td" :title="item.type">
+                      {{ item.type }}
+                    </div>
+                    <div class="table-td" :title="byteToSize(item.avail)">
+                      {{ byteToSize(item.avail) }}
+                    </div>
+                    <div class="table-td" :title="byteToSize(item.total)">
+                      {{ byteToSize(item.total) }}
+                    </div>
+                  </div>
                 </m-option>
-              </m-select>
+              </div>
+            </m-select>
+            <m-select
+              prop="format"
+              label="格式"
+              labelWidth="100px"
+              @on-change="handleFormatSelect"
+              v-model="format"
+              :readonly="false"
+              :disabled="!storageType || storageType !== 'dir'"
+              placeholder="请选格式"
+            >
+              <m-option
+                v-for="(item, index) in formatList"
+                :key="index"
+                :value="item.value"
+                :label="item.label"
+              >
+              </m-option>
+            </m-select>
           </dd>
         </dl>
       </div>
-      </div>
+    </div>
     <template slot="footer">
       <m-button
         type="primary"
@@ -151,27 +159,27 @@ export default {
   },
   data() {
     return {
-			deviceList: DEVICELIST,
-      format: 'raw',
+      deviceList: DEVICELIST,
+      format: "raw",
       deviceIndex: "1",
       image: "",
       device: "ide",
-			storage: "",
-			storageType: '',
-			usedIDList: [],
-				formatList: [
+      storage: "",
+      storageType: "",
+      usedIDList: [],
+      formatList: [
         {
           label: "Raw磁盘映像（raw）",
           value: "raw",
-				},
-				{
+        },
+        {
           label: "VMware映像格式（vmdk）",
           value: "vmdk",
-				},
-				{
+        },
+        {
           label: "QEMU映像格式（qcow2）",
           value: "qcow2",
-        }
+        },
       ],
       rules: {
         deviceIndex: {
@@ -196,31 +204,36 @@ export default {
     render_storage_content,
     byteToSize,
     __init__() {
-			//查找已用id
-			this.usedIDList = Object.keys(this.db.qemuConfigObj).filter(it => {
-					let regx = new RegExp(`\^\(${this.device}\)\\d\$`, 'g');
-					  return regx.test(it)
-					}).map(item => {
-					let regx = new RegExp(`\^\(${this.device}\)\(\\d\)\$`, 'g');
-					return Number(item.replace(regx, '$2'));
-				});
-			//设置默认id
-			this.deviceIndex = this.usedIDList && this.usedIDList.length > 0 ? Math.max(...this.usedIDList) + 1 : 0;
+      //查找已用id
+      this.usedIDList = Object.keys(this.db.qemuConfigObj)
+        .filter((it) => {
+          let regx = new RegExp(`\^\(${this.device}\)\\d\$`, "g");
+          return regx.test(it);
+        })
+        .map((item) => {
+          let regx = new RegExp(`\^\(${this.device}\)\(\\d\)\$`, "g");
+          return Number(item.replace(regx, "$2"));
+        });
+      //设置默认id
+      this.deviceIndex =
+        this.usedIDList && this.usedIDList.length > 0
+          ? Math.max(...this.usedIDList) + 1
+          : 0;
       this.queryConfig({ _dc: new Date().getTime() });
-			//查询存储
-			this.queryStorage({ format: 1, content: "images" });
+      //查询存储
+      this.queryStorage({ format: 1, content: "images" });
     },
     confirm() {
-			if (this.validateAll()) return;
-			let device= '';
-			if(this.storage){
-				device+=`${this.storage}:cloudinit,`
-			}
-			if(this.format) {
-				device+=`format=${this.format},`
-			}
+      if (this.validateAll()) return;
+      let device = "";
+      if (this.storage) {
+        device += `${this.storage}:cloudinit,`;
+      }
+      if (this.format) {
+        device += `format=${this.format},`;
+      }
       let param = {
-        [`${this.device}${this.deviceIndex}`]: device.replace(/(\,)$/,  ''),
+        [`${this.device}${this.deviceIndex}`]: device.replace(/(\,)$/, ""),
         digest: this.db.qemuConfigObj.digest,
       };
       this.createHardWare(param)
@@ -238,9 +251,11 @@ export default {
     },
     handleStorageSelect(value) {
       this.storage = value;
-      this.storageType = this.db.storageList.filter(it => it.storage === value)[0].type;
-			if(this.storageType === 'dir') this.format = 'qcow2';
-			else this.format = 'raw';
+      this.storageType = this.db.storageList.filter(
+        (it) => it.storage === value
+      )[0].type;
+      if (this.storageType === "dir") this.format = "qcow2";
+      else this.format = "raw";
     },
     handleFormatSelect(value) {
       this.format = value;
@@ -254,35 +269,37 @@ export default {
         this.rules[prop].message = "不能为空";
         return;
       }
-      if (
-        value &&
-        this.usedIDList.includes(this.deviceIndex)
-      ) {
+      if (value && this.usedIDList.includes(this.deviceIndex)) {
         this.rules[prop].error = true;
         this.rules[prop].message = "该id已占用";
         return;
       }
     },
     validateAll() {
-      let props = ['deviceIndex', 'storage'];
+      let props = ["deviceIndex", "storage"];
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
     },
     handleFormatSelect(value) {
       this.format = value;
-		},
-		setDefaultDeviceIndex() {
-			debugger;
+    },
+    setDefaultDeviceIndex() {
+      debugger;
 
-			this.usedIDList = Object.keys(this.db.qemuConfigObj).filter(it => {
-					let regx = new RegExp(`\^\(${this.device}\)\\d\$`, 'g');
-					  return regx.test(it)
-					}).map(item => {
-							let regx = new RegExp(`\^\(${this.device}\)\(\\d\)\$`, 'g');
-					return Number(item.replace(regx, '$2'));
-				});
-			this.deviceIndex = this.usedIDList && this.usedIDList.length > 0 ? Math.max(...this.usedIDList) + 1 : 0;
-		}
+      this.usedIDList = Object.keys(this.db.qemuConfigObj)
+        .filter((it) => {
+          let regx = new RegExp(`\^\(${this.device}\)\\d\$`, "g");
+          return regx.test(it);
+        })
+        .map((item) => {
+          let regx = new RegExp(`\^\(${this.device}\)\(\\d\)\$`, "g");
+          return Number(item.replace(regx, "$2"));
+        });
+      this.deviceIndex =
+        this.usedIDList && this.usedIDList.length > 0
+          ? Math.max(...this.usedIDList) + 1
+          : 0;
+    },
   },
   watch: {
     visible: function (newVal, oldVal) {

@@ -12,7 +12,7 @@
         v-confirm="{
           msg: '确定要删除已选择项?',
           ok: () => handleDelete(),
-          icon:'icon-question'
+          icon: 'icon-question',
         }"
         icon="el-icon-delete"
         :disabled="selectedList.length <= 0"
@@ -57,7 +57,7 @@
                   v-confirm="{
                     msg: '确定要删除已选择项?',
                     ok: () => handleGroupRuleDelete(),
-                    icon:'icon-question'
+                    icon: 'icon-question',
                   }"
                   icon="el-icon-delete"
                   :disabled="selectedRuleList.length <= 0"
@@ -295,7 +295,7 @@ export default {
     display: inline-flex;
   }
 }
-/deep/.page-template__content{
-  height: auto!important;;
+/deep/.page-template__content {
+  height: auto !important;
 }
 </style>

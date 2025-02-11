@@ -1,8 +1,11 @@
 <template>
   <ul class="m-select">
-    <label class="select__label" :style="{ width: labelWidth }" :class="{'required': required}">{{
-      label
-    }}</label>
+    <label
+      class="select__label"
+      :style="{ width: labelWidth }"
+      :class="{ required: required }"
+      >{{ label }}</label
+    >
     <span class="m-select__input">
       <span
         class="select prefix-icon"
@@ -83,12 +86,15 @@
         >
           <slot></slot>
         </div>
-         <div
-          style="overflow-y: auto; max-height: 200px;
-          height: 28px;
-          line-height: 28px;
-          text-align: center;
-          padding: 0px 10px;"
+        <div
+          style="
+            overflow-y: auto;
+            max-height: 200px;
+            height: 28px;
+            line-height: 28px;
+            text-align: center;
+            padding: 0px 10px;
+          "
           ref="select-option"
           tabindex="0"
           v-else
@@ -102,7 +108,7 @@
 </template>
 
 <script>
-import { stopEvent } from '@libs/utils/index';
+import { stopEvent } from "@libs/utils/index";
 export default {
   name: "select",
   provide() {
@@ -114,7 +120,10 @@ export default {
     renderDropMenu() {
       if (this.disabled) return;
       if (this.isOpen && this.$refs["select-menu"]) {
-        const el = document.documentElement.scrollLeft || window.pageXOffset || document.body.scrollLeft;
+        const el =
+          document.documentElement.scrollLeft ||
+          window.pageXOffset ||
+          document.body.scrollLeft;
         const { left, top } =
           this.$refs &&
           this.$refs["select"] &&
@@ -195,12 +204,12 @@ export default {
     },
     required: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   model: {
-    event: 'on-change',
-    prop: 'value',
+    event: "on-change",
+    prop: "value",
   },
   data() {
     return {
@@ -208,7 +217,7 @@ export default {
       selectValues: [],
       selected: [],
       cachedOptions: [],
-      isEmpty: false
+      isEmpty: false,
     };
   },
   mounted() {
@@ -220,7 +229,7 @@ export default {
   },
   methods: {
     setSelected() {
-      let selected = [];//清空上次选择，设置重新选择
+      let selected = []; //清空上次选择，设置重新选择
       for (let i = 0; i < this.cachedOptions.length; i++) {
         if (this.type === "multiple") {
           if (this.value.includes(this.cachedOptions[i].value)) {
@@ -264,7 +273,9 @@ export default {
     },
     handleClick() {
       this.isOpen = !this.isOpen;
-      this.isEmpty =  this.$refs['select-option'] && this.$refs['select-option'].childNodes.length <= 0;
+      this.isEmpty =
+        this.$refs["select-option"] &&
+        this.$refs["select-option"].childNodes.length <= 0;
       this.$emit("visible-change");
     },
     //点击下拉选择框之外的区域隐藏选择框
@@ -274,7 +285,7 @@ export default {
         : (event.cancelBubble = true);
       this.isOpen = false;
       //this.$emit("validate", this.prop);
-    }
+    },
   },
   destroyed() {
     //移除resize监听事件
@@ -287,7 +298,7 @@ export default {
         this.selected = this.setSelected();
         this.selectValues = newVal;
       }
-    }
+    },
   },
 };
 </script>
@@ -440,11 +451,11 @@ export default {
   text-overflow: ellipsis;
 }
 
-  .required{
-    &::before{
-      content: "*";
-      color: #f56c6c;
-      margin-right: 4px;
-    }
+.required {
+  &::before {
+    content: "*";
+    color: #f56c6c;
+    margin-right: 4px;
   }
+}
 </style>

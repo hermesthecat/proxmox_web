@@ -1,13 +1,13 @@
 <template>
   <div class="overview chart-content">
     <div class="overview-select">
-       <m-select
-              @on-change="handleIntervalChange"
-              v-model="timeframe">
-        <m-option v-for="item of intervalList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+      <m-select @on-change="handleIntervalChange" v-model="timeframe">
+        <m-option
+          v-for="item of intervalList"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        >
         </m-option>
       </m-select>
     </div>
@@ -55,11 +55,15 @@
                 : 0) * 100
             ).toFixed(2)}%
                                 (${
-                                  db.storageObj &&
-                                  db.storageObj.used &&
-                                  byteToSize(db.storageObj.used) || 0
+                                  (db.storageObj &&
+                                    db.storageObj.used &&
+                                    byteToSize(db.storageObj.used)) ||
+                                  0
                                 } of ${
-              (db.storageObj && db.storageObj.total && byteToSize(db.storageObj.total)) || 0
+              (db.storageObj &&
+                db.storageObj.total &&
+                byteToSize(db.storageObj.total)) ||
+              0
             })`"
             :value="
               Number(
@@ -207,7 +211,7 @@ export default {
       this.queryRrdData(this.timeframe);
     },
     handleIntervalChange(value) {
-      if(/[\u4e00-\u9fa5]/.test(value)) return;
+      if (/[\u4e00-\u9fa5]/.test(value)) return;
       this.timeframe = value;
       this.queryRrdData();
     },
@@ -219,9 +223,9 @@ export default {
   /***
    *
    * 路由跳转之前清除定时任务
-  */
+   */
   beforeDestroy() {
-    if(this.interval) {
+    if (this.interval) {
       clearInterval(this.interval);
     }
     this.interval = null;

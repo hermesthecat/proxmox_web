@@ -3,10 +3,21 @@
     <span class="m-checkbox__label" :style="{ width: labelWidth }">{{
       label
     }}</span>
-    <label class="m-checkbox__content" :disabled="disabled" :class="{'disabled': disabled}">
-      <input type="checkbox" :checked="checked" :disabled="disabled" @change="$emit('change', $event.target.checked)"/>
+    <label
+      class="m-checkbox__content"
+      :disabled="disabled"
+      :class="{ disabled: disabled }"
+    >
+      <input
+        type="checkbox"
+        :checked="checked"
+        :disabled="disabled"
+        @change="$emit('change', $event.target.checked)"
+      />
       <div></div>
-			<span style="display: inline-block;vertical-align: middle;"><slot></slot></span>
+      <span style="display: inline-block; vertical-align: middle"
+        ><slot></slot
+      ></span>
     </label>
   </div>
 </template>
@@ -27,11 +38,11 @@ export default {
     labelWidth: {
       type: String,
     },
-	},
-	model: {
-		prop: 'checked',
-		event: 'change'
-	}
+  },
+  model: {
+    prop: "checked",
+    event: "change",
+  },
 };
 </script>
 
@@ -99,9 +110,9 @@ export default {
   }
 }
 
-.disabled{
-	div{
-		background: #c4d6ec!important;
-	}
+.disabled {
+  div {
+    background: #c4d6ec !important;
+  }
 }
 </style>

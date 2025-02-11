@@ -15,7 +15,7 @@
             :error-msg="rules.storage.message"
             v-model="storage"
             required
-						:disabled="!isCreate"
+            :disabled="!isCreate"
             placeholder="请输入ID"
           />
           <m-checkbox
@@ -29,7 +29,7 @@
             label="门户"
             labelWidth="100px"
             validateEvent
-						:disabled="!isCreate"
+            :disabled="!isCreate"
             @validate="validate"
             :show-error="rules.portal.error"
             :error-msg="rules.portal.message"
@@ -42,7 +42,7 @@
             @on-change="handleSelect"
             prop="iscsiprovider"
             label="iSCSI提供者"
-						:disabled="!isCreate"
+            :disabled="!isCreate"
             validateEvent
             @validate="validate"
             required
@@ -62,7 +62,7 @@
             type="text"
             prop="pool"
             label="资源池"
-						:disabled="!isCreate"
+            :disabled="!isCreate"
             labelWidth="100px"
             validateEvent
             @validate="validate"
@@ -77,7 +77,7 @@
             prop="blocksize"
             label="块尺寸"
             labelWidth="100px"
-						:disabled="!isCreate"
+            :disabled="!isCreate"
             validateEvent
             @validate="validate"
             required
@@ -92,7 +92,7 @@
             label="目标"
             labelWidth="100px"
             validateEvent
-						:disabled="!isCreate"
+            :disabled="!isCreate"
             @validate="validate"
             required
             :show-error="rules.target.error"
@@ -103,7 +103,7 @@
           <m-checkbox
             label="精简装置"
             v-model="sparse"
-						:disabled="['LIO', 'IET'].includes(iscsiprovider)"
+            :disabled="['LIO', 'IET'].includes(iscsiprovider)"
             labelWidth="100px"
           ></m-checkbox>
           <m-input
@@ -111,7 +111,7 @@
             prop="comstar_tg"
             label="目标群组"
             labelWidth="100px"
-						:disabled="iscsiprovider !== 'Comstar' || !isCreate"
+            :disabled="iscsiprovider !== 'Comstar' || !isCreate"
             v-model="comstar_tg"
             placeholder="请输入目标群组"
           />
@@ -126,7 +126,7 @@
             label="主机组"
             labelWidth="100px"
             validateEvent
-						:disabled="iscsiprovider !== 'Comstar' || !isCreate"
+            :disabled="iscsiprovider !== 'Comstar' || !isCreate"
             v-model="comstar_hg"
             placeholder="请输入主机组"
           />
@@ -151,12 +151,10 @@
         <dd>
           <el-table
             :data="db.nodeList"
-						ref="dataTable"
-           @selection-change="handleSelectionChange">
-            <el-table-column
-                type="selection"
-                width="55">
-            </el-table-column>
+            ref="dataTable"
+            @selection-change="handleSelectionChange"
+          >
+            <el-table-column type="selection" width="55"> </el-table-column>
             <el-table-column
               label="节点"
               prop="node"
@@ -192,8 +190,8 @@ import DataCenterStorageHttp from "@src/views/home/dataCenter/storage/http";
 import { flotToFixed, percentToFixed } from "@libs/utils/index";
 export default {
   name: "CreateZfsStorage",
-	mixins: [DataCenterStorageHttp],
-	props: {
+  mixins: [DataCenterStorageHttp],
+  props: {
     isCreate: {
       type: Boolean,
       default: true,
@@ -224,7 +222,7 @@ export default {
       pveceph: false,
       krbd: false,
       sparse: false,
-			writecache: false,
+      writecache: false,
       options: [
         {
           label: "comstar",
@@ -241,7 +239,7 @@ export default {
         {
           label: "LIO",
           value: "LIO",
-        }
+        },
       ],
       rules: {
         storage: {
@@ -294,19 +292,21 @@ export default {
         });
       });
       if (!this.isCreate) {
-				debugger;
+        debugger;
         Object.keys(this.param).forEach((key) => {
-          if (["disable", 'shared','sparse', 'krbd', 'pveceph'].includes(key)) {
+          if (
+            ["disable", "shared", "sparse", "krbd", "pveceph"].includes(key)
+          ) {
             this[key] = this.param[key] === 0 ? true : false;
           } else if (key === "nodes" || key === "content") {
             this[key] = this.param[key].split(",");
-          } else if(key === 'nowritecache'){
-            this['writecache'] = this.param[key] === 0 ? true : false;
-					} else {
+          } else if (key === "nowritecache") {
+            this["writecache"] = this.param[key] === 0 ? true : false;
+          } else {
             this[key] = this.param[key];
           }
-				});
-					this.disable = this.param.disable ? false : true
+        });
+        this.disable = this.param.disable ? false : true;
       }
     },
     //单个校验
@@ -341,14 +341,14 @@ export default {
       this.iscsiprovider = value;
     },
     handleSelectionChange(row) {
-			this.nodes = row.map(item => item.node);
-		},
+      this.nodes = row.map((item) => item.node);
+    },
     //整体校验
     validateAll() {
-			let props = ["storage", "blocksize", "portal", "target", "pool"];
-			if(this.iscsiprovider === 'LIO') {
-				props.push('lio_tpg');
-			}
+      let props = ["storage", "blocksize", "portal", "target", "pool"];
+      if (this.iscsiprovider === "LIO") {
+        props.push("lio_tpg");
+      }
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
     },

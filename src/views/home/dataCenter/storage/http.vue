@@ -1,5 +1,5 @@
 <script>
-import { deepCopy, confirm } from '@libs/utils/index';
+import { deepCopy, confirm } from "@libs/utils/index";
 export default {
   name: "DataStorageHttp",
   methods: {
@@ -24,7 +24,8 @@ export default {
       });
     },
     createStorage(param) {
-      let _this = this, event = this.createEvent("action.storage.create", param.storage);
+      let _this = this,
+        event = this.createEvent("action.storage.create", param.storage);
       return _this.$http
         .post("json/storage", param, {
           headers: {
@@ -37,21 +38,21 @@ export default {
         })
         .catch((res) => {
           _this.incEventFail(event);
-          confirm.call(_this, res, 'confirm', 'icon-warning');
+          confirm.call(_this, res, "confirm", "icon-warning");
         });
-		},
-		updateStorage(param) {
-			let event = this.createEvent("action.storage.update", param.storage);
-			let params = deepCopy(param);;
-			if(params.hasOwnProperty('storage')) delete params.storage;
-			if(params.hasOwnProperty('path')) delete params.path;
-			if(params.hasOwnProperty('type')) delete params.type;
-			if(params.hasOwnProperty('vgname')) delete params.vgname;
-			if(params.hasOwnProperty('thinpool')) delete params.thinpool;
-			if(params.hasOwnProperty('export')) delete params.export;
-			if(params.hasOwnProperty('server')) delete params.server;
+    },
+    updateStorage(param) {
+      let event = this.createEvent("action.storage.update", param.storage);
+      let params = deepCopy(param);
+      if (params.hasOwnProperty("storage")) delete params.storage;
+      if (params.hasOwnProperty("path")) delete params.path;
+      if (params.hasOwnProperty("type")) delete params.type;
+      if (params.hasOwnProperty("vgname")) delete params.vgname;
+      if (params.hasOwnProperty("thinpool")) delete params.thinpool;
+      if (params.hasOwnProperty("export")) delete params.export;
+      if (params.hasOwnProperty("server")) delete params.server;
       return this.$http
-        .put(`json/storage/${param.storage}`,  params, {
+        .put(`json/storage/${param.storage}`, params, {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
           },
@@ -62,9 +63,9 @@ export default {
         })
         .catch((res) => {
           this.incEventFail(event);
-          confirm.call(this, res, 'confirm', 'icon-warning');
+          confirm.call(this, res, "confirm", "icon-warning");
         });
-		},
+    },
     queryVg(nodename) {
       if (!nodename) nodename = "localhost";
       return this.$http
@@ -142,7 +143,7 @@ export default {
     queryIscsi(nodename, server) {
       if (!nodename) nodename = "localhost";
       return this.$http
-        .get("/json/nodes/" + nodename + "/scan/iscsi", { 'portal': server })
+        .get("/json/nodes/" + nodename + "/scan/iscsi", { portal: server })
         .then((res) => {
           if (res.data) {
             this.updateTable({
@@ -162,34 +163,35 @@ export default {
               list: res.data,
             });
           }
-        }).catch(res => {
+        })
+        .catch((res) => {
           return Promise.reject(res);
         });
     },
     queryCephPools() {
       return this.$http
-                 .get(`json/nodes/localhost/ceph/pools`)
-                 .then((res) => {
-                  if (res.data) {
-                    this.updateTable({
-                      tableName: "cephPoolsList",
-                      list: res.data,
-                    });
-                  }
-                }).catch(res => {
-                  return Promise.reject(res);
-                });
-    },
-    queryCephPoolsObj (param) {
-      return this.$http.get(`json/storage/ceph-pools`,  param)
-        .then(res => {
-          if(res.data) {
-            this.updateDbObject({
-              name: "cephPoolsObj",
-              data: res.data,
+        .get(`json/nodes/localhost/ceph/pools`)
+        .then((res) => {
+          if (res.data) {
+            this.updateTable({
+              tableName: "cephPoolsList",
+              list: res.data,
             });
           }
         })
+        .catch((res) => {
+          return Promise.reject(res);
+        });
+    },
+    queryCephPoolsObj(param) {
+      return this.$http.get(`json/storage/ceph-pools`, param).then((res) => {
+        if (res.data) {
+          this.updateDbObject({
+            name: "cephPoolsObj",
+            data: res.data,
+          });
+        }
+      });
     },
     queryZfs(nodename, server) {
       if (!nodename) nodename = "localhost";
@@ -205,14 +207,17 @@ export default {
         });
     },
     delete(storage) {
-			let event = this.createEvent('action.storage.delete', storage);
-      return this.$http.del(`/json/storage/${storage}`).then((res) => {
-        this.incEventSuccess(event);
-        this.__init__();
-      }).catch((res) => {
-        this.incEventFail(event);
-        confirm.call(this, res, 'confirm', 'icon-warning');
-			});
+      let event = this.createEvent("action.storage.delete", storage);
+      return this.$http
+        .del(`/json/storage/${storage}`)
+        .then((res) => {
+          this.incEventSuccess(event);
+          this.__init__();
+        })
+        .catch((res) => {
+          this.incEventFail(event);
+          confirm.call(this, res, "confirm", "icon-warning");
+        });
     },
   },
 };

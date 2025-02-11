@@ -15,15 +15,21 @@
         <dl>
           <dt>基本信息</dt>
           <dd>
-            <m-select labelWidth="100px" label="类别" v-model="machine" prop="cpu" @on-change="handleMachineChange">
+            <m-select
+              labelWidth="100px"
+              label="类别"
+              v-model="machine"
+              prop="cpu"
+              @on-change="handleMachineChange"
+            >
               <m-option
-                v-for="(item) in machineItems"
+                v-for="item in machineItems"
                 :key="item.value"
                 :value="item.value"
                 :label="item.label"
               >
               </m-option>
-            </m-select>          
+            </m-select>
           </dd>
         </dl>
       </div>
@@ -60,7 +66,7 @@ export default {
   data() {
     return {
       machineItems: MACHINELIST,
-			machine: "",
+      machine: "",
     };
   },
   mounted() {
@@ -70,14 +76,14 @@ export default {
     __init__() {
       let _this = this;
       _this.queryConfig({ _dc: new Date().getTime() }).then((res) => {
-				_this.machine = _this.db.qemuConfigObj.machine;
+        _this.machine = _this.db.qemuConfigObj.machine;
       });
     },
     confirm() {
       let param = {
-        machine:`${this.machine}`,
-				digest: this.db.qemuConfigObj.digest,
-			};
+        machine: `${this.machine}`,
+        digest: this.db.qemuConfigObj.digest,
+      };
       Object.keys(param).forEach((key) => {
         if (!param[key]) delete param[key];
       });
@@ -96,7 +102,7 @@ export default {
     },
     handleMachineChange(value) {
       this.machine = value;
-    }
+    },
   },
   watch: {
     visible: function (newVal, oldVal) {

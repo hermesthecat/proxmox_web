@@ -4,7 +4,7 @@ import ResizeObserver from 'resize-observer-polyfill'
 const addEventListener = EventTarget.prototype.addEventListener;
 
 
-const createHTMLEvent = function(type) {
+const createHTMLEvent = function (type) {
   const event = document.createEvent('HTMLEvents')
   event.initEvent(type)
   return event

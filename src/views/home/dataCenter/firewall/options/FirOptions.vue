@@ -1,7 +1,12 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button type="primary" :disabled="option === ''" @on-click="showModal(option)">编辑</m-button>
+      <m-button
+        type="primary"
+        :disabled="option === ''"
+        @on-click="showModal(option)"
+        >编辑</m-button
+      >
     </div>
     <div slot="page-content">
       <div class="table">
@@ -24,8 +29,11 @@
           </div>
           <div class="table-td">防火墙</div>
           <div class="table-td">
-            {{ db.optionObj && db.optionObj.enable == 1 ? '是' : '否' }}
-            <i class="el-icon-edit edit-icon" @click="showModal('firewall')"></i>
+            {{ db.optionObj && db.optionObj.enable == 1 ? "是" : "否" }}
+            <i
+              class="el-icon-edit edit-icon"
+              @click="showModal('firewall')"
+            ></i>
           </div>
         </div>
         <div
@@ -47,8 +55,11 @@
           </div>
           <div class="table-td">ebtables</div>
           <div class="table-td">
-            {{ db.optionObj && db.optionObj.ebtables === 1  ? '是' : '否'}}
-            <i class="el-icon-edit edit-icon" @click="showModal('ebtables')"></i>
+            {{ db.optionObj && db.optionObj.ebtables === 1 ? "是" : "否" }}
+            <i
+              class="el-icon-edit edit-icon"
+              @click="showModal('ebtables')"
+            ></i>
           </div>
         </div>
         <div
@@ -71,7 +82,10 @@
           <div class="table-td">Log速率限制</div>
           <div class="table-td">
             {{ db.optionObj && render_kvm_console(db.optionObj.log_ratelimit) }}
-            <i class="el-icon-edit edit-icon"  @click="showModal('log_ratelimit')"></i>
+            <i
+              class="el-icon-edit edit-icon"
+              @click="showModal('log_ratelimit')"
+            ></i>
           </div>
         </div>
         <div
@@ -93,8 +107,15 @@
           </div>
           <div class="table-td">输入策略</div>
           <div class="table-td">
-            {{ db.optionObj && db.optionObj.policy_in ? db.optionObj.policy_in : 'root@$hostname'}}
-            <i class="el-icon-edit edit-icon"  @click="showModal('policy_in')"></i>
+            {{
+              db.optionObj && db.optionObj.policy_in
+                ? db.optionObj.policy_in
+                : "root@$hostname"
+            }}
+            <i
+              class="el-icon-edit edit-icon"
+              @click="showModal('policy_in')"
+            ></i>
           </div>
         </div>
         <div
@@ -116,16 +137,28 @@
           </div>
           <div class="table-td">输出策略</div>
           <div class="table-td">
-            {{ db.optionObj && db.optionObj.policy_out ? db.optionObj.policy_out : '无'}}
-            <i class="el-icon-edit edit-icon" @click="showModal('policy_out')"></i>
+            {{
+              db.optionObj && db.optionObj.policy_out
+                ? db.optionObj.policy_out
+                : "无"
+            }}
+            <i
+              class="el-icon-edit edit-icon"
+              @click="showModal('policy_out')"
+            ></i>
           </div>
         </div>
       </div>
-			<OptionModal :visible="visible"
-			             v-if="visible"
-									 :title="title"
-									 @close="visible = false; __init__()"
-									 :type="type"></OptionModal>
+      <OptionModal
+        :visible="visible"
+        v-if="visible"
+        :title="title"
+        @close="
+          visible = false;
+          __init__();
+        "
+        :type="type"
+      ></OptionModal>
     </div>
   </page-template>
 </template>
@@ -134,37 +167,37 @@ import FirewallHttp from "@src/views/home/dataCenter/firewall/http";
 import PageTemplate from "@src/components/page/PageTemplate";
 import MButton from "@src/components/button/Button";
 import { KVM_KEYMAPS, CONSOLE_Map } from "@libs/enum/enum.js";
-import { printPropertyString } from '@libs/utils/index';
-import OptionModal  from './OptionModal';
+import { printPropertyString } from "@libs/utils/index";
+import OptionModal from "./OptionModal";
 export default {
   name: "HaFirOptions",
   mixins: [FirewallHttp],
   components: {
     PageTemplate,
-		MButton,
-		OptionModal
+    MButton,
+    OptionModal,
   },
   data() {
     return {
       type: "",
       visible: false,
-			option: "",
-			title: ''
+      option: "",
+      title: "",
     };
   },
   mounted() {
     this.__init__();
   },
   methods: {
-		//初始化查找
+    //初始化查找
     __init__() {
       this.queryFireOptionList();
-		},
-		//点击表格行触发事件
+    },
+    //点击表格行触发事件
     handleClick(event) {
       this.option = event.target.parentElement.id;
-		},
-		//渲染键盘语言
+    },
+    //渲染键盘语言
     render_kvm_language(value) {
       if (!value || value === "__default__") {
         return "默认";
@@ -174,8 +207,8 @@ export default {
         return text + " (" + value + ")";
       }
       return value;
-		},
-		//渲染控制台
+    },
+    //渲染控制台
     render_kvm_console(value) {
       if (!value || value === "__default__") {
         return "默认";
@@ -185,42 +218,40 @@ export default {
         return text;
       }
       return value;
-		},
-		//渲染高可用
+    },
+    //渲染高可用
     render_dc_ha_opts: function (value) {
       if (!value) {
         return "默认";
       } else {
         return printPropertyString(value);
       }
-		},
-		//渲染网络
+    },
+    //渲染网络
     render_as_property_string: function (value) {
-      return !value
-        ? "默认"
-        : printPropertyString(value);
-		},
-		showModal(key) {
-			this.type = key;
-			switch(key) {
-				case 'firewall':
-					this.title="编辑：防火墙"
-					break;
-				case 'ebtables':
-					this.title="编辑：ebtables"
-					break;
-				case 'log_ratelimit':
-					this.title="编辑：Log速率限制"
-					break;
-				case 'policy_in':
-					this.title="编辑：输入方向"
-					break;
-				case 'policy_out':
-					this.title="编辑：输出方向"
-					break;
-			}
-			this.visible = true;
-		}
+      return !value ? "默认" : printPropertyString(value);
+    },
+    showModal(key) {
+      this.type = key;
+      switch (key) {
+        case "firewall":
+          this.title = "编辑：防火墙";
+          break;
+        case "ebtables":
+          this.title = "编辑：ebtables";
+          break;
+        case "log_ratelimit":
+          this.title = "编辑：Log速率限制";
+          break;
+        case "policy_in":
+          this.title = "编辑：输入方向";
+          break;
+        case "policy_out":
+          this.title = "编辑：输出方向";
+          break;
+      }
+      this.visible = true;
+    },
   },
 };
 </script>

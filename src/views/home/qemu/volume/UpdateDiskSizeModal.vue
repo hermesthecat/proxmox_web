@@ -23,14 +23,16 @@
               prop="磁盘"
               :disabled="true"
             >
-						  <div style="padding-left: 5px; height: 28px; line-height: 28px;">{{disk}}</div>
+              <div style="padding-left: 5px; height: 28px; line-height: 28px">
+                {{ disk }}
+              </div>
             </m-input>
             <m-input
               type="number"
               labelWidth="100px"
               label="增量大小"
               v-model="size"
-							:max="131072"
+              :max="131072"
               validateEvent
               @validate="validate"
               prop="size"
@@ -76,8 +78,8 @@ export default {
     return {
       cpuList: CPULIST,
       vmCpuFlagItems: VMCPUFlag,
-      disk: '',
-      size: '',
+      disk: "",
+      size: "",
       rules: {
         size: {
           error: false,
@@ -94,14 +96,14 @@ export default {
     __init__() {
       let _this = this;
       _this.queryConfig({ _dc: new Date().getTime() }).then((res) => {
-        _this.disk = _this.param.type
+        _this.disk = _this.param.type;
       });
     },
     confirm() {
-			let param = {
-				disk: this.disk,
-				size: `+${this.size}`
-			}
+      let param = {
+        disk: this.disk,
+        size: `+${this.size}`,
+      };
       Object.keys(param).forEach((key) => {
         if (!param[key]) delete param[key];
       });
@@ -126,18 +128,18 @@ export default {
         this.rules[prop].error = true;
         this.rules[prop].message = "不能为空";
         return;
-			}
-			if(value && (value<=0 || value >= 131072) ) {
-					this.rules[prop].error = true;
-          this.rules[prop].message = `增量不能于大于131072`;
-           return;
-			}
+      }
+      if (value && (value <= 0 || value >= 131072)) {
+        this.rules[prop].error = true;
+        this.rules[prop].message = `增量不能于大于131072`;
+        return;
+      }
     },
     validateAll() {
-			let props = ["size"];
+      let props = ["size"];
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
-		}
+    },
   },
   watch: {
     visible: function (newVal, oldVal) {

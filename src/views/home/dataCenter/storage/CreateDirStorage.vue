@@ -83,10 +83,15 @@
         <dd>
           <el-table
             :data="db.nodeList"
-						ref="dataTable"
+            ref="dataTable"
             @selection-change="handleSelectionChange"
           >
-            <el-table-column type="selection" width="55" :selectable="selectable"> </el-table-column>
+            <el-table-column
+              type="selection"
+              width="55"
+              :selectable="selectable"
+            >
+            </el-table-column>
             <el-table-column
               label="节点"
               prop="node"
@@ -127,11 +132,11 @@ export default {
     isCreate: {
       type: Boolean,
       default: true,
-		},
-		param: {
-			type: Object
-		}
-	},
+    },
+    param: {
+      type: Object,
+    },
+  },
   data() {
     return {
       storage: "",
@@ -195,7 +200,7 @@ export default {
     flotToFixed,
     percentToFixed,
     __init__() {
-			let _this = this;
+      let _this = this;
       if (this.isCreate) {
         this.storage = "";
         this.path = "";
@@ -205,30 +210,30 @@ export default {
         this.type = "dir";
         this.disable = false;
         this.maxfiles = 1;
-      }else {
-				Object.keys(this.param).forEach((key) => {
-					if(['disable', 'shared'].includes(key)) {
-						_this[key] = _this.param[key] ===  1 ? true : false;
-					} else if(key === 'nodes' || key === 'content'){
-						_this[key] = _this.param[key].split(',');
-					} else {
-				    this[key] = this.param[key]
-					}
-						this.disable = this.param.disable ? false : true
-			  })
-			}
+      } else {
+        Object.keys(this.param).forEach((key) => {
+          if (["disable", "shared"].includes(key)) {
+            _this[key] = _this.param[key] === 1 ? true : false;
+          } else if (key === "nodes" || key === "content") {
+            _this[key] = _this.param[key].split(",");
+          } else {
+            this[key] = this.param[key];
+          }
+          this.disable = this.param.disable ? false : true;
+        });
+      }
       this.queryNode().then(() => {
-				if(!this.isCreate)
-					this.$nextTick(()=>{
-             _this.db.nodeList.forEach(item => {
-              _this.nodes.forEach(node => {
-								if(item.node === node) {
+        if (!this.isCreate)
+          this.$nextTick(() => {
+            _this.db.nodeList.forEach((item) => {
+              _this.nodes.forEach((node) => {
+                if (item.node === node) {
                   _this.$refs.dataTable.toggleRowSelection(item, true);
-								}
-							})
-						})
-						})
-			});;
+                }
+              });
+            });
+          });
+      });
     },
     //单个校验
     validate(prop) {
@@ -269,14 +274,14 @@ export default {
       let props = ["storage", "path", "content", "maxfiles"];
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
-		},
-		selectable(row, index){
-     if(this.isCreate) {
-			 return true;
-		 }else {
-			 return false;
-		 }
-		}
+    },
+    selectable(row, index) {
+      if (this.isCreate) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
 };
 </script>

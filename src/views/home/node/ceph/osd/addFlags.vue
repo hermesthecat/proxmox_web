@@ -56,12 +56,12 @@ export default {
       _this.queryFlags({ _dc: new Date().getTime() }).then((res) => {
         _this.flagList = res;
         _this.$nextTick(() => {
-					 _this.flagList.forEach((item) => {
-          if (item.value) {
-            _this.$refs.dataTable.toggleRowSelection(item, true);
-          }
+          _this.flagList.forEach((item) => {
+            if (item.value) {
+              _this.$refs.dataTable.toggleRowSelection(item, true);
+            }
+          });
         });
-				})
       });
     },
     //关闭弹框
@@ -72,7 +72,11 @@ export default {
     confirm() {
       let param = {};
       for (let i = 0; i < this.flagList.length; i++) {
-        param[this.flagList[i].name] = this.selectedList.some(item => item.name === this.flagList[i].name) ? 1 : 0;
+        param[this.flagList[i].name] = this.selectedList.some(
+          (item) => item.name === this.flagList[i].name
+        )
+          ? 1
+          : 0;
       }
       this.addFlags(param).then((res) => {
         this.close();

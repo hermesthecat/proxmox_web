@@ -1,16 +1,10 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button
-        type="primary"
-        @on-click="refresh"
-        icon="el-icon-refresh"
+      <m-button type="primary" @on-click="refresh" icon="el-icon-refresh"
         >重载</m-button
       >
-      <m-button
-        type="primary"
-        @on-click="showModal()"
-        icon="el-icon-plus"
+      <m-button type="primary" @on-click="showModal()" icon="el-icon-plus"
         >创建：Directory</m-button
       >
     </div>
@@ -28,30 +22,30 @@
       <create-directory-modal
         :title="title"
         :visible="visible"
-				v-if="visible"
+        v-if="visible"
         @close="
           visible = false;
-          __init__()
+          __init__();
         "
       ></create-directory-modal>
     </div>
   </page-template>
 </template>
 <script>
-import LinePercentChart from '@src/components/chart/line/LineCharts';
+import LinePercentChart from "@src/components/chart/line/LineCharts";
 import NodeDiskDirectoryHttp from "@src/views/home/node/disk/directory/http";
 import PageTemplate from "@src/components/page/PageTemplate";
 import MButton from "@src/components/button/Button";
-import { percentToFixed, byteToSize, debounce } from '@libs/utils/index';
-import CreateDirectoryModal from './CreateDirectoryModal';
+import { percentToFixed, byteToSize, debounce } from "@libs/utils/index";
+import CreateDirectoryModal from "./CreateDirectoryModal";
 export default {
   name: "Lvm",
   mixins: [NodeDiskDirectoryHttp],
   components: {
     PageTemplate,
-		MButton,
-		LinePercentChart,
-    CreateDirectoryModal
+    MButton,
+    LinePercentChart,
+    CreateDirectoryModal,
   },
   data() {
     return {
@@ -64,18 +58,20 @@ export default {
     this.__init__();
   },
   methods: {
-		percentToFixed,
-		byteToSize,
+    percentToFixed,
+    byteToSize,
     //初始化查找
     __init__() {
       this.queryDiskDirectory();
     },
-    refresh: debounce(function() {this.__init__()}, 500),
+    refresh: debounce(function () {
+      this.__init__();
+    }, 500),
     //是否展示弹框
     showModal() {
       this.title = "创建：Lvm Directory";
       this.visible = true;
-    }
+    },
   },
 };
 </script>

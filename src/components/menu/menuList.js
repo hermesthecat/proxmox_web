@@ -3,9 +3,9 @@
  * */
 const dataCenterMenuList = [
   {
-    path:  '/datacenter/search',
+    path: '/datacenter/search',
     title: 'search',
-    key:  'datacenter-search',
+    key: 'datacenter-search',
     icon: 'fa fa-search',
     children: []
   },
@@ -158,9 +158,9 @@ const dataCenterMenuList = [
  * */
 const nodeMenuList = [
   {
-    path:  '/node/search',
+    path: '/node/search',
     title: 'search',
-    key:  'node-search',
+    key: 'node-search',
     icon: 'fa fa-search',
     children: []
   },
@@ -395,19 +395,19 @@ const qemuMenuList = [
     path: '/qemu/cloud-init',
     title: 'Cloud-Init',
     key: 'qemu-cloud-init',
-    icon:'fa fa-cloud',
+    icon: 'fa fa-cloud',
     children: []
   },
   {
     path: '/qemu/options',
-    title:'option',
+    title: 'option',
     key: 'qemu-option',
     icon: 'fa fa-gear',
     children: []
   },
   {
     path: '/qemu/historytask',
-    title:'task',
+    title: 'task',
     key: 'qemu-historytask',
     icon: 'fa fa-list',
     children: []

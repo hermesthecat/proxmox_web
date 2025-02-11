@@ -261,13 +261,13 @@ export default {
             this[key] = this.param[key] === 0 ? true : false;
           } else if (key === "nodes" || key === "content") {
             this[key] = this.param[key].split(",");
-          } else if(key === 'volume'){
-						this.volumename = this.param[key]
-					}else {
+          } else if (key === "volume") {
+            this.volumename = this.param[key];
+          } else {
             this[key] = this.param[key];
           }
-				});
-					this.disable = this.param.disable ? false : true
+        });
+        this.disable = this.param.disable ? false : true;
       }
     },
     //单个校验

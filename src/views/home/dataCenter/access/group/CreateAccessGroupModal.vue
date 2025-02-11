@@ -84,7 +84,7 @@ export default {
         groupid: {
           error: false,
           message: "",
-        }
+        },
       },
     };
   },
@@ -95,14 +95,13 @@ export default {
     async __init__() {
       if (this.modalType === "create")
         Object.assign(this.$data, this.$options.data());
-			else {
-				 Object.assign(this.$data, this.$options.data());
-				 await this.queryGroupsObj({groupid: this.param.groupid})
-				     .then(() => {
-               	 this.groupid = this.param.groupid;
-				         this.comment = this.db.groupsObj.comment &&  this.db.groupsObj.comment;
-						 })
-			}
+      else {
+        Object.assign(this.$data, this.$options.data());
+        await this.queryGroupsObj({ groupid: this.param.groupid }).then(() => {
+          this.groupid = this.param.groupid;
+          this.comment = this.db.groupsObj.comment && this.db.groupsObj.comment;
+        });
+      }
     },
     close() {
       this.$emit("close");
@@ -127,7 +126,7 @@ export default {
       let param = {
         groupid: this.groupid,
         comment: this.comment,
-			};
+      };
       if (this.modalType === "create") {
         this.createGroups(param)
           .then((res) => {
@@ -143,8 +142,8 @@ export default {
               .catch(() => {});
           });
       } else {
-				this.updateGroup(param)
-				.then((res) => {
+        this.updateGroup(param)
+          .then((res) => {
             this.close();
           })
           .catch((res) => {
@@ -155,7 +154,7 @@ export default {
               })
               .then(() => {})
               .catch(() => {});
-          });;
+          });
       }
     },
   },

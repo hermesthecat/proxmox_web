@@ -73,7 +73,7 @@ export default {
     isCreate: {
       type: Boolean,
       default: false,
-		}
+    },
   },
   data() {
     return {
@@ -83,7 +83,7 @@ export default {
         name: {
           error: false,
           message: "",
-        }
+        },
       },
     };
   },
@@ -97,7 +97,7 @@ export default {
       } else {
         Object.assign(this.$data, this.$options.data());
         Object.keys(this.param).forEach((it) => {
-					if(it === 'sid') this.vmid = this.param[it];
+          if (it === "sid") this.vmid = this.param[it];
           else this[it] = this.param[it];
         });
       }
@@ -113,12 +113,13 @@ export default {
         this.rules[prop].error = true;
         this.rules[prop].message = "不能为空";
         return;
-			}
-			if(prop==="name" && !/^[a-zA-Z][a-zA-Z0-9_-]{2,253}$/.test(value)){
-				this.rules[prop].error = true;
-        this.rules[prop].message = "名称以字母开头，内含字母数字下划线至少2位字符";
+      }
+      if (prop === "name" && !/^[a-zA-Z][a-zA-Z0-9_-]{2,253}$/.test(value)) {
+        this.rules[prop].error = true;
+        this.rules[prop].message =
+          "名称以字母开头，内含字母数字下划线至少2位字符";
         return;
-			}
+      }
     },
     validateAll() {
       let props = ["name"];
@@ -144,8 +145,8 @@ export default {
               .then(() => this.close());
           });
       } else {
-				param['digest'] = this.param.digest;
-				param['rename'] = this.param.name;
+        param["digest"] = this.param.digest;
+        param["rename"] = this.param.name;
         this.updateIPSet(param)
           .then((res) => {
             this.close();

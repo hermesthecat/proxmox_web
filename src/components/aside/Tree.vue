@@ -1,7 +1,12 @@
 <template>
   <aside class="aside" ref="aside">
     <div class="aside-select">
-      <select class="pv-form-input" v-model="view" @change="setViewFilter" style="padding: 4px 10px">
+      <select
+        class="pv-form-input"
+        v-model="view"
+        @change="setViewFilter"
+        style="padding: 4px 10px"
+      >
         <option
           v-for="(item, key) of viewTypeList"
           :key="key"
@@ -139,8 +144,8 @@ export default {
             list: res.data,
           }).then(() => {
             this.$nextTick(() => {
-                this.updateTree();
-            })
+              this.updateTree();
+            });
           });
         }
       });
@@ -168,7 +173,9 @@ export default {
           childNodes: [],
         },
         lastsel = JSON.parse(window.localStorage.getItem("lastsel")) || {}, //最后选择的节点
-        defaultKeys = window.localStorage.getItem('defaultExpandKeys') ? JSON.parse(window.localStorage.getItem('defaultExpandKeys')) : [],
+        defaultKeys = window.localStorage.getItem("defaultExpandKeys")
+          ? JSON.parse(window.localStorage.getItem("defaultExpandKeys"))
+          : [],
         parents = [], //父节点
         p = lastsel,
         index = this.treeData.dataIndex, //下标
@@ -260,7 +267,7 @@ export default {
               this.refresh();
               this.selectById(lastsel.id, lastsel);
               _this.handleChangeExpand(_this.defaultExpandKeys);
-            })
+            });
           }
           if ((!item || moved) && olditem.data.leaf) {
             delete index[key];
@@ -274,12 +281,12 @@ export default {
             }
             parentNode.childNodes && parentNode.childNodes.splice(olditem, 1);
           }
-          if(moved) {
+          if (moved) {
             _this.$nextTick(() => {
               this.refresh();
               this.selectById(lastsel.id, lastsel);
               _this.handleChangeExpand(_this.defaultExpandKeys);
-            })
+            });
           }
         }
       }
@@ -314,7 +321,10 @@ export default {
       if (_this.view !== "type") {
         Object.keys(_this.treeData.dataIndex).forEach((item) => {
           // _this.rootnode.childNodes.push(_this.treeData.dataIndex[item]);
-          _this.$set(_this.rootnode, 'childNodes', [..._this.rootnode.childNodes, _this.treeData.dataIndex[item]]);
+          _this.$set(_this.rootnode, "childNodes", [
+            ..._this.rootnode.childNodes,
+            _this.treeData.dataIndex[item],
+          ]);
         });
       }
       if (lastsel && !this.findChild(this.rootnode, "id", lastsel.id)) {
@@ -394,7 +404,10 @@ export default {
     handleChangeExpand(arr) {
       let loop = (item) => {
         item.forEach((it) => {
-          if (arr.includes(it.data.id) || this.defaultExpandKeys.includes(it.data.id)) {
+          if (
+            arr.includes(it.data.id) ||
+            this.defaultExpandKeys.includes(it.data.id)
+          ) {
             Object.assign(it.data, { expanded: true });
           } else if (it.data.id !== "root") {
             Object.assign(it.data, { expanded: false });
@@ -404,7 +417,7 @@ export default {
           }
         });
       };
-      window.localStorage.setItem('defaultExpandKeys', JSON.stringify(arr));
+      window.localStorage.setItem("defaultExpandKeys", JSON.stringify(arr));
       loop([this.rootnode]);
     },
     selectById(id, lastSelNode) {
@@ -614,7 +627,7 @@ export default {
   cursor: pointer;
   background: #2e3d50;
   border-right: 1px solid #f5f5f5;
-  color: #fff!important;
+  color: #fff !important;
   &-select {
     margin: 5px 10px;
     position: relative;

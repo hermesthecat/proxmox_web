@@ -43,7 +43,7 @@
                 label="dns2"
                 labelWidth="100px"
                 v-model="dns2"
-								validateEvent
+                validateEvent
                 @validate="validate"
                 :show-error="rules.dns2.error"
                 :error-msg="rules.dns2.message"
@@ -55,7 +55,7 @@
                 label="dns3"
                 labelWidth="100px"
                 v-model="dns3"
-               	validateEvent
+                validateEvent
                 @validate="validate"
                 :show-error="rules.dns3.error"
                 :error-msg="rules.dns3.message"
@@ -72,9 +72,7 @@
 <script>
 import Dialog from "@src/components/dialog/Dialog";
 import NodeSystemDnsHttp from "@src/views/home/node/system/dns/http";
-import {
-  IP64_match,
-} from "@libs/utils/index";
+import { IP64_match } from "@libs/utils/index";
 export default {
   name: "EditDnsModal",
   mixins: [NodeSystemDnsHttp],
@@ -95,14 +93,14 @@ export default {
       default: () => {
         return {};
       },
-    }
+    },
   },
   data() {
     return {
-			search: '',
-			dns1: '',
-			dns2: '',
-			dns3: '',
+      search: "",
+      dns1: "",
+      dns2: "",
+      dns3: "",
       rules: {
         dns1: {
           error: false,
@@ -115,11 +113,11 @@ export default {
         dns3: {
           error: false,
           message: "",
-				},
-				search: {
-					error: false,
+        },
+        search: {
+          error: false,
           message: "",
-				}
+        },
       },
     };
   },
@@ -128,13 +126,13 @@ export default {
   },
   methods: {
     create() {
-			if(this.validateAll()) return;
-		},
+      if (this.validateAll()) return;
+    },
     __init__() {
-			let _this = this;
-			Object.keys(_this.param).forEach(key => {
-        _this[key] = _this.param[key]
-			})
+      let _this = this;
+      Object.keys(_this.param).forEach((key) => {
+        _this[key] = _this.param[key];
+      });
     },
     close() {
       this.$emit("close");
@@ -143,17 +141,18 @@ export default {
       let value = String(this[prop]).trim();
       this.rules[prop].error = false;
       this.rules[prop].message = "";
-      if (/^\s*$/.test(value) && prop === 'serach') {
+      if (/^\s*$/.test(value) && prop === "serach") {
         this.rules[prop].error = true;
         this.rules[prop].message = "不能为空";
         return;
-			}
+      }
       if (value && /^(dns)/.test(prop)) {
-       if(!IP64_match.test(value)) {
-				 this.rules[prop].error = true;
-         this.rules[prop].message = "dns格式不正确;示例192.168.1.1   2001:DB8::42";
-         return;
-			 }
+        if (!IP64_match.test(value)) {
+          this.rules[prop].error = true;
+          this.rules[prop].message =
+            "dns格式不正确;示例192.168.1.1   2001:DB8::42";
+          return;
+        }
       }
     },
     validateAll() {
@@ -166,24 +165,24 @@ export default {
       if (this.validateAll()) return;
       let params = {
         search: this.search,
-				dns1: this.dns1,
-				dns2: this.dns2,
-				dns3: this.dns3
-			};
-			for(let dns in params) {
-				 if(!params[dns]){
-					 delete params[dns];
-				 }
-			}
-			this.updateDns(params)
-			    .then(res => {
-						this.close();
-					})
-					.catch(res => {
-						this.$confirm.error({
-							msg: res
-						})
-					})
+        dns1: this.dns1,
+        dns2: this.dns2,
+        dns3: this.dns3,
+      };
+      for (let dns in params) {
+        if (!params[dns]) {
+          delete params[dns];
+        }
+      }
+      this.updateDns(params)
+        .then((res) => {
+          this.close();
+        })
+        .catch((res) => {
+          this.$confirm.error({
+            msg: res,
+          });
+        });
     },
   },
   watch: {

@@ -57,7 +57,7 @@ export default {
         })
         .catch((res) => {
           this.incEventFail(event);
-          confirm.call(this, res, 'confirm', 'icon-warning');
+          confirm.call(this, res, "confirm", "icon-warning");
         });
     },
     delete() {
@@ -99,7 +99,7 @@ export default {
             })
             .catch((res) => {
               this.incEventFail(event);
-              confirm.call(this, res, 'confirm', 'icon-warning');
+              confirm.call(this, res, "confirm", "icon-warning");
             });
         })(item);
         tasks.push(p);
@@ -139,25 +139,27 @@ export default {
         })
         .catch((res) => {
           this.incEventFail(event);
-          confirm.call(this, res, 'confirm', 'icon-warning');
+          confirm.call(this, res, "confirm", "icon-warning");
         });
-		},
-		queryUsersObj(param) {
-      return this.$http.get(`json/access/users/${param.id}`, {
-				'_dc': new Date().getTime()
-			}).then((res) => {
-        if (res.data) {
-          this.updateDbObject({
-            name: "usersObj",
-            data: res.data,
-          });
-        }
-      });
-		},
-		updateUsers(param) {
-			 let event = this.createEvent("action.access.user.update");
-			 let params = deepCopy(param);
-			 delete params.userid
+    },
+    queryUsersObj(param) {
+      return this.$http
+        .get(`json/access/users/${param.id}`, {
+          _dc: new Date().getTime(),
+        })
+        .then((res) => {
+          if (res.data) {
+            this.updateDbObject({
+              name: "usersObj",
+              data: res.data,
+            });
+          }
+        });
+    },
+    updateUsers(param) {
+      let event = this.createEvent("action.access.user.update");
+      let params = deepCopy(param);
+      delete params.userid;
       return this.$http
         .put(`json/access/users/${param.userid}`, params, {
           headers: {
@@ -170,11 +172,11 @@ export default {
         })
         .catch((res) => {
           this.incEventFail(event);
-          confirm.call(this, res, 'confirm', 'icon-warning');
+          confirm.call(this, res, "confirm", "icon-warning");
         });
-		},
-		deleteUsers() {
-			 let event = this.createEvent("action.access.user.delete");
+    },
+    deleteUsers() {
+      let event = this.createEvent("action.access.user.delete");
       let tasks = [],
         p;
       this.selectedList.forEach((item) => {
@@ -187,15 +189,15 @@ export default {
             })
             .catch((res) => {
               this.incEventFail(event);
-              confirm.call(this, res, 'confirm', 'icon-warning');
+              confirm.call(this, res, "confirm", "icon-warning");
             });
         })(item.userid);
         tasks.push(p);
       });
       return Promise.all(tasks);
-		},
-		updateUserPsw(param) {
-			let event = this.createEvent("action.access.user.password.update");
+    },
+    updateUserPsw(param) {
+      let event = this.createEvent("action.access.user.password.update");
       return this.$http
         .put(`json/access/password`, param, {
           headers: {
@@ -208,74 +210,94 @@ export default {
         })
         .catch((res) => {
           this.incEventFail(event);
-          confirm.call(this, res, 'confirm', 'icon-warning');
+          confirm.call(this, res, "confirm", "icon-warning");
         });
     },
     queryTfa(param) {
-      return this.$http.get(`json/access/users/${encodeURIComponent(param.userid)}/tfa`, {
-        _dc: new Date().getTime()
-      }).then((res) => {
-        if (res.data) {
-          this.updateDbObject({
-            name: "tfaObj",
-            data: res.data,
-          });
-        }
-      });
+      return this.$http
+        .get(`json/access/users/${encodeURIComponent(param.userid)}/tfa`, {
+          _dc: new Date().getTime(),
+        })
+        .then((res) => {
+          if (res.data) {
+            this.updateDbObject({
+              name: "tfaObj",
+              data: res.data,
+            });
+          }
+        });
     },
     updateTfa(param) {
-      return this.$http.put(`json/access/tfa`, param, {
+      return this.$http
+        .put(`json/access/tfa`, param, {
           headers: {
             "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
           },
-        }).then((res) => {
-         if (res.data) {
-          this.updateDbObject({
-            name: "tfaObj",
-            data: res.data,
-          });
-        }
-      })
+        })
+        .then((res) => {
+          if (res.data) {
+            this.updateDbObject({
+              name: "tfaObj",
+              data: res.data,
+            });
+          }
+        });
     },
     queryUserPermisson(param) {
-      return this.$http.get(`json/access/permissions`,param).then((res) => {
+      return this.$http.get(`json/access/permissions`, param).then((res) => {
         this.updateDbObject({
-            name: "userPermissionObj",
-            data: res.data,
-          });
-      })
+          name: "userPermissionObj",
+          data: res.data,
+        });
+      });
     },
     createTokenApi(param) {
-       let event = this.createEvent("action.access.token.create");
-       let params = deepCopy(param);
-       delete params.userid;
+      let event = this.createEvent("action.access.token.create");
+      let params = deepCopy(param);
+      delete params.userid;
       delete params.tokenid;
-      return this.$http.post(`json/access/users/${param.userid}/token/${param.tokenid}`, params, {
-        headers: {
-          'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        }
-      }).then(() => {
-        this.incEventSuccess(event);
-      }).catch((error) => {
-        this.incEventFail(event);
-        return Promise.reject(error);
-      })
+      return this.$http
+        .post(
+          `json/access/users/${param.userid}/token/${param.tokenid}`,
+          params,
+          {
+            headers: {
+              "content-type":
+                "application/x-www-form-urlencoded; charset=UTF-8",
+            },
+          }
+        )
+        .then(() => {
+          this.incEventSuccess(event);
+        })
+        .catch((error) => {
+          this.incEventFail(event);
+          return Promise.reject(error);
+        });
     },
     updateTokenApi(param) {
       let event = this.createEvent("action.access.token.update");
       let params = deepCopy(param);
       delete params.userid;
       delete params.tokenid;
-      return this.$http.put(`json/access/users/${param.userid}/token/${param.tokenid}`, params, {
-        headers: {
-          'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        }
-      }).then(() => {
-        this.incEventSuccess(event);
-      }).catch((error) => {
-        this.incEventFail(event);
-        return Promise.reject(error);
-      })
+      return this.$http
+        .put(
+          `json/access/users/${param.userid}/token/${param.tokenid}`,
+          params,
+          {
+            headers: {
+              "content-type":
+                "application/x-www-form-urlencoded; charset=UTF-8",
+            },
+          }
+        )
+        .then(() => {
+          this.incEventSuccess(event);
+        })
+        .catch((error) => {
+          this.incEventFail(event);
+          return Promise.reject(error);
+        });
     },
     deleteApiToken() {
       let event = this.createEvent("action.access.token.delete");
@@ -291,7 +313,7 @@ export default {
             })
             .catch((res) => {
               this.incEventFail(event);
-              confirm.call(this, res, 'confirm', 'icon-warning');
+              confirm.call(this, res, "confirm", "icon-warning");
             });
         })(item);
         tasks.push(p);
@@ -299,49 +321,57 @@ export default {
       return Promise.all(tasks);
     },
     queryGroupsObj(param) {
-      return this.$http.get(`json/access/groups/${param.groupid}`, {
-        _dc: new Date().getTime()
-      }).then((res) => {
-        if (res.data) {
-          this.updateDbObject({
-            name: "groupsObj",
-            data: res.data,
-          });
-        }
-      });
+      return this.$http
+        .get(`json/access/groups/${param.groupid}`, {
+          _dc: new Date().getTime(),
+        })
+        .then((res) => {
+          if (res.data) {
+            this.updateDbObject({
+              name: "groupsObj",
+              data: res.data,
+            });
+          }
+        });
     },
     createGroups(param) {
       let event = this.createEvent("action.access.group.create");
-      return this.$http.post(`json/access/groups`, param, {
-        headers: {
-          'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        }
-      }).then(() => {
-        this.incEventSuccess(event);
-        this.queryGroupsList();
-      }).catch((error) => {
-        this.incEventFail(event);
-        return Promise.reject(error);
-      })
+      return this.$http
+        .post(`json/access/groups`, param, {
+          headers: {
+            "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+          },
+        })
+        .then(() => {
+          this.incEventSuccess(event);
+          this.queryGroupsList();
+        })
+        .catch((error) => {
+          this.incEventFail(event);
+          return Promise.reject(error);
+        });
     },
     /**
      * 更新组
      * **/
     updateGroup(param) {
-       let event = this.createEvent("action.access.group.create");
+      let event = this.createEvent("action.access.group.create");
       let params = deepCopy(param);
       delete params.groupid;
-      return this.$http.put(`json/access/groups/${param.groupid}`, params, {
-        headers: {
-          'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        }
-      }).then(() => {
-        this.incEventSuccess(event);
-        this.queryGroupsList();
-      }).catch((error) => {
-        this.incEventFail(event);
-        return Promise.reject(error);
-      })
+      return this.$http
+        .put(`json/access/groups/${param.groupid}`, params, {
+          headers: {
+            "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+          },
+        })
+        .then(() => {
+          this.incEventSuccess(event);
+          this.queryGroupsList();
+        })
+        .catch((error) => {
+          this.incEventFail(event);
+          return Promise.reject(error);
+        });
     },
     /**
      * 删除组
@@ -369,7 +399,7 @@ export default {
     /**
      * 删除域
      * **/
-     deleteAccessDomainById() {
+    deleteAccessDomainById() {
       let event = this.createEvent("action.access.group.delete");
       let tasks = [],
         p;
@@ -394,36 +424,38 @@ export default {
      * **/
     syncAccessDomainById(realname, param) {
       let event = this.createEvent("action.access.domain.sync");
-      if(!realname) return;
+      if (!realname) return;
       return this.$http
-            .post(`json/access/domains/${realname}/sync`, param)
-            .then(() => {
-              this.incEventSuccess(event);
-              this.queryDomain();
-            })
-            .catch(() => {
-              this.incEventFail(event);
-            });
+        .post(`json/access/domains/${realname}/sync`, param)
+        .then(() => {
+          this.incEventSuccess(event);
+          this.queryDomain();
+        })
+        .catch(() => {
+          this.incEventFail(event);
+        });
     },
     getPoolsList() {
-        return this.$http.get(`/json/pools`).then((res) => {
-         if(res.data) {
-           this.updateTable({
+      return this.$http.get(`/json/pools`).then((res) => {
+        if (res.data) {
+          this.updateTable({
             tableName: "poolsList",
             list: res.data,
           });
-         }
-      })
+        }
+      });
     },
     queryPoolsObj(param) {
-       return this.$http.get(`/json/pools/${param.poolid}`, {_dc: new Date().getTime()}).then((res) => {
-         if(res.data) {
-           this.updateDbObject({
-            name: "poolsObj",
-            data: res.data,
-          });
-         }
-      })
+      return this.$http
+        .get(`/json/pools/${param.poolid}`, { _dc: new Date().getTime() })
+        .then((res) => {
+          if (res.data) {
+            this.updateDbObject({
+              name: "poolsObj",
+              data: res.data,
+            });
+          }
+        });
     },
     deletePoolById() {
       let event = this.createEvent("action.access.pool.delete");
@@ -439,45 +471,51 @@ export default {
             })
             .catch((res) => {
               this.incEventFail(event);
-              confirm.call(this, res, 'confirm', 'icon-warning');
+              confirm.call(this, res, "confirm", "icon-warning");
             });
         })(item);
         tasks.push(p);
       });
       return Promise.all(tasks);
     },
-     createPool(param) {
+    createPool(param) {
       let event = this.createEvent("action.access.pool.create");
-      return this.$http.post(`json/pools`, param, {
-        headers: {
-          'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        }
-      }).then(() => {
-        this.incEventSuccess(event);
-        this.getPoolsList();
-      }).catch((error) => {
-        this.incEventFail(event);
-        return Promise.reject(error);
-      })
+      return this.$http
+        .post(`json/pools`, param, {
+          headers: {
+            "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+          },
+        })
+        .then(() => {
+          this.incEventSuccess(event);
+          this.getPoolsList();
+        })
+        .catch((error) => {
+          this.incEventFail(event);
+          return Promise.reject(error);
+        });
     },
     updatePool(param) {
-       let event = this.createEvent("action.access.pool.update");
+      let event = this.createEvent("action.access.pool.update");
       let params = deepCopy(param);
       delete params.poolid;
-      return this.$http.put(`json/pools/${param.poolid}`, params, {
-        headers: {
-          'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        }
-      }).then(() => {
-        this.incEventSuccess(event);
-         this.getPoolsList();
-      }).catch((error) => {
-        this.incEventFail(event);
-        return Promise.reject(error);
-      })
+      return this.$http
+        .put(`json/pools/${param.poolid}`, params, {
+          headers: {
+            "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+          },
+        })
+        .then(() => {
+          this.incEventSuccess(event);
+          this.getPoolsList();
+        })
+        .catch((error) => {
+          this.incEventFail(event);
+          return Promise.reject(error);
+        });
     },
     deleteRoleById() {
-       let event = this.createEvent("action.access.role.delete");
+      let event = this.createEvent("action.access.role.delete");
       let tasks = [],
         p;
       this.selectedList.forEach((item) => {
@@ -497,90 +535,106 @@ export default {
       return Promise.all(tasks);
     },
     queryRoleObjById(param) {
-      return this.$http.get(`json/access/roles/${param.roleid}`, {
-				'_dc': new Date().getTime()
-			}).then((res) => {
-        if (res.data) {
-          this.updateDbObject({
-            name: "roleObj",
-            data: res.data,
-          });
-        }
-      });
+      return this.$http
+        .get(`json/access/roles/${param.roleid}`, {
+          _dc: new Date().getTime(),
+        })
+        .then((res) => {
+          if (res.data) {
+            this.updateDbObject({
+              name: "roleObj",
+              data: res.data,
+            });
+          }
+        });
     },
-     createRole(param) {
+    createRole(param) {
       let event = this.createEvent("action.access.role.create");
-      return this.$http.post(`json/access/roles`, param, {
-        headers: {
-          'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        }
-      }).then(() => {
-        this.incEventSuccess(event);
-        this.queryRoleList();
-      }).catch((error) => {
-        this.incEventFail(event);
-        return Promise.reject(error);
-      })
+      return this.$http
+        .post(`json/access/roles`, param, {
+          headers: {
+            "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+          },
+        })
+        .then(() => {
+          this.incEventSuccess(event);
+          this.queryRoleList();
+        })
+        .catch((error) => {
+          this.incEventFail(event);
+          return Promise.reject(error);
+        });
     },
     updateRole(param) {
-       let event = this.createEvent("action.access.role.update");
+      let event = this.createEvent("action.access.role.update");
       let params = deepCopy(param);
       delete params.roleid;
-      return this.$http.put(`json/access/roles/${param.roleid}`, params, {
-        headers: {
-          'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        }
-      }).then(() => {
-        this.incEventSuccess(event);
-         this.queryRoleList();
-      }).catch((error) => {
-        this.incEventFail(event);
-        return Promise.reject(error);
-      })
+      return this.$http
+        .put(`json/access/roles/${param.roleid}`, params, {
+          headers: {
+            "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+          },
+        })
+        .then(() => {
+          this.incEventSuccess(event);
+          this.queryRoleList();
+        })
+        .catch((error) => {
+          this.incEventFail(event);
+          return Promise.reject(error);
+        });
     },
     createAccessDomain(param) {
       let event = this.createEvent("action.access.domain.create");
-      return this.$http.post(`json/access/domains`, param, {
-        headers: {
-          'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        }
-      }).then(() => {
-        this.incEventSuccess(event);
-        this.queryDomain();
-      }).catch((error) => {
-        this.incEventFail(event);
-        return Promise.reject(error);
-      })
+      return this.$http
+        .post(`json/access/domains`, param, {
+          headers: {
+            "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+          },
+        })
+        .then(() => {
+          this.incEventSuccess(event);
+          this.queryDomain();
+        })
+        .catch((error) => {
+          this.incEventFail(event);
+          return Promise.reject(error);
+        });
     },
     queryDomainById(param) {
-      return this.$http.get(`json/access/domains/${param.realm}`, {
-        _dc: new Date().getTime()
-      }).then((res) => {
-        if (res.data) {
-          this.updateDbObject({
-            name: "domainsObj",
-            data: res.data,
-          });
-        }
-      })
+      return this.$http
+        .get(`json/access/domains/${param.realm}`, {
+          _dc: new Date().getTime(),
+        })
+        .then((res) => {
+          if (res.data) {
+            this.updateDbObject({
+              name: "domainsObj",
+              data: res.data,
+            });
+          }
+        });
     },
     updateDomain(param) {
       let event = this.createEvent("action.access.domain.update");
       let params = deepCopy(param);
-      delete params.realm
-      delete params.type
-      return this.$http.put(`json/access/domains/${param.realm}`, params, {
-        headers: {
-          'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        }
-      }).then(() => {
-        this.incEventSuccess(event);
-        this.queryDomain();
-      }).catch((error) => {
-        this.incEventFail(event);
-        return Promise.reject(error);
-      })
-    }
+      delete params.realm;
+      delete params.type;
+      return this.$http
+        .put(`json/access/domains/${param.realm}`, params, {
+          headers: {
+            "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+          },
+        })
+        .then(() => {
+          this.incEventSuccess(event);
+          this.queryDomain();
+        })
+        .catch((error) => {
+          this.incEventFail(event);
+          return Promise.reject(error);
+        });
+    },
   },
 };
 </script>

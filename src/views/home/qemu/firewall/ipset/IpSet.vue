@@ -65,23 +65,26 @@
                     type="selection"
                     width="55"
                   ></el-table-column>
-                  <el-table-column label="IP/CIDR" prop="cidr"></el-table-column>
+                  <el-table-column
+                    label="IP/CIDR"
+                    prop="cidr"
+                  ></el-table-column>
                   <el-table-column
                     label="备注"
                     prop="comment"
                   ></el-table-column>
-									<el-table-column
-                    label="错误信息"
-                  >
-									   <template slot-scope="scope">
-											 <span>{{scope.row.errors && scope.row.errors.cidr && scope.row.errors.cidr}}</span>
-										 </template>
-									</el-table-column>
-										<el-table-column
-                    label="匹配"
-                  >
-									   <template slot-scope="scope">
-											 <table-info-state
+                  <el-table-column label="错误信息">
+                    <template slot-scope="scope">
+                      <span>{{
+                        scope.row.errors &&
+                        scope.row.errors.cidr &&
+                        scope.row.errors.cidr
+                      }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="匹配">
+                    <template slot-scope="scope">
+                      <table-info-state
                         :content="
                           scope.row.nomatch && scope.row.nomatch === 1
                             ? '是'
@@ -93,8 +96,8 @@
                             : 'unActived'
                         "
                       ></table-info-state>
-										 </template>
-									</el-table-column>
+                    </template>
+                  </el-table-column>
                 </el-table>
               </div>
             </page-template>
@@ -144,8 +147,8 @@ export default {
   components: {
     PageTemplate,
     MButton,
-    'create-ipset-modal': CreateIPSetModal,
-    'create-ipset-cidr-modal': CreateIPSetCidrModal,
+    "create-ipset-modal": CreateIPSetModal,
+    "create-ipset-cidr-modal": CreateIPSetCidrModal,
   },
   data() {
     return {
@@ -213,10 +216,10 @@ export default {
           this.deleteIpsetCidr(this.name);
         })
         .catch(() => {});
-		},
-		//保证每一行只能展开一列
+    },
+    //保证每一行只能展开一列
     expandChange(row, expandedRows) {
-			let that = this;
+      let that = this;
       if (expandedRows.length) {
         that.expands = [];
         if (row) {

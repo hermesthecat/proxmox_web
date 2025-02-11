@@ -54,13 +54,35 @@
                     <div class="table-td">CPU</div>
                   </div>
                   <div class="table-tr">
-                    <span class="table-td" :title="item.node">{{ item.node }}</span>
-                    <span class="table-td" :title="item.mum && item.maxmem ? percentToFixed((item.mem / item.maxmem), 3) : 0">{{
-                      item.mum && item.maxmem ? percentToFixed((item.mem / item.maxmem), 3) : 0
+                    <span class="table-td" :title="item.node">{{
+                      item.node
                     }}</span>
-                    <span class="table-td" :title="item.cpu && item.maxcpu ? `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}` : ''">{{
-                      item.cpu && item.maxcpu ? `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}` : ''
-                    }}</span>
+                    <span
+                      class="table-td"
+                      :title="
+                        item.mum && item.maxmem
+                          ? percentToFixed(item.mem / item.maxmem, 3)
+                          : 0
+                      "
+                      >{{
+                        item.mum && item.maxmem
+                          ? percentToFixed(item.mem / item.maxmem, 3)
+                          : 0
+                      }}</span
+                    >
+                    <span
+                      class="table-td"
+                      :title="
+                        item.cpu && item.maxcpu
+                          ? `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
+                          : ''
+                      "
+                      >{{
+                        item.cpu && item.maxcpu
+                          ? `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
+                          : ""
+                      }}</span
+                    >
                   </div>
                 </m-option>
               </m-select>
@@ -106,12 +128,14 @@
         </div>
       </div>
       <template v-else>
-           <ace-editor ref="ace-editor"
-                   style="height: 300px;"
-			             :read-only="true"
-									 v-model="logContent">
-			      </ace-editor>
-        </template>
+        <ace-editor
+          ref="ace-editor"
+          style="height: 300px"
+          :read-only="true"
+          v-model="logContent"
+        >
+        </ace-editor>
+      </template>
     </div>
   </Dialog>
 </template>
@@ -120,13 +144,13 @@
 import Dialog from "@src/components/dialog/Dialog";
 import NodeReplicationHttp from "@src/views/home/node/replication/http";
 import { flotToFixed, percentToFixed, byteToSize } from "@libs/utils/index";
-import AceEditor from '@src/components/ace/AceEditor.vue';
+import AceEditor from "@src/components/ace/AceEditor.vue";
 export default {
   name: "CreateReplicationModal",
   mixins: [NodeReplicationHttp],
   components: {
     Dialog,
-    AceEditor
+    AceEditor,
   },
   props: {
     visible: {
@@ -151,7 +175,7 @@ export default {
       type: Boolean,
       default: false,
     },
-	},
+  },
   data() {
     return {
       id: "",
@@ -161,9 +185,9 @@ export default {
       disable: true,
       comment: "",
       schedule: "",
-			highestids: [],
+      highestids: [],
       nodeList: [],
-      logContent: '',
+      logContent: "",
       scheduleList: [
         { value: "*/30", text: "每30分钟" },
         { value: "*/2:00", text: "每两小时" },
@@ -194,7 +218,9 @@ export default {
     async __init__() {
       let _this = this;
       await _this.queryNodeList().then((res) => {
-				_this.nodeList = _this.db.nodeList.filter(item => item.node !== this.node);
+        _this.nodeList = _this.db.nodeList.filter(
+          (item) => item.node !== this.node
+        );
         if (_this.isCreate) {
           _this.target = [_this.db.nodeList[0].node];
           _this.validate("target");
@@ -226,21 +252,21 @@ export default {
         this.queryReplicationById(_this.param.id).then(() => {
           Object.keys(_this.db.dataCenterReplicationObj).forEach((it) => {
             if (it === "id") _this.id = _this.param.guest;
-						else if (it === "target") _this[it] = _this.param[it].split(",");
-						else if (it === 'disable') _this[it] = this.param[it] ? false : true;
-						else _this[it] = _this.param[it];
-						_this.validate("target");
+            else if (it === "target") _this[it] = _this.param[it].split(",");
+            else if (it === "disable")
+              _this[it] = this.param[it] ? false : true;
+            else _this[it] = _this.param[it];
+            _this.validate("target");
           });
         });
       }
-      if(_this.modalType === 'log') {
-         _this.logContent  = "";
-        _this.queryLog(_this.param.id)
-             .then(res => {
-                res.map(item => {
-                  _this.logContent += item.t+'\n';
-                });
-             });
+      if (_this.modalType === "log") {
+        _this.logContent = "";
+        _this.queryLog(_this.param.id).then((res) => {
+          res.map((item) => {
+            _this.logContent += item.t + "\n";
+          });
+        });
       }
     },
     handleCompressSelect(value) {
@@ -286,8 +312,8 @@ export default {
         target: this.target.join(","),
         schedule: this.schedule,
         rate: this.rate,
-				comment: this.comment,
-				disable: this.disable ? 0 : 1
+        comment: this.comment,
+        disable: this.disable ? 0 : 1,
       };
       if (this.isCreate) {
         params.type = "local";
@@ -303,15 +329,17 @@ export default {
         if (!params[key]) delete params[key];
       }
       if (this.modalType === "create")
-        this.createReplication(params).then(() => {
-          this.close();
-        }).catch(res => {
-					this.$confirm.error({msg: res, icon: 'icon-error'})
-				});
+        this.createReplication(params)
+          .then(() => {
+            this.close();
+          })
+          .catch((res) => {
+            this.$confirm.error({ msg: res, icon: "icon-error" });
+          });
       if (this.modalType !== "create") {
-				params["id"] =  this.param.id;
-				params["digest"] = this.db.dataCenterReplicationObj.digest;
-				if(!params.disable) params['delete'] = 'disable'; 
+        params["id"] = this.param.id;
+        params["digest"] = this.db.dataCenterReplicationObj.digest;
+        if (!params.disable) params["delete"] = "disable";
         this.updateReplication(params).then(() => {
           this.close();
         });
@@ -324,7 +352,7 @@ export default {
         if (newVal) setTimeout(() => this.__init__(), 0);
         return newVal;
       }
-		}
+    },
   },
 };
 </script>

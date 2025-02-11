@@ -3,9 +3,10 @@
     <div class="ceph-fs__top">
       <page-template>
         <div slot="toolbar-left">
-          <m-button type="primary"
-					          :disabled="cephFsList.length > 0 && cephFsList.length !== 1"
-					          @on-click="showModal('cephfs')"
+          <m-button
+            type="primary"
+            :disabled="cephFsList.length > 0 && cephFsList.length !== 1"
+            @on-click="showModal('cephfs')"
             >创建CephFs</m-button
           >
         </div>
@@ -98,7 +99,7 @@
       v-if="visible"
       @close="visible = false"
       :title="title"
-			:param="param"
+      :param="param"
       :modalType="modalType"
     ></create-cephfs>
     <m-dialog
@@ -161,7 +162,7 @@
 import PageTemplate from "@src/components/page/PageTemplate.vue";
 import CreateCephfs from "./createCephfs";
 import CephHttp from "@src/views/home/node/ceph/http";
-import { dateFormat } from '@libs/utils/index';
+import { dateFormat } from "@libs/utils/index";
 export default {
   name: "CephFs",
   mixins: [CephHttp],
@@ -179,15 +180,15 @@ export default {
       modalType: "",
       showLog: false,
       tab: "log",
-			interVal: null,
-			param: {}
+      interVal: null,
+      param: {},
     };
   },
   mounted() {
     this.__init__();
   },
   methods: {
-		dateFormat,
+    dateFormat,
     //初始化请求
     __init__() {
       //请求fs
@@ -214,8 +215,13 @@ export default {
     },
     showModal(type) {
       this.modalType = type;
-			this.title = type === "metadata" ? "创建源数据服务器" : type === 'log' ? '系统日志' : "创建CephFs";
-			this.param = this.selectedList[0];
+      this.title =
+        type === "metadata"
+          ? "创建源数据服务器"
+          : type === "log"
+          ? "系统日志"
+          : "创建CephFs";
+      this.param = this.selectedList[0];
       this.visible = true;
     },
     //删除、重启、停止等操作
@@ -226,50 +232,50 @@ export default {
           icon: "icon-warning",
         })
         .then((res) => {
-					let selectedList = this.selectedList[0];
-					if(operate !== 'delete') {
-						this.operateCeph(selectedList.host, operate).then((res) => {
-            this.showLog = true;
-            this.interVal = setInterval(() => {
-              this.queryStatus(
-                this.db.addClusterStatusObj.node,
-                this.db.addClusterStatusObj.upid
-              );
-              this.queryLog(
-                this.db.addClusterStatusObj.node,
-                this.db.addClusterStatusObj.upid
-              );
-            }, 3000);
-          });
-					} else {
-           //删除mds
-					 this.deleteMds(selectedList.name).then((res) => {
-            this.showLog = true;
-            this.interVal = setInterval(() => {
-              this.queryStatus(
-                this.db.addClusterStatusObj.node,
-                this.db.addClusterStatusObj.upid
-              );
-              this.queryLog(
-                this.db.addClusterStatusObj.node,
-                this.db.addClusterStatusObj.upid
-              );
-            }, 3000);
-          });
-					}
+          let selectedList = this.selectedList[0];
+          if (operate !== "delete") {
+            this.operateCeph(selectedList.host, operate).then((res) => {
+              this.showLog = true;
+              this.interVal = setInterval(() => {
+                this.queryStatus(
+                  this.db.addClusterStatusObj.node,
+                  this.db.addClusterStatusObj.upid
+                );
+                this.queryLog(
+                  this.db.addClusterStatusObj.node,
+                  this.db.addClusterStatusObj.upid
+                );
+              }, 3000);
+            });
+          } else {
+            //删除mds
+            this.deleteMds(selectedList.name).then((res) => {
+              this.showLog = true;
+              this.interVal = setInterval(() => {
+                this.queryStatus(
+                  this.db.addClusterStatusObj.node,
+                  this.db.addClusterStatusObj.upid
+                );
+                this.queryLog(
+                  this.db.addClusterStatusObj.node,
+                  this.db.addClusterStatusObj.upid
+                );
+              }, 3000);
+            });
+          }
         });
     },
     //判断是否在某个状态下
     inState() {
-			 let states = [],
+      let states = [],
         _this = this;
       for (let i = 0; i < arguments.length; i++) {
         states.push(arguments[i]);
       }
       return states.some((state) => {
-          return state === _this.selectedList[0].state;
+        return state === _this.selectedList[0].state;
       });
-		},
+    },
   },
   //在实例销毁之前销毁定时器
   beforeDestroy() {
@@ -290,7 +296,7 @@ export default {
   font-size: 16px;
   margin: 0px 20px;
   padding: 10px 10px;
-	background: #c4d6ec;
-	color: #fff;
+  background: #c4d6ec;
+  color: #fff;
 }
 </style>

@@ -466,14 +466,14 @@ export default {
             data: {},
           });
         });
-    }
+    },
   },
   mounted() {
     this.__init__();
     this.intervalId = setInterval(() => this.__init__(), 3000);
   },
   beforeDestroy() {
-    if(this.intervalId) {
+    if (this.intervalId) {
       clearInterval(this.intervalId);
       this.intervalId = null;
     }

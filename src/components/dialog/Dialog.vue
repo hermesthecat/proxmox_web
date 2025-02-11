@@ -21,9 +21,9 @@
           <span class="dialog-title">{{ title }}</span>
           <span class="dialog-close" @click="close">&times;</span>
         </div>
-          <div class="dialog-main">
-            <slot name="content"></slot>
-          </div>
+        <div class="dialog-main">
+          <slot name="content"></slot>
+        </div>
         <div class="dialog-footer">
           <template v-if="!$slots['footer']">
             <m-button type="danger" class="dialog-cancel" @on-click="cancel">{{
@@ -184,7 +184,9 @@ export default {
       let minY = 0;
       //top值最小为0
       let maxY =
-        getDocument().clientHeight - this.$refs["pop-wrapper"].clientHeight < 0? 0 : getDocument().clientHeight - this.$refs["pop-wrapper"].clientHeight;
+        getDocument().clientHeight - this.$refs["pop-wrapper"].clientHeight < 0
+          ? 0
+          : getDocument().clientHeight - this.$refs["pop-wrapper"].clientHeight;
       if (top <= minY) {
         top = minY;
       } else if (top >= maxY) {

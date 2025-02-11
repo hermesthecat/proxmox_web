@@ -1,16 +1,16 @@
 import _ from 'lodash';
 import Vue from 'vue';
-function batchMerge (state, objMap) {
+function batchMerge(state, objMap) {
   Object.keys(objMap).forEach(uuid => {
-    Vue.set(state, uuid, {...state[uuid], ...objMap[uuid]})
+    Vue.set(state, uuid, { ...state[uuid], ...objMap[uuid] })
   })
 }
-function remove (state, uuid) {
+function remove(state, uuid) {
   Vue.delete(state, uuid)
 }
 
 export default {
-  merge (state, taskMap) {
+  merge(state, taskMap) {
     _.keys(taskMap).forEach(uuid => {
       taskMap[uuid].fn()
       let interval = 1000
@@ -22,7 +22,7 @@ export default {
     })
     batchMerge(state, taskMap)
   },
-  delete (state, uuid) {
+  delete(state, uuid) {
     if (state[uuid] && state[uuid].timerId) {
       clearInterval(state[uuid].timerId)
     }

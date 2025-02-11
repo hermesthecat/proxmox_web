@@ -3,16 +3,16 @@ const IPV4_REGEXP = "(?:(?:" + IPV4_OCTET + "\\.){3}" + IPV4_OCTET + ")";
 const IPV6_H16 = "(?:[0-9a-fA-F]{1,4})";
 const IPV6_LS32 = "(?:(?:" + IPV6_H16 + ":" + IPV6_H16 + ")|" + IPV4_REGEXP + ")";
 const IPV6_REGEXP = "(?:" +
-"(?:(?:" + "(?:" + IPV6_H16 + ":){6})" + IPV6_LS32 + ")|" +
-"(?:(?:" + "::" + "(?:" + IPV6_H16 + ":){5})" + IPV6_LS32 + ")|" +
-"(?:(?:(?:" + IPV6_H16 + ")?::" + "(?:" + IPV6_H16 + ":){4})" + IPV6_LS32 + ")|" +
-"(?:(?:(?:(?:" + IPV6_H16 + ":){0,1}" + IPV6_H16 + ")?::" + "(?:" + IPV6_H16 + ":){3})" + IPV6_LS32 + ")|" +
-"(?:(?:(?:(?:" + IPV6_H16 + ":){0,2}" + IPV6_H16 + ")?::" + "(?:" + IPV6_H16 + ":){2})" + IPV6_LS32 + ")|" +
-"(?:(?:(?:(?:" + IPV6_H16 + ":){0,3}" + IPV6_H16 + ")?::" + "(?:" + IPV6_H16 + ":){1})" + IPV6_LS32 + ")|" +
-"(?:(?:(?:(?:" + IPV6_H16 + ":){0,4}" + IPV6_H16 + ")?::" + ")" + IPV6_LS32 + ")|" +
-"(?:(?:(?:(?:" + IPV6_H16 + ":){0,5}" + IPV6_H16 + ")?::" + ")" + IPV6_H16 + ")|" +
-"(?:(?:(?:(?:" + IPV6_H16 + ":){0,7}" + IPV6_H16 + ")?::" + ")" + ")" +
-")";
+	"(?:(?:" + "(?:" + IPV6_H16 + ":){6})" + IPV6_LS32 + ")|" +
+	"(?:(?:" + "::" + "(?:" + IPV6_H16 + ":){5})" + IPV6_LS32 + ")|" +
+	"(?:(?:(?:" + IPV6_H16 + ")?::" + "(?:" + IPV6_H16 + ":){4})" + IPV6_LS32 + ")|" +
+	"(?:(?:(?:(?:" + IPV6_H16 + ":){0,1}" + IPV6_H16 + ")?::" + "(?:" + IPV6_H16 + ":){3})" + IPV6_LS32 + ")|" +
+	"(?:(?:(?:(?:" + IPV6_H16 + ":){0,2}" + IPV6_H16 + ")?::" + "(?:" + IPV6_H16 + ":){2})" + IPV6_LS32 + ")|" +
+	"(?:(?:(?:(?:" + IPV6_H16 + ":){0,3}" + IPV6_H16 + ")?::" + "(?:" + IPV6_H16 + ":){1})" + IPV6_LS32 + ")|" +
+	"(?:(?:(?:(?:" + IPV6_H16 + ":){0,4}" + IPV6_H16 + ")?::" + ")" + IPV6_LS32 + ")|" +
+	"(?:(?:(?:(?:" + IPV6_H16 + ":){0,5}" + IPV6_H16 + ")?::" + ")" + IPV6_H16 + ")|" +
+	"(?:(?:(?:(?:" + IPV6_H16 + ":){0,7}" + IPV6_H16 + ")?::" + ")" + ")" +
+	")";
 const IP64_match = new RegExp("^(?:" + IPV6_REGEXP + "|" + IPV4_REGEXP + ")$");
 export default class Socket {
 	constructor(url, cb) {
@@ -28,69 +28,69 @@ export default class Socket {
 	}
 
 	onmessage() {
-		if(this.socket)
-		this.socket.onmessage = (ev) => {
-			this.getMsg(ev);
-			this.reset();
-			this.isReconnet = false;
-		}
+		if (this.socket)
+			this.socket.onmessage = (ev) => {
+				this.getMsg(ev);
+				this.reset();
+				this.isReconnet = false;
+			}
 	}
 	//接收服务器端数据
 	getMsg(ev) {
-    this.cb(ev);
+		this.cb(ev);
 	}
 
 	onerror() {
-		if(this.socket)
-		this.socket.onerror = () => {
-			console.log('websocket服务出错了---onerror');
-			this.start();
-			this.reconnet(this.url);
-		}
+		if (this.socket)
+			this.socket.onerror = () => {
+				console.log('websocket服务出错了---onerror');
+				this.start();
+				this.reconnet(this.url);
+			}
 	}
-  //重连
+	//重连
 	reconnet() {
 		if (this.lockReconnet)
-		return false
-	  this.isReconnet = true;
-	  this.lockReconnet = true
-	  setTimeout(() => {
-		  new Socket(this.url);
-		  this.lockReconnet = false
-	  }, 60 * 1000)
-	}
-  //打开socket链接
-	onopen() {
-		if(this.socket)
-		this.socket.onopen = () => {
-			console.log('socket连接成功')
-			if (this.isReconnet) {//执行全局回调函数
-				console.log('websocket重新连接了');
-				this.isReconnet = false
-			}
-		}
-	}
-  //断开socket链接
-	onclose() {
-		if(this.socket)
-		this.socket.onclose =() => {
-			console.log("socket连接已关闭");
-			this.reset();
-		}
-	}
-	sendMsg (arg) { //发送数据,接收数据
-		let data = Object.create(null);
-		if(this.socket)
-		if (this.socket.readyState === 1) {
-			data = JSON.stringify(arg);
-			this.socket.send(arg);
-		} else {
-			setTimeout(() => {
-				console.log(socket, '等待socket链接成功')
-			  this.sendMsg(data)
-			}, 1500)
 			return false
-		}
+		this.isReconnet = true;
+		this.lockReconnet = true
+		setTimeout(() => {
+			new Socket(this.url);
+			this.lockReconnet = false
+		}, 60 * 1000)
+	}
+	//打开socket链接
+	onopen() {
+		if (this.socket)
+			this.socket.onopen = () => {
+				console.log('socket连接成功')
+				if (this.isReconnet) {//执行全局回调函数
+					console.log('websocket重新连接了');
+					this.isReconnet = false
+				}
+			}
+	}
+	//断开socket链接
+	onclose() {
+		if (this.socket)
+			this.socket.onclose = () => {
+				console.log("socket连接已关闭");
+				this.reset();
+			}
+	}
+	sendMsg(arg) { //发送数据,接收数据
+		let data = Object.create(null);
+		if (this.socket)
+			if (this.socket.readyState === 1) {
+				data = JSON.stringify(arg);
+				this.socket.send(arg);
+			} else {
+				setTimeout(() => {
+					console.log(socket, '等待socket链接成功')
+					this.sendMsg(data)
+				}, 1500)
+				return false
+			}
 	}
 
 	reset() {
@@ -99,17 +99,17 @@ export default class Socket {
 	}
 
 	start() {
-		if(this.socket)
-		this.timeoutObj = setTimeout(() => {
-			//发送数据，如果onmessage能接收到数据，表示连接正常,然后在onmessage里面执行reset方法清除定时器
-			this.socket.send('heart check')
-			this.serverTimeoutObj = setTimeout(() => {
-				this.socket.close()
+		if (this.socket)
+			this.timeoutObj = setTimeout(() => {
+				//发送数据，如果onmessage能接收到数据，表示连接正常,然后在onmessage里面执行reset方法清除定时器
+				this.socket.send('heart check')
+				this.serverTimeoutObj = setTimeout(() => {
+					this.socket.close()
+				}, this.timeout)
 			}, this.timeout)
-		}, this.timeout)
 	}
 
-  windowHostname() {
+	windowHostname() {
 		return window.location.hostname.replace(/(http|https)/, 'wss');
 	}
 
@@ -119,11 +119,11 @@ export default class Socket {
 		if ('WebSocket' in window) {
 			//无nginx
 			//this.socket = new WebSocket('ws://' + location.origin.replace(/(http\:\/\/|https:\/\/)/, '') + '/ws' +this.url + `?accessToken=${window.localStorage.getItem("accessToken")}`)
-      this.socket = new WebSocket(this.url)//有nginx
+			this.socket = new WebSocket(this.url)//有nginx
 		} else if ('MozWebSocket' in window) {
 			//无nginx
 			//this.socket = new MozWebSocket('ws://' + location.origin.replace(/(http\:\/\/|https:\/\/)/, '') + '/ws' + this.url + `?accessToken=${window.localStorage.getItem("accessToken")}`)
-      this.socket = new MozWebSocket(this.url)//有nginx
+			this.socket = new MozWebSocket(this.url)//有nginx
 		}
 		this.onopen();
 		this.onmessage();

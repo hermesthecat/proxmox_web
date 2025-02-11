@@ -122,20 +122,25 @@
         <el-table-column label="网关" prop="gateway" sortable></el-table-column>
         <el-table-column label="备注" prop="comments"></el-table-column>
       </el-table>
-      <create-network-modal :visible="visible"
-			                      :isCreate="isCreate"
-														:title="title"
-														:param="param"
-														@close="visible = false; queryNetWorkList()"
-														v-if="visible"
-			                      :iftype="iftype"></create-network-modal>
-			<overview-card class="m-margin-top-10"
-			               v-if="changes"
-			               style="width: 100%;">
-        <div slot="title">待更改 (重新启动或使用“应用配置”（需要ifupdown2）激活)</div>
-          <template slot="content">
-            {{changes}}
-          </template>
+      <create-network-modal
+        :visible="visible"
+        :isCreate="isCreate"
+        :title="title"
+        :param="param"
+        @close="
+          visible = false;
+          queryNetWorkList();
+        "
+        v-if="visible"
+        :iftype="iftype"
+      ></create-network-modal>
+      <overview-card class="m-margin-top-10" v-if="changes" style="width: 100%">
+        <div slot="title">
+          待更改 (重新启动或使用“应用配置”（需要ifupdown2）激活)
+        </div>
+        <template slot="content">
+          {{ changes }}
+        </template>
       </overview-card>
     </div>
   </page-template>
@@ -143,13 +148,13 @@
 <script>
 import NodeSystemHttp from "@src/views/home/node/system/network/http";
 import PageTemplate from "@src/components/page/PageTemplate";
-import OverviewCard from '@src/components/card/OverviewCard';
+import OverviewCard from "@src/components/card/OverviewCard";
 import Dialog from "@src/components/dialog/Dialog";
 import MButton from "@src/components/button/Button";
 import { dateFormat } from "@libs/utils/index";
-import { network_iface_types } from '@libs/enum/enum';
-import CreateNetworkModal from './CreateNetWorkModal';
-import { isEmpty }  from '@libs/utils/index';
+import { network_iface_types } from "@libs/enum/enum";
+import CreateNetworkModal from "./CreateNetWorkModal";
+import { isEmpty } from "@libs/utils/index";
 export default {
   name: "Replication",
   mixins: [NodeSystemHttp],
@@ -157,8 +162,8 @@ export default {
     PageTemplate,
     MButton,
     Dialog,
-		CreateNetworkModal,
-		OverviewCard
+    CreateNetworkModal,
+    OverviewCard,
   },
   data() {
     return {
@@ -168,13 +173,13 @@ export default {
       isCreate: true,
       param: {},
       showLog: false,
-			interVal: null,
-			menu_items: [],
-			visible: false,
-			isCreate: false,
-			iftype: '',
-			title: '',
-			changes: "",
+      interVal: null,
+      menu_items: [],
+      visible: false,
+      isCreate: false,
+      iftype: "",
+      title: "",
+      changes: "",
       datetime: [
         dateFormat(
           new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000),
@@ -195,42 +200,43 @@ export default {
   methods: {
     //初始化查找
     __init__() {
-			let _this = this;
+      let _this = this;
       _this.menu_items = [];
       if (_this.types.indexOf("bridge") !== -1) {
         _this.menu_items.push({
-					text: network_iface_types["bridge"],
-					iftype: 'bridge'
+          text: network_iface_types["bridge"],
+          iftype: "bridge",
         });
       }
 
       if (_this.types.indexOf("bond") !== -1) {
         _this.menu_items.push({
-					text: network_iface_types["bond"],
-					iftype: 'bond'
+          text: network_iface_types["bond"],
+          iftype: "bond",
         });
       }
 
       if (_this.types.indexOf("vlan") !== -1) {
         _this.menu_items.push({
-					text: network_iface_types["vlan"],
-					iftype: 'vlan'
+          text: network_iface_types["vlan"],
+          iftype: "vlan",
         });
       }
 
       if (_this.types.indexOf("ovs") !== -1) {
-        _this.menu_items.push({text: network_iface_types["OVSBridge"], iftype: 'OVSBridge'},
+        _this.menu_items.push(
+          { text: network_iface_types["OVSBridge"], iftype: "OVSBridge" },
           {
-						text: network_iface_types["OVSBond"],
-						iftype: 'OVSBond'
+            text: network_iface_types["OVSBond"],
+            iftype: "OVSBond",
           },
           {
-						text: network_iface_types["OVSIntPort"],
-						iftype: 'OVSIntPort'
+            text: network_iface_types["OVSIntPort"],
+            iftype: "OVSIntPort",
           }
         );
       }
-      _this.queryNetWorkList({_dc: new Date().getTime()});
+      _this.queryNetWorkList({ _dc: new Date().getTime() });
     },
     //是否展示弹框
     showModal(type) {
@@ -295,60 +301,66 @@ export default {
     },
     //选择哪种方式创建
     handleCommand(type) {
-			let _this = this;
-			_this.iftype = type === 'edit' ? _this.selectedList[0].type : type;
-			_this.isCreate = type !== 'edit';
-			let textList = _this.menu_items.filter(it => {
-				if(type !== 'edit') {
-					return it.iftype === type
-				} else {
-					return it.iftype === _this.selectedList[0].type
-				}
-			});
-			_this.title = (type !== 'edit' ? '创建：' : '编辑：') + (!isEmpty(textList) ? textList[0].text : '网络设备');
-			_this.param = type !== 'edit' ? {} : _this.selectedList[0];
-			_this.visible = true;
-		},
-		//还原网络
-		handleResume() {
-			this.resume();
-		},
-		//删除网络
-		handleDelete() {
-			this.$confirm.info({
-				msg: '确定要删除以下网络？'
-			}).then(() => {
-				this.deleteNetWork()
-				    .then(res => {
-							this.queryNetWorkList();
-						})
-				    .catch(res => {
-							this.$confirm.error({
-								msg: res
-							})
-						})
-			})
-		},
-		//应用配置
-		handleConfig() {
-				this.$confirm.info({
-				msg: 'Do you want to apply pending network changes?',
-				icon: 'icon-question',
-				_style: {
-					width: '600px'
-				}
-			}).then(() => {
-				this.netWorkConfig()
-				    .then(res => {
-							this.queryNetWorkList();
-						})
-				    .catch(res => {
-							this.$confirm.error({
-								msg: res
-							})
-						})
-			})
-		}
+      let _this = this;
+      _this.iftype = type === "edit" ? _this.selectedList[0].type : type;
+      _this.isCreate = type !== "edit";
+      let textList = _this.menu_items.filter((it) => {
+        if (type !== "edit") {
+          return it.iftype === type;
+        } else {
+          return it.iftype === _this.selectedList[0].type;
+        }
+      });
+      _this.title =
+        (type !== "edit" ? "创建：" : "编辑：") +
+        (!isEmpty(textList) ? textList[0].text : "网络设备");
+      _this.param = type !== "edit" ? {} : _this.selectedList[0];
+      _this.visible = true;
+    },
+    //还原网络
+    handleResume() {
+      this.resume();
+    },
+    //删除网络
+    handleDelete() {
+      this.$confirm
+        .info({
+          msg: "确定要删除以下网络？",
+        })
+        .then(() => {
+          this.deleteNetWork()
+            .then((res) => {
+              this.queryNetWorkList();
+            })
+            .catch((res) => {
+              this.$confirm.error({
+                msg: res,
+              });
+            });
+        });
+    },
+    //应用配置
+    handleConfig() {
+      this.$confirm
+        .info({
+          msg: "Do you want to apply pending network changes?",
+          icon: "icon-question",
+          _style: {
+            width: "600px",
+          },
+        })
+        .then(() => {
+          this.netWorkConfig()
+            .then((res) => {
+              this.queryNetWorkList();
+            })
+            .catch((res) => {
+              this.$confirm.error({
+                msg: res,
+              });
+            });
+        });
+    },
   },
   beforeDestroy() {
     if (this.interVal) {

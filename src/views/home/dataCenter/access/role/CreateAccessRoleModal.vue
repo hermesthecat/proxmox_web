@@ -31,7 +31,7 @@
                 prop="privs"
                 label="特权"
                 labelWidth="100px"
-								type="multiple"
+                type="multiple"
                 :readonly="false"
                 @on-change="handlePrivsSelect"
                 v-model="privs"
@@ -94,7 +94,7 @@ export default {
         roleid: {
           error: false,
           message: "",
-        }
+        },
       },
     };
   },
@@ -103,17 +103,16 @@ export default {
   },
   methods: {
     async __init__() {
-      if (this.modalType === "create"){
-				 Object.assign(this.$data, this.$options.data());
-				 this.queryRoleObjById({roleid: 'Administrator'});
-			} else {
-				 Object.assign(this.$data, this.$options.data());
-				 await this.queryRoleObjById({roleid: this.param.roleid})
-				     .then(() => {
-               	 this.roleid = this.param.roleid;
-				         this.privs = this.db.groupsObj &&  Object.keys(this.db.groupsObj);
-						 })
-			}
+      if (this.modalType === "create") {
+        Object.assign(this.$data, this.$options.data());
+        this.queryRoleObjById({ roleid: "Administrator" });
+      } else {
+        Object.assign(this.$data, this.$options.data());
+        await this.queryRoleObjById({ roleid: this.param.roleid }).then(() => {
+          this.roleid = this.param.roleid;
+          this.privs = this.db.groupsObj && Object.keys(this.db.groupsObj);
+        });
+      }
     },
     close() {
       this.$emit("close");
@@ -127,10 +126,10 @@ export default {
         this.rules[prop].message = "不能为空";
         return;
       }
-		},
-		handlePrivsSelect(value) {
-			this.privs = value;
-		},
+    },
+    handlePrivsSelect(value) {
+      this.privs = value;
+    },
     validateAll() {
       let props = ["roleid"];
       props.forEach((prop) => this.validate(prop));
@@ -140,8 +139,8 @@ export default {
       if (this.validateAll()) return;
       let param = {
         roleid: this.roleid,
-        privs: this.privs.join(','),
-			};
+        privs: this.privs.join(","),
+      };
       if (this.modalType === "create") {
         this.createRole(param)
           .then((res) => {
@@ -157,8 +156,8 @@ export default {
               .catch(() => {});
           });
       } else {
-				this.updateRole(param)
-				.then((res) => {
+        this.updateRole(param)
+          .then((res) => {
             this.close();
           })
           .catch((res) => {
@@ -169,7 +168,7 @@ export default {
               })
               .then(() => {})
               .catch(() => {});
-          });;
+          });
       }
     },
   },

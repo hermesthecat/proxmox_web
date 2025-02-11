@@ -41,7 +41,7 @@
 <script>
 import Dialog from "@src/components/dialog/Dialog";
 import NodeSystemTimeHttp from "@src/views/home/node/system/time/http";
-import { timeZone } from '@libs/enum/enum';
+import { timeZone } from "@libs/enum/enum";
 export default {
   name: "EditTimeModal",
   mixins: [NodeSystemTimeHttp],
@@ -62,17 +62,17 @@ export default {
       default: () => {
         return {};
       },
-    }
+    },
   },
   data() {
     return {
-			timeZoneOptions: timeZone,
-			timezone: '',
+      timeZoneOptions: timeZone,
+      timezone: "",
       rules: {
         timezone: {
           error: false,
           message: "",
-        }
+        },
       },
     };
   },
@@ -81,13 +81,13 @@ export default {
   },
   methods: {
     create() {
-			if(this.validateAll()) return;
-		},
+      if (this.validateAll()) return;
+    },
     __init__() {
-			let _this = this;
-			Object.keys(_this.param).forEach(key => {
-        _this[key] = _this.param[key]
-			})
+      let _this = this;
+      Object.keys(_this.param).forEach((key) => {
+        _this[key] = _this.param[key];
+      });
     },
     close() {
       this.$emit("close");
@@ -100,7 +100,7 @@ export default {
         this.rules[prop].error = true;
         this.rules[prop].message = "不能为空";
         return;
-			}
+      }
     },
     validateAll() {
       let props = [];
@@ -114,17 +114,17 @@ export default {
     confirm() {
       if (this.validateAll()) return;
       let params = {
-        timezone: this.timezone
-			};
-			this.updateTimeZone(params)
-			    .then(res => {
-						this.close();
-					})
-					.catch(res => {
-						this.$confirm.error({
-							msg: res
-						})
-					})
+        timezone: this.timezone,
+      };
+      this.updateTimeZone(params)
+        .then((res) => {
+          this.close();
+        })
+        .catch((res) => {
+          this.$confirm.error({
+            msg: res,
+          });
+        });
     },
   },
   watch: {

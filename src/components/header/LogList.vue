@@ -1,74 +1,84 @@
 <template>
-  <transition name="transition" @before-enter="beforeEnter"
-                                @enter="enter"
-                                @after-enter="afterEnter"
-                                @before-leave="beforeLeave"
-                                @after-leave="afterLeave">
+  <transition
+    name="transition"
+    @before-enter="beforeEnter"
+    @enter="enter"
+    @after-enter="afterEnter"
+    @before-leave="beforeLeave"
+    @after-leave="afterLeave"
+  >
     <div class="log" v-show="visible">
       <div class="btn" @click="close">
-      <span class="btn-txt">隐藏</span
-      ><i class="el-icon-d-arrow-right btn-icon"></i>
+        <span class="btn-txt">隐藏</span
+        ><i class="el-icon-d-arrow-right btn-icon"></i>
       </div>
-      <div class="m-scroll-wrapper  log-scroll-container" v-if="visible">
+      <div class="m-scroll-wrapper log-scroll-container" v-if="visible">
         <div class="m-scroll-view log-scroll-view" @scroll="onScroll">
-           <m-tab v-model="logType" @tab-click="handleLogTypeChange" class="log-tab">
-          <m-tab-panel label="任务" name="task"></m-tab-panel>
-          <m-tab-panel label="集群" name="cluster"></m-tab-panel>
-        </m-tab>
-        <div v-if="logType === 'task'" class="log-wrapper">
-          <div
+          <m-tab
+            v-model="logType"
+            @tab-click="handleLogTypeChange"
+            class="log-tab"
+          >
+            <m-tab-panel label="任务" name="task"></m-tab-panel>
+            <m-tab-panel label="集群" name="cluster"></m-tab-panel>
+          </m-tab>
+          <div v-if="logType === 'task'" class="log-wrapper">
+            <div
               v-for="item in taksList"
               :key="item.upid"
               class="log-item"
               @click="handleShowTasks(item)"
               :title="render_upid(item.pid, null, item)"
-          >
-            <base-icon
+            >
+              <base-icon
                 :name="
-              item.status
-                ? item.status === 'OK'
-                  ? 'status-ok'
-                  : 'status-error'
-                : 'loading-mask'
-            "
+                  item.status
+                    ? item.status === 'OK'
+                      ? 'status-ok'
+                      : 'status-error'
+                    : 'loading-mask'
+                "
                 style="width: 25px; height: 25px"
-            ></base-icon>
-            <span>{{ render_upid(item.pid, null, item) }}</span>
-            <div class="log-time">
-              开始时间：{{
-              dateFormat(new Date(item.starttime * 1000), "yyyy-MM-dd hh:mm")
-              }}
-            </div>
-            <div v-if="item.endtime" class="log-time">
-              结束时间：{{
-              dateFormat(new Date(item.endtime * 1000), "yyyy-MM-dd hh:mm")
-              }}
+              ></base-icon>
+              <span>{{ render_upid(item.pid, null, item) }}</span>
+              <div class="log-time">
+                开始时间：{{
+                  dateFormat(
+                    new Date(item.starttime * 1000),
+                    "yyyy-MM-dd hh:mm"
+                  )
+                }}
+              </div>
+              <div v-if="item.endtime" class="log-time">
+                结束时间：{{
+                  dateFormat(new Date(item.endtime * 1000), "yyyy-MM-dd hh:mm")
+                }}
+              </div>
             </div>
           </div>
-        </div>
-        <div v-if="logType === 'cluster'" class="log-wrapper">
-          <div
+          <div v-if="logType === 'cluster'" class="log-wrapper">
+            <div
               v-for="item in clusterLogList"
               :key="item.id"
               class="log-cluster-item"
               :class="item.pri ? render_serverity(item.pri) : ''"
               :title="item.msg"
-          >
-            <div>
-              时间：{{
-              dateFormat(new Date(item.time * 1000), "yyyy-MM-dd hh:mm")
-              }}
+            >
+              <div>
+                时间：{{
+                  dateFormat(new Date(item.time * 1000), "yyyy-MM-dd hh:mm")
+                }}
+              </div>
+              <div>节点：{{ item.node ? item.node : "" }}</div>
+              <div>服务：{{ item.tag ? item.tag : "" }}</div>
+              <div>pid：{{ item.pid ? item.pid : "" }}</div>
+              <div>用户名：{{ item.user ? item.user : "" }}</div>
+              <div>
+                严重程度：{{ item.pri ? render_serverity(item.pri) : "" }}
+              </div>
+              <div>消息：{{ item.msg ? item.msg : "" }}</div>
             </div>
-            <div>节点：{{ item.node ? item.node : "" }}</div>
-            <div>服务：{{ item.tag ? item.tag : "" }}</div>
-            <div>pid：{{ item.pid ? item.pid : "" }}</div>
-            <div>用户名：{{ item.user ? item.user : "" }}</div>
-            <div>
-              严重程度：{{ item.pri ? render_serverity(item.pri) : "" }}
-            </div>
-            <div>消息：{{ item.msg ? item.msg : "" }}</div>
           </div>
-        </div>
         </div>
         <div
           class="m-scroll-bar"
@@ -78,12 +88,12 @@
         ></div>
       </div>
       <m-dialog
-          :visible="showLog"
-          @close="closeLog"
-          :_style="{
-        width: '800px',
-      }"
-          title="Task Viewer: 任务详情"
+        :visible="showLog"
+        @close="closeLog"
+        :_style="{
+          width: '800px',
+        }"
+        title="Task Viewer: 任务详情"
       >
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
@@ -91,19 +101,19 @@
             <m-tab-panel label="状态" name="status"></m-tab-panel>
           </m-tab>
           <m-button
-              class="create-btn m-margin-top-10"
-              type="primary"
-              @on-click="stopTask1"
-              :disabled="db.addClusterStatusObj.status !== 'running'"
-          >停止</m-button
+            class="create-btn m-margin-top-10"
+            type="primary"
+            @on-click="stopTask1"
+            :disabled="db.addClusterStatusObj.status !== 'running'"
+            >停止</m-button
           >
-          <el-scrollbar style="height:100%" id="log-taskModal">
+          <el-scrollbar style="height: 100%" id="log-taskModal">
             <div class="taskmodal-content" ref="taskmodal-content">
               <div class="table" v-if="tab === 'log'">
                 <div
-                    class="table-tr"
-                    v-for="item in db.addClusterLogList"
-                    :key="item.n"
+                  class="table-tr"
+                  v-for="item in db.addClusterLogList"
+                  :key="item.n"
                 >
                   {{ item.t }}
                 </div>
@@ -111,13 +121,15 @@
               <div class="table" v-if="tab === 'status'">
                 <template v-for="(item, key) in db.addClusterStatusObj">
                   <div
-                      class="table-tr"
-                      v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-                      :key="key"
+                    class="table-tr"
+                    v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
+                    :key="key"
                   >
                     <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
                     <div class="table-td" v-if="key === 'starttime'">
-                      {{ dateFormat(new Date(item * 1000), "yyyy-MM-dd hh:mm") }}
+                      {{
+                        dateFormat(new Date(item * 1000), "yyyy-MM-dd hh:mm")
+                      }}
                     </div>
                     <div class="table-td" v-else>{{ item }}</div>
                   </div>
@@ -158,8 +170,8 @@ export default {
     },
   },
   mounted() {
-    this.scrollElementSelector = '.log-scroll-view';
-    this.scrollContainerSelector =  '.log-scroll-container';
+    this.scrollElementSelector = ".log-scroll-view";
+    this.scrollContainerSelector = ".log-scroll-container";
     this.__init__();
   },
   data() {
@@ -178,7 +190,7 @@ export default {
     dateFormat,
     render_serverity,
     __init__() {
-       this.taksList = [];
+      this.taksList = [];
       this.queryClusterTask().then((res) => {
         this.taksList = quickSort(this.db.clusterTaskList, "starttime");
       });
@@ -186,7 +198,7 @@ export default {
     //关闭弹框
     close() {
       setTimeout(() => {
-        this.$emit('close');
+        this.$emit("close");
       });
     },
     //查看任务详情日志
@@ -241,50 +253,54 @@ export default {
     //组件进入之前
     beforeEnter(el) {
       //设置组件进入前动画
-      el.style.webkitTransform= `translate3d(0, 100%, 0) scale3d(0, 0, 0)`;
+      el.style.webkitTransform = `translate3d(0, 100%, 0) scale3d(0, 0, 0)`;
       el.style.transform = `translate3d(0, 100%, 0) scale3d(1.01, 1.01, 1.01)`;
     },
     //组件进入中
     enter(el) {
       //设置组件进入前中
-      el.style.webkitTransform= `translate3d(0, 50%, 0) scale3d(1.01, 1.01, 1.01)`;
-      el.style.transform = `translate3d(0, 50%, 0) scale3d(1.01, 1.01, 1.01)`
+      el.style.webkitTransform = `translate3d(0, 50%, 0) scale3d(1.01, 1.01, 1.01)`;
+      el.style.transform = `translate3d(0, 50%, 0) scale3d(1.01, 1.01, 1.01)`;
     },
     //组件进入后
     afterEnter(el) {
       //设置组件进入后动画
-      el.style.webkitTransform= `translate3d(0, 0, 0) scale3d(1, 1, 1)`;
-      el.style.transform = `translate3d(0, 0, 0) scale3d(1, 1, 1)`
+      el.style.webkitTransform = `translate3d(0, 0, 0) scale3d(1, 1, 1)`;
+      el.style.transform = `translate3d(0, 0, 0) scale3d(1, 1, 1)`;
     },
     //组件离开前
     beforeLeave(el) {
       //设置组件进入后动画
-      el.style.webkitTransform= `translate3d(0, 0, 0) scale3d(1, 1, 1)`;
-      el.style.transform = `translate3d(0, 0, 0) scale3d(1, 1, 1)`
+      el.style.webkitTransform = `translate3d(0, 0, 0) scale3d(1, 1, 1)`;
+      el.style.transform = `translate3d(0, 0, 0) scale3d(1, 1, 1)`;
     },
     //组件离开时
     leave(el) {
       //组件离开时动画
-      el.style.webkitTransform= `translate3d(0, 50%, 0) scale3d(0.5, 0.5, 0.5)`;
-      el.style.transform = `translate3d(0, 50%, 0) scale3d(0.5, 0.5, 0.5)`
+      el.style.webkitTransform = `translate3d(0, 50%, 0) scale3d(0.5, 0.5, 0.5)`;
+      el.style.transform = `translate3d(0, 50%, 0) scale3d(0.5, 0.5, 0.5)`;
     },
     //组件离开后
     afterLeave(el) {
       //组件离开后动画
-      el.style.webkitTransform= `translate3d(0, 100%, 0) scale3d(0, 0, 0)`;
-      el.style.transform = `translate3d(0, 100%, 0) scale3d(0, 0, 0)`
-    }
+      el.style.webkitTransform = `translate3d(0, 100%, 0) scale3d(0, 0, 0)`;
+      el.style.transform = `translate3d(0, 100%, 0) scale3d(0, 0, 0)`;
+    },
   },
   updated() {
     let _this = this;
-    if(_this.showLog) {
+    if (_this.showLog) {
       this.$nextTick(() => {
-        if(this.tab === 'log') {
-          document.querySelector('#log-taskModal >.el-scrollbar__wrap').scrollTop = this.$refs['taskmodal-content'].scrollHeight;
+        if (this.tab === "log") {
+          document.querySelector(
+            "#log-taskModal >.el-scrollbar__wrap"
+          ).scrollTop = this.$refs["taskmodal-content"].scrollHeight;
         } else {
-          document.querySelector('#log-taskModal >.el-scrollbar__wrap').scrollTop = 0;
+          document.querySelector(
+            "#log-taskModal >.el-scrollbar__wrap"
+          ).scrollTop = 0;
         }
-      })
+      });
     }
   },
   watch: {
@@ -292,11 +308,11 @@ export default {
       if (newVal !== oldVal) {
         if (newVal) {
           this.__init__();
-				}
-        this.logType = 'task';
+        }
+        this.logType = "task";
         setTimeout(() => {
-            return newVal;
-        })
+          return newVal;
+        });
       }
     },
   },
@@ -316,11 +332,11 @@ export default {
   table-layout: fixed;
   overflow: hidden;
   white-space: nowrap;
-	transition: width .5s ease-in, left .5s cubic-bezier(0.075, 0.82, 0.165, 1);
-	&-wrapper{
-		top: 60px;
-		position: relative;
-	}
+  transition: width 0.5s ease-in, left 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+  &-wrapper {
+    top: 60px;
+    position: relative;
+  }
   &-item {
     border-bottom: 1px solid #cecccc;
     height: 64px;
@@ -391,11 +407,12 @@ export default {
     font-size: 12px;
   }
 }
-.error{
-	background: #f3d6d7;
-	color: #fff;
+.error {
+  background: #f3d6d7;
+  color: #fff;
 }
-.transition-enter, transition-leave {
+.transition-enter,
+transition-leave {
   transition: all 0.5s linear;
 }
 </style>

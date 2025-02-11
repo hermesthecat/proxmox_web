@@ -4,7 +4,7 @@
     :title="title"
     @close="close"
     :_style="{
-      width: '946px'
+      width: '946px',
     }"
     @confirm="confirm"
   >
@@ -176,7 +176,7 @@
       <template v-if="modalType === 'clone'">
         <div class="m-form__section">
           <dl>
-            <dd  style="width: 100%;">
+            <dd style="width: 100%">
               <m-select
                 prop="nodename"
                 label="目标节点"
@@ -250,43 +250,76 @@
                 >
                 </m-option>
               </m-select>
-              <div v-if="!isTemplate && hasSnapshots" style="margin: 0px 0px 10px 10px; display: flex;justify-content: space-between;">
+              <div
+                v-if="!isTemplate && hasSnapshots"
+                style="
+                  margin: 0px 0px 10px 10px;
+                  display: flex;
+                  justify-content: space-between;
+                "
+              >
                 <div>快照</div>
                 <div>
-                  <m-input placeholder="请输入快照名称" @input="debounce(searchSnapshot(), 1000);" v-model="snaphot">
+                  <m-input
+                    placeholder="请输入快照名称"
+                    @input="debounce(searchSnapshot(), 1000)"
+                    v-model="snaphot"
+                  >
                     <i slot="prefix" class="el-icon-search"></i>
                   </m-input>
                 </div>
               </div>
               <el-table
-                 v-if="!isTemplate && hasSnapshots"
-                 highlight-current-row
-                  @current-change="(value) => {
-                    if(value && value.name) {
-                       snapshotname = value.name
+                v-if="!isTemplate && hasSnapshots"
+                highlight-current-row
+                @current-change="
+                  (value) => {
+                    if (value && value.name) {
+                      snapshotname = value.name;
                     }
-                  }"
-                  :show-error="rules['snapshotname'].error"
-                  :error-msg="rules['snapshotname'].message"
-                  :data="chunkData(snapdbshotList, pageSize)[currentPage - 1]"
-                  @sort-change="handleSort"
-                 style="width: 100%"
-                  max-height="250"
+                  }
+                "
+                :show-error="rules['snapshotname'].error"
+                :error-msg="rules['snapshotname'].message"
+                :data="chunkData(snapdbshotList, pageSize)[currentPage - 1]"
+                @sort-change="handleSort"
+                style="width: 100%"
+                max-height="250"
               >
-                <el-table-column  width="55px;">
+                <el-table-column width="55px;">
                   <template slot-scope="scope">
-                    <el-radio :label="scope.row.name" v-model="snapshotname">&nbsp;</el-radio>
+                    <el-radio :label="scope.row.name" v-model="snapshotname"
+                      >&nbsp;</el-radio
+                    >
                   </template>
                 </el-table-column>
-                <el-table-column label="快照" prop="name" width="300px"></el-table-column>
+                <el-table-column
+                  label="快照"
+                  prop="name"
+                  width="300px"
+                ></el-table-column>
                 <el-table-column label="是否包括内存">
                   <template slot-scope="scope">
-                    	<table-info-state :state="scope.row.vmstate === 1 ? 'actived' : 'unActived'" :content="scope.row.vmstate === 1 ? '是' : '否'"></table-info-state>
+                    <table-info-state
+                      :state="scope.row.vmstate === 1 ? 'actived' : 'unActived'"
+                      :content="scope.row.vmstate === 1 ? '是' : '否'"
+                    ></table-info-state>
                   </template>
                 </el-table-column>
-                <el-table-column label="日期" width="170px" sortable="column" prop="snaptime">
+                <el-table-column
+                  label="日期"
+                  width="170px"
+                  sortable="column"
+                  prop="snaptime"
+                >
                   <template slot-scope="scope">
-                    	{{scope.row.snaptime && dateFormat(new Date(scope.row.snaptime*1000), 'yyyy-MM-dd hh:mm:ss')}}
+                    {{
+                      scope.row.snaptime &&
+                      dateFormat(
+                        new Date(scope.row.snaptime * 1000),
+                        "yyyy-MM-dd hh:mm:ss"
+                      )
+                    }}
                   </template>
                 </el-table-column>
               </el-table>
@@ -304,10 +337,10 @@
                   }
                 "
                 :current-page="currentPage"
-                :page-sizes="[5,10,50]"
+                :page-sizes="[5, 10, 50]"
                 :page-size="pageSize"
                 v-if="!isTemplate && hasSnapshots"
-                :total="snapdbshotList && snapdbshotList.length || 0"
+                :total="(snapdbshotList && snapdbshotList.length) || 0"
                 :pager-count="5"
                 small
                 layout="total, sizes, prev, pager, next, jumper"
@@ -636,7 +669,7 @@ import {
   dateFormat,
   chunkData,
   debounce,
-  quickSort
+  quickSort,
 } from "@libs/utils/index";
 import QemuOrLcxIndexHttp from "@src/views/home/qemu/http";
 import { gettext } from "@src/i18n/local_zhCN.js";
@@ -662,14 +695,14 @@ export default {
     },
     isLeft: {
       type: Boolean,
-      default: false
+      default: false,
     },
     param: {
       type: Object,
       default: () => {
-        return {}
-      }
-    }
+        return {};
+      },
+    },
   },
   computed: {
     /**
@@ -731,7 +764,7 @@ export default {
       name: "",
       clonemode: "copy",
       isTemplate: false,
-      snaphot:'',
+      snaphot: "",
       modeList: [{ value: "copy", label: gettext("Full Clone") }],
       formatList: [
         {
@@ -799,8 +832,8 @@ export default {
         },
         name: {
           error: false,
-          message: ''
-        }
+          message: "",
+        },
       },
     };
   },
@@ -825,13 +858,26 @@ export default {
     searchSnapshot() {
       let _this = this;
       _this.currentPage = 1;
-      _this.snapdbshotList = quickSort(_this.snapshotList.filter(item => {
-        return window.encodeURIComponent(item.name).indexOf(window.encodeURIComponent(_this.snaphot)) > -1 && item.name !== 'current';
-      }), 'snaptime', '-');
-      if(!_this.snaphot) {
-        _this.snapdbshotList = quickSort(_this.snapshotList.filter(item => {
-          return item.name !== 'current';
-        }), 'snaptime', '-');
+      _this.snapdbshotList = quickSort(
+        _this.snapshotList.filter((item) => {
+          return (
+            window
+              .encodeURIComponent(item.name)
+              .indexOf(window.encodeURIComponent(_this.snaphot)) > -1 &&
+            item.name !== "current"
+          );
+        }),
+        "snaptime",
+        "-"
+      );
+      if (!_this.snaphot) {
+        _this.snapdbshotList = quickSort(
+          _this.snapshotList.filter((item) => {
+            return item.name !== "current";
+          }),
+          "snaptime",
+          "-"
+        );
       }
     },
     confirm() {
@@ -878,12 +924,13 @@ export default {
                 this.db.addClusterStatusObj.upid
               );
               this.$nextTick(() => {
-                if(this.tab === 'log') {
-                  document.querySelector('.el-scrollbar__view').scrollTop = this.$refs['taskmodal-content'].scrollHeight;
+                if (this.tab === "log") {
+                  document.querySelector(".el-scrollbar__view").scrollTop =
+                    this.$refs["taskmodal-content"].scrollHeight;
                 } else {
-                  document.querySelector('.el-scrollbar__view').scrollTop = 0;
+                  document.querySelector(".el-scrollbar__view").scrollTop = 0;
                 }
-              })
+              });
             }, 3000);
           })
           .catch((res) => {
@@ -936,7 +983,7 @@ export default {
               _this.queryLog(
                 _this.db.addClusterStatusObj.node,
                 _this.db.addClusterStatusObj.upid
-              )
+              );
             }, 3000);
           })
           .catch((res) => {
@@ -1017,7 +1064,7 @@ export default {
      */
     async __init__() {
       let _this = this;
-      if(!this.isLeft){
+      if (!this.isLeft) {
         await this.queryResource();
       } else {
         this.qemu = this.param;
@@ -1030,11 +1077,11 @@ export default {
         if (this.qemu.template || false) {
           _this.isTemplate = true;
         }
-        if(JSON.stringify(_this.modeList).indexOf('clone') < 0)
-        _this.modeList.push({
-          value: "clone",
-          label: gettext("Linked Clone"),
-        });
+        if (JSON.stringify(_this.modeList).indexOf("clone") < 0)
+          _this.modeList.push({
+            value: "clone",
+            label: gettext("Linked Clone"),
+          });
         _this.$nextTick(() => {
           _this.clonemode = "clone";
         });
@@ -1044,18 +1091,27 @@ export default {
             _this.snapshotList[0].name === "current"
               ? false
               : true;
-          this.snapdbshotList = quickSort(this.snapshotList.map(item => {
-            if(item.name == 'current') {
-              item.snaptime = new Date().getTime() / 1000;
-            }
-            return item;
-          }), 'snaptime', '-');
-          if (_this.snapdbshotList && _this.hasSnapshots) _this.snapshotname = _this.snapdbshotList[1].name;
+          this.snapdbshotList = quickSort(
+            this.snapshotList.map((item) => {
+              if (item.name == "current") {
+                item.snaptime = new Date().getTime() / 1000;
+              }
+              return item;
+            }),
+            "snaptime",
+            "-"
+          );
+          if (_this.snapdbshotList && _this.hasSnapshots)
+            _this.snapshotname = _this.snapdbshotList[1].name;
         });
         this.queryNextVmid({ _dc: new Date().getTime() });
         this.queryPool();
         if (this.nodeList) {
-          this.nodename = this.nodeList && this.nodeList.length > 0 && this.nodeList[0].node || '';
+          this.nodename =
+            (this.nodeList &&
+              this.nodeList.length > 0 &&
+              this.nodeList[0].node) ||
+            "";
           this.queryTargetStorage();
         }
       }
@@ -1094,7 +1150,7 @@ export default {
       let value = String(this[prop]).trim();
       this.rules[prop].message = "";
       this.rules[prop].error = false;
-      if (prop !== 'name' && /^\s*$/.test(value)) {
+      if (prop !== "name" && /^\s*$/.test(value)) {
         this.rules[prop].message = "不能为空!";
         this.rules[prop].error = true;
         return;
@@ -1106,8 +1162,8 @@ export default {
           return;
         }
       }
-      if(this.modalType === 'clone' && prop === 'name') {
-        if(/^[^a-zA-Z0-9]|[\u4e00-\u9fa5]/.test(this.name)) {
+      if (this.modalType === "clone" && prop === "name") {
+        if (/^[^a-zA-Z0-9]|[\u4e00-\u9fa5]/.test(this.name)) {
           this.rules[prop].message = `名称不合法!`;
           this.rules[prop].error = true;
           return;
@@ -1210,8 +1266,7 @@ export default {
               if (_this.running) {
                 _this.migration.possible = false;
                 _this.migration.preconditions.push({
-                  text:
-                    "Can't live migrate VM with local cloudinit disk, use shared storage instead",
+                  text: "Can't live migrate VM with local cloudinit disk, use shared storage instead",
                   severity: "error",
                 });
               } else {
@@ -1256,7 +1311,12 @@ export default {
       _this.nodeList = _this.nodeList.filter(
         (item) => _this.qemu.node !== item.node
       );
-      if (_this.nodeList) _this.nodename = _this.nodeList && _this.nodeList.length > 0 && _this.nodeList[0].node || '';
+      if (_this.nodeList)
+        _this.nodename =
+          (_this.nodeList &&
+            _this.nodeList.length > 0 &&
+            _this.nodeList[0].node) ||
+          "";
       //离线状态下只允许本地存储迁移
     },
     /**
@@ -1319,22 +1379,29 @@ export default {
     /**
      * 排序@param {prop} string 数据属性值， {order} string 排序方向
      * **/
-    handleSort({prop, order}) {
-       if(!order) return;
-       this.currentPage = 1;
-       this.snapdbshotList = quickSort(this.snapshotList.filter(item => item.name !== 'current'), 'snaptime', order === 'ascending' ? '-' : '+');
-    }
+    handleSort({ prop, order }) {
+      if (!order) return;
+      this.currentPage = 1;
+      this.snapdbshotList = quickSort(
+        this.snapshotList.filter((item) => item.name !== "current"),
+        "snaptime",
+        order === "ascending" ? "-" : "+"
+      );
+    },
   },
   updated() {
     let _this = this;
-    if(_this.showLog) {
+    if (_this.showLog) {
       this.$nextTick(() => {
-        if(this.tab === 'log') {
-          document.querySelector('#taskModal >.el-scrollbar__wrap').scrollTop = this.$refs['taskmodal-content'].scrollHeight;
+        if (this.tab === "log") {
+          document.querySelector("#taskModal >.el-scrollbar__wrap").scrollTop =
+            this.$refs["taskmodal-content"].scrollHeight;
         } else {
-          document.querySelector('#taskModal >.el-scrollbar__wrap').scrollTop = 0;
+          document.querySelector(
+            "#taskModal >.el-scrollbar__wrap"
+          ).scrollTop = 0;
         }
-      })
+      });
     }
   },
   beforeDestroy() {
@@ -1363,13 +1430,13 @@ export default {
   }
 }
 /deep/.el-input {
-    width: 50px!important;
+  width: 50px !important;
 }
-/deep/.el-input{
- width: 80px!important;
+/deep/.el-input {
+  width: 80px !important;
 }
 
-.el-table__body{
+.el-table__body {
   font-size: 12px;
 }
 </style>

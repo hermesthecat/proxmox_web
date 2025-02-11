@@ -35,7 +35,7 @@
                 :show-error="rules.ovs_bridge.error"
                 :error-msg="rules.ovs_bridge.message"
                 v-model="ovs_bridge"
-								@on-change="handleOVSBrigeSelect"
+                @on-change="handleOVSBrigeSelect"
                 v-if="iftype === 'OVSBond' || iftype === 'OVSIntPort'"
                 placeholder="请选择OVS Bridge"
               >
@@ -53,8 +53,13 @@
                     </div>
                   </template>
                   <div class="table-tr">
-                    <span class="table-td" :title="item.iface">{{ item.iface }}</span>
-                    <span class="table-td" :title="item.active && item.active === 1 ? '是' : '否'">
+                    <span class="table-td" :title="item.iface">{{
+                      item.iface
+                    }}</span>
+                    <span
+                      class="table-td"
+                      :title="item.active && item.active === 1 ? '是' : '否'"
+                    >
                       <table-info-state
                         :content="
                           item.active && item.active === 1 ? '是' : '否'
@@ -97,9 +102,7 @@
                 label="Vlan raw device"
                 labelWidth="100px"
                 v-model="vlanRawDevic"
-                :disabled="
-                  (iftype === 'vlan' && /()(\.\d)/.test(name))
-                "
+                :disabled="iftype === 'vlan' && /()(\.\d)/.test(name)"
                 v-if="iftype === 'vlan'"
                 placeholder="请输入Vlan raw device"
               />
@@ -137,9 +140,7 @@
                 label="VLAN标签"
                 labelWidth="100px"
                 v-model="vlan_tag"
-                :disabled="
-                  (iftype === 'vlan' && /()(\.\d)/.test(name))
-                "
+                :disabled="iftype === 'vlan' && /()(\.\d)/.test(name)"
                 v-if="['vlan', 'OVSBond', 'OVSIntPort'].includes(iftype)"
                 placeholder="请输入VLAN标签"
               />
@@ -364,8 +365,8 @@ export default {
       mtu: "",
       comments: "",
       comboItems: [],
-			openvswitch: false,
-			networkList: [],
+      openvswitch: false,
+      networkList: [],
       hash_policy_comboItems: [
         {
           label: "lay2",
@@ -417,134 +418,136 @@ export default {
   },
   methods: {
     create() {
-			if(this.validateAll()) return;
-				let param = {}
-			switch(this.iftype) {
-					case 'bridge':
-						param = {
-							cidr: this.cidr,
-							cidr6: this.cidr6,
-							iface: this.name,
-							bridge_ports: this.bridge_ports,
-							gateway: this.gateway,
-							gateway6: this.gateway6,
-							autostart: this.autostart ? 1 : 0,
-							comments: this.comments,
-							bridge_vlan_aware: this.bridge_vlan_aware ? 1 : 0,
-							mtu: this.mtu,
-							type:'bridge'
-						}
-						break;
-					case 'bond':
-							param = {
-							cidr: this.cidr,
-							cidr6: this.cidr6,
-							iface: this.name,
-							gateway: this.gateway,
-							gateway6: this.gateway6,
-							autostart: this.autostart ? 1 : 0,
-							comments: this.comments,
-							slaves: this.slaves,
-							bond_xmit_hash_policy: this.bind_xmit_hash_policy,
-							bond_mode: this.bond_mode,
-							mtu: this.mtu,
-							type:'bond'
-						}
-						break;
-					case 'vlan':
-							param = {
-							cidr: this.cidr,
-							cidr6: this.cidr6,
-							iface: this.name,
-							gateway: this.gateway,
-							gateway6: this.gateway6,
-							autostart: this.autostart ? 1 : 0,
-							comments: this.comments,
-							'vlan-raw-device': this.vlanRawDevic,
-							'vlan-id': this.vlan_tag,
-							type: 'vlan'
-						}
-						break;
-				  case 'OVSBridge':
-						param = {
-							cidr: this.cidr,
-							cidr6: this.cidr6,
-							iface: this.name,
-							gateway: this.gateway,
-							gateway6: this.gateway6,
-							autostart: this.autostart ? 1 : 0,
-							comments: this.comments,
-							ovs_ports: this.ovs_ports,
-							ovs_options: this.ovs_options,
-							type: 'OVSBridge'
-						}
-						break;
-					 case 'OVSBond':
-						 	param = {
-							iface: this.name,
-							comments: this.comments,
-							'vlan-id': this.vlan_tag,
-							bond_mode: this.bond_mode,
-							ovs_bridge: this.ovs_bridge,
-							ovs_options: this.ovs_options,
-							slaves: this.slaves,
-							type: 'OVSBond'
-						}
-						break;
-					case 'OVSIntPort':
-						param = {
-							cidr: this.cidr,
-							cidr6: this.cidr6,
-							iface: this.name,
-							gateway: this.gateway,
-							gateway6: this.gateway6,
-							comments: this.comments,
-								'vlan-id': this.vlan_tag,
-							ovs_bridge: this.ovs_bridge,
-							ovs_options: this.ovs_options,
-							type: 'OVSIntPort'
-						}
-						break;
-						default: 
-						param = {
-	            cidr: this.cidr,
-							cidr6: this.cidr6,
-							iface: this.name,
-							gateway: this.gateway,
-							gateway6: this.gateway6,
-							autostart: this.autostart ? 1 : 0,
-							comments: this.comments,
-							mtu: this.mtu,
-							type:'eth'
-						}
-				}
-			if(this.isCreate) {
-				for(let key of Object.keys(param)) {
-						if(!param[key]) delete param[key];
-				}
-				this.createNetWork(param)
-				    .then(res => {
-							this.close();
-						}).catch((res) => {
-							this.$confirm.error({
-								msg: res
-							})
-						});
-			} else {
-	      for(let key of Object.keys(param)) {
-					if(!String(param[key])) delete param[key];
-				}
-				delete param.iface;
-				this.updateNetWork(this.param.iface, param)
-				    .then(res => {
-							this.close();
-						}).catch((res) => {
-							this.$confirm.error({
-								msg: res
-							})
-						});
-			}
-		},
+      if (this.validateAll()) return;
+      let param = {};
+      switch (this.iftype) {
+        case "bridge":
+          param = {
+            cidr: this.cidr,
+            cidr6: this.cidr6,
+            iface: this.name,
+            bridge_ports: this.bridge_ports,
+            gateway: this.gateway,
+            gateway6: this.gateway6,
+            autostart: this.autostart ? 1 : 0,
+            comments: this.comments,
+            bridge_vlan_aware: this.bridge_vlan_aware ? 1 : 0,
+            mtu: this.mtu,
+            type: "bridge",
+          };
+          break;
+        case "bond":
+          param = {
+            cidr: this.cidr,
+            cidr6: this.cidr6,
+            iface: this.name,
+            gateway: this.gateway,
+            gateway6: this.gateway6,
+            autostart: this.autostart ? 1 : 0,
+            comments: this.comments,
+            slaves: this.slaves,
+            bond_xmit_hash_policy: this.bind_xmit_hash_policy,
+            bond_mode: this.bond_mode,
+            mtu: this.mtu,
+            type: "bond",
+          };
+          break;
+        case "vlan":
+          param = {
+            cidr: this.cidr,
+            cidr6: this.cidr6,
+            iface: this.name,
+            gateway: this.gateway,
+            gateway6: this.gateway6,
+            autostart: this.autostart ? 1 : 0,
+            comments: this.comments,
+            "vlan-raw-device": this.vlanRawDevic,
+            "vlan-id": this.vlan_tag,
+            type: "vlan",
+          };
+          break;
+        case "OVSBridge":
+          param = {
+            cidr: this.cidr,
+            cidr6: this.cidr6,
+            iface: this.name,
+            gateway: this.gateway,
+            gateway6: this.gateway6,
+            autostart: this.autostart ? 1 : 0,
+            comments: this.comments,
+            ovs_ports: this.ovs_ports,
+            ovs_options: this.ovs_options,
+            type: "OVSBridge",
+          };
+          break;
+        case "OVSBond":
+          param = {
+            iface: this.name,
+            comments: this.comments,
+            "vlan-id": this.vlan_tag,
+            bond_mode: this.bond_mode,
+            ovs_bridge: this.ovs_bridge,
+            ovs_options: this.ovs_options,
+            slaves: this.slaves,
+            type: "OVSBond",
+          };
+          break;
+        case "OVSIntPort":
+          param = {
+            cidr: this.cidr,
+            cidr6: this.cidr6,
+            iface: this.name,
+            gateway: this.gateway,
+            gateway6: this.gateway6,
+            comments: this.comments,
+            "vlan-id": this.vlan_tag,
+            ovs_bridge: this.ovs_bridge,
+            ovs_options: this.ovs_options,
+            type: "OVSIntPort",
+          };
+          break;
+        default:
+          param = {
+            cidr: this.cidr,
+            cidr6: this.cidr6,
+            iface: this.name,
+            gateway: this.gateway,
+            gateway6: this.gateway6,
+            autostart: this.autostart ? 1 : 0,
+            comments: this.comments,
+            mtu: this.mtu,
+            type: "eth",
+          };
+      }
+      if (this.isCreate) {
+        for (let key of Object.keys(param)) {
+          if (!param[key]) delete param[key];
+        }
+        this.createNetWork(param)
+          .then((res) => {
+            this.close();
+          })
+          .catch((res) => {
+            this.$confirm.error({
+              msg: res,
+            });
+          });
+      } else {
+        for (let key of Object.keys(param)) {
+          if (!String(param[key])) delete param[key];
+        }
+        delete param.iface;
+        this.updateNetWork(this.param.iface, param)
+          .then((res) => {
+            this.close();
+          })
+          .catch((res) => {
+            this.$confirm.error({
+              msg: res,
+            });
+          });
+      }
+    },
     render_bond_mode: (value) => bond_mode_gettext_map[value] || value || "",
     bond_mode_array(modes) {
       return modes.map((mode) => {
@@ -552,7 +555,7 @@ export default {
       });
     },
     async __init__() {
-			let _this = this;
+      let _this = this;
       if (this.iftype === "OVSBond") _this.openvswitch = true;
       if (_this.openvswitch) {
         _this.comboItems = _this.bond_mode_array([
@@ -572,61 +575,70 @@ export default {
           "balance-tlb",
           "balance-alb",
         ]);
-			}
-			let number =  (Math.max(
-            ..._this.db.nodeNetWorkList
-              .filter((it) => {
-                if (/vmbr/.test(it.iface)) {
-                  return it.iface;
-                }
-              })
-              .map((arr) => {
-                return Number(arr.iface.match(/(\d)/)[0]);
-              })
-          ) +
-						1);
-				let numberBond =  (Math.max(
-            ..._this.db.nodeNetWorkList
-              .filter((it) => {
-                if (/bond/.test(it.iface)) {
-                  return it.iface;
-                }
-              })
-              .map((arr) => {
-                return Number(arr.iface.match(/(\d)/)[0]);
-              })
-          ) +
-						1)
-						debugger;
+      }
+      let number =
+        Math.max(
+          ..._this.db.nodeNetWorkList
+            .filter((it) => {
+              if (/vmbr/.test(it.iface)) {
+                return it.iface;
+              }
+            })
+            .map((arr) => {
+              return Number(arr.iface.match(/(\d)/)[0]);
+            })
+        ) + 1;
+      let numberBond =
+        Math.max(
+          ..._this.db.nodeNetWorkList
+            .filter((it) => {
+              if (/bond/.test(it.iface)) {
+                return it.iface;
+              }
+            })
+            .map((arr) => {
+              return Number(arr.iface.match(/(\d)/)[0]);
+            })
+        ) + 1;
+      debugger;
       if (/bridge/.test(_this.iftype.toLocaleLowerCase())) {
         _this.name =
-          "vmbr" + (String(number) === 'Infinity' || String(number) === '-Infinity' ? 0 : number);
+          "vmbr" +
+          (String(number) === "Infinity" || String(number) === "-Infinity"
+            ? 0
+            : number);
       }
       if (/bond/.test(_this.iftype.toLocaleLowerCase())) {
         _this.name =
-          "bond" + (String(numberBond) === 'Infinity' || String(numberBond) === '-Infinity' ? 0 : numberBond);
+          "bond" +
+          (String(numberBond) === "Infinity" ||
+          String(numberBond) === "-Infinity"
+            ? 0
+            : numberBond);
       }
-			if (this.iftype === "vlan") _this.name = "interfaceX.1";
-			if (this.iftype === "OVSBond" || this.iftype === "OVSIntPort") {
-				this.networkList = this.db.nodeNetWorkList.filter(it => it.type === 'OVSBridge');
-			}
-			if(this.isCreate) {
-         
-			} else {
-				//Object.assign(_this.$data, _this.$options.data());
-				Object.keys(_this.param).forEach((key) => {
-					if(key === 'iface') _this.name = _this.param[key];
-					else if(key === 'autostart') _this.param[key] === 1 ? true : false;
-					else if(key === 'bridge_vlan_aware') _this.param[key] === 1 ? true : false
-					else _this[key] = _this.param[key]; 
-				})
-				if(!_this.param.hasOwnProperty('autostart')) {
-					_this.autostart = false;
-				}
-				if(!_this.param.hasOwnProperty('bridge_vlan_aware')) {
-					_this.bridge_vlan_aware = false;
-				}
-			}
+      if (this.iftype === "vlan") _this.name = "interfaceX.1";
+      if (this.iftype === "OVSBond" || this.iftype === "OVSIntPort") {
+        this.networkList = this.db.nodeNetWorkList.filter(
+          (it) => it.type === "OVSBridge"
+        );
+      }
+      if (this.isCreate) {
+      } else {
+        //Object.assign(_this.$data, _this.$options.data());
+        Object.keys(_this.param).forEach((key) => {
+          if (key === "iface") _this.name = _this.param[key];
+          else if (key === "autostart") _this.param[key] === 1 ? true : false;
+          else if (key === "bridge_vlan_aware")
+            _this.param[key] === 1 ? true : false;
+          else _this[key] = _this.param[key];
+        });
+        if (!_this.param.hasOwnProperty("autostart")) {
+          _this.autostart = false;
+        }
+        if (!_this.param.hasOwnProperty("bridge_vlan_aware")) {
+          _this.bridge_vlan_aware = false;
+        }
+      }
     },
     handleBondModeSelect(value) {
       this.bond_mode = value;
@@ -717,10 +729,10 @@ export default {
     },
     handleHashPolicySelect(value) {
       this.bind_xmit_hash_policy = value;
-		},
-		handleOVSBrigeSelect(value) {
-     this.ovs_bridge = value;
-		},
+    },
+    handleOVSBrigeSelect(value) {
+      this.ovs_bridge = value;
+    },
     confirm() {
       if (this.validateAll()) return;
       let params = {

@@ -51,7 +51,8 @@
             v-model="username"
             placeholder="请输入访客用户"
           />
-          <m-input v-if="isCreate"
+          <m-input
+            v-if="isCreate"
             type="password"
             prop="password"
             label="密码"
@@ -65,13 +66,14 @@
             v-model="password"
             placeholder="请输入密码"
           />
-          <m-input v-if="!isCreate"
-                   type="password"
-                   prop="password"
-                   label="密码"
-                   labelWidth="100px"
-                   :disabled="!username || !isCreate"
-                   value="******"
+          <m-input
+            v-if="!isCreate"
+            type="password"
+            prop="password"
+            label="密码"
+            labelWidth="100px"
+            :disabled="!username || !isCreate"
+            value="******"
           />
           <m-select
             labelWidth="100px"
@@ -81,7 +83,7 @@
             prop="share"
             v-model="share"
             :readonly="false"
-						 :disabled="!isCreate"
+            :disabled="!isCreate"
             required
             @visible-change="handleExportReq"
             :show-error="rules.share.error"
@@ -149,14 +151,18 @@
       <dl v-if="isAdvice">
         <dt>高级</dt>
         <dd>
-          <m-select v-model="option"
-                    :read-only="true"
-                    @on-change="(value) => option = value"
-                    label="版本">
-            <m-option v-for="item in optionsItems"
-                      :value="item.value"
-                      :label="item.label"
-                      :key="item.value"></m-option>
+          <m-select
+            v-model="option"
+            :read-only="true"
+            @on-change="(value) => (option = value)"
+            label="版本"
+          >
+            <m-option
+              v-for="item in optionsItems"
+              :value="item.value"
+              :label="item.label"
+              :key="item.value"
+            ></m-option>
           </m-select>
         </dd>
       </dl>
@@ -165,7 +171,7 @@
         <dd>
           <el-table
             :data="db.nodeList"
-						ref="dataTable"
+            ref="dataTable"
             @selection-change="handleSelectionChange"
           >
             <el-table-column type="selection" width="55"> </el-table-column>
@@ -215,8 +221,8 @@ export default {
     },
     isAdvice: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -231,23 +237,24 @@ export default {
       type: "dir",
       disable: false,
       maxfiles: 1,
-      option: '2.0',
-      optionsItems: [{
-        label: '默认',
-        value: '__default__'
-      },
+      option: "2.0",
+      optionsItems: [
         {
-          label: '2.0',
-          value: '2.0'
+          label: "默认",
+          value: "__default__",
         },
         {
-          label: '2.1',
-          value: '2.1'
+          label: "2.0",
+          value: "2.0",
         },
         {
-          label: '3.0',
-          value: '3.0'
-        }
+          label: "2.1",
+          value: "2.1",
+        },
+        {
+          label: "3.0",
+          value: "3.0",
+        },
       ],
       options: [
         {
@@ -347,13 +354,13 @@ export default {
             this[key] = this.param[key] === 0 ? true : false;
           } else if (key === "nodes" || key === "content") {
             this[key] = this.param[key].split(",");
-          } else if(key === 'options'){
-            this.options = this.param.options.replace(/(vers=)/, '');
-          }  else {
+          } else if (key === "options") {
+            this.options = this.param.options.replace(/(vers=)/, "");
+          } else {
             this[key] = this.param[key];
           }
-				});
-					this.disable = this.param.disable ? false : true
+        });
+        this.disable = this.param.disable ? false : true;
       }
     },
     //单个校验
@@ -407,11 +414,11 @@ export default {
     },
   },
   watch: {
-    isAdvice: function(newVal, oldVal) {
-      if(newVal !== oldVal) {
+    isAdvice: function (newVal, oldVal) {
+      if (newVal !== oldVal) {
         return newVal;
       }
-    }
-  }
+    },
+  },
 };
 </script>

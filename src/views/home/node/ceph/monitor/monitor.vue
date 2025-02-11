@@ -332,7 +332,7 @@ export default {
     },
     //删除、重启、停止等操作
     handleOperate(operate) {
-      if(operate !== 'delete') {
+      if (operate !== "delete") {
         this.$confirm
           .confirm({
             msg: "确认要进行以下操作吗?",
@@ -383,7 +383,7 @@ export default {
                 );
               }, 3000);
             });
-          })
+          });
       }
     },
     //选择mgr

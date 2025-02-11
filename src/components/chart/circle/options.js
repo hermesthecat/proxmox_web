@@ -1,4 +1,4 @@
-function deepCopy (obj) {
+function deepCopy(obj) {
   let newObj
   // 如果不是数组对象，并且对象存在，直接返回就可以
   if (obj && typeof obj !== 'object') {
@@ -65,7 +65,7 @@ const annulusOption = {
  * @param {Number} textFontSize
  * @param {Number} subTextFontSize
  */
-function getAnnulusOption (data, colors, text, subtext, textFontSize, subTextFontSize) {
+function getAnnulusOption(data, colors, text, subtext, textFontSize, subTextFontSize) {
   let resultOption = deepCopy(annulusOption)
   let optionColor = ['rgba(0,0,0,0)']
   optionColor = optionColor.concat(colors)
@@ -76,8 +76,8 @@ function getAnnulusOption (data, colors, text, subtext, textFontSize, subTextFon
   resultOption.title.subtextStyle.fontSize = subTextFontSize
   let firstData = data[0] || 0
   let secondData = data[1] || 0
-  resultOption.series[0].data[1].value =  45 * firstData / (firstData + secondData)
-  resultOption.series[0].data[2].value =  45 * secondData / (firstData + secondData)
+  resultOption.series[0].data[1].value = 45 * firstData / (firstData + secondData)
+  resultOption.series[0].data[2].value = 45 * secondData / (firstData + secondData)
   return resultOption
 }
 

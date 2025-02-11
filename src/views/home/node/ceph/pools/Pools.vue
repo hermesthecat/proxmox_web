@@ -72,7 +72,7 @@
         @confirm="confirm"
         @cancel="showDelete = false"
         @close="showDelete = false"
-				title="销毁：Ceph池"
+        title="销毁：Ceph池"
       >
         <div slot="content">
           <div class="m-input__section">
@@ -157,7 +157,12 @@
 <script>
 import PageTemplate from "@src/components/page/PageTemplate";
 import CephHttp from "@src/views/home/node/ceph/http";
-import { byteToSize, flotToFixed, quickSort, dateFormat } from "@libs/utils/index";
+import {
+  byteToSize,
+  flotToFixed,
+  quickSort,
+  dateFormat,
+} from "@libs/utils/index";
 import CreatePools from "./CreatePools";
 import BaseIcon from "@src/components/icon/BaseIcon.vue";
 export default {
@@ -191,8 +196,8 @@ export default {
   },
   methods: {
     byteToSize,
-		flotToFixed,
-		dateFormat,
+    flotToFixed,
+    dateFormat,
     closeLog() {
       this.showLog = false;
       this.showDelete = false;
@@ -232,13 +237,13 @@ export default {
       if (this.rules["pool_id"].error) return;
       //删除池
       this.deleteCephPool(this.selectedList[0].pool_name).then((res) => {
-        this.showLog = true;//展示日志弹框
+        this.showLog = true; //展示日志弹框
         this.interVal = setInterval(() => {
           //查询状态
           this.queryStatus(
             this.db.addClusterStatusObj.node,
             this.db.addClusterStatusObj.upid
-          )
+          );
           //查询日志
           this.queryLog(
             this.db.addClusterStatusObj.node,

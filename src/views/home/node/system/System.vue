@@ -54,7 +54,7 @@
         @close="closeLog"
         :_style="{
           width: '900px',
-					maxHeight: '520px'
+          maxHeight: '520px',
         }"
         title="Task Viewer: 任务进度"
       >
@@ -70,13 +70,18 @@
           <template v-else>
             <page-template>
               <template slot="toolbar-right">
-                <m-input prop="expire" labelWidth="100px" label="选择日期" :__conStyle="{width: 'auto'}">
+                <m-input
+                  prop="expire"
+                  labelWidth="100px"
+                  label="选择日期"
+                  :__conStyle="{ width: 'auto' }"
+                >
                   <template slot="other">
                     <el-date-picker
                       v-model="datetime"
                       type="daterange"
-											format="yyyy-MM-dd hh:mm"
-											value-format="yyyy-MM-dd hh:mm"
+                      format="yyyy-MM-dd hh:mm"
+                      value-format="yyyy-MM-dd hh:mm"
                       placeholder="永久有效"
                     >
                     </el-date-picker>
@@ -86,17 +91,17 @@
                   type="primary"
                   @on-click="upateSystemLog()"
                   icon="el-icon-refresh"
-									:class="{'refresh': beginRefresh}"
+                  :class="{ refresh: beginRefresh }"
                   >更新</m-button
                 >
               </template>
               <div slot="page-content">
-								<div class="content">
-									<template v-for="item in db.nodeSystemLogList">
-										<div :key="item.n">{{item.t}}</div>
-									</template>
-								</div>
-							</div>
+                <div class="content">
+                  <template v-for="item in db.nodeSystemLogList">
+                    <div :key="item.n">{{ item.t }}</div>
+                  </template>
+                </div>
+              </div>
             </page-template>
           </template>
         </template>
@@ -112,7 +117,7 @@ import NodeSystemHttp from "@src/views/home/node/system/http";
 import PageTemplate from "@src/components/page/PageTemplate";
 import Dialog from "@src/components/dialog/Dialog";
 import MButton from "@src/components/button/Button";
-import { dateFormat } from '@libs/utils/index';
+import { dateFormat } from "@libs/utils/index";
 //import CreateReplicationModal from './CreateReplicationModal';
 export default {
   name: "Replication",
@@ -131,12 +136,18 @@ export default {
       isCreate: true,
       param: {},
       showLog: false,
-			interVal: null,
-			datetime: [dateFormat(new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd hh:mm:ss') , dateFormat(new Date(), 'yyyy-MM-dd hh:mm:ss')],
+      interVal: null,
+      datetime: [
+        dateFormat(
+          new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000),
+          "yyyy-MM-dd hh:mm:ss"
+        ),
+        dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss"),
+      ],
       text: "",
       done: false,
-			modalType: "progress",
-			beginRefresh: false
+      modalType: "progress",
+      beginRefresh: false,
     };
   },
   mounted() {
@@ -175,36 +186,38 @@ export default {
         this.operateService(operate);
         this.modalType = "progress";
       } else {
-				this.showLog = true;
-				let param = {
-				_dc: new Date().getTime(),
-				start: 0,
-				limit: 500,
-				since: this.datetime[0],
-				until: this.datetime[1],
-				service: this.selectedList[0].service,
-			} 
-			 this.querySystemLog(param);
+        this.showLog = true;
+        let param = {
+          _dc: new Date().getTime(),
+          start: 0,
+          limit: 500,
+          since: this.datetime[0],
+          until: this.datetime[1],
+          service: this.selectedList[0].service,
+        };
+        this.querySystemLog(param);
         this.modalType = "systemLog";
       }
-		},
-		upateSystemLog() {
-			  this.datetime[1] = dateFormat(new Date(), 'yyyy-MM-dd hh:mm:ss');
-	      let param = {
-				_dc: new Date().getTime(),
-				 start: 0,
-				 limit: 500,
-				 since: this.datetime[0],
-				 until: this.datetime[1],
-				 service: this.selectedList[0].service,
-			 } 
-			 this.beginRefresh = true;
-			 this.querySystemLog(param)
-			     .then(() => this.beginRefresh = false, () => this.beginRefresh = false);
-		},
+    },
+    upateSystemLog() {
+      this.datetime[1] = dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss");
+      let param = {
+        _dc: new Date().getTime(),
+        start: 0,
+        limit: 500,
+        since: this.datetime[0],
+        until: this.datetime[1],
+        service: this.selectedList[0].service,
+      };
+      this.beginRefresh = true;
+      this.querySystemLog(param).then(
+        () => (this.beginRefresh = false),
+        () => (this.beginRefresh = false)
+      );
+    },
     closeLog() {
-			this.showLog = false;
-			this.__init__();
+      this.showLog = false;
+      this.__init__();
     },
   },
   beforeDestroy() {
@@ -253,14 +266,14 @@ export default {
     background: #369;
   }
 }
-.content{
-	background: #000;
-	color: #fff;
-	font-family: 'Courier New', Courier, monospace;
-	max-height: 350px;
+.content {
+  background: #000;
+  color: #fff;
+  font-family: "Courier New", Courier, monospace;
+  max-height: 350px;
   margin: 25px 0px;
-	overflow-y: auto;
-	letter-spacing: 0vw;
+  overflow-y: auto;
+  letter-spacing: 0vw;
 }
 @keyframes progress {
   0% {
@@ -279,11 +292,11 @@ export default {
     width: 100%;
   }
 }
-.refresh{
-	animation: refresh-animation .5s infinite;
+.refresh {
+  animation: refresh-animation 0.5s infinite;
 }
 @keyframes refresh-animation {
-	0% {
+  0% {
     rotate: (0deg);
   }
   25% {
@@ -299,14 +312,14 @@ export default {
     rotate: (360deg);
   }
 }
-/deep/.tool-bar-right{
+/deep/.tool-bar-right {
   flex: 3;
-  text-align: right!important;
+  text-align: right !important;
 }
-/deep/.page-template__content{
-  height: auto!important;
+/deep/.page-template__content {
+  height: auto !important;
 }
-/deep/.page-template{
-  padding: 0px!important
+/deep/.page-template {
+  padding: 0px !important;
 }
 </style>

@@ -18,11 +18,11 @@
                 prop="name"
                 label="别名"
                 labelWidth="100px"
-								validateEvent
-								@validate="validate"
+                validateEvent
+                @validate="validate"
                 required
-								:show-error="rules['name'].error"
-								:error-msg="rules['name'].message"
+                :show-error="rules['name'].error"
+                :error-msg="rules['name'].message"
                 v-model="name"
                 :placeholder="'请输入别名'"
               />
@@ -32,11 +32,11 @@
                 label="IP/CIDR"
                 labelWidth="100px"
                 v-model="cidr"
-								validateEvent
-								@validate="validate"
+                validateEvent
+                @validate="validate"
                 required
-								:show-error="rules['cidr'].error"
-								:error-msg="rules['cidr'].message"
+                :show-error="rules['cidr'].error"
+                :error-msg="rules['cidr'].message"
                 :placeholder="'请输入IP/CIDR'"
               />
               <m-input
@@ -53,9 +53,9 @@
       </div>
     </div>
     <template slot="footer">
-      <m-button class="create-btn" type="primary" @on-click="confirm"
-        >{{modalType === 'edit' ? '修改' : '添加'}}</m-button
-      >
+      <m-button class="create-btn" type="primary" @on-click="confirm">{{
+        modalType === "edit" ? "修改" : "添加"
+      }}</m-button>
     </template>
   </Dialog>
 </template>
@@ -63,11 +63,15 @@
 <script>
 import Dialog from "@src/components/dialog/Dialog";
 import QemuFireWallHttp from "@src/views/home/qemu/firewall/http";
-import { flotToFixed, percentToFixed, byteToSize,
+import {
+  flotToFixed,
+  percentToFixed,
+  byteToSize,
   IP4_cidr_match,
   IP4_match,
   IP6_match,
-  IP6_cidr_match } from "@libs/utils/index";
+  IP6_cidr_match,
+} from "@libs/utils/index";
 import { PORTOCOLIST } from "@libs/enum/enum";
 export default {
   name: "CreateQemuWallAliasModal",
@@ -101,23 +105,23 @@ export default {
     isGroup: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   data() {
     return {
-			cidr: '',
-			name: '',
-      comment: '',
+      cidr: "",
+      name: "",
+      comment: "",
       node: {},
       rules: {
         name: {
           error: false,
           message: "",
-				},
-				cidr: {
-					error: false,
-          message: ""
-				}
+        },
+        cidr: {
+          error: false,
+          message: "",
+        },
       },
     };
   },
@@ -132,8 +136,8 @@ export default {
       //创建安全组
       if (this.isCreate) {
         Object.assign(this.$data, this.$options.data());
-
-      } else if (this.modalType === "edit") {//当类型不为group时编辑安全组
+      } else if (this.modalType === "edit") {
+        //当类型不为group时编辑安全组
         Object.assign(_this.$data, _this.$options.data());
         if (_this.param && String(_this.param.name)) {
           _this.queryFireWallAliasById(_this.param.name).then(() => {
@@ -155,29 +159,37 @@ export default {
         this.rules[prop].error = true;
         this.rules[prop].message = "不能为空";
         return;
-			}
-			if(prop=== 'cidr' && !(IP6_match.test(value) || IP4_match.test(value) || IP6_cidr_match.test(value) || IP4_cidr_match.test(value))) {
+      }
+      if (
+        prop === "cidr" &&
+        !(
+          IP6_match.test(value) ||
+          IP4_match.test(value) ||
+          IP6_cidr_match.test(value) ||
+          IP4_cidr_match.test(value)
+        )
+      ) {
         this.rules[prop].error = true;
         this.rules[prop].message = "cidr格式不正确";
         return;
-			}
+      }
     },
     validateAll() {
-      let props = ['cidr', 'name'];
+      let props = ["cidr", "name"];
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
     },
     confirm() {
       if (this.validateAll()) return;
       let param = {
-				cidr: this.cidr,
-				name: this.name,
-				comment: this.comment
+        cidr: this.cidr,
+        name: this.name,
+        comment: this.comment,
       };
       if (this.isAdvice) param.log = this.log;
       if (!this.iface) delete param.iface;
       if (this.isCreate) {
-         this.createFireWallAlias(param)
+        this.createFireWallAlias(param)
           .then((res) => {
             this.close();
           })
@@ -188,11 +200,11 @@ export default {
               })
               .then(() => this.close());
           });
-      }else if(this.modalType === 'edit'){
-				 param.digest = this.db.fireWallAliasObj.digest;
-				 param.rename = this.name;
-				 delete param.name;
-         this.updateFireWallAlias(this.param.name, param)
+      } else if (this.modalType === "edit") {
+        param.digest = this.db.fireWallAliasObj.digest;
+        param.rename = this.name;
+        delete param.name;
+        this.updateFireWallAlias(this.param.name, param)
           .then((res) => {
             this.close();
           })
@@ -203,15 +215,15 @@ export default {
               })
               .then(() => this.close());
           });
-      } else if(this.modalType === 'rule'){
+      } else if (this.modalType === "rule") {
         let param = {
-          type: 'group',
+          type: "group",
           action: this.action,
           iface: this.iface,
           enable: this.enable ? 1 : 0,
           comment: this.comment,
-        }
-         this.createFireWall(param)
+        };
+        this.createFireWall(param)
           .then((res) => {
             this.close();
           })
@@ -222,10 +234,10 @@ export default {
               })
               .then(() => this.close());
           });
-      }else if(this.modalType === 'edit' && this.isGroup) {
-         param.digest = this.db.fireWallRuleObj.digest;
-         param.type = 'group'
-         this.updateFireWall(this.param.pos, param)
+      } else if (this.modalType === "edit" && this.isGroup) {
+        param.digest = this.db.fireWallRuleObj.digest;
+        param.type = "group";
+        this.updateFireWall(this.param.pos, param)
           .then((res) => {
             this.close();
           })

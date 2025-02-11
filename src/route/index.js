@@ -137,9 +137,9 @@ const router = new VueRoute({
                 require.ensure([], () => r(require('@view/home/dataCenter/access/apitoken/ApiToken.vue')), 'DataCenter')
               },
               meta:
-                {
-                  title: 'Api Tokens'
-                }
+              {
+                title: 'Api Tokens'
+              }
             },
             {
               path: 'access/group',
@@ -148,21 +148,21 @@ const router = new VueRoute({
                 require.ensure([], () => r(require('@view/home/dataCenter/access/group/Group.vue')), 'DataCenter')
               },
               meta:
-                {
-                  title: 'groups'
-                }
+              {
+                title: 'groups'
+              }
             }
             ,
             {
               path: 'access/pool',
               name: 'access-pool',
               component: r => {
-                  require.ensure([], () => r(require('@view/home/dataCenter/access/pool/Pool.vue')), 'DataCenter')
+                require.ensure([], () => r(require('@view/home/dataCenter/access/pool/Pool.vue')), 'DataCenter')
               },
               meta:
-                {
-                  title: 'pools'
-                }
+              {
+                title: 'pools'
+              }
             }
             ,
             {
@@ -172,9 +172,9 @@ const router = new VueRoute({
                 require.ensure([], () => r(require('@view/home/dataCenter/access/role/Role.vue')), 'DataCenter')
               },
               meta:
-                {
-                  title: 'roles'
-                }
+              {
+                title: 'roles'
+              }
             }
             ,
             {
@@ -184,9 +184,9 @@ const router = new VueRoute({
                 require.ensure([], () => r(require("@view/home/dataCenter/access/domains/Domains.vue")), 'DataCenter')
               },
               meta:
-                {
-                  title: 'domains'
-                }
+              {
+                title: 'domains'
+              }
             }
             ,
             {
@@ -196,9 +196,9 @@ const router = new VueRoute({
                 require.ensure([], () => r(require("@view/home/dataCenter/ha/Ha.vue")), 'DataCenter')
               },
               meta:
-                {
-                  title: 'HA'
-                }
+              {
+                title: 'HA'
+              }
             }
             ,
             {
@@ -208,9 +208,9 @@ const router = new VueRoute({
                 require.ensure([], () => r(require("@view/home/dataCenter/ha/hagroup/HaGroup.vue")), 'DataCenter')
               },
               meta:
-                {
-                  title: 'groups'
-                }
+              {
+                title: 'groups'
+              }
             }
             ,
             {
@@ -220,9 +220,9 @@ const router = new VueRoute({
                 require.ensure([], () => r(require("@view/home/dataCenter/acme/Acme.vue")), 'DataCenter')
               },
               meta:
-                {
-                  title: 'Acme'
-                }
+              {
+                title: 'Acme'
+              }
             }
             ,
             {
@@ -232,9 +232,9 @@ const router = new VueRoute({
                 require.ensure([], () => r(require("@view/home/dataCenter/firewall/Firewall.vue")), 'DataCenter')
               },
               meta:
-                {
-                  title: 'firewall'
-                }
+              {
+                title: 'firewall'
+              }
             }
             ,
             {
@@ -244,9 +244,9 @@ const router = new VueRoute({
                 require.ensure([], () => r(require("@view/home/dataCenter/firewall/options/FirOptions.vue")), 'DataCenter')
               },
               meta:
-                {
-                  title: 'option'
-                }
+              {
+                title: 'option'
+              }
             },
             {
               path: 'firewall/group',
@@ -255,9 +255,9 @@ const router = new VueRoute({
                 require.ensure([], () => r(require("@view/home/dataCenter/firewall/group/FireWallGroup.vue")), 'DataCenter')
               },
               meta:
-                {
-                  title: 'groups'
-                }
+              {
+                title: 'groups'
+              }
             }
             ,
             {
@@ -267,9 +267,9 @@ const router = new VueRoute({
                 require.ensure([], () => r(require("@view/home/dataCenter/firewall/alias/FireWallAlias.vue")), 'DataCenter')
               },
               meta:
-                {
-                  title: 'firewall-alias'
-                }
+              {
+                title: 'firewall-alias'
+              }
             }
             ,
             {
@@ -279,9 +279,9 @@ const router = new VueRoute({
                 require.ensure([], () => r(require("@view/home/dataCenter/firewall/ipset/IpSet.vue")), 'DataCenter')
               },
               meta:
-                {
-                  title: 'IPSet'
-                }
+              {
+                title: 'IPSet'
+              }
             }
             ,
             {
@@ -291,9 +291,9 @@ const router = new VueRoute({
                 require.ensure([], () => r(require("@view/home/dataCenter/ceph/Ceph.vue")), 'DataCenter')
               },
               meta:
-                {
-                  title: 'Ceph'
-                }
+              {
+                title: 'Ceph'
+              }
             }
           ]
         },
@@ -304,9 +304,9 @@ const router = new VueRoute({
             require.ensure([], () => r(require("@view/home/node/index.vue")), 'Node')
           },
           meta:
-            {
-              title: 'node'
-            }
+          {
+            title: 'node'
+          }
           ,
           children: [
             {
@@ -807,8 +807,8 @@ const router = new VueRoute({
             require.ensure([], () => r(require("@view/home/storage/index.vue")), 'Storage')
           },
           meta: {
-              title: 'storage'
-            }
+            title: 'storage'
+          }
           ,
           children: [
             {

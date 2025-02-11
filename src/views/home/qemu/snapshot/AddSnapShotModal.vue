@@ -1,10 +1,10 @@
 <template>
-	<m-dialog
+  <m-dialog
     :visible="visible"
     @cancel="close()"
     @confirm="confirm()"
     :title="title"
-		:confirmText="isCreate ? '做快照' : '编辑快照'"
+    :confirmText="isCreate ? '做快照' : '编辑快照'"
     :_style="{ width: '956px' }"
     @close="$emit('close')"
   >
@@ -26,30 +26,30 @@
                 :error-msg="rules.name.message"
                 v-model="name"
                 required
-								:disabled="!isCreate"
+                :disabled="!isCreate"
                 placeholder="请输入名称"
               />
-							 <m-checkbox
+              <m-checkbox
                 label="包括内存"
                 v-model="vmstate"
-								v-show="isCreate"
+                v-show="isCreate"
                 labelWidth="100px"
-								v-if="node && node.type !== 'lxc'"
+                v-if="node && node.type !== 'lxc'"
               ></m-checkbox>
-							 <m-input
+              <m-input
                 type="text"
                 prop="snaptime"
                 label="时间戳"
                 labelWidth="100px"
                 v-model="snaptime"
-								:disabled="!isCreate"
-								v-show="!isCreate"
-								:__conStyle="{
-									width: '250px'
-								}"
+                :disabled="!isCreate"
+                v-show="!isCreate"
+                :__conStyle="{
+                  width: '250px',
+                }"
                 placeholder="请输入名称"
               />
-							<m-input
+              <m-input
                 type="textarea"
                 prop="description"
                 labelWidth="100px"
@@ -60,190 +60,203 @@
             </dd>
           </dl>
         </div>
-				<div class="m-form__section" v-show="!isCreate">
+        <div class="m-form__section" v-show="!isCreate">
           <dl>
             <dt>配置信息</dt>
             <dd>
-							<el-table :data="qemuObjList">
-								<el-table-column label="key" prop="key"></el-table-column>
-								<el-table-column label="value" prop="value"></el-table-column>
-							</el-table>
+              <el-table :data="qemuObjList">
+                <el-table-column label="key" prop="key"></el-table-column>
+                <el-table-column label="value" prop="value"></el-table-column>
+              </el-table>
             </dd>
           </dl>
-				</div>
+        </div>
       </div>
-			<m-dialog :visible="showDeleteLog" @close="closeDeleteLog" title="进度">
-				<template slot="content">
-					 <div class="progress" v-if="!done">
-              <div class="progress-inner"></div>
-            </div>
-            <div v-else>
-              <div class="progress">Done!</div>
-            </div>
-				</template>
-				<template slot="footer"><span></span></template>
-			</m-dialog>
+      <m-dialog :visible="showDeleteLog" @close="closeDeleteLog" title="进度">
+        <template slot="content">
+          <div class="progress" v-if="!done">
+            <div class="progress-inner"></div>
+          </div>
+          <div v-else>
+            <div class="progress">Done!</div>
+          </div>
+        </template>
+        <template slot="footer"><span></span></template>
+      </m-dialog>
     </div>
-	</m-dialog>
+  </m-dialog>
 </template>
 
 <script>
 import SnapShotHttp from "@src/views/home/qemu/snapshot/http";
-import { formatDateForWeek } from '@libs/utils/index';
+import { formatDateForWeek } from "@libs/utils/index";
 export default {
-	name: 'AddSnapShotModal',
-	mixins: [SnapShotHttp],
-	props: {
-		visible: {
-			type: Boolean,
-			default: false
-		},
-		title: {
-			type: String,
-			default: ''
-		},
-		isCreate: {
-			type: Boolean,
-			default: false
-		},
-		param: {
-			type: Object,
-			default: () => {
-				return {}
-			}
-		}
-	},
-	data() {
-		return {
-			name: '',
-			vmstate: false,
-			description: '',
-			interVal: null,
-			showDeleteLog: false,//是否展示进度
-			done: true,
-			snaptime: '',
-			qemuObjList: [],
-			rules: {
-				name: {
-					error: false,
-					message: ''
-				}
-			}
-		}
-	},
-	mounted() {
-		this.__init__();//调用初始化操作
-	},
-	methods: {
-		formatDateForWeek,
-		__init__() {
-			let _this = this;
-			if(!_this.isCreate) {
-				_this.queryVmConfig({_dc: new Date().getTime()}, _this.param.name)
-				     .then(res => {
-                 _this.qemuObjList = Object.keys(_this.db.qemuObj).map(key => {
-                     return {
-											 key,
-                       value: _this.db.qemuObj[key]
-										 }
-								 })
-						 })
-				if(_this.param) {
-					Object.keys(_this.param).forEach(key => {
-						if(Object.prototype.toString.call(_this[key]) === "[object Undefined]") return;
-						if(key === 'vmstate') _this.vmstate = _this.param[key] === 1 ? true : false;
-						else if(key === 'snaptime') _this.snaptime  = formatDateForWeek(_this.param.snaptime * 1000, 'w dd MM月 yyyy hh:mm:ss')
-						else _this[key] = _this.param[key]
-					})
-				}
-			}
-		},
-		/**
-		 * 校验
-		 * @param prop 要校验的字段
-		*/
-		validate(prop) {
-			let value = String(this[prop]).trim();
-			this.rules[prop].error = false;
-			this.rules[prop].message = '';
-			if(/^\s*$/.test(value)) {
-				this.rules[prop].error = true;
-				this.rules[prop].message = '不能为空!';
-				return;
-			}
-		},
-		validateAll() {
-			this.validate('name')
-      return this.rules['name'].error === true;
-		},
-		/**
-			*确定
-		*/
-		confirm() {
-			 if(this.validateAll()) return;
-			if(!this.isCreate) {
-				let param = {
-			  "snapname": this.name,
-				"description": this.description
-				}
-				this.updateSnapShot(param.snapname, param)
-				    .then(res => {
-							this.close();
-						})
-			     .catch(res => {
-						this.$confirm.confirm({
-							msg: res
-						}).then(res => {
-							this.close();
-						})
-					})
-			}
-			if(this.isCreate){
-				let param = {
-			  "snapname": this.name,
-				"vmstate": this.vmstate ? 1 : 0,
-				"description": this.description
-				}
-				if(this.node.type === 'lxc') delete param.vmstate
-				this.addSnapShot(param)
-			    .catch(res => {
-						this.$confirm.confirm({
-							msg: res
-						}).then(res => {
-							this.close();
-						})
-					})
-			}
-		},
-		/**
-		 * 关闭弹框
-		*/
-		close() {
-		   this.$emit('close');
-		},
-		closeDeleteLog() {
-			this.showDeleteLog = false;
-			if(this.interVal) {
-				clearInterval(this.interVal);
-				this.interVal = null;
-			}
-			this.close();
-		}
-	},
-		beforeDestroy() {
-		if(this.interVal) {
-			clearInterval(this.interVal);
-			this.interVal = null;
-		}
-	},
-	watch: {
-		visible: function(newVal, oldVal) {
-			if(newVal !== oldVal) {
-				return newVal;
-			}
-		}
-	}
-}
+  name: "AddSnapShotModal",
+  mixins: [SnapShotHttp],
+  props: {
+    visible: {
+      type: Boolean,
+      default: false,
+    },
+    title: {
+      type: String,
+      default: "",
+    },
+    isCreate: {
+      type: Boolean,
+      default: false,
+    },
+    param: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
+  },
+  data() {
+    return {
+      name: "",
+      vmstate: false,
+      description: "",
+      interVal: null,
+      showDeleteLog: false, //是否展示进度
+      done: true,
+      snaptime: "",
+      qemuObjList: [],
+      rules: {
+        name: {
+          error: false,
+          message: "",
+        },
+      },
+    };
+  },
+  mounted() {
+    this.__init__(); //调用初始化操作
+  },
+  methods: {
+    formatDateForWeek,
+    __init__() {
+      let _this = this;
+      if (!_this.isCreate) {
+        _this
+          .queryVmConfig({ _dc: new Date().getTime() }, _this.param.name)
+          .then((res) => {
+            _this.qemuObjList = Object.keys(_this.db.qemuObj).map((key) => {
+              return {
+                key,
+                value: _this.db.qemuObj[key],
+              };
+            });
+          });
+        if (_this.param) {
+          Object.keys(_this.param).forEach((key) => {
+            if (
+              Object.prototype.toString.call(_this[key]) ===
+              "[object Undefined]"
+            )
+              return;
+            if (key === "vmstate")
+              _this.vmstate = _this.param[key] === 1 ? true : false;
+            else if (key === "snaptime")
+              _this.snaptime = formatDateForWeek(
+                _this.param.snaptime * 1000,
+                "w dd MM月 yyyy hh:mm:ss"
+              );
+            else _this[key] = _this.param[key];
+          });
+        }
+      }
+    },
+    /**
+     * 校验
+     * @param prop 要校验的字段
+     */
+    validate(prop) {
+      let value = String(this[prop]).trim();
+      this.rules[prop].error = false;
+      this.rules[prop].message = "";
+      if (/^\s*$/.test(value)) {
+        this.rules[prop].error = true;
+        this.rules[prop].message = "不能为空!";
+        return;
+      }
+    },
+    validateAll() {
+      this.validate("name");
+      return this.rules["name"].error === true;
+    },
+    /**
+     *确定
+     */
+    confirm() {
+      if (this.validateAll()) return;
+      if (!this.isCreate) {
+        let param = {
+          snapname: this.name,
+          description: this.description,
+        };
+        this.updateSnapShot(param.snapname, param)
+          .then((res) => {
+            this.close();
+          })
+          .catch((res) => {
+            this.$confirm
+              .confirm({
+                msg: res,
+              })
+              .then((res) => {
+                this.close();
+              });
+          });
+      }
+      if (this.isCreate) {
+        let param = {
+          snapname: this.name,
+          vmstate: this.vmstate ? 1 : 0,
+          description: this.description,
+        };
+        if (this.node.type === "lxc") delete param.vmstate;
+        this.addSnapShot(param).catch((res) => {
+          this.$confirm
+            .confirm({
+              msg: res,
+            })
+            .then((res) => {
+              this.close();
+            });
+        });
+      }
+    },
+    /**
+     * 关闭弹框
+     */
+    close() {
+      this.$emit("close");
+    },
+    closeDeleteLog() {
+      this.showDeleteLog = false;
+      if (this.interVal) {
+        clearInterval(this.interVal);
+        this.interVal = null;
+      }
+      this.close();
+    },
+  },
+  beforeDestroy() {
+    if (this.interVal) {
+      clearInterval(this.interVal);
+      this.interVal = null;
+    }
+  },
+  watch: {
+    visible: function (newVal, oldVal) {
+      if (newVal !== oldVal) {
+        return newVal;
+      }
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

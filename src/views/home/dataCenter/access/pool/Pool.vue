@@ -1,18 +1,25 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-       <m-button
-            type="primary"
-            icon="el-icon-plus"
-						@on-click="showModal('create')"
-            >创建</m-button>
-			<m-button type="info" @on-click="showModal('edit')" icon="el-icon-edit" :disabled="selectedList.length !== 1">编辑</m-button>
+      <m-button
+        type="primary"
+        icon="el-icon-plus"
+        @on-click="showModal('create')"
+        >创建</m-button
+      >
+      <m-button
+        type="info"
+        @on-click="showModal('edit')"
+        icon="el-icon-edit"
+        :disabled="selectedList.length !== 1"
+        >编辑</m-button
+      >
       <m-button
         type="danger"
         v-confirm="{
-            msg: `你确定你要删除已选择项吗?`,
-            ok: () => handleDelete()
-				}"
+          msg: `你确定你要删除已选择项吗?`,
+          ok: () => handleDelete(),
+        }"
         icon="el-icon-delete"
         :disabled="selectedList.length <= 0"
         >删除</m-button
@@ -26,10 +33,7 @@
       >
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="名称" prop="poolid"></el-table-column>
-        <el-table-column
-          label="备注"
-          prop="comment"
-        ></el-table-column>
+        <el-table-column label="备注" prop="comment"></el-table-column>
       </el-table>
       <create-access-pool-modal
         :title="title"
@@ -38,7 +42,10 @@
         :visible="visible"
         v-if="visible"
         :modal-type="type"
-        @close="visible = false; __init__()"
+        @close="
+          visible = false;
+          __init__();
+        "
       ></create-access-pool-modal>
     </div>
   </page-template>
@@ -47,14 +54,14 @@
 import DataCenterAccessHttp from "@src/views/home/dataCenter/access/http";
 import PageTemplate from "@src/components/page/PageTemplate";
 import MButton from "@src/components/button/Button";
-import CreateAccessPoolModal from './CreateAccessPoolModal';
+import CreateAccessPoolModal from "./CreateAccessPoolModal";
 export default {
   name: "Access",
   mixins: [DataCenterAccessHttp],
   components: {
     PageTemplate,
     MButton,
-    CreateAccessPoolModal
+    CreateAccessPoolModal,
   },
   data() {
     return {
@@ -92,11 +99,11 @@ export default {
     },
     handleDelete() {
       this.deletePoolById();
-		},
-		handleCommand(command) {
-			 this.type = command;
-			 this.visible = true;
-		}
+    },
+    handleCommand(command) {
+      this.type = command;
+      this.visible = true;
+    },
   },
 };
 </script>

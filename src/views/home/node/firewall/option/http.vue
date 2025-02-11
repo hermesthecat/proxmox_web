@@ -1,8 +1,8 @@
 <script>
-import { deepCopy} from '@libs/utils/index';
+import { deepCopy } from "@libs/utils/index";
 export default {
-	name: 'NodeFireWallHttp',
-	data() {
+  name: "NodeFireWallHttp",
+  data() {
     return {
       node: "",
     };
@@ -10,20 +10,21 @@ export default {
   mounted() {
     let last = window.localStorage.getItem("lastsel") || "[]";
     this.node = (JSON.parse(last).node && JSON.parse(last).node) || "";
-	},
-	methods: {
-		queryNodeFireWallOption(param) {
-			return this.$http.get(`json/nodes/${this.node}/firewall/options`, param)
-			           .then(res => {
-									 if(res.data) {
-										 this.updateDbObject({
-											 name: 'nodeFireWallOptionObj',
-											 data: res.data
-										 })
-									 }
-								 })
-		},
-		 //编辑Option
+  },
+  methods: {
+    queryNodeFireWallOption(param) {
+      return this.$http
+        .get(`json/nodes/${this.node}/firewall/options`, param)
+        .then((res) => {
+          if (res.data) {
+            this.updateDbObject({
+              name: "nodeFireWallOptionObj",
+              data: res.data,
+            });
+          }
+        });
+    },
+    //编辑Option
     modifyOptions(param) {
       let event = this.createEvent("action.firewall.update");
       return this.$http
@@ -40,6 +41,6 @@ export default {
           return Promise.reject(res);
         });
     },
-	}
-}
+  },
+};
 </script>

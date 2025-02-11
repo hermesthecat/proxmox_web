@@ -1,79 +1,91 @@
 <template>
   <div class="m-tree" ref="m-tree">
-     <div class="m-scroll-wrapper  tree-scroll-container">
-        <div class="m-scroll-view tree-scroll-view" @scroll="onScroll">
-          <ul class="m-tree-content">
-        <transition name="el-zoom-in-top">
-          <li v-if="renderData && renderData.data && !renderData.data.parentId">
-            <span
-                class="m-tree-text"
-                :class="
-                renderData.data.selected && renderData.data.selected
-                  ? 'is-selected'
-                  : ''
-              "
-                @click.stop="handleSelect(renderData.data)"
+    <div class="m-scroll-wrapper tree-scroll-container">
+      <div class="m-scroll-view tree-scroll-view" @scroll="onScroll">
+        <ul class="m-tree-content">
+          <transition name="el-zoom-in-top">
+            <li
+              v-if="renderData && renderData.data && !renderData.data.parentId"
             >
               <span
-                  :class="
-                  renderData.data.expanded
-                    ? 'm-tree-expander el-icon-caret-right'
-                    : 'm-tree-expander collapse el-icon-caret-right'
+                class="m-tree-text"
+                :class="
+                  renderData.data.selected && renderData.data.selected
+                    ? 'is-selected'
+                    : ''
                 "
+                @click.stop="handleSelect(renderData.data)"
+              >
+                <span
+                  :class="
+                    renderData.data.expanded
+                      ? 'm-tree-expander el-icon-caret-right'
+                      : 'm-tree-expander collapse el-icon-caret-right'
+                  "
                   @click.stop="handleExpanded(renderData.data)"
-              ></span>
-              <i :class="renderData.data.iconCls" class="m-icon-custom"></i>
-              <span>{{ renderData.data.text }}</span>
-            </span>
-            <div class="m-tree_li"></div>
-            <div class="m-tree-child" v-if="renderData.data.expanded">
-              <transition-group name="el-zoom-in-top">
-                <ul v-for="(tree, index) of renderData.childNodes" :key="tree.data.id">
-                  <li v-if="tree.data && tree.data.parentId === renderData.data.id">
-                    <span class="m-tree-text" :class="
-                        tree.data.selected && tree.data.selected
-                          ? 'is-selected'
-                          : ''"
-                          @click.stop="handleSelect(tree.data)"
+                ></span>
+                <i :class="renderData.data.iconCls" class="m-icon-custom"></i>
+                <span>{{ renderData.data.text }}</span>
+              </span>
+              <div class="m-tree_li"></div>
+              <div class="m-tree-child" v-if="renderData.data.expanded">
+                <transition-group name="el-zoom-in-top">
+                  <ul
+                    v-for="(tree, index) of renderData.childNodes"
+                    :key="tree.data.id"
+                  >
+                    <li
+                      v-if="
+                        tree.data && tree.data.parentId === renderData.data.id
+                      "
                     >
                       <span
-                          :class="
-                          tree.data.expanded
-                            ? 'm-tree-expander el-icon-caret-right'
-                            : 'm-tree-expander collapse el-icon-caret-right'
+                        class="m-tree-text"
+                        :class="
+                          tree.data.selected && tree.data.selected
+                            ? 'is-selected'
+                            : ''
                         "
+                        @click.stop="handleSelect(tree.data)"
+                      >
+                        <span
+                          :class="
+                            tree.data.expanded
+                              ? 'm-tree-expander el-icon-caret-right'
+                              : 'm-tree-expander collapse el-icon-caret-right'
+                          "
                           v-if="tree.childNodes && tree.childNodes.length > 0"
                           @click.stop="handleExpanded(tree.data)"
-                      ></span>
-                      <i :class="tree.data.iconCls" class="m-icon-custom"></i>
-                      <span>{{ tree.data.text }}</span>
-                    </span>
-                    <div class="m-tree_li"></div>
-                    <transition name="el-zoom-in-top">
-                      <m-sub-tree
+                        ></span>
+                        <i :class="tree.data.iconCls" class="m-icon-custom"></i>
+                        <span>{{ tree.data.text }}</span>
+                      </span>
+                      <div class="m-tree_li"></div>
+                      <transition name="el-zoom-in-top">
+                        <m-sub-tree
                           :tree-data="tree.childNodes"
                           :parent-id="tree.id"
                           ref="mSubTree"
                           v-show="tree.childNodes && tree.childNodes.length > 0"
                           @reset-select="handleSelect"
                           v-if="tree.data.expanded"
-                      ></m-sub-tree>
-                    </transition>
-                  </li>
-                </ul>
-              </transition-group>
-            </div>
-          </li>
-        </transition>
-          </ul>
-        </div>
-        <div
-          class="m-scroll-bar"
-          v-show="showScrollbar"
-          :style="{ top: scrollTop + 'px', height: scrollLength + 'px' }"
-          @mousedown="onScrollBarMouseDown($event)"
-        ></div>
-     </div>
+                        ></m-sub-tree>
+                      </transition>
+                    </li>
+                  </ul>
+                </transition-group>
+              </div>
+            </li>
+          </transition>
+        </ul>
+      </div>
+      <div
+        class="m-scroll-bar"
+        v-show="showScrollbar"
+        :style="{ top: scrollTop + 'px', height: scrollLength + 'px' }"
+        @mousedown="onScrollBarMouseDown($event)"
+      ></div>
+    </div>
   </div>
 </template>
 

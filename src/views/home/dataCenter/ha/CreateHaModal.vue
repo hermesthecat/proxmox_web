@@ -25,7 +25,7 @@
                 @on-change="handleVmidSelect"
                 required
                 v-model="vmid"
-								:disabled="!isCreate"
+                :disabled="!isCreate"
                 placeholder="请选择VM"
               >
                 <m-option
@@ -45,8 +45,12 @@
                       </div>
                     </template>
                     <div class="table-tr">
-                      <span class="table-td" :title="item.vmid">{{ item.vmid }}</span>
-                      <span class="table-td" :title="item.name">{{ item.name }}</span>
+                      <span class="table-td" :title="item.vmid">{{
+                        item.vmid
+                      }}</span>
+                      <span class="table-td" :title="item.name">{{
+                        item.name
+                      }}</span>
                       <span class="table-td">
                         {{ item.node }}
                       </span>
@@ -91,8 +95,12 @@
                       </div>
                     </template>
                     <div class="table-tr">
-                      <span class="table-td" :title="item.group">{{ item.group }}</span>
-                      <span class="table-td" :title="item.comment">{{ item.comment }}</span>
+                      <span class="table-td" :title="item.group">{{
+                        item.group
+                      }}</span>
+                      <span class="table-td" :title="item.comment">{{
+                        item.comment
+                      }}</span>
                       <span class="table-td" :title="item.users">
                         {{ item.users }}
                       </span>
@@ -244,15 +252,14 @@ export default {
     async __init__() {
       if (this.isCreate) {
         Object.assign(this.$data, this.$options.data());
-        await this.queryResource()
-                  .then(() => {
-                    this.vmList = this.db.resources.filter(it => it.type === 'qemu')
-                  });
+        await this.queryResource().then(() => {
+          this.vmList = this.db.resources.filter((it) => it.type === "qemu");
+        });
         await this.queryGroups();
       } else {
         Object.assign(this.$data, this.$options.data());
         Object.keys(this.param).forEach((it) => {
-					if(it === 'sid') this.vmid = this.param[it];
+          if (it === "sid") this.vmid = this.param[it];
           else this[it] = this.param[it];
         });
       }

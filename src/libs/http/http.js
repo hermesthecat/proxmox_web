@@ -23,7 +23,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * **/
 
 import axios from 'axios';
-import {stringify} from 'qs';
+import { stringify } from 'qs';
 import { Loading } from 'element-ui'
 
 export default class Http {
@@ -37,10 +37,10 @@ export default class Http {
    * @param isMock 区分哪些请求需要mock，比如：url以约定'/mock'开头的请求，使用mock等方式。
    */
   constructor({
-                onShowSuccessTip = (/* response, successTip  */) => true,
-                onShowErrorTip = (/* err, errorTip */) => true,
-                isMock = (/* url, data, method, options */) => false,
-              } = {}) {
+    onShowSuccessTip = (/* response, successTip  */) => true,
+    onShowErrorTip = (/* err, errorTip */) => true,
+    isMock = (/* url, data, method, options */) => false,
+  } = {}) {
     this.instance = axios.create();
     this.mockInstance = axios.create();
     this.setDefaultOption(this.instance);
@@ -70,7 +70,7 @@ export default class Http {
    * @param method
    * @param options 配置数据，最常用是【successTip】属性，也可以吧url data method覆盖掉；
    * @returns {Promise}
-   */ 
+   */
   ajax(url, d = {}, method = 'get', options = {}) {
     //  let loadingInstance = null;
     //  if(url.indexOf('resources') < 0 && url.indexOf('ticket') <0 && url.indexOf('domains')<0) {
@@ -171,7 +171,7 @@ export default class Http {
         const isCanceled = err && err.message && err.message.canceled;
         if (isCanceled) return; // 如果是用户主动cancel，不做任何处理，不会触发任何函数
         this.onShowErrorTip(err, errorTip);
-        if(err.response && err.response.data && err.response.data && err.response.data.errors) reject(err.response.data.errors);
+        if (err.response && err.response.data && err.response.data && err.response.data.errors) reject(err.response.data.errors);
         else reject(err.response && err.response.statusText && err.response.statusText);
         //loadingInstance && loadingInstance.close();
       }).catch(error => {

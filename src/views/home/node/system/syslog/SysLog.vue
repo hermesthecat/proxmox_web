@@ -1,6 +1,6 @@
 <template>
   <page-template>
-    <div slot="toolbar-left" style="flex: 2 1 auto;">
+    <div slot="toolbar-left" style="flex: 2 1 auto">
       <span class="tab" @click="changeTab">
         <span
           class="tab-item"
@@ -12,7 +12,13 @@
           >选择时间范围</span
         >
       </span>
-      <m-input prop="expire" labelWidth="60px" label="选择日期" style="vertical-align: top;" :__conStyle="{width: '355px'}">
+      <m-input
+        prop="expire"
+        labelWidth="60px"
+        label="选择日期"
+        style="vertical-align: top"
+        :__conStyle="{ width: '355px' }"
+      >
         <template slot="other">
           <el-date-picker
             v-model="datetime"
@@ -20,12 +26,19 @@
             format="yyyy-MM-dd"
             value-format="yyyy-MM-dd"
             placeholder="选择日期"
-						:disabled="livemode"
+            :disabled="livemode"
           >
           </el-date-picker>
         </template>
       </m-input>
-			<m-button type="primary" style="vertical-align: middle;" @on-click="handleUpdate()" icon="el-icon-refresh" :disabled="livemode">更新</m-button>
+      <m-button
+        type="primary"
+        style="vertical-align: middle"
+        @on-click="handleUpdate()"
+        icon="el-icon-refresh"
+        :disabled="livemode"
+        >更新</m-button
+      >
     </div>
     <div slot="page-content">
       <ace-editor
@@ -40,7 +53,7 @@
 import AceEditor from "@src/components/ace/AceEditor";
 import NodeSystemLogHttp from "@view/home/node/system/syslog/http";
 import PageTemplate from "@src/components/page/PageTemplate";
-import { dateFormat } from '@libs/utils/index';
+import { dateFormat } from "@libs/utils/index";
 export default {
   name: "NodeSystemLog",
   mixins: [NodeSystemLogHttp],
@@ -50,15 +63,15 @@ export default {
       oldContent: "",
       startcursor: "",
       endcursor: "",
-			livemode: true,
-			ele: null,
+      livemode: true,
+      ele: null,
       datetime: [
         dateFormat(
           new Date(new Date().getTime() - 4 * 24 * 60 * 60 * 1000),
           "yyyy-MM-dd hh:mm:ss"
         ),
         dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss"),
-      ]
+      ],
     };
   },
   components: {
@@ -96,8 +109,8 @@ export default {
       }
     },
     updateSysLog() {
-			let _this = this;
-			if(!_this.livemode) return;
+      let _this = this;
+      if (!_this.livemode) return;
       if (this.isTop()) {
         _this
           .querySysLog({
@@ -118,15 +131,19 @@ export default {
             _this.hostContent = _this.hostContent + res.join("\n");
           });
       }
-		},
-		handleUpdate() {
-			let _this = this;
-			 _this
-				.querySysLog({ _dc: new Date().getTime(), since: new Date(this.datetime[0]).getTime() / 1000, until: new Date(this.datetime[1]).getTime() / 1000})
-				.then((res) => {
-            _this.hostContent = res.join("\n");
+    },
+    handleUpdate() {
+      let _this = this;
+      _this
+        .querySysLog({
+          _dc: new Date().getTime(),
+          since: new Date(this.datetime[0]).getTime() / 1000,
+          until: new Date(this.datetime[1]).getTime() / 1000,
+        })
+        .then((res) => {
+          _this.hostContent = res.join("\n");
         });
-		},
+    },
     isBoottom() {
       let el = document.querySelector(".ace_scrollbar ");
       return el.clientHeight + el.scrollTop - Math.abs(el.scrollHeight) >= 0;
@@ -141,12 +158,12 @@ export default {
         _this.$el.parentElement.clientHeight - 100 + "px";
     },
     changeTab(e) {
-			this.livemode = e.target.innerText === "Live模式";
-			if(this.livemode) {
-         this.__init__();
-			} else {
-				this.handleUpdate();
-			}
+      this.livemode = e.target.innerText === "Live模式";
+      if (this.livemode) {
+        this.__init__();
+      } else {
+        this.handleUpdate();
+      }
     },
   },
   beforeDestroy() {
@@ -174,7 +191,7 @@ export default {
   color: #fff;
   background: #409eff;
 }
-/deep/.tool-bar-left{
+/deep/.tool-bar-left {
   width: auto;
 }
 </style>

@@ -37,7 +37,10 @@ export default {
     //渲染dropmenu
     renderDropMenu() {
       if (this.isOpen && this.$refs["dropdown-menu"]) {
-        const el = document.documentElement.scrollLeft || window.pageXOffset || document.body.scrollLeft;
+        const el =
+          document.documentElement.scrollLeft ||
+          window.pageXOffset ||
+          document.body.scrollLeft;
         const { left, top } =
           this.$refs &&
           this.$refs["dropdown"] &&

@@ -5,7 +5,7 @@
         trigger="click"
         icon="fa fa-user"
         @on-change="handleCommand"
-         style="
+        style="
           width: 8rem;
           height: 30px;
           line-height: 30px;
@@ -20,7 +20,9 @@
             >添加</m-button
           >
         </span>
-        <m-dropdown-item icon="fa fa-users" command="group">权限组</m-dropdown-item>
+        <m-dropdown-item icon="fa fa-users" command="group"
+          >权限组</m-dropdown-item
+        >
         <m-dropdown-item icon="fa fa-user" command="user"
           >用户权限</m-dropdown-item
         >
@@ -57,7 +59,10 @@
         :visible="visible"
         v-if="visible"
         :modal-type="type"
-        @close="visible = false; __init__()"
+        @close="
+          visible = false;
+          __init__();
+        "
       ></create-access-modal>
     </div>
   </page-template>
@@ -66,14 +71,14 @@
 import StorageAccessHttp from "@src/views/home/qemu/access/http";
 import PageTemplate from "@src/components/page/PageTemplate";
 import MButton from "@src/components/button/Button";
-import CreateAccessModal from './CreateAccessModal';
+import CreateAccessModal from "./CreateAccessModal";
 export default {
   name: "StorageAccess",
   mixins: [StorageAccessHttp],
   components: {
     PageTemplate,
     MButton,
-    CreateAccessModal
+    CreateAccessModal,
   },
   data() {
     return {
@@ -83,7 +88,7 @@ export default {
       selectedList: [],
       isCreate: true,
       param: {},
-      accessList: []
+      accessList: [],
     };
   },
   mounted() {
@@ -92,10 +97,11 @@ export default {
   methods: {
     //初始化查找
     __init__() {
-      this.queryAccessList()
-          .then(() => {
-            this.accessList = this.db.accessList.filter(item => item.path.indexOf(this.storage) >= 0)
-          });
+      this.queryAccessList().then(() => {
+        this.accessList = this.db.accessList.filter(
+          (item) => item.path.indexOf(this.storage) >= 0
+        );
+      });
     },
     //是否展示弹框
     showModal(type) {
@@ -120,16 +126,16 @@ export default {
           type: "info",
         })
         .then(() => {
-          this.delete(type).then(res => {
+          this.delete(type).then((res) => {
             this.__init__();
           });
         })
         .catch(() => {});
-		},
-		handleCommand(command) {
-			 this.type = command;
-			 this.visible = true;
-		}
+    },
+    handleCommand(command) {
+      this.type = command;
+      this.visible = true;
+    },
   },
 };
 </script>

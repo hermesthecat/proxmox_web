@@ -42,7 +42,7 @@
                 :show-error="rules['action'].error"
                 :error-msg="rules['action'].message"
                 required
-                 v-show="modalType === 'rule' || isGroup"
+                v-show="modalType === 'rule' || isGroup"
                 placeholder="请选择安全组"
               >
                 <m-option
@@ -59,8 +59,12 @@
                       </div>
                     </template>
                     <div class="table-tr">
-                      <span class="table-td" :title="item.group">{{ item.group }}</span>
-                      <span class="table-td" :title="item.comment">{{ item.comment }}</span>
+                      <span class="table-td" :title="item.group">{{
+                        item.group
+                      }}</span>
+                      <span class="table-td" :title="item.comment">{{
+                        item.comment
+                      }}</span>
                     </div>
                   </div>
                 </m-option>
@@ -112,8 +116,12 @@
                       </div>
                     </template>
                     <div class="table-tr">
-                      <span class="table-td" :title="item.macro">{{ item.macro }}</span>
-                      <span class="table-td" :title="item.descr">{{ item.descr }}</span>
+                      <span class="table-td" :title="item.macro">{{
+                        item.macro
+                      }}</span>
+                      <span class="table-td" :title="item.descr">{{
+                        item.descr
+                      }}</span>
                     </div>
                   </div>
                 </m-option>
@@ -184,9 +192,15 @@
                       </div>
                     </template>
                     <div class="table-tr">
-                      <span class="table-td" :title="item.type">{{ item.type }}</span>
-                      <span class="table-td" :title="item.name">{{ item.name }}</span>
-                      <span class="table-td" :title="item.ref">{{ item.ref }}</span>
+                      <span class="table-td" :title="item.type">{{
+                        item.type
+                      }}</span>
+                      <span class="table-td" :title="item.name">{{
+                        item.name
+                      }}</span>
+                      <span class="table-td" :title="item.ref">{{
+                        item.ref
+                      }}</span>
                     </div>
                   </div>
                 </m-option>
@@ -209,7 +223,7 @@
                 v-model="dest"
                 :readonly="false"
                 placeholder="请选择目标"
-               v-show="modalType !== 'rule' && !isGroup"
+                v-show="modalType !== 'rule' && !isGroup"
               >
                 <m-option
                   v-for="(item, index) in db.fireWallResfList"
@@ -226,9 +240,15 @@
                       </div>
                     </template>
                     <div class="table-tr">
-                      <span class="table-td" :title="item.type">{{ item.type }}</span>
-                      <span class="table-td" :title="item.name">{{ item.name }}</span>
-                      <span class="table-td" :title="item.ref">{{ item.ref }}</span>
+                      <span class="table-td" :title="item.type">{{
+                        item.type
+                      }}</span>
+                      <span class="table-td" :title="item.name">{{
+                        item.name
+                      }}</span>
+                      <span class="table-td" :title="item.ref">{{
+                        item.ref
+                      }}</span>
                     </div>
                   </div>
                 </m-option>
@@ -284,9 +304,9 @@
           <div>高级</div>
         </label>
       </div>
-      <m-button class="create-btn" type="primary" @on-click="confirm"
-        >{{modalType === 'eidt' ? '修改' : '添加'}}</m-button
-      >
+      <m-button class="create-btn" type="primary" @on-click="confirm">{{
+        modalType === "eidt" ? "修改" : "添加"
+      }}</m-button>
     </template>
   </Dialog>
 </template>
@@ -328,7 +348,7 @@ export default {
     isGroup: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   data() {
     return {
@@ -370,7 +390,7 @@ export default {
         action: {
           error: false,
           message: "",
-        }
+        },
       },
     };
   },
@@ -387,7 +407,8 @@ export default {
         Object.assign(this.$data, this.$options.data());
         await this.queryMacrosList();
         await this.queryRefsList();
-      } else if (this.modalType === "copy" && !_this.isGroup) {//复制安全组当类型不为group时
+      } else if (this.modalType === "copy" && !_this.isGroup) {
+        //复制安全组当类型不为group时
         Object.assign(this.$data, this.$options.data());
         this.log = "";
         await this.queryMacrosList();
@@ -398,7 +419,8 @@ export default {
         this.enable === 1 ? (this.enable = true) : (this.enable = false);
         this.log ? (this.isAdvice = true) : (this.isAdvice = false);
         this.log = "nolog";
-      } else if (this.modalType === "edit"  && !_this.isGroup) {//当类型不为group时编辑安全组
+      } else if (this.modalType === "edit" && !_this.isGroup) {
+        //当类型不为group时编辑安全组
         Object.assign(_this.$data, _this.$options.data());
         await _this.queryMacrosList();
         await _this.queryRefsList();
@@ -413,23 +435,23 @@ export default {
             _this.log = "nolog";
           });
         }
-      } else if(this.modalType === 'rule'){//插入安全组
-        this.queryFireWallGroupList()
-            .then(() => {
-              this.action = this.db.fireWallGroupList[0].group
-            });
-      } else if(_this.isGroup && this.modalType === 'edit') {//当类型为group时编辑安全组
-        this.queryFireWallGroupList()
-            .then(() => {
-              this.action = this.db.fireWallGroupList[0].group
-            });
+      } else if (this.modalType === "rule") {
+        //插入安全组
+        this.queryFireWallGroupList().then(() => {
+          this.action = this.db.fireWallGroupList[0].group;
+        });
+      } else if (_this.isGroup && this.modalType === "edit") {
+        //当类型为group时编辑安全组
+        this.queryFireWallGroupList().then(() => {
+          this.action = this.db.fireWallGroupList[0].group;
+        });
         Object.assign(_this.$data, _this.$options.data());
-         _this.queryFireWallById(_this.param.pos).then(() => {
-            Object.keys(_this.db.fireWallRuleObj).forEach((it) => {
-              _this[it] = _this.db.fireWallRuleObj[it];
-            });
-            _this.enable === 1 ? (_this.enable = true) : (_this.enable = false);
+        _this.queryFireWallById(_this.param.pos).then(() => {
+          Object.keys(_this.db.fireWallRuleObj).forEach((it) => {
+            _this[it] = _this.db.fireWallRuleObj[it];
           });
+          _this.enable === 1 ? (_this.enable = true) : (_this.enable = false);
+        });
       }
     },
     handlePathSelect(value) {
@@ -474,7 +496,7 @@ export default {
     },
     validateAll() {
       let props = [];
-      if(this.modalType === 'rule') props = ['action']
+      if (this.modalType === "rule") props = ["action"];
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
     },
@@ -496,7 +518,7 @@ export default {
       if (this.isAdvice) param.log = this.log;
       if (!this.iface) delete param.iface;
       if ((this.isCreate || this.modalType === "copy") && !this.isGroup) {
-         this.createFireWall(param)
+        this.createFireWall(param)
           .then((res) => {
             this.close();
           })
@@ -507,9 +529,9 @@ export default {
               })
               .then(() => this.close());
           });
-      }else if(this.modalType === 'edit' && !this.isGroup){
-         param.digest = this.db.fireWallRuleObj.digest;
-         this.updateFireWall(this.param.pos, param)
+      } else if (this.modalType === "edit" && !this.isGroup) {
+        param.digest = this.db.fireWallRuleObj.digest;
+        this.updateFireWall(this.param.pos, param)
           .then((res) => {
             this.close();
           })
@@ -520,15 +542,15 @@ export default {
               })
               .then(() => this.close());
           });
-      } else if(this.modalType === 'rule'){
+      } else if (this.modalType === "rule") {
         let param = {
-          type: 'group',
+          type: "group",
           action: this.action,
           iface: this.iface,
           enable: this.enable ? 1 : 0,
           comment: this.comment,
-        }
-         this.createFireWall(param)
+        };
+        this.createFireWall(param)
           .then((res) => {
             this.close();
           })
@@ -539,10 +561,10 @@ export default {
               })
               .then(() => this.close());
           });
-      }else if(this.modalType === 'edit' && this.isGroup) {
-         param.digest = this.db.fireWallRuleObj.digest;
-         param.type = 'group'
-         this.updateFireWall(this.param.pos, param)
+      } else if (this.modalType === "edit" && this.isGroup) {
+        param.digest = this.db.fireWallRuleObj.digest;
+        param.type = "group";
+        this.updateFireWall(this.param.pos, param)
           .then((res) => {
             this.close();
           })

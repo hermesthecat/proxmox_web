@@ -142,31 +142,40 @@
           <overview-card style="width: 100%">
             <div slot="title">设备</div>
             <template slot="content">
-              <el-table  :data="[db.nodeDiskSdaObj]"
-							           :row-key="setRowKeys"
-                         :expand-row-keys="expands"
-				                 :tree-props="{children: 'children'}">>
-								<el-table-column label="名称" prop="name"></el-table-column>
-								<el-table-column label="健康" prop="state">
-									<template slot-scope="scope">
-										<table-info-state :content="scope.row.state" :state="scope.row.state && scope.row.state.toLowerCase()"></table-info-state>
-									</template>
-								</el-table-column>
-								<el-table-column label="READ" prop="read"></el-table-column>
-								<el-table-column label="WRITE" prop="write"></el-table-column>
-								<el-table-column label="CKSUM" prop="cksum"></el-table-column>
-								<el-table-column label="消息" prop="msg"></el-table-column>
-							</el-table>
+              <el-table
+                :data="[db.nodeDiskSdaObj]"
+                :row-key="setRowKeys"
+                :expand-row-keys="expands"
+                :tree-props="{ children: 'children' }"
+                >>
+                <el-table-column label="名称" prop="name"></el-table-column>
+                <el-table-column label="健康" prop="state">
+                  <template slot-scope="scope">
+                    <table-info-state
+                      :content="scope.row.state"
+                      :state="scope.row.state && scope.row.state.toLowerCase()"
+                    ></table-info-state>
+                  </template>
+                </el-table-column>
+                <el-table-column label="READ" prop="read"></el-table-column>
+                <el-table-column label="WRITE" prop="write"></el-table-column>
+                <el-table-column label="CKSUM" prop="cksum"></el-table-column>
+                <el-table-column label="消息" prop="msg"></el-table-column>
+              </el-table>
             </template>
           </overview-card>
         </div>
       </div>
     </div>
     <template slot="footer">
-      <m-button class="create-btn" type="primary" @on-click="confirm"  v-if="modalType === 'create'"
+      <m-button
+        class="create-btn"
+        type="primary"
+        @on-click="confirm"
+        v-if="modalType === 'create'"
         >创建</m-button
       >
-			<div v-else></div>
+      <div v-else></div>
     </template>
   </m-dialog>
 </template>
@@ -195,17 +204,17 @@ export default {
     title: {
       type: String,
       default: "",
-		},
-		modalType: {
-			type: String,
+    },
+    modalType: {
+      type: String,
       default: "",
-		},
-		param: {
-			type: Object,
-			default: () => {
-        return {}
-      }
-		}
+    },
+    param: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
   },
   data() {
     return {
@@ -215,8 +224,8 @@ export default {
       ashift: 12,
       raidlevel: "single",
       compression: "on",
-			selectedList: [],
-			expands: [],
+      selectedList: [],
+      expands: [],
       comboItems: [
         { value: "single", label: "单磁盘" },
         { value: "mirror", label: "Mirror" },
@@ -264,10 +273,12 @@ export default {
       if (_this.modalType === "create")
         this.queryListNodeDiskList({ type: "unused" });
       else if (_this.modalType === "detail")
-				_this.querySda({ _dc: new Date().getTime(), name: this.param.name })
-				     .then(() => {
-							 _this.expands = _this.db.nodeDiskSdaObj && _this.db.nodeDiskSdaObj.name && [_this.db.nodeDiskSdaObj.name]
-						 });
+        _this
+          .querySda({ _dc: new Date().getTime(), name: this.param.name })
+          .then(() => {
+            _this.expands = _this.db.nodeDiskSdaObj &&
+              _this.db.nodeDiskSdaObj.name && [_this.db.nodeDiskSdaObj.name];
+          });
     },
     //选择磁盘
     handleDestSelect(value) {
@@ -279,7 +290,7 @@ export default {
     },
     //选择设备
     handleSelect(row) {
-      this.selectedList = row.map(item =>  item.devpath);
+      this.selectedList = row.map((item) => item.devpath);
     },
     //关闭弹框
     close() {
@@ -329,13 +340,13 @@ export default {
           this.$confirm
             .error({
               msg: res,
-              icon: 'icon-error'
+              icon: "icon-error",
             })
             .then(() => this.close());
         });
-		},
+    },
     //表格展开
-		expandChange(row, expandedRows) {
+    expandChange(row, expandedRows) {
       var that = this;
       if (expandedRows.length) {
         that.expands = [];
@@ -349,7 +360,7 @@ export default {
     //设置行号
     setRowKeys(row) {
       return row.name;
-    }
+    },
   },
   watch: {
     visible: function (newVal, oldVal) {

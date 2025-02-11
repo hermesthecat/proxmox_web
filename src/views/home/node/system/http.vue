@@ -37,8 +37,8 @@ export default {
         )
         .then(async (res) => {
           if (res.data) {
-						let task = parse_task_upid(res.data);
-						await this.queryStatus(task.node, res.data);
+            let task = parse_task_upid(res.data);
+            await this.queryStatus(task.node, res.data);
             this.showLog = true;
             if (
               this.db.addClusterStatusObj &&
@@ -47,21 +47,24 @@ export default {
               if (this.db.addClusterStatusObj.status === "stopped") {
                 var exitstatus = this.db.addClusterStatusObj.exitstatus;
                 if (exitstatus == "OK") {
-									this.text = 'Done!';
-									this.done = true;
-									if(this.interVal){
-										clearInterval(this.interVal);
-										this.interVal = null;
-									}
+                  this.text = "Done!";
+                  this.done = true;
+                  if (this.interVal) {
+                    clearInterval(this.interVal);
+                    this.interVal = null;
+                  }
                 } else {
-                 this.showLog = false;
+                  this.showLog = false;
                 }
               } else {
-									this.text = 'Done!';
-									this.done = true;
-							}
+                this.text = "Done!";
+                this.done = true;
+              }
             }
-            this.interVal =  setInterval(await this.queryStatus(task.node, res.data), 1000);
+            this.interVal = setInterval(
+              await this.queryStatus(task.node, res.data),
+              1000
+            );
           }
           this.incEventSuccess(event);
           this.queryNodeSystemList();
@@ -85,18 +88,19 @@ export default {
             data: res.data,
           });
         });
-		},
-		querySystemLog(param) {
-			return this.$http.get(`json/nodes/${this.node}/syslog`, param)
-			           .then((res) => {
-									  if(res.data) {
-											this.updateTable({
-												tableName: 'nodeSystemLogList',
-												list: res.data
-									    })
-										}
-								 })
-		}
+    },
+    querySystemLog(param) {
+      return this.$http
+        .get(`json/nodes/${this.node}/syslog`, param)
+        .then((res) => {
+          if (res.data) {
+            this.updateTable({
+              tableName: "nodeSystemLogList",
+              list: res.data,
+            });
+          }
+        });
+    },
   },
 };
 </script>

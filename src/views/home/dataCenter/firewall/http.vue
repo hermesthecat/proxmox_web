@@ -71,7 +71,7 @@ export default {
           this.incEventFail(event);
           return Promise.reject(res);
         });
-		},
+    },
     deleteFireWallRule() {
       let event = this.createEvent("action.firewall.delete");
       let tasks = [],
@@ -416,9 +416,9 @@ export default {
             });
           }
         });
-		},
-		createIPSet(param) {
-			 let event = this.createEvent("action.firewall.ipset.create");
+    },
+    createIPSet(param) {
+      let event = this.createEvent("action.firewall.ipset.create");
       return this.$http
         .post(`json/cluster/firewall/ipset`, param, {
           headers: {
@@ -432,9 +432,9 @@ export default {
           this.incEventFail(event);
           return Promise.reject(res);
         });
-		},
-		updateIPSet(param) {
-			 let event = this.createEvent("action.firewall.ipset.update");
+    },
+    updateIPSet(param) {
+      let event = this.createEvent("action.firewall.ipset.update");
       return this.$http
         .post(`json/cluster/firewall/ipset`, param, {
           headers: {
@@ -448,8 +448,8 @@ export default {
           this.incEventFail(event);
           return Promise.reject(res);
         });
-		},
-		 deleteIpset() {
+    },
+    deleteIpset() {
       let event = this.createEvent("action.firewall.ipset.delete");
       let tasks = [],
         p;
@@ -469,9 +469,9 @@ export default {
         tasks.push(p);
       });
       return Promise.all(tasks);
-		},
-		deleteIpsetCidr(name) {
-			 let event = this.createEvent("action.firewall.ipset.cidr.delete");
+    },
+    deleteIpsetCidr(name) {
+      let event = this.createEvent("action.firewall.ipset.cidr.delete");
       let tasks = [],
         p;
       this.selectedCidrList.forEach((item) => {
@@ -490,10 +490,10 @@ export default {
         tasks.push(p);
       });
       return Promise.all(tasks);
-		},
-		//创建IPSetcidr
-		createIPSetCidr(name, param) {
-			 let event = this.createEvent(`action.firewallipset.cidr.create`);
+    },
+    //创建IPSetcidr
+    createIPSetCidr(name, param) {
+      let event = this.createEvent(`action.firewallipset.cidr.create`);
       return this.$http
         .post(`json/cluster/firewall/ipset/${name}`, param, {
           headers: {
@@ -507,12 +507,12 @@ export default {
           this.incEventFail(event);
           return Promise.reject(res);
         });
-		},
-		//编辑更新IPSetCidr
-		updateIPSetCidr(ipset, param) {
-			 let event = this.createEvent("action.firewall.ipset.cidr.update"),
-			 params = deepCopy(param);
-			 delete params.cidr
+    },
+    //编辑更新IPSetCidr
+    updateIPSetCidr(ipset, param) {
+      let event = this.createEvent("action.firewall.ipset.cidr.update"),
+        params = deepCopy(param);
+      delete params.cidr;
       return this.$http
         .put(`json/cluster/firewall/ipset/${ipset}/${param.cidr}`, params, {
           headers: {
@@ -526,7 +526,7 @@ export default {
           this.incEventFail(event);
           return Promise.reject(res);
         });
-		}
+    },
   },
 };
 </script>

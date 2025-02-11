@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 20px;">
+  <div style="padding: 20px">
     <overview-card>
       <div slot="title">状态</div>
       <div
@@ -51,7 +51,7 @@
                 v-confirm="{
                   msg: '确定要删除已选择项?',
                   ok: () => handleDelete(),
-                  icon:'icon-question'
+                  icon: 'icon-question',
                 }"
                 icon="el-icon-delete"
                 :disabled="selectedList.length <= 0"
@@ -59,8 +59,12 @@
               >
             </div>
             <div slot="page-content">
-              <el-table :data="db.haResourceList" ref="dataTable" @selection-change="handleSelect">
-								<el-table-column type="selection" width="55"></el-table-column>
+              <el-table
+                :data="db.haResourceList"
+                ref="dataTable"
+                @selection-change="handleSelect"
+              >
+                <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column label="ID" prop="sid"></el-table-column>
                 <el-table-column label="状态" prop="state"></el-table-column>
                 <el-table-column label="节点" prop="node"></el-table-column>
@@ -85,7 +89,10 @@
             :visible="visible"
             v-if="visible"
             :modal-type="type"
-            @close="visible = false; __init__()"
+            @close="
+              visible = false;
+              __init__();
+            "
           ></create-ha-modal>
         </div>
       </div>
@@ -115,9 +122,9 @@ export default {
       selectedList: [],
       isCreate: true,
       param: {},
-			showStatus: true,
-			showResource: true,
-			resourceList: []
+      showStatus: true,
+      showResource: true,
+      resourceList: [],
     };
   },
   mounted() {
@@ -126,13 +133,14 @@ export default {
   methods: {
     //初始化查找
     __init__() {
-			this.queryHaStatus();
+      this.queryHaStatus();
     },
     //是否展示弹框
     showModal(type) {
       this.type = type;
       this.isCreate = type === "create";
-      this.title = type === "create" ? "添加：资源：容器/虚拟机" : "编辑：复制作业";
+      this.title =
+        type === "create" ? "添加：资源：容器/虚拟机" : "编辑：复制作业";
       this.param = type === "create" ? {} : this.selectedList[0];
       this.visible = true;
     },
@@ -151,8 +159,8 @@ export default {
       if (type === "status") {
         this.showStatus = !this.showStatus;
       } else {
-				this.showResource = !this.showResource;
-			}
+        this.showResource = !this.showResource;
+      }
     },
   },
 };
@@ -197,10 +205,10 @@ export default {
   transform: rotate(180deg);
   transition: transform 0.5s linear;
 }
-/deep/.card{
-	min-height: auto!important;
+/deep/.card {
+  min-height: auto !important;
 }
-/deep/.page-template__content{
-  height: auto!important;;
+/deep/.page-template__content {
+  height: auto !important;
 }
 </style>

@@ -51,26 +51,26 @@ const clearPending = () => {
 
 
 function handleError(error, errorTip) {
-  if(error.error.response &&error.error.response.status === 401) {
-     let count = window.vm.$store.state.db.exceptionLogin.response401count || 0;
-     window.vm.$store.dispatch('UPDATE_401_COUNT', {response401count: ++count});
-     //当用户鉴权失败后为了良好的用户体验，先不要直接跳转到登录页面
-     if(window.vm.$store.state.db.exceptionLogin.response401count > 5) {
-      window.location.href='/login';
-      window.vm.$store.dispatch('UPDATE_401_COUNT', {silenceAuthFailures: false});
-     }
+  if (error.error.response && error.error.response.status === 401) {
+    let count = window.vm.$store.state.db.exceptionLogin.response401count || 0;
+    window.vm.$store.dispatch('UPDATE_401_COUNT', { response401count: ++count });
+    //当用户鉴权失败后为了良好的用户体验，先不要直接跳转到登录页面
+    if (window.vm.$store.state.db.exceptionLogin.response401count > 5) {
+      window.location.href = '/login';
+      window.vm.$store.dispatch('UPDATE_401_COUNT', { silenceAuthFailures: false });
+    }
   }
-  if(error.error && error.error.response && error.error.response.statusText) {
+  if (error.error && error.error.response && error.error.response.statusText) {
     return Promise.reject(error.error.response.statusText);
   }
 }
-function handleSuccess({successTip}) {
-  if(typeof successTip !== "string") return;
+function handleSuccess({ successTip }) {
+  if (typeof successTip !== "string") return;
   Message.info(successTip);
 }
 const http = new Http({
-  onShowErrorTip: (error, errorTip) => handleError({error, errorTip}),
-  onShowSuccessTip: (response, successTip) => handleSuccess({successTip}),
+  onShowErrorTip: (error, errorTip) => handleError({ error, errorTip }),
+  onShowSuccessTip: (response, successTip) => handleSuccess({ successTip }),
 });
 
 http.defaults.baseURL = '/api2';
@@ -79,9 +79,9 @@ http.defaults.baseURL = '/api2';
 http.instance.interceptors.request.use(cfg => {
   //添加token验证头
   // Do something before request is sent
-  if(cfg.url !== "/json/access/ticket")
-  cfg.headers['CSRFPreventionToken'] = window.localStorage.getItem('CSRFPreventionToken') || '';
-  if(cfg.url !== '/json/cluster/resources'){
+  if (cfg.url !== "/json/access/ticket")
+    cfg.headers['CSRFPreventionToken'] = window.localStorage.getItem('CSRFPreventionToken') || '';
+  if (cfg.url !== '/json/cluster/resources') {
     removePending(cfg) // 在请求开始前，对之前的请求做检查取消操作
     addPending(cfg) // 将当前请求添加到 pending 中
   }
@@ -97,7 +97,7 @@ http.instance.interceptors.response.use(response => {
   return response
 }, error => {
   if (axios.isCancel(error)) {
-  
+
   } else {
     // handle error code
   }

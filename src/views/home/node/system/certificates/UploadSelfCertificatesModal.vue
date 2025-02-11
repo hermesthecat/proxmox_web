@@ -11,13 +11,13 @@
         <div class="m-form__section">
           <m-input
             type="textarea"
-						label="私钥"
-						v-model="key"
-						validateEvent
-						@validate="validate"
-						prop="key"
-						:show-error="rules['key'].error"
-						:error-msg="rules['key'].message"
+            label="私钥"
+            v-model="key"
+            validateEvent
+            @validate="validate"
+            prop="key"
+            :show-error="rules['key'].error"
+            :error-msg="rules['key'].message"
             :_style="{ width: '100%' }"
             style="width: 100%; padding-left: 0px"
             rows="5"
@@ -28,7 +28,13 @@
             icon="el-icon-upload"
             style="position: relative"
             >从文件上传
-            <input type="file" class="upload" value="请选择文件" ref="key" @change="uplodFile('key')" />
+            <input
+              type="file"
+              class="upload"
+              value="请选择文件"
+              ref="key"
+              @change="uplodFile('key')"
+            />
           </m-button>
         </div>
       </div>
@@ -36,14 +42,14 @@
         <div class="m-form__section">
           <m-input
             type="textarea"
-						label="证书链"
+            label="证书链"
             :_style="{ width: '100%' }"
-						v-model="certificates"
-						validateEvent
-						@validate="validate"
-						prop="certificates"
-						:show-error="rules['certificates'].error"
-						:error-msg="rules['certificates'].message"
+            v-model="certificates"
+            validateEvent
+            @validate="validate"
+            prop="certificates"
+            :show-error="rules['certificates'].error"
+            :error-msg="rules['certificates'].message"
             style="width: 100%; padding-left: 0px"
             rows="5"
             :__conStyle="{ width: '100%' }"
@@ -65,25 +71,39 @@
     <div slot="content" style="max-height: 500px" v-if="!isCreate">
       <div class="watch-table">
         <div class="watch-tr" v-for="(item, key) of param" :key="key">
-           <template v-if="key === 'san'">
-              <div class="watch-key">{{$t(`certificates.${key}`)}}</div>
-              <div class="watch-value">
-                <p v-for="(it, index) in item" :key="index">{{it}}</p>
-              </div>
-           </template>
-           <template v-else>
-             <div class="watch-key">{{$t(`certificates.${key}`)}}</div>
-             <div class="watch-value">{{['notbefore', 'notafter'].includes(key) ? dateFormat(new Date(item * 1000), 'yyyy-MM-dd hh:mm') : item}}</div>
-           </template>
+          <template v-if="key === 'san'">
+            <div class="watch-key">{{ $t(`certificates.${key}`) }}</div>
+            <div class="watch-value">
+              <p v-for="(it, index) in item" :key="index">{{ it }}</p>
+            </div>
+          </template>
+          <template v-else>
+            <div class="watch-key">{{ $t(`certificates.${key}`) }}</div>
+            <div class="watch-value">
+              {{
+                ["notbefore", "notafter"].includes(key)
+                  ? dateFormat(new Date(item * 1000), "yyyy-MM-dd hh:mm")
+                  : item
+              }}
+            </div>
+          </template>
         </div>
       </div>
     </div>
     <template slot="footer">
       <template>
-        <m-button class="create-btn" type="primary" @on-click="create" v-if="isCreate"
+        <m-button
+          class="create-btn"
+          type="primary"
+          @on-click="create"
+          v-if="isCreate"
           >上传</m-button
         >
-        <m-button class="create-btn" type="primary" @on-click="close" v-if="!isCreate"
+        <m-button
+          class="create-btn"
+          type="primary"
+          @on-click="close"
+          v-if="!isCreate"
           >取消</m-button
         >
       </template>
@@ -93,11 +113,9 @@
 
 <script>
 import Dialog from "@src/components/dialog/Dialog";
-import { dateFormat } from '@libs/utils/index';
+import { dateFormat } from "@libs/utils/index";
 import CertificatesHttp from "@src/views/home/node/system/certificates/http";
-import {
-  uplodFile
-} from "@libs/utils/index";
+import { uplodFile } from "@libs/utils/index";
 export default {
   name: "CreateReplicationModal",
   mixins: [CertificatesHttp],
@@ -130,18 +148,18 @@ export default {
   },
   data() {
     return {
-			key: "",
-			certificates: '',
-			rules: {
-				certificates: {
-					error: false,
-					message: ''
-				},
-				key: {
-					error: false,
-					message: ''
-				}
-			}
+      key: "",
+      certificates: "",
+      rules: {
+        certificates: {
+          error: false,
+          message: "",
+        },
+        key: {
+          error: false,
+          message: "",
+        },
+      },
     };
   },
   mounted() {
@@ -150,28 +168,30 @@ export default {
   methods: {
     dateFormat,
     create() {
-			if(this.validateAll())  return;
-			let param = {
-				key: this.key,
-				certificates: this.certificates
-			}
-			this.createCertificates(param)
-					.then(() => this.close())
-					.catch((res) => this.$confirm.error({
-						msg: res,
-						icon: 'icon-warning'
-					}));
+      if (this.validateAll()) return;
+      let param = {
+        key: this.key,
+        certificates: this.certificates,
+      };
+      this.createCertificates(param)
+        .then(() => this.close())
+        .catch((res) =>
+          this.$confirm.error({
+            msg: res,
+            icon: "icon-warning",
+          })
+        );
     },
     async __init__() {
       let _this = this;
-		},
+    },
     //上传文件
-		uplodFile(key) {
-			let file = this.$refs[key].files[0];
-       uplodFile(file, (val) => {
-				 this[key] = val;
-			 })
-		},
+    uplodFile(key) {
+      let file = this.$refs[key].files[0];
+      uplodFile(file, (val) => {
+        this[key] = val;
+      });
+    },
     close() {
       this.$emit("close");
     },
@@ -186,16 +206,26 @@ export default {
       }
       //校验自定义证书
       if (value && prop === "certificates") {
-        if (!/^((\-){5}(BEGIN CERTIFICATE)(\-){5})([\s\S]*)((\-){5}(END CERTIFICATE)(\-){5})$/.test(value)) {
+        if (
+          !/^((\-){5}(BEGIN CERTIFICATE)(\-){5})([\s\S]*)((\-){5}(END CERTIFICATE)(\-){5})$/.test(
+            value
+          )
+        ) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "证书必须以-----BEGIN CERTIFICATE-----开头，以-----END CERTIFICATE-----结尾";
+          this.rules[prop].message =
+            "证书必须以-----BEGIN CERTIFICATE-----开头，以-----END CERTIFICATE-----结尾";
           return;
         }
       }
-      if (value && prop === "key" ) {
-       if (!/^((\-){5}(BEGIN RSA PRIVATE KEY)(\-){5})([\s\S]*)((\-){5}(END RSA PRIVATE KEY)(\-){5})$/.test(value)) {
+      if (value && prop === "key") {
+        if (
+          !/^((\-){5}(BEGIN RSA PRIVATE KEY)(\-){5})([\s\S]*)((\-){5}(END RSA PRIVATE KEY)(\-){5})$/.test(
+            value
+          )
+        ) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "私钥必须以-----BEGIN RSA PRIVATE KEY-----开头，以-----END RSA PRIVATE KEY-----结尾";
+          this.rules[prop].message =
+            "私钥必须以-----BEGIN RSA PRIVATE KEY-----开头，以-----END RSA PRIVATE KEY-----结尾";
           return;
         }
       }
@@ -218,21 +248,22 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.watch{
-  &-table{
+.watch {
+  &-table {
     display: table;
     width: 100%;
     padding: 20px;
   }
-  &-tr{
+  &-tr {
     display: table-row;
     height: 35px;
     line-height: 35px;
-    &:nth-child(2n){
+    &:nth-child(2n) {
       background: #dde4ed;
     }
   }
-  &-key,&-value{
+  &-key,
+  &-value {
     display: table-cell;
     width: 50%;
   }
@@ -258,10 +289,10 @@ export default {
   z-index: 0;
   opacity: 0;
   width: 100%;
-	left: 0px;
-	top:0px;
-	bottom: 0px;
-	right: 0px;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
   position: absolute;
   height: 100%;
 }

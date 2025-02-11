@@ -27,7 +27,7 @@ export default {
             })
             .catch((e) => {
               this.incEventFail(event);
-              confirm.call(this, e, 'confirm', 'icon-warning');
+              confirm.call(this, e, "confirm", "icon-warning");
             });
         })(item.id);
         tasks.push(p);
@@ -97,7 +97,7 @@ export default {
         })
         .catch((res) => {
           this.incEventFail(event);
-           confirm.call(this, res, 'confirm', 'icon-warning');
+          confirm.call(this, res, "confirm", "icon-warning");
         });
     },
     updateBackUp(param) {
@@ -116,11 +116,11 @@ export default {
         })
         .catch((res) => {
           this.incEventFail(event);
-           confirm.call(this, res, 'confirm', 'icon-warning');
+          confirm.call(this, res, "confirm", "icon-warning");
         });
     },
     run() {
-     let event = this.createEvent("action.backup.run");
+      let event = this.createEvent("action.backup.run");
       let tasks = [],
         p;
       this.selectedList.forEach((item) => {
@@ -132,9 +132,10 @@ export default {
           delete params.starttime;
           delete params.enabled;
           p = this.$http
-            .post(`/json/nodes/${item.node}/vzdump`, params , {
-               headers: {
-                "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+            .post(`/json/nodes/${item.node}/vzdump`, params, {
+              headers: {
+                "content-type":
+                  "application/x-www-form-urlencoded; charset=UTF-8",
               },
             })
             .then((res) => {
@@ -143,7 +144,7 @@ export default {
             })
             .catch((res) => {
               this.incEventFail(event);
-               confirm.call(this, res, 'confirm', 'icon-warning');
+              confirm.call(this, res, "confirm", "icon-warning");
             });
         })(item);
         tasks.push(p);

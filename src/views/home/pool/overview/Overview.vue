@@ -6,8 +6,8 @@
         <div class="card-item">
           <single-line
             :desc="db.poolsObj && db.poolsObj.comment && db.poolsObj.comment"
-						title="备注"
-						:__style="{whiteSpace:'normal'}"
+            title="备注"
+            :__style="{ whiteSpace: 'normal' }"
           />
         </div>
       </div>
@@ -25,11 +25,10 @@ export default {
   mixins: [PoolsHttp],
   components: {
     SingleLine,
-    OverviewCard
+    OverviewCard,
   },
   data() {
-    return {
-    };
+    return {};
   },
   methods: {
     render_uptime,

@@ -47,9 +47,10 @@
               v-model="period"
             >
             </m-input>
-						<div v-show="!max_bytes" class="warning">
-							Disabling the limiter can potentially allow a guest to overload the host. Proceed with caution.
-						</div>
+            <div v-show="!max_bytes" class="warning">
+              Disabling the limiter can potentially allow a guest to overload
+              the host. Proceed with caution.
+            </div>
           </dd>
         </dl>
       </div>
@@ -99,7 +100,7 @@ export default {
   },
   methods: {
     __init__() {
-			let _this = this;
+      let _this = this;
       this.queryConfig({ _dc: new Date().getTime() }).then((res) => {
         if (_this.modalType === "edit") {
           if (_this.param.type) {
@@ -107,8 +108,8 @@ export default {
           }
         }
       });
-		},
-		parseValue(value) {
+    },
+    parseValue(value) {
       let values = value.split(","),
         _this = this;
       if (values) {
@@ -121,10 +122,10 @@ export default {
       let device = "";
       if (this.max_bytes) {
         device += `max_bytes=${this.max_bytes},`;
-			}
-			if(this.period) {
-				device += `period=${this.period},`;
-			}
+      }
+      if (this.period) {
+        device += `period=${this.period},`;
+      }
       if (this.source) {
         device += `source=${this.source},`;
       }
@@ -132,27 +133,27 @@ export default {
         [`rng0`]: device.replace(/(\,)$/, ""),
         digest: this.db.qemuConfigObj.digest,
       };
-      if(this.modalType !== 'edit') {
-				this.createHardWare(param)
-        .then((res) => {
-          this.close();
-        })
-        .catch((res) => {
-          this.$confirm.confirm({
-            msg: res,
+      if (this.modalType !== "edit") {
+        this.createHardWare(param)
+          .then((res) => {
+            this.close();
+          })
+          .catch((res) => {
+            this.$confirm.confirm({
+              msg: res,
+            });
           });
-        });
-			} else {
-				this.updateHardWare(param)
-        .then((res) => {
-          this.close();
-        })
-        .catch((res) => {
-          this.$confirm.confirm({
-            msg: res,
+      } else {
+        this.updateHardWare(param)
+          .then((res) => {
+            this.close();
+          })
+          .catch((res) => {
+            this.$confirm.confirm({
+              msg: res,
+            });
           });
-        });
-			}
+      }
     },
     close() {
       this.$emit("close");

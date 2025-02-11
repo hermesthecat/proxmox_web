@@ -10,7 +10,10 @@
         @on-click="showModal('create')"
         >创建</m-button
       >
-      <m-button icon="el-icon-plus" type="primary" @on-click="visibleFlag = true"
+      <m-button
+        icon="el-icon-plus"
+        type="primary"
+        @on-click="visibleFlag = true"
         >管理</m-button
       >
     </div>
@@ -18,14 +21,20 @@
       <ul class="tab-container">
         <li
           class="tab-item"
-          :class="{ active: isIn, 'disabled': !current || current.type !== 'osd'}"
+          :class="{
+            active: isIn,
+            disabled: !current || current.type !== 'osd',
+          }"
           @click="handleChangeTab('in')"
         >
           <span class="circle"></span>in
         </li>
         <li
           class="tab-item"
-          :class="{ active: isOut, 'disabled': !current || current.type !== 'osd'}"
+          :class="{
+            active: isOut,
+            disabled: !current || current.type !== 'osd',
+          }"
           @click="handleChangeTab('out')"
         >
           <span class="circle-out"></span>out
@@ -50,15 +59,32 @@
             >更多操作</m-button
           >
         </span>
-        <m-dropdown-item command="start" icon="fa fa-play"
-        :disabled="!current"
+        <m-dropdown-item command="start" icon="fa fa-play" :disabled="!current"
           >启动</m-dropdown-item
         >
-        <m-dropdown-item command="stop" icon="fa fa-stop" :disabled="!current || inStatus('down')">停止</m-dropdown-item>
-        <m-dropdown-item command="restart" icon="fa fa-refresh" :disabled="!current || inStatus('down')">重启</m-dropdown-item>
-         <m-dropdown-item command="clear" icon="fa fa-refresh">擦洗</m-dropdown-item>
-         <m-dropdown-item command="deepClear" icon="fa fa-refresh">深度擦洗</m-dropdown-item>
-         <m-dropdown-item command="clean" icon="fa fa-refresh" :disabled="inStatus('up')">清除</m-dropdown-item
+        <m-dropdown-item
+          command="stop"
+          icon="fa fa-stop"
+          :disabled="!current || inStatus('down')"
+          >停止</m-dropdown-item
+        >
+        <m-dropdown-item
+          command="restart"
+          icon="fa fa-refresh"
+          :disabled="!current || inStatus('down')"
+          >重启</m-dropdown-item
+        >
+        <m-dropdown-item command="clear" icon="fa fa-refresh"
+          >擦洗</m-dropdown-item
+        >
+        <m-dropdown-item command="deepClear" icon="fa fa-refresh"
+          >深度擦洗</m-dropdown-item
+        >
+        <m-dropdown-item
+          command="clean"
+          icon="fa fa-refresh"
+          :disabled="inStatus('up')"
+          >清除</m-dropdown-item
         >
       </m-dropdown>
     </div>
@@ -93,28 +119,44 @@
         <el-table-column label="OSD类型" prop="osdtype"></el-table-column>
         <el-table-column label="状态" prop="status">
           <template slot-scope="scope" v-if="scope.row.type === 'osd'">
-            {{scope.row.status}}
+            {{ scope.row.status }}
             <i :class="render_statusCls(scope.row.status, scope.row)[0]"></i>
-            / {{scope.row && scope.row.in && scope.row.in ? 'in' : 'out'}}
-            <i
-              :class="render_statusCls(scope.row.status, scope.row)[1]"
-            ></i>
+            / {{ scope.row && scope.row.in && scope.row.in ? "in" : "out" }}
+            <i :class="render_statusCls(scope.row.status, scope.row)[1]"></i>
           </template>
         </el-table-column>
         <el-table-column label="版本" prop="version"></el-table-column>
         <el-table-column label="weight" prop="crush_weight">
           <template slot-scope="scope" v-if="scope.row.type === 'osd'">
-            {{flotToFixed(scope.row && scope.row.crush_weight && scope.row.crush_weight, 5)}}
+            {{
+              flotToFixed(
+                scope.row && scope.row.crush_weight && scope.row.crush_weight,
+                5
+              )
+            }}
           </template>
         </el-table-column>
         <el-table-column label="reweight" prop="reweight">
           <template slot-scope="scope" v-if="scope.row.type === 'osd'">
-            {{flotToFixed(scope.row && scope.row.reweight && scope.row.reweight, 5)}}
+            {{
+              flotToFixed(
+                scope.row && scope.row.reweight && scope.row.reweight,
+                5
+              )
+            }}
           </template>
         </el-table-column>
         <el-table-column label="已用(%)" prop="">
           <template slot-scope="scope" v-if="scope.row.type === 'osd'">
-            {{flotToFixed(scope.row && scope.row.percent_used && scope.row.percent_used || 0, 2)}}
+            {{
+              flotToFixed(
+                (scope.row &&
+                  scope.row.percent_used &&
+                  scope.row.percent_used) ||
+                  0,
+                2
+              )
+            }}
           </template>
         </el-table-column>
         <el-table-column label="总额" prop="osd_size">
@@ -137,16 +179,36 @@
         "
         :title="title"
       ></create-osd>
-      <add-flags :visible="visibleFlag" v-if="visibleFlag" @close="visibleFlag = false;__init__()"></add-flags>
-      <m-dialog :visible="visibleClean" v-if="visibleClean"
-                @confirm="confirm"
-                @close="visibleClean = false; __init__()"
-                @cancel="visibleClean = false; __init__()"
-                :title="`销毁：Ceph OSD ${current.name}`">
+      <add-flags
+        :visible="visibleFlag"
+        v-if="visibleFlag"
+        @close="
+          visibleFlag = false;
+          __init__();
+        "
+      ></add-flags>
+      <m-dialog
+        :visible="visibleClean"
+        v-if="visibleClean"
+        @confirm="confirm"
+        @close="
+          visibleClean = false;
+          __init__();
+        "
+        @cancel="
+          visibleClean = false;
+          __init__();
+        "
+        :title="`销毁：Ceph OSD ${current.name}`"
+      >
         <template slot="content">
           <div class="m-form__content">
             <div class="m-form__section">
-              <m-checkbox v-model="clean" label="清理磁盘" labelWidth="100px"></m-checkbox>
+              <m-checkbox
+                v-model="clean"
+                label="清理磁盘"
+                labelWidth="100px"
+              ></m-checkbox>
             </div>
           </div>
         </template>
@@ -160,14 +222,14 @@ import PageTemplate from "@src/components/page/PageTemplate";
 import CephHttp from "@src/views/home/node/ceph/http";
 import CreateOsd from "./CreateOsd";
 import { byteToSize, flotToFixed } from "@libs/utils/index";
-import AddFlags from './addFlags'
+import AddFlags from "./addFlags";
 export default {
   name: "osd",
   mixins: [CephHttp],
   components: {
     CreateOsd,
     PageTemplate,
-    AddFlags
+    AddFlags,
   },
   data() {
     return {
@@ -176,34 +238,42 @@ export default {
       title: "",
       treeData: [],
       current: "",
-      currentRowKey: '',
+      currentRowKey: "",
       visibleClean: false,
       clean: false,
-      visibleFlag: false
+      visibleFlag: false,
     };
   },
   computed: {
     isIn() {
-      if(this.current && this.current.type === 'osd' && this.current.in === 1) {
-        return true; 
+      if (
+        this.current &&
+        this.current.type === "osd" &&
+        this.current.in === 1
+      ) {
+        return true;
       } else {
         return false;
       }
     },
     isOut() {
-      if(this.current && this.current.type === 'osd' && this.current.in === 0) {
-        return true; 
+      if (
+        this.current &&
+        this.current.type === "osd" &&
+        this.current.in === 0
+      ) {
+        return true;
       } else {
         return false;
       }
-    }
+    },
   },
   mounted() {
     this.__init__();
   },
   methods: {
-    byteToSize,//格式化磁盘大小
-    flotToFixed,//浮点数保留几位有效数字
+    byteToSize, //格式化磁盘大小
+    flotToFixed, //浮点数保留几位有效数字
     //初始化请求
     __init__() {
       this.queryConfig("osd", { _dc: new Date().getTime() }).then((res) => {
@@ -211,11 +281,11 @@ export default {
       });
     },
     //设置选中高亮
-    setRowClassName({row, rowIndex}) {
-        if(row.id === this.current.id) {
-          this.current = row;
-          return 'current-row'
-        }
+    setRowClassName({ row, rowIndex }) {
+      if (row.id === this.current.id) {
+        this.current = row;
+        return "current-row";
+      }
     },
     //展示创建osd弹框
     showModal(type) {
@@ -225,65 +295,72 @@ export default {
     //判断数据在哪个状态下
     inStatus() {
       let states = [];
-      for(let i in arguments) {
+      for (let i in arguments) {
         states.push(arguments[i]);
       }
-      return states.some(state => state === this.current.status)
+      return states.some((state) => state === this.current.status);
     },
     //确定添加flag
     confirm() {
-      this.deleteOSDInOrOut(this.current.id, {cleanup: this.clean ? 1 : 0});
+      this.deleteOSDInOrOut(this.current.id, { cleanup: this.clean ? 1 : 0 });
     },
     //处理下拉操作项
     handleCommand(operate) {
-      if(!this.current || this.current.type !== 'osd') return;
-      switch(operate) {
-         case 'clear':
-          this.$confirm.confirm({
-            msg: `确定要擦除${this.current.name}?`,
-            icon: 'icon-question',
-          }).then(res => {
-           this.updateOSDInOrOut(this.current.id, 'scrub');
-          })
+      if (!this.current || this.current.type !== "osd") return;
+      switch (operate) {
+        case "clear":
+          this.$confirm
+            .confirm({
+              msg: `确定要擦除${this.current.name}?`,
+              icon: "icon-question",
+            })
+            .then((res) => {
+              this.updateOSDInOrOut(this.current.id, "scrub");
+            });
           break;
-        case 'deepClear':
-          this.$confirm.confirm({
-            msg: `确定要擦除${this.current.name}?\nCaution: This can reduce performance while it is running`,
-            type: 'warning',
-            icon: 'icon-warning',
-          }).then(res => {
-           this.updateOSDInOrOut(this.current.id, 'scrub', {deep: 1});
-          })
+        case "deepClear":
+          this.$confirm
+            .confirm({
+              msg: `确定要擦除${this.current.name}?\nCaution: This can reduce performance while it is running`,
+              type: "warning",
+              icon: "icon-warning",
+            })
+            .then((res) => {
+              this.updateOSDInOrOut(this.current.id, "scrub", { deep: 1 });
+            });
           break;
-        case 'clean':
-           case 'deepClear':
-          this.$confirm.confirm({
-            msg: `确定要擦除${this.current.name}?\nCaution: This can reduce performance while it is running`,
-            type: 'warning',
-            icon: 'icon-warning',
-          }).then(res => {
-            this.visibleClean = true;
-          })
+        case "clean":
+        case "deepClear":
+          this.$confirm
+            .confirm({
+              msg: `确定要擦除${this.current.name}?\nCaution: This can reduce performance while it is running`,
+              type: "warning",
+              icon: "icon-warning",
+            })
+            .then((res) => {
+              this.visibleClean = true;
+            });
           break;
       }
-      if(['start', 'restart', 'stop'].includes(operate))this.operateCeph(this.current.host, operate, {service: this.current.name})
+      if (["start", "restart", "stop"].includes(operate))
+        this.operateCeph(this.current.host, operate, {
+          service: this.current.name,
+        });
     },
     //切换tab
     handleChangeTab(tab) {
-      if(!this.current || this.current.type !== 'osd') return;
+      if (!this.current || this.current.type !== "osd") return;
       this.tab = tab;
-      switch(tab) {
-        case 'in':
-          this.updateOSDInOrOut(this.current.id, 'in')
-              .then(res =>{
-                  this.__init__();
-              });
+      switch (tab) {
+        case "in":
+          this.updateOSDInOrOut(this.current.id, "in").then((res) => {
+            this.__init__();
+          });
           break;
-        case 'out':
-           this.updateOSDInOrOut(this.current.id, 'out')
-           .then(res =>{
-                  this.__init__();
-              });;
+        case "out":
+          this.updateOSDInOrOut(this.current.id, "out").then((res) => {
+            this.__init__();
+          });
           break;
       }
     },
@@ -297,32 +374,32 @@ export default {
       return apply_ms + " / " + commit_ms;
     },
     //渲染状态图标
-    render_statusCls (value, rec) {
-      if(!value) return ['', '']
+    render_statusCls(value, rec) {
+      if (!value) return ["", ""];
       let inout = rec["in"] ? "in" : "out",
         updownicon =
-        value === "up"
-          ? "fa good fa-arrow-circle-up"
-          : "fa critical fa-arrow-circle-down",
+          value === "up"
+            ? "fa good fa-arrow-circle-up"
+            : "fa critical fa-arrow-circle-down",
         inouticon = rec["in"] ? "fa good fa-circle" : "fa warning fa-circle-o";
-        return [updownicon, inouticon]
+      return [updownicon, inouticon];
     },
     //表格单选
     handleSingleSelect(row) {
       this.current = row;
-    }
+    },
   },
 };
 </script>
 
-<style scoped=""  lang="less">
+<style scoped="" lang="less">
 .tab {
   &-container {
     border-radius: 2px;
     display: inline-flex;
     border: none;
     background: #e0eaf3;
-    background-image: linear-gradient(180deg,#5ca4e6,#aaccf0);
+    background-image: linear-gradient(180deg, #5ca4e6, #aaccf0);
     color: #fff;
     cursor: pointer;
     .active {
@@ -387,8 +464,8 @@ export default {
 .snap-table-header__tr > .snap-table-td {
   border-bottom: 1px solid #f5f5f5;
 }
-/deep/.el-table__body tr.current-row>td {
-    background-image: linear-gradient(180deg,#0076e2,#095cb5);
-    color: #fff;
+/deep/.el-table__body tr.current-row > td {
+  background-image: linear-gradient(180deg, #0076e2, #095cb5);
+  color: #fff;
 }
 </style>

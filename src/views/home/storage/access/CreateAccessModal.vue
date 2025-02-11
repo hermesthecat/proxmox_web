@@ -19,11 +19,11 @@
                 labelWidth="100px"
                 @on-change="handleGroupSelect"
                 v-model="groups"
-								validateEvent
+                validateEvent
                 @validate="validate"
                 :show-error="rules.groups.error"
                 :error-msg="rules.groups.message"
-								v-if="modalType === 'group'"
+                v-if="modalType === 'group'"
                 :readonly="false"
                 placeholder="请选择组"
               >
@@ -42,27 +42,31 @@
                       </div>
                     </template>
                     <div class="table-tr">
-                      <span class="table-td" :title="item.groupid">{{ item.groupid }}</span>
-                      <span class="table-td" :title="item.comment">{{ item.comment }}</span>
+                      <span class="table-td" :title="item.groupid">{{
+                        item.groupid
+                      }}</span>
+                      <span class="table-td" :title="item.comment">{{
+                        item.comment
+                      }}</span>
                       <span class="table-td" :title="item.users">
-                        {{ item.users}}
+                        {{ item.users }}
                       </span>
                     </div>
                   </div>
                 </m-option>
               </m-select>
-							 <m-select
+              <m-select
                 prop="users"
                 label="用户"
                 labelWidth="100px"
                 @on-change="handleGroupSelect"
                 v-model="users"
-								validateEvent
+                validateEvent
                 @validate="validate"
                 :show-error="rules.users.error"
                 :error-msg="rules.users.message"
                 :readonly="false"
-								v-if="modalType === 'user'"
+                v-if="modalType === 'user'"
                 placeholder="请选择用户"
               >
                 <m-option
@@ -80,27 +84,39 @@
                       </div>
                     </template>
                     <div class="table-tr">
-                      <span class="table-td" :title="item.userid">{{ item.userid }}</span>
-                      <span class="table-td" :title="`${item.firstname ? item.firstname : '' } ${item.lastname ? item.lastname : ''}`">{{ `${item.firstname ? item.firstname : '' } ${item.lastname ? item.lastname : ''}` }}</span>
+                      <span class="table-td" :title="item.userid">{{
+                        item.userid
+                      }}</span>
+                      <span
+                        class="table-td"
+                        :title="`${item.firstname ? item.firstname : ''} ${
+                          item.lastname ? item.lastname : ''
+                        }`"
+                        >{{
+                          `${item.firstname ? item.firstname : ""} ${
+                            item.lastname ? item.lastname : ""
+                          }`
+                        }}</span
+                      >
                       <span class="table-td" :title="item.comment">
-                        {{ item.comment}}
+                        {{ item.comment }}
                       </span>
                     </div>
                   </div>
                 </m-option>
               </m-select>
-							 <m-select
+              <m-select
                 prop="tokens"
                 label="Api Token"
                 labelWidth="100px"
                 @on-change="handleGroupSelect"
                 v-model="tokens"
-								validateEvent
+                validateEvent
                 @validate="validate"
                 :show-error="rules.tokens.error"
                 :error-msg="rules.tokens.message"
                 :readonly="false"
-								v-if="modalType === 'apiToken'"
+                v-if="modalType === 'apiToken'"
                 placeholder="请选择Api Token"
               >
                 <m-option
@@ -117,8 +133,12 @@
                       </div>
                     </template>
                     <div class="table-tr">
-                      <span class="table-td" :title="item.tokenid">{{ item.tokenid }}</span>
-                      <span class="table-td" :title="item.comment">{{ item.comment }}</span>
+                      <span class="table-td" :title="item.tokenid">{{
+                        item.tokenid
+                      }}</span>
+                      <span class="table-td" :title="item.comment">{{
+                        item.comment
+                      }}</span>
                     </div>
                   </div>
                 </m-option>
@@ -184,12 +204,12 @@ export default {
   data() {
     return {
       path: "",
-      groups: '',
-      roles: 'NoAccess',
-			propagate: true,
-			tokenList: [],
-			users: "",
-			tokens:"",
+      groups: "",
+      roles: "NoAccess",
+      propagate: true,
+      tokenList: [],
+      users: "",
+      tokens: "",
       rules: {
         path: {
           error: false,
@@ -198,15 +218,15 @@ export default {
         groups: {
           error: false,
           message: "",
-				},
-				users: {
-					error: false,
+        },
+        users: {
+          error: false,
           message: "",
-				},
-				tokens: {
-					error: false,
+        },
+        tokens: {
+          error: false,
           message: "",
-				}
+        },
       },
     };
   },
@@ -217,42 +237,39 @@ export default {
     percentToFixed,
     byteToSize,
     async __init__() {
-			if(this.modalType === 'group')
-      await this.queryGroupsList();
-			await this.queryRoleList();
-			if(this.modalType === 'user')
-			await this.queryUsersList({enabled: 1})
-			if(this.modalType === 'apiToken')
-			await this.queryUsersList({full: 1})
-			          .then(() => {
-									this.db.usersList.forEach((item) => {
-										if(item.tokens) {
-											this.tokenList.concat(item.tokens)
-										}
-									})
-								})
+      if (this.modalType === "group") await this.queryGroupsList();
+      await this.queryRoleList();
+      if (this.modalType === "user") await this.queryUsersList({ enabled: 1 });
+      if (this.modalType === "apiToken")
+        await this.queryUsersList({ full: 1 }).then(() => {
+          this.db.usersList.forEach((item) => {
+            if (item.tokens) {
+              this.tokenList.concat(item.tokens);
+            }
+          });
+        });
     },
     handlePathSelect(value) {
       this.path = value;
     },
     handleGroupSelect(value) {
-			switch(this.modalType) {
-				case 'user':
-					this.users = value;
-					break;
-				case 'group':
-					this.groups = value;
-					break;
-				case 'tokens':
-					this.tokens = value;
-					break;
-				default: 
-				  this.groups = value;
-			}
-		},
-		handleRoleSelect(value) {
-			this.roles = value;
-		},
+      switch (this.modalType) {
+        case "user":
+          this.users = value;
+          break;
+        case "group":
+          this.groups = value;
+          break;
+        case "tokens":
+          this.tokens = value;
+          break;
+        default:
+          this.groups = value;
+      }
+    },
+    handleRoleSelect(value) {
+      this.roles = value;
+    },
     close() {
       this.$emit("close");
     },
@@ -267,44 +284,44 @@ export default {
       }
     },
     validateAll() {
-			let props = [];
-			switch(this.modalType) {
-				case 'user':
-			  	props = ['users'];
-					break;
-				case 'group':
-					props = ['groups'];
-					break;
-				case 'tokens':
-					props = ['tokens'];
-					break;
-				default: 
-				  	props = [];
-			}
+      let props = [];
+      switch (this.modalType) {
+        case "user":
+          props = ["users"];
+          break;
+        case "group":
+          props = ["groups"];
+          break;
+        case "tokens":
+          props = ["tokens"];
+          break;
+        default:
+          props = [];
+      }
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
     },
     confirm() {
       if (this.validateAll()) return;
       let param = {
-				path: `/storage/${this.storage}`,
-				roles: this.roles,
-			}
-			switch(this.modalType) {
-				case 'user':
-					param['users'] = this.users;
-					break;
-				case 'group':
-					param['groups'] = this.groups;
-					break;
-				case 'apiToken':
-					param['tokens'] = this.tokens;
-					break;
-			}
-			if(this.propagate) param['propagate'] = 1;
-			this.createAccess(param).then(res => {
-				this.close();
-			});
+        path: `/storage/${this.storage}`,
+        roles: this.roles,
+      };
+      switch (this.modalType) {
+        case "user":
+          param["users"] = this.users;
+          break;
+        case "group":
+          param["groups"] = this.groups;
+          break;
+        case "apiToken":
+          param["tokens"] = this.tokens;
+          break;
+      }
+      if (this.propagate) param["propagate"] = 1;
+      this.createAccess(param).then((res) => {
+        this.close();
+      });
     },
   },
   watch: {

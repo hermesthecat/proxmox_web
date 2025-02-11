@@ -186,7 +186,7 @@
         "
       ></operate-modal>
       <Pv-Menu :data="menuData"></Pv-Menu>
-      <div class="m-scroll-wrapper  scroll-container">
+      <div class="m-scroll-wrapper scroll-container">
         <div class="m-scroll-view scroll-view" @scroll="onScroll">
           <div class="m-content">
             <router-view />
@@ -245,8 +245,8 @@ export default {
     }),
   },
   async mounted() {
-    this.scrollElementSelector = '.scroll-view';
-    this.scrollContainerSelector =  '.scroll-container';
+    this.scrollElementSelector = ".scroll-view";
+    this.scrollContainerSelector = ".scroll-container";
     this.__init__();
   },
   methods: {

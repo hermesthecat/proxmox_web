@@ -15,7 +15,7 @@
             :error-msg="rules.storage.message"
             v-model="storage"
             required
-						:disabled="!isCreate"
+            :disabled="!isCreate"
             placeholder="请输入ID"
           />
           <m-checkbox
@@ -30,7 +30,7 @@
             prop="pool"
             label="Zfs池"
             validateEvent
-						:disabled="!isCreate"
+            :disabled="!isCreate"
             @validate="validate"
             required
             :show-error="rules.pool.error"
@@ -45,7 +45,7 @@
               :value="item.pool"
             ></m-option>
           </m-select>
-					<m-checkbox
+          <m-checkbox
             label="精简装置"
             v-model="sparse"
             labelWidth="100px"
@@ -63,21 +63,25 @@
             v-model="blocksize"
             placeholder="8k"
           />
-          <m-select type="multiple"
-					          labelWidth="100px"
-										@on-change="handleContentSelect"
-										validateEvent
-										@validate="validate"
-										prop="content"
-										v-model="content"
-                    required
-										:show-error="rules.content.error"
-                    :error-msg="rules.content.message"
-					          label="内容">
-						<m-option v-for="item in options"
-						          :key="item.value"
-                      :label="item.label"
-                      :value="item.value"></m-option>
+          <m-select
+            type="multiple"
+            labelWidth="100px"
+            @on-change="handleContentSelect"
+            validateEvent
+            @validate="validate"
+            prop="content"
+            v-model="content"
+            required
+            :show-error="rules.content.error"
+            :error-msg="rules.content.message"
+            label="内容"
+          >
+            <m-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></m-option>
           </m-select>
         </dd>
       </dl>
@@ -86,12 +90,10 @@
         <dd>
           <el-table
             :data="db.nodeList"
-						ref="dataTable"
-           @selection-change="handleSelectionChange">
-            <el-table-column
-                type="selection"
-                width="55">
-            </el-table-column>
+            ref="dataTable"
+            @selection-change="handleSelectionChange"
+          >
+            <el-table-column type="selection" width="55"> </el-table-column>
             <el-table-column
               label="节点"
               prop="node"
@@ -127,8 +129,8 @@ import DataCenterStorageHttp from "@src/views/home/dataCenter/storage/http";
 import { flotToFixed, percentToFixed } from "@libs/utils/index";
 export default {
   name: "CreateZfsStorage",
-	mixins: [DataCenterStorageHttp],
-	props: {
+  mixins: [DataCenterStorageHttp],
+  props: {
     isCreate: {
       type: Boolean,
       default: true,
@@ -143,7 +145,7 @@ export default {
       monhost: "",
       content: ["images"],
       nodes: [],
-			username: "",
+      username: "",
       blocksize: "",
       pool: "",
       target: "",
@@ -159,14 +161,14 @@ export default {
       krbd: false,
       sparse: false,
       options: [
-       {
-					label: '磁盘映像',
-					value: 'images'
-				},
-				{
-					label: '容器',
-					value: 'rootdir'
-				}
+        {
+          label: "磁盘映像",
+          value: "images",
+        },
+        {
+          label: "容器",
+          value: "rootdir",
+        },
       ],
       rules: {
         storage: {
@@ -184,7 +186,7 @@ export default {
         blocksize: {
           error: false,
           message: "",
-        }
+        },
       },
     };
   },
@@ -195,8 +197,8 @@ export default {
     flotToFixed,
     percentToFixed,
     __init__() {
-			let _this = this;
-			_this.queryNode().then(() => {
+      let _this = this;
+      _this.queryNode().then(() => {
         _this.$nextTick(() => {
           _this.db.nodeList.forEach((item) => {
             _this.nodes.forEach((node) => {
@@ -209,17 +211,19 @@ export default {
       });
       if (!_this.isCreate) {
         Object.keys(_this.param).forEach((key) => {
-          if (["disable", 'shared','sparse', 'krbd', 'pveceph'].includes(key)) {
+          if (
+            ["disable", "shared", "sparse", "krbd", "pveceph"].includes(key)
+          ) {
             _this[key] = _this.param[key] === 1 ? true : false;
           } else if (key === "nodes" || key === "content") {
             _this[key] = _this.param[key].split(",");
           } else {
             _this[key] = _this.param[key];
           }
-				});
-					this.disable = this.param.disable ? false : true
-      };
-			_this.queryZfs();
+        });
+        this.disable = this.param.disable ? false : true;
+      }
+      _this.queryZfs();
     },
     //单个校验
     validate(prop) {
@@ -227,7 +231,7 @@ export default {
       this.rules[prop].error = false;
       this.rules[prop].message = "";
       //校验是否为空
-      if (/^\s*$/.test(value) && prop !== 'blocksize') {
+      if (/^\s*$/.test(value) && prop !== "blocksize") {
         this.rules[prop].error = true;
         this.rules[prop].message = "不能为空";
         return;
@@ -246,29 +250,29 @@ export default {
         this.rules[prop].error = true;
         this.rules[prop].message = "路径是以/开头的绝对路径";
         return;
-			}
-			if(prop === 'blocksize' && !/^[\d][k|m|t|p|g]$/.test(value)) {
-				 this.rules[prop].error = true;
+      }
+      if (prop === "blocksize" && !/^[\d][k|m|t|p|g]$/.test(value)) {
+        this.rules[prop].error = true;
         this.rules[prop].message = "块大小格式不对";
         return;
-			}
+      }
     },
     //选择内容
     handleContentSelect(value) {
       this.content = value;
     },
     handleSelectionChange(row) {
-			this.nodes = row.map(item => item.node);
-		},
+      this.nodes = row.map((item) => item.node);
+    },
     //整体校验
     validateAll() {
-			let props = ["storage", "blocksize", "content", "pool"];
+      let props = ["storage", "blocksize", "content", "pool"];
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
-		},
-		handleZfsPoolSelect(value){
+    },
+    handleZfsPoolSelect(value) {
       this.pool = value;
-		}
+    },
   },
 };
 </script>

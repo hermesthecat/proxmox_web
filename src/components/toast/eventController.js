@@ -59,7 +59,7 @@ export default {
     } else {
       eventToBeUpdated = JSON.parse(getEventDataFromWindow(_event.id))
     }
-    let updatedEvent = Object.assign(eventToBeUpdated, {successCount: _event.successCount, failCount: _event.failCount})
+    let updatedEvent = Object.assign(eventToBeUpdated, { successCount: _event.successCount, failCount: _event.failCount })
     updatedEvent.endTime = Date.now() + window.___currServerTimeMillionDvalue
     // setEventDataToWindow(_event.id, JSON.stringify(updatedEvent))
     if (updatedEvent.count === updatedEvent.successCount) {
@@ -80,7 +80,7 @@ export default {
   },
   incEventSuccess: function (event, self) {
     let _event
-      _event = JSON.parse(getEventDataFromWindow(event.id))
+    _event = JSON.parse(getEventDataFromWindow(event.id))
     // don't set success twice
     if (_event.successCount === _event.count) return
     if (_event.successCount < _event.count) _event.successCount++;
@@ -97,7 +97,7 @@ export default {
   },
   setEventSuccess: function (event, content, self) {
     let _event
-      _event = JSON.parse(getEventDataFromWindow(event.id))
+    _event = JSON.parse(getEventDataFromWindow(event.id))
     // don't set success twice
     if (_event.successCount === _event.count) return
     _event.successCount = _event.count

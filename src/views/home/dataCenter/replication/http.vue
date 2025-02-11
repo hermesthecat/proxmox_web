@@ -4,17 +4,20 @@ export default {
   name: "DataCenterReplicationHttp",
   methods: {
     queryReplicationList() {
-      this.loading = true
-      return this.$http.get("json/cluster/replication").then((res) => {
-        this.loading = false;
-        if (res.data)
-          this.updateTable({
-            tableName: "dataCenterReplicationList",
-            list: res.data,
-          });
-      }).catch(res => {
-        this.loadingText = res;
-      });
+      this.loading = true;
+      return this.$http
+        .get("json/cluster/replication")
+        .then((res) => {
+          this.loading = false;
+          if (res.data)
+            this.updateTable({
+              tableName: "dataCenterReplicationList",
+              list: res.data,
+            });
+        })
+        .catch((res) => {
+          this.loadingText = res;
+        });
     },
     queryNodeList() {
       return this.$http.get("json/nodes").then((res) => {
@@ -48,14 +51,14 @@ export default {
         })
         .catch((res) => {
           this.incEventFail(event);
-          confirm.call(this, res, 'confirm', 'icon-warning');
+          confirm.call(this, res, "confirm", "icon-warning");
         });
     },
     updateReplication(params) {
-			let param = deepCopy(params);
-			delete param.id;
-			delete param.guest;
-			delete param.target;
+      let param = deepCopy(params);
+      delete param.id;
+      delete param.guest;
+      delete param.target;
       let event = this.createEvent("action.replication.update", params.guest);
       return this.$http
         .put(`json/cluster/replication/${params.id}`, param, {
@@ -69,7 +72,7 @@ export default {
         })
         .catch((res) => {
           this.incEventFail(event);
-           confirm.call(this, res, 'confirm', 'icon-warning');
+          confirm.call(this, res, "confirm", "icon-warning");
         });
     },
     queryReplicationById(id) {
@@ -80,28 +83,28 @@ export default {
             data: res.data,
           });
       });
-		},
-		delete(type) {
-			 let event = this.createEvent("action.replication.delete");
+    },
+    delete(type) {
+      let event = this.createEvent("action.replication.delete");
       let tasks = [],
         p;
       this.selectedList.forEach((item) => {
         ((id) => {
           p = this.$http
-            .del(`json/cluster/replication/${id}`, {[type]: 1})
+            .del(`json/cluster/replication/${id}`, { [type]: 1 })
             .then((res) => {
               this.queryReplicationList();
               this.incEventSuccess(event);
             })
             .catch((res) => {
               this.incEventFail(event);
-               confirm.call(this, res, 'confirm', 'icon-warning');
+              confirm.call(this, res, "confirm", "icon-warning");
             });
         })(item.id);
         tasks.push(p);
       });
       return Promise.all(tasks);
-		}
+    },
   },
 };
 </script>

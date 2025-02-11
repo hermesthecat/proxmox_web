@@ -24,7 +24,8 @@ export default {
               list: res.data,
             });
           }
-        }).catch(res => {
+        })
+        .catch((res) => {
           this.loading = false;
         });
     },
@@ -42,7 +43,9 @@ export default {
     },
     querySda(param) {
       return this.$http
-        .get(`json/nodes/${this.node}/disks/zfs/${param.name}`,{_dc:  param._dc})
+        .get(`json/nodes/${this.node}/disks/zfs/${param.name}`, {
+          _dc: param._dc,
+        })
         .then((res) => {
           if (res.data) {
             this.updateDbObject({

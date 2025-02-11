@@ -49,37 +49,37 @@
           <dl>
             <dt>选择节点</dt>
             <dd>
-              <el-table :data="nodeList" @selection-change="handleSelect" ref="dataTable">
+              <el-table
+                :data="nodeList"
+                @selection-change="handleSelect"
+                ref="dataTable"
+              >
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column label="节点" prop="node"></el-table-column>
-                <el-table-column
-                  label="内存使用率"
-                >
-								   <template slot-scope="scope">
-										 <span>{{ (scope.row) | formatSize('memory')}}</span>
-									 </template>
-								</el-table-column>
-                <el-table-column
-                  label="CPU使用率"
-                >
-								  <template slot-scope="scope">
-										 <span>{{ (scope.row) | formatSize('cpu')}}</span>
-									 </template>
-								</el-table-column>
+                <el-table-column label="内存使用率">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row | formatSize("memory") }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="CPU使用率">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row | formatSize("cpu") }}</span>
+                  </template>
+                </el-table-column>
                 <el-table-column label="Priority" prop="nodes">
-									<template slot-scope="scope">
-										 <span sytle="width: 110px;dispaly: inline-block;">
-											 <m-input
-                type="number"
-                prop="priority"
-								style="width: 123px"
-								:_style="{width: '105px', 'min-width': '90px'}"
-								:__conStyle="{width: '115px', 'min-width': '115px'}"
-                v-model="node[scope.row.id]"
-                placeholder="请输入备注"
-              /></span>
-									 </template>
-								</el-table-column>
+                  <template slot-scope="scope">
+                    <span sytle="width: 110px;dispaly: inline-block;">
+                      <m-input
+                        type="number"
+                        prop="priority"
+                        style="width: 123px"
+                        :_style="{ width: '105px', 'min-width': '90px' }"
+                        :__conStyle="{ width: '115px', 'min-width': '115px' }"
+                        v-model="node[scope.row.id]"
+                        placeholder="请输入备注"
+                    /></span>
+                  </template>
+                </el-table-column>
               </el-table>
             </dd>
           </dl>
@@ -122,25 +122,25 @@ export default {
       type: Boolean,
       default: false,
     },
-	},
-	computed:{
-		// nodeList() {
-		// 	if(!this.db.resources) return;
-		// 	if(this.db.resources && this.db.resources.length > 0) {
+  },
+  computed: {
+    // nodeList() {
+    // 	if(!this.db.resources) return;
+    // 	if(this.db.resources && this.db.resources.length > 0) {
     //     return this.db.resources.filter(it => it.type === 'node')
-		// 	}
-		// }
-	},
+    // 	}
+    // }
+  },
   data() {
     return {
       group: "",
       restricted: false,
       nofailback: false,
-			comment: "",
-			priority: null,
-			nodeList: [],
-			selectedList: [],
-			node: {},
+      comment: "",
+      priority: null,
+      nodeList: [],
+      selectedList: [],
+      node: {},
       rules: {
         group: {
           error: false,
@@ -159,55 +159,54 @@ export default {
   },
   mounted() {
     this.__init__();
-	},
-	filters: {
-		formatSize(row, type) {
-			debugger;
-			if(type === 'memory') {
-				if(row.maxmem && row.mem) return percentToFixed(row.mem/row.maxmem, 3);
-			}else {
-			if(row.maxcpu && row.cpu) return `${percentToFixed(row.cpu, 3)} of ${row.maxcpu}`;
-			}
-		}
-	},
+  },
+  filters: {
+    formatSize(row, type) {
+      debugger;
+      if (type === "memory") {
+        if (row.maxmem && row.mem)
+          return percentToFixed(row.mem / row.maxmem, 3);
+      } else {
+        if (row.maxcpu && row.cpu)
+          return `${percentToFixed(row.cpu, 3)} of ${row.maxcpu}`;
+      }
+    },
+  },
   methods: {
     async __init__() {
       if (this.isCreate) {
-				Object.assign(this.$data, this.$options.data());
-        this.queryResource()
-            .then((data) => {
-              this.nodeList = data.filter(it => it.type === 'node');
-						  this.nodeList.forEach(it => Object.assign(this.node, it.id, ''));
-            });
+        Object.assign(this.$data, this.$options.data());
+        this.queryResource().then((data) => {
+          this.nodeList = data.filter((it) => it.type === "node");
+          this.nodeList.forEach((it) => Object.assign(this.node, it.id, ""));
+        });
       } else {
-				Object.assign(this.$data, this.$options.data());
-        await this.queryResource()
-                   .then((data) => {
-                       this.nodeList = data.filter(it => it.type === 'node');
-						           this.nodeList.forEach(it => Object.assign(this.node, it.id, ''));
-                  });;
-				this.queryGroupsById({id: this.param.group})
-				    .then(() => {
-							Object.keys(this.db.groupsObj).forEach(it => {
-								if(it === 'nodes' &&  this.db.groupsObj.nodes) {
-									 let nodes = this.db.groupsObj.nodes.split(',');
-									 this.nodeList.forEach(item => {
-										 nodes.forEach(it => {
-											 if(it.indexOf(':') > -1 && item.node === it.split(':')[0]) {
-												 this.$refs.dataTable.toggleRowSelection(item, true);
-												 this.node[item.id] = it.split(':')[1];
-											 } else if(item.node === it){
-                         this.$refs.dataTable.toggleRowSelection(item, true);
-											 }
-										 })
-									 })
-								} else if(['restricted', 'nofailback'].includes(it)){
-									this[it] = this.db.groupsObj[it] ? true : false;
-								} else {
-									this[it] = this.db.groupsObj[it]
-								}
-							})
-						});
+        Object.assign(this.$data, this.$options.data());
+        await this.queryResource().then((data) => {
+          this.nodeList = data.filter((it) => it.type === "node");
+          this.nodeList.forEach((it) => Object.assign(this.node, it.id, ""));
+        });
+        this.queryGroupsById({ id: this.param.group }).then(() => {
+          Object.keys(this.db.groupsObj).forEach((it) => {
+            if (it === "nodes" && this.db.groupsObj.nodes) {
+              let nodes = this.db.groupsObj.nodes.split(",");
+              this.nodeList.forEach((item) => {
+                nodes.forEach((it) => {
+                  if (it.indexOf(":") > -1 && item.node === it.split(":")[0]) {
+                    this.$refs.dataTable.toggleRowSelection(item, true);
+                    this.node[item.id] = it.split(":")[1];
+                  } else if (item.node === it) {
+                    this.$refs.dataTable.toggleRowSelection(item, true);
+                  }
+                });
+              });
+            } else if (["restricted", "nofailback"].includes(it)) {
+              this[it] = this.db.groupsObj[it] ? true : false;
+            } else {
+              this[it] = this.db.groupsObj[it];
+            }
+          });
+        });
       }
     },
     handleVmidSelect(value) {
@@ -231,33 +230,33 @@ export default {
         this.rules[prop].message = "不能为空";
         return;
       }
-		},
-		handleSelect(row) {
-     this.selectedList = row;
-		},
+    },
+    handleSelect(row) {
+      this.selectedList = row;
+    },
     validateAll() {
       let props = ["group"];
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
     },
     confirm() {
-			if (this.validateAll()) return;
-			let nodes = ''
-			this.selectedList.forEach((item) => {
-         if(this.node[item.id]){
-           nodes +=`${item.node}:${this.node[item.id]},`
-				 } else {
-					 nodes +=`${item.node},`
-				 }
-			})
-			if(nodes.endsWith(',')) nodes = nodes.slice(0, nodes.length - 1);
+      if (this.validateAll()) return;
+      let nodes = "";
+      this.selectedList.forEach((item) => {
+        if (this.node[item.id]) {
+          nodes += `${item.node}:${this.node[item.id]},`;
+        } else {
+          nodes += `${item.node},`;
+        }
+      });
+      if (nodes.endsWith(",")) nodes = nodes.slice(0, nodes.length - 1);
       let param = {
         group: this.group,
-				nodes: nodes,
-				restricted: this.restricted ? 1 : 0,
-				nofailback: this.restricted ? 1 : 0,
-				comment: this.comment,
-				type: 'group',
+        nodes: nodes,
+        restricted: this.restricted ? 1 : 0,
+        nofailback: this.restricted ? 1 : 0,
+        comment: this.comment,
+        type: "group",
       };
       if (this.isCreate) {
         this.createHaGroup(param)
@@ -272,9 +271,9 @@ export default {
               .then(() => this.close());
           });
       } else {
-				param.digist = this.db.groupsObj.digist;
-				delete param.group;
-				delete param.type;
+        param.digist = this.db.groupsObj.digist;
+        delete param.group;
+        delete param.type;
         this.updateHaGroup(this.db.groupsObj.group, param)
           .then((res) => {
             this.close();

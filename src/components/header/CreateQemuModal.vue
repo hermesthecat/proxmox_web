@@ -13,7 +13,7 @@
       left: '0',
       right: '0',
       bottom: '0',
-      'overflow-y': 'clip'
+      'overflow-y': 'clip',
     }"
     title="创建虚拟机"
   >
@@ -93,13 +93,17 @@
                 <el-table-column label="内存使用率" width="180">
                   <template slot-scope="scope">
                     <span>{{
-                      scope.row.mem && scope.row.maxmem && flotToFixed(scope.row.mem / scope.row.maxmem, 2)
+                      scope.row.mem &&
+                      scope.row.maxmem &&
+                      flotToFixed(scope.row.mem / scope.row.maxmem, 2)
                     }}</span>
                   </template>
                 </el-table-column>
                 <el-table-column label="CPU使用率" width="180">
                   <template slot-scope="scope">
-                    <span>{{ scope.row.cpu && flotToFixed(scope.row.cpu, 2) }}</span>
+                    <span>{{
+                      scope.row.cpu && flotToFixed(scope.row.cpu, 2)
+                    }}</span>
                   </template>
                 </el-table-column>
               </el-table>
@@ -116,7 +120,7 @@
                 highlight-current-row
                 :data="poolList"
               >
-                <el-table-column  width="50">
+                <el-table-column width="50">
                   <template slot-scope="scope">
                     <el-radio :label="scope.row.poolid" v-model="poolRadio"
                       >&nbsp;</el-radio
@@ -237,7 +241,7 @@
                     :data="isoList"
                     :class="{ 'm-input__error': rules['isoRadio'].error }"
                   >
-                    <el-table-column  width="50">
+                    <el-table-column width="50">
                       <template slot-scope="scope">
                         <el-radio :label="scope.row.volid" v-model="isoRadio"
                           >&nbsp;</el-radio
@@ -438,12 +442,16 @@
                           <div class="table-td">容量</div>
                         </div>
                         <div class="table-tr">
-                          <div class="table-td" :title="item.storage">{{ item.storage }}</div>
-                          <div class="table-td" :title="item.type">{{ item.type }}</div>
+                          <div class="table-td" :title="item.storage">
+                            {{ item.storage }}
+                          </div>
+                          <div class="table-td" :title="item.type">
+                            {{ item.type }}
+                          </div>
                           <div class="table-td" :title="byteToSize(item.avail)">
                             {{ byteToSize(item.avail) }}
                           </div>
-                          <div class="table-td"  :title="byteToSize(item.total)">
+                          <div class="table-td" :title="byteToSize(item.total)">
                             {{ byteToSize(item.total) }}
                           </div>
                         </div>
@@ -622,10 +630,18 @@
                       <div class="table-td">容量</div>
                     </div>
                     <div class="table-tr">
-                      <div class="table-td" :title="item.storage">{{ item.storage }}</div>
-                      <div class="table-td" :title="item.type">{{ item.type }}</div>
-                      <div class="table-td" :title="byteToSize(item.avail)">{{ byteToSize(item.avail) }}</div>
-                      <div class="table-td" :title=" byteToSize(item.total)">{{ byteToSize(item.total) }}</div>
+                      <div class="table-td" :title="item.storage">
+                        {{ item.storage }}
+                      </div>
+                      <div class="table-td" :title="item.type">
+                        {{ item.type }}
+                      </div>
+                      <div class="table-td" :title="byteToSize(item.avail)">
+                        {{ byteToSize(item.avail) }}
+                      </div>
+                      <div class="table-td" :title="byteToSize(item.total)">
+                        {{ byteToSize(item.total) }}
+                      </div>
                     </div>
                   </m-option>
                 </div>
@@ -892,7 +908,7 @@
                   "
                   >核总数</label
                 >
-                {{cores}}
+                {{ cores }}
               </div>
             </dd>
           </dl>
@@ -1142,7 +1158,7 @@
           <dt>网络</dt>
           <dd>
             <el-table :data="networkList">
-              <el-table-column  width="50">
+              <el-table-column width="50">
                 <template slot-scope="scope">
                   <el-radio :label="scope.row.iface" v-model="networkRadio"
                     >&nbsp;</el-radio
@@ -1524,7 +1540,7 @@ export default {
       if (this.step < 8) ++this.step;
       if (this.step === 2) {
         //查询存储
-        await this.queryStorageList( {
+        await this.queryStorageList({
           format: 1,
           content: "iso",
         }).then((res) => {
@@ -1546,7 +1562,10 @@ export default {
             this.imageStorageList.length > 0
               ? this.imageStorageList[0].storage
               : "";
-             this.storageType =  this.imageStorageList.length > 0 ? this.imageStorageList[0].type : '';
+          this.storageType =
+            this.imageStorageList.length > 0
+              ? this.imageStorageList[0].type
+              : "";
         });
       }
       if (this.step === 5) {
@@ -1863,11 +1882,11 @@ export default {
         return newVal;
       }
     },
-    $route: function(newVal, oldVal) {
-      if(newVal !== oldVal) {
+    $route: function (newVal, oldVal) {
+      if (newVal !== oldVal) {
         this.close();
       }
-    }
+    },
   },
 };
 </script>

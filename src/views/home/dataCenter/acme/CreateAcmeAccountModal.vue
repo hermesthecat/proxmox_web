@@ -70,8 +70,12 @@
                       </div>
                     </template>
                     <div class="table-tr">
-                      <span class="table-td" :title="item.name">{{ item.name }}</span>
-                      <span class="table-td" :title="item.url">{{ item.url }}</span>
+                      <span class="table-td" :title="item.name">{{
+                        item.name
+                      }}</span>
+                      <span class="table-td" :title="item.url">{{
+                        item.url
+                      }}</span>
                     </div>
                   </div>
                 </m-option>
@@ -110,31 +114,52 @@
           <div class="service-police">
             <div class="service-police-label">Eamil</div>
             <div class="service-police-content">
-              {{ db.acmeAccountObj.account.contact && db.acmeAccountObj.account.contact.join(';') }}
+              {{
+                db.acmeAccountObj.account.contact &&
+                db.acmeAccountObj.account.contact.join(";")
+              }}
             </div>
           </div>
           <div class="service-police">
             <div class="service-police-label">已创建</div>
             <div class="service-police-content">
-              {{ db.acmeAccountObj.account.createdAt && db.acmeAccountObj.account.createdAt }}
+              {{
+                db.acmeAccountObj.account.createdAt &&
+                db.acmeAccountObj.account.createdAt
+              }}
             </div>
           </div>
           <div class="service-police">
             <div class="service-police-label">状态</div>
             <div class="service-police-content">
-              {{ db.acmeAccountObj.account.status && db.acmeAccountObj.account.status }}
+              {{
+                db.acmeAccountObj.account.status &&
+                db.acmeAccountObj.account.status
+              }}
             </div>
           </div>
           <div class="service-police">
             <div class="service-police-label">目录</div>
             <div class="service-police-content">
-              <a :href="db.acmeAccountObj.directory && db.acmeAccountObj.directory" target="_blank">{{ db.acmeAccountObj.directory&& db.acmeAccountObj.directory }}</a>
+              <a
+                :href="
+                  db.acmeAccountObj.directory && db.acmeAccountObj.directory
+                "
+                target="_blank"
+                >{{
+                  db.acmeAccountObj.directory && db.acmeAccountObj.directory
+                }}</a
+              >
             </div>
           </div>
           <div class="service-police">
             <div class="service-police-label">服务条款</div>
             <div class="service-police-content">
-              <a :href="db.acmeAccountObj.tos && db.acmeAccountObj.tos"  target="_blank">{{  db.acmeAccountObj.tos && db.acmeAccountObj.tos }}</a>
+              <a
+                :href="db.acmeAccountObj.tos && db.acmeAccountObj.tos"
+                target="_blank"
+                >{{ db.acmeAccountObj.tos && db.acmeAccountObj.tos }}</a
+              >
             </div>
           </div>
         </div>
@@ -159,34 +184,36 @@
             :disabled="db.addClusterStatusObj.status !== 'running'"
             >停止</m-button
           >
-         <el-scrollbar style="height:100%">
+          <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
               <div class="table" v-if="tab === 'log'">
-              <div
-                class="table-tr"
-                v-for="item in db.addClusterLogList"
-                :key="item.n"
-              >
-                {{ item.t }}
-              </div>
-            </div>
-            <div class="table" v-if="tab === 'status'">
-              <template v-for="(item, key) in db.addClusterStatusObj">
                 <div
                   class="table-tr"
-                  v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-                  :key="key"
+                  v-for="item in db.addClusterLogList"
+                  :key="item.n"
                 >
-                  <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
-                  <div class="table-td" v-if="key === 'starttime'">
-                    {{ dateFormat(new Date(item * 1000), "yyyy-MM-dd hh:mm") }}
-                  </div>
-                  <div class="table-td" v-else>{{ item }}</div>
+                  {{ item.t }}
                 </div>
-              </template>
+              </div>
+              <div class="table" v-if="tab === 'status'">
+                <template v-for="(item, key) in db.addClusterStatusObj">
+                  <div
+                    class="table-tr"
+                    v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
+                    :key="key"
+                  >
+                    <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
+                    <div class="table-td" v-if="key === 'starttime'">
+                      {{
+                        dateFormat(new Date(item * 1000), "yyyy-MM-dd hh:mm")
+                      }}
+                    </div>
+                    <div class="table-td" v-else>{{ item }}</div>
+                  </div>
+                </template>
+              </div>
             </div>
-            </div>
-         </el-scrollbar>
+          </el-scrollbar>
         </template>
         <template slot="footer">
           <span></span>
@@ -262,7 +289,7 @@ export default {
         domains: {
           error: false,
           message: "",
-        }
+        },
       },
     };
   },
@@ -281,7 +308,7 @@ export default {
         });
       } else {
         Object.assign(this.$data, this.$options.data());
-        this.queryAcmeAccountById(this.param.name)
+        this.queryAcmeAccountById(this.param.name);
       }
     },
     handleDirectorySelect(value) {
@@ -335,17 +362,16 @@ export default {
         this.createAcmeAccount(param)
           .then((res) => {
             this.showLog = true;
-            this.interVal = setInterval(
-              () => {
-                this.queryLog( this.db.addClusterStatusObj.node,
-                  this.db.addClusterStatusObj.upid)
-                this.queryStatus(
-                  this.db.addClusterStatusObj.node,
-                  this.db.addClusterStatusObj.upid
-                )
-              },
-              3000
-            );
+            this.interVal = setInterval(() => {
+              this.queryLog(
+                this.db.addClusterStatusObj.node,
+                this.db.addClusterStatusObj.upid
+              );
+              this.queryStatus(
+                this.db.addClusterStatusObj.node,
+                this.db.addClusterStatusObj.upid
+              );
+            }, 3000);
           })
           .catch((res) => {
             this.$confirm

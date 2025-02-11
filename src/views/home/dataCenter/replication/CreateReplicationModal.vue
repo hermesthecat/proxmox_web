@@ -51,13 +51,35 @@
                   :value="item.node"
                 >
                   <div class="table-tr">
-                    <span class="table-td" :title="item.node">{{ item.node }}</span>
-                    <span class="table-td" :title="item.mem && item.maxmem && percentToFixed(item.mem / item.maxmem, 3)">{{
-                      item.mem && item.maxmem && percentToFixed(item.mem / item.maxmem, 3)
+                    <span class="table-td" :title="item.node">{{
+                      item.node
                     }}</span>
-                    <span class="table-td" :title="item.cpu && item.maxcpu && `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`">{{
-                      item.cpu && item.maxcpu && `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
-                    }}</span>
+                    <span
+                      class="table-td"
+                      :title="
+                        item.mem &&
+                        item.maxmem &&
+                        percentToFixed(item.mem / item.maxmem, 3)
+                      "
+                      >{{
+                        item.mem &&
+                        item.maxmem &&
+                        percentToFixed(item.mem / item.maxmem, 3)
+                      }}</span
+                    >
+                    <span
+                      class="table-td"
+                      :title="
+                        item.cpu &&
+                        item.maxcpu &&
+                        `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
+                      "
+                      >{{
+                        item.cpu &&
+                        item.maxcpu &&
+                        `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
+                      }}</span
+                    >
                   </div>
                 </m-option>
               </m-select>
@@ -139,7 +161,7 @@ export default {
       type: Boolean,
       default: false,
     },
-	},
+  },
   data() {
     return {
       id: "",
@@ -210,10 +232,11 @@ export default {
         this.queryReplicationById(_this.param.id).then(() => {
           Object.keys(_this.db.dataCenterReplicationObj).forEach((it) => {
             if (it === "id") _this.id = _this.param.guest;
-						else if (it === "target") _this[it] = _this.param[it].split(",");
-						else if (it === 'disable') _this[it] = this.param[it] ? false : true;
-						else _this[it] = _this.param[it];
-						_this.validate("target");
+            else if (it === "target") _this[it] = _this.param[it].split(",");
+            else if (it === "disable")
+              _this[it] = this.param[it] ? false : true;
+            else _this[it] = _this.param[it];
+            _this.validate("target");
           });
         });
       }
@@ -258,8 +281,8 @@ export default {
         target: this.target.join(","),
         schedule: this.schedule,
         rate: this.rate,
-				comment: this.comment,
-				disable: this.disable ? 0 : 1
+        comment: this.comment,
+        disable: this.disable ? 0 : 1,
       };
       if (this.isCreate) {
         params.type = "local";
@@ -279,9 +302,9 @@ export default {
           this.close();
         });
       if (this.modalType !== "create") {
-				params["id"] =  this.param.id;
-				params["digest"] = this.db.dataCenterReplicationObj.digest;
-				if(!params.disable) params['delete'] = 'disable';
+        params["id"] = this.param.id;
+        params["digest"] = this.db.dataCenterReplicationObj.digest;
+        if (!params.disable) params["delete"] = "disable";
         this.updateReplication(params).then(() => {
           this.close();
         });
@@ -294,7 +317,7 @@ export default {
         if (newVal) setTimeout(() => this.__init__(), 0);
         return newVal;
       }
-		}
+    },
   },
 };
 </script>

@@ -20,7 +20,7 @@
                 validateEvent
                 @on-change="handleCidrSelect"
                 v-model="cidr"
-								:readonly="false"
+                :readonly="false"
                 @validate="validate('cidr')"
                 :show-error="rules['cidr'].error"
                 :error-msg="rules['cidr'].message"
@@ -41,8 +41,12 @@
                       </div>
                     </template>
                     <div class="table-tr">
-                      <span class="table-td"  :title="item.name">{{ item.name }}</span>
-                      <span class="table-td"  :title="item.comment">{{ item.comment }}</span>
+                      <span class="table-td" :title="item.name">{{
+                        item.name
+                      }}</span>
+                      <span class="table-td" :title="item.comment">{{
+                        item.comment
+                      }}</span>
                     </div>
                   </div>
                 </m-option>
@@ -99,22 +103,22 @@ export default {
     isCreate: {
       type: Boolean,
       default: false,
-		},
-		name: {
-			type: String,
-			default: ''
-		}
+    },
+    name: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return {
-			cidr: "",
-			nomatch: false,
+      cidr: "",
+      nomatch: false,
       comment: "",
       rules: {
         cidr: {
           error: false,
           message: "",
-        }
+        },
       },
     };
   },
@@ -124,10 +128,10 @@ export default {
   methods: {
     async __init__() {
       if (this.isCreate) {
-				this.queryRefsList({type: 'alias'})
+        this.queryRefsList({ type: "alias" });
       } else {
         Object.keys(this.param).forEach((it) => {
-					if(it === 'sid') this.vmid = this.param[it];
+          if (it === "sid") this.vmid = this.param[it];
           else this[it] = this.param[it];
         });
       }
@@ -143,16 +147,17 @@ export default {
         this.rules[prop].error = true;
         this.rules[prop].message = "不能为空";
         return;
-			}
-			if(prop==="cidr" && !/^[a-zA-Z][a-zA-Z0-9_-]{2,253}$/.test(value)){
-				this.rules[prop].error = true;
-        this.rules[prop].message = "名称以字母开头，内含字母数字下划线至少2位字符";
+      }
+      if (prop === "cidr" && !/^[a-zA-Z][a-zA-Z0-9_-]{2,253}$/.test(value)) {
+        this.rules[prop].error = true;
+        this.rules[prop].message =
+          "名称以字母开头，内含字母数字下划线至少2位字符";
         return;
-			}
-		},
-		handleCidrSelect(value) {
-			this.cidr = value;
-		},
+      }
+    },
+    handleCidrSelect(value) {
+      this.cidr = value;
+    },
     validateAll() {
       let props = ["cidr"];
       props.forEach((prop) => this.validate(prop));
@@ -161,8 +166,8 @@ export default {
     confirm() {
       if (this.validateAll()) return;
       let param = {
-				cidr: this.cidr,
-				nomatch: this.nomatch ? 1 : 0,
+        cidr: this.cidr,
+        nomatch: this.nomatch ? 1 : 0,
         comment: this.comment,
       };
       if (this.isCreate) {
@@ -178,7 +183,7 @@ export default {
               .then(() => this.close());
           });
       } else {
-				param['digest'] = this.param.digest;
+        param["digest"] = this.param.digest;
         this.updateIPSetCidr(this.name, param)
           .then((res) => {
             this.close();

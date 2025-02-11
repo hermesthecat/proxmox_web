@@ -34,12 +34,12 @@ function getEvent(ev) {
 }
 //阻止事件冒泡
 function stopEvent(ev) {
-    //如果提供了事件对象，则这是一个非IE浏览器
-    if ( ev && ev.stopPropagation )
+  //如果提供了事件对象，则这是一个非IE浏览器
+  if (ev && ev.stopPropagation)
     //因此它支持W3C的stopPropagation()方法
     ev.stopPropagation();
-   else
-  //否则，我们需要使用IE的方式来取消事件冒泡
+  else
+    //否则，我们需要使用IE的方式来取消事件冒泡
     window.event.cancelBubble = true;
 }
 /**
@@ -54,7 +54,7 @@ function debounce(fn, delay) {
     if (timer) {
       clearTimeout(timer);
     }
-    timer = setTimeout(function() {
+    timer = setTimeout(function () {
       fn.apply(context, args)
     }, delay)
   }
@@ -451,7 +451,7 @@ function openVNCViewer(vmtype, vmid, nodename, vmname, novnc) {
   dlink.href = "/shell/?" + url.slice(0, url.length - 1);
   document.body.appendChild(dlink);
   dlink.click();
-  dlink.remove() 
+  dlink.remove()
   // a.setAttribute('href', "/shell/?" + url.slice(0, url.length - 1));  
   // a.setAttribute('target', '_blank');  
   // a.click();  
@@ -602,7 +602,7 @@ function isLeaf() {
 }
 
 function setIconCls(info, typeDefaults) {
-  if(!info) return;
+  if (!info) return;
   let cls = get_object_icon_class(info.type, info, typeDefaults);
   if (cls !== '') {
     info.iconCls = cls;
@@ -831,10 +831,10 @@ function uplodFile(file, callback) {
 */
 function uploadImage(file, callback) {
   let reader = new FileReader();
-  reader.onerror = function(evt) {
+  reader.onerror = function (evt) {
     throw new Error(evt);
   }
-  reader.onload = function(evt) {
+  reader.onload = function (evt) {
     callback(evt)
   }
   reader.readAsDataURL(file);
@@ -1404,33 +1404,33 @@ function forEachMP(func, includeUnused) {
  * 解析公钥数据 @param key公钥字符串
 */
 function parseSSHKey(key) {
-	//                |--- options can have quotes--|     type    key        comment
-	var keyre = /^(?:((?:[^\s"]|\"(?:\\.|[^"\\])*")+)\s+)?(\S+)\s+(\S+)(?:\s+(.*))?$/;
-	var typere = /^(?:ssh-(?:dss|rsa|ed25519)|ecdsa-sha2-nistp\d+)$/;
+  //                |--- options can have quotes--|     type    key        comment
+  var keyre = /^(?:((?:[^\s"]|\"(?:\\.|[^"\\])*")+)\s+)?(\S+)\s+(\S+)(?:\s+(.*))?$/;
+  var typere = /^(?:ssh-(?:dss|rsa|ed25519)|ecdsa-sha2-nistp\d+)$/;
 
-	var m = key.match(keyre);
-	if (!m) {
-	    return null;
-	}
-	if (m.length < 3 || !m[2]) { // [2] is always either type or key
-	    return null;
-	}
-	if (m[1] && m[1].match(typere)) {
-	    return {
-		type: m[1],
-		key: m[2],
-		comment: m[3]
-	    };
-	}
-	if (m[2].match(typere)) {
-	    return {
-		options: m[1],
-		type: m[2],
-		key: m[3],
-		comment: m[4]
-	    };
-	}
-	return null;
+  var m = key.match(keyre);
+  if (!m) {
+    return null;
+  }
+  if (m.length < 3 || !m[2]) { // [2] is always either type or key
+    return null;
+  }
+  if (m[1] && m[1].match(typere)) {
+    return {
+      type: m[1],
+      key: m[2],
+      comment: m[3]
+    };
+  }
+  if (m[2].match(typere)) {
+    return {
+      options: m[1],
+      type: m[2],
+      key: m[3],
+      comment: m[4]
+    };
+  }
+  return null;
 }
 
 /**
@@ -1448,39 +1448,39 @@ function confirm(message, type, icon, yesText) {
  * 前端分组
  * **/
 function chunkData(arr, pageSize) {
-   let num =0, chunkArr = [];
-   //计算总页数当页码大于总条数时除以总条数
-   if(pageSize <= arr.length) {
-     num = Math.ceil(arr.length / pageSize)
-   } else {
+  let num = 0, chunkArr = [];
+  //计算总页数当页码大于总条数时除以总条数
+  if (pageSize <= arr.length) {
+    num = Math.ceil(arr.length / pageSize)
+  } else {
     num = Math.ceil(arr.length / arr.length)
-   }
-   for(let i = 0, j = 0 ; i < num; i++) {
-     let newArr = [], k = (i + 1) * pageSize;;
-     while(j < arr.length) {
-        while(j < k ) {
-          if(arr[j]) {
-            newArr.push(arr[j]);
-          }
-          j++;
-          continue;
+  }
+  for (let i = 0, j = 0; i < num; i++) {
+    let newArr = [], k = (i + 1) * pageSize;;
+    while (j < arr.length) {
+      while (j < k) {
+        if (arr[j]) {
+          newArr.push(arr[j]);
         }
-        if(j == k) break;
-     }
-     chunkArr.push(newArr);
-   }
-   return chunkArr;
+        j++;
+        continue;
+      }
+      if (j == k) break;
+    }
+    chunkArr.push(newArr);
+  }
+  return chunkArr;
 }
 
-const on = (function() {
+const on = (function () {
   if (document.addEventListener) {
-    return function(element, event, handler) {
+    return function (element, event, handler) {
       if (element && event && handler) {
         element.addEventListener(event, handler, false);
       }
     };
   } else {
-    return function(element, event, handler) {
+    return function (element, event, handler) {
       if (element && event && handler) {
         element.attachEvent('on' + event, handler);
       }
@@ -1489,15 +1489,15 @@ const on = (function() {
 })();
 
 /* istanbul ignore next */
-const off = (function() {
+const off = (function () {
   if (document.removeEventListener) {
-    return function(element, event, handler) {
+    return function (element, event, handler) {
       if (element && event) {
         element.removeEventListener(event, handler, false);
       }
     };
   } else {
-    return function(element, event, handler) {
+    return function (element, event, handler) {
       if (element && event) {
         element.detachEvent('on' + event, handler);
       }
@@ -1520,7 +1520,7 @@ function parseQemuDrive(key, value) {
   res.index = match_res[2];
 
   var errors = false;
-  value.split(',').forEach(function(p) {
+  value.split(',').forEach(function (p) {
     if (!p || p.match(/^\s*$/)) {
       return; // continue
     }
@@ -1562,11 +1562,11 @@ function parseQemuDrive(key, value) {
 //数组对象去重
 function getUniqueObj(arrays) {
   let newArr = [],
-      str = '',
-      strArr = [];
-  for(let i = 0; i < arrays.length; i++) {
+    str = '',
+    strArr = [];
+  for (let i = 0; i < arrays.length; i++) {
     str = JSON.stringify(arrays[i]);
-    if(strArr.indexOf(str) < 0) {
+    if (strArr.indexOf(str) < 0) {
       newArr.push(arrays[i]);
       strArr.push(str);
     }
@@ -1581,16 +1581,16 @@ function hasClass(cls) {
 
 
 function isIE() {
-  if(!!window.ActiveXObject || 'ActiveXObject' in window) {
+  if (!!window.ActiveXObject || 'ActiveXObject' in window) {
     return true;
-  } 
+  }
   return false;
 }
 //得到ie浏览器版本
 function ieVersion() {
   let userAgent = window.navigator.userAgent,
-      isMSIE = userAgent.indexOf('MSIE') > -1;
-  if(isMSIE) {
+    isMSIE = userAgent.indexOf('MSIE') > -1;
+  if (isMSIE) {
     /[MSIE]\s(\d+)/.test(userAgent);
     return RegExp.$1;
   } else {
@@ -1626,69 +1626,62 @@ function subtract(num1, num2) {
  * **/
 function multiply(arg1, arg2) {
   //m表示有多少个小数点
-  var m=0,s1=arg1.toString(),s2=arg2.toString();  
-  try
-  {
-    m+=s1.split(".")[1].length
+  var m = 0, s1 = arg1.toString(), s2 = arg2.toString();
+  try {
+    m += s1.split(".")[1].length
   }
-  catch(e)
-  {
-    
-  }  
-  try{
-    m+=s2.split(".")[1].length
-  }
-  catch(e)
-  {
+  catch (e) {
 
-  }  
-  return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m);  
+  }
+  try {
+    m += s2.split(".")[1].length
+  }
+  catch (e) {
+
+  }
+  return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
 }
 
 /**
  * 精确除法
  * **/
 function divide(arg1, arg2) {
-  var t1=0,t2=0,r1,r2;  
-  try
-  {
-    t1=arg1.toString().split(".")[1].length
+  var t1 = 0, t2 = 0, r1, r2;
+  try {
+    t1 = arg1.toString().split(".")[1].length
   }
-  catch(e)
-  {
+  catch (e) {
 
-  }  
-  try
-  {
-    t2=arg2.toString().split(".")[1].length
   }
-  catch(e)
-  {
+  try {
+    t2 = arg2.toString().split(".")[1].length
+  }
+  catch (e) {
 
-  }  
-  r1=Number(arg1.toString().replace(".",""));  
-  r2=Number(arg2.toString().replace(".",""));  
-  return (r1/r2)*Math.pow(10,t2-t1);   
+  }
+  r1 = Number(arg1.toString().replace(".", ""));
+  r2 = Number(arg2.toString().replace(".", ""));
+  return (r1 / r2) * Math.pow(10, t2 - t1);
 };
 
 //大文件分段上传
 function uploadChunks(index = 0, chunkSize = 1024 * 1024, totalSize, finishCb) {
   let start = index * chunkSize,
-      total = totalSize;
-      if(start >= total) {
-        finishCb();
-      }
-      while(start < total) {
-        let formData = new FormData(),
-            {filename, ext} = file.name.split('.'),
-            blob = file.slice(start, start + chunkSize),
-            blobname = `${filename}.${index}.${ext}`;
-            blobfile = new File([blob], blobname);
-        formData.append(file, blobfile);
-        axios.post('/upload', formData).then(res => {
-          uploadChunks(index + 1);
-        })
-      }
+    total = totalSize;
+  if (start >= total) {
+    finishCb();
+  }
+  while (start < total) {
+    let formData = new FormData(),
+      { filename, ext } = file.name.split('.'),
+      blob = file.slice(start, start + chunkSize),
+      blobname = `${filename}.${index}.${ext}`;
+    blobfile = new File([blob], blobname);
+    formData.append(file, blobfile);
+    axios.post('/upload', formData).then(res => {
+      uploadChunks(index + 1);
+    })
+  }
 }
 
 export {

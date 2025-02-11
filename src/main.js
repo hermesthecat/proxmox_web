@@ -2,7 +2,7 @@ import Vue from 'vue';
 import App from './App';
 import { http } from '@libs/http/index';
 import store from './store/index';
-import router  from  './route/index';
+import router from './route/index';
 import '@src/style/font-awasome.less';
 import '@src/style/common.less';
 import i18n from '@src/i18n/index.js';
@@ -22,10 +22,10 @@ Vue.directive('confirm', directives);
 Vue.directive('slldrag', directives);
 // 配置
 Vue.use(VueLazyload, {
-	preLoad: 1.3,
-	attempt: 1,
-	error: require('./assets/error.svg'),
-	loading: require('./assets/loading.svg') // 注意路径使用require（我这里使用相对路径）
+  preLoad: 1.3,
+  attempt: 1,
+  error: require('./assets/error.svg'),
+  loading: require('./assets/loading.svg') // 注意路径使用require（我这里使用相对路径）
 })
 //确定提示框
 Vue.prototype.$confirm = new confirm();
@@ -35,9 +35,9 @@ Vue.use(Element);
 Vue.mixin(VueMixins)
 //全局印日http请求
 Vue.prototype.$http = http;
- 
+
 // 使用md文件
-Vue.prototype.md2html = (md)=> {
+Vue.prototype.md2html = (md) => {
   let converter = new showdown.Converter();
   let text = md.toString();
   let html = converter.makeHtml(text);
@@ -51,10 +51,10 @@ window.vm = new Vue({
   render: h => h(App),
   mounted() {
     //如果存在Token则证明已经登录过否则表名没有登录过
-    if(window.localStorage.getItem('CSRFPreventionToken')) {
-      this.$store.dispatch('UPDATE_401_COUNT', {silenceAuthFailures: true})
+    if (window.localStorage.getItem('CSRFPreventionToken')) {
+      this.$store.dispatch('UPDATE_401_COUNT', { silenceAuthFailures: true })
     } else {
-      this.$store.dispatch('UPDATE_401_COUNT', {silenceAuthFailures: false})
+      this.$store.dispatch('UPDATE_401_COUNT', { silenceAuthFailures: false })
     };
   }
 })

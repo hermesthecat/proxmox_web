@@ -26,7 +26,7 @@
                 v-model="ipAddress"
                 readonly
                 :_style="{ width: '650px' }"
-                :__conStyle="{'width':'auto'}"
+                :__conStyle="{ width: 'auto' }"
                 placeholder="请输入IP地址"
               />
             </dd>
@@ -40,7 +40,7 @@
                 v-model="fingerprint"
                 readonly
                 :_style="{ width: '650px' }"
-                :__conStyle="{'width':'auto'}"
+                :__conStyle="{ width: 'auto' }"
                 placeholder="请输入指纹"
               />
             </dd>
@@ -56,7 +56,7 @@
                 :rows="10"
                 :_style="{ width: '650px' }"
                 readonly
-                :__conStyle="{'width':'auto'}"
+                :__conStyle="{ width: 'auto' }"
                 placeholder="请输入信息"
               />
             </dd>
@@ -85,7 +85,7 @@
           </dl>
         </div>
         <div class="m-form__section" v-show="isAdvice">
-            <dl>
+          <dl>
             <dt>网络</dt>
             <dd>
               <m-select
@@ -99,7 +99,7 @@
                 :show-error="rules.link0.error"
                 :error-msg="rules.link0.message"
                 :readonly="false"
-								@on-change="(value) => link0 = value"
+                @on-change="(value) => (link0 = value)"
                 v-model="link0"
                 placeholder="请选择"
               >
@@ -118,8 +118,12 @@
                     </div>
                   </template>
                   <div class="table-tr">
-                    <span class="table-td" :title="item.address">{{ item.address }}</span>
-                    <span class="table-td" :title="item.iface">{{ item.iface }}</span>
+                    <span class="table-td" :title="item.address">{{
+                      item.address
+                    }}</span>
+                    <span class="table-td" :title="item.iface">{{
+                      item.iface
+                    }}</span>
                     <span class="table-td" :title="item.active">
                       <table-info-state
                         :content="item.active === 1 ? '是' : '否'"
@@ -136,11 +140,11 @@
                 <m-select
                   type="text"
                   :prop="`link${item}`"
-                  :label='`link${item}`'
+                  :label="`link${item}`"
                   labelWidth="100px"
                   validateEvent
                   v-model="link[item]"
-									@on-change="(value) => $data.link[item] = value"
+                  @on-change="(value) => ($data.link[item] = value)"
                   placeholder="请选择"
                   :key="num"
                 >
@@ -159,8 +163,12 @@
                       </div>
                     </template>
                     <div class="table-tr">
-                      <span class="table-td" :title="item.address">{{ item.address }}</span>
-                      <span class="table-td" :title="item.iface">{{ item.iface }}</span>
+                      <span class="table-td" :title="item.address">{{
+                        item.address
+                      }}</span>
+                      <span class="table-td" :title="item.iface">{{
+                        item.iface
+                      }}</span>
                       <span class="table-td" :title="item.active">
                         <table-info-state
                           :content="item.active === 1 ? '是' : '否'"
@@ -281,7 +289,7 @@
                 :show-error="rules.link0.error"
                 :error-msg="rules.link0.message"
                 :readonly="false"
-								@on-change="(value) => link0 = value"
+                @on-change="(value) => (link0 = value)"
                 v-model="link0"
                 placeholder="请选择"
               >
@@ -300,8 +308,12 @@
                     </div>
                   </template>
                   <div class="table-tr">
-                    <span class="table-td" :title="item.address">{{ item.address }}</span>
-                    <span class="table-td" :title="item.iface">{{ item.iface }}</span>
+                    <span class="table-td" :title="item.address">{{
+                      item.address
+                    }}</span>
+                    <span class="table-td" :title="item.iface">{{
+                      item.iface
+                    }}</span>
                     <span class="table-td">
                       <table-info-state
                         :content="item.active === 1 ? '是' : '否'"
@@ -314,101 +326,126 @@
                   </div>
                 </m-option>
               </m-select>
-							<template v-if="!isCreate">
-							 <template v-for="(item, num) in networkNum">
-                <m-select
-                  type="text"
-                  :prop="`link${item}`"
-                  :label='`link${item}`'
-                  labelWidth="100px"
-                  validateEvent
-                  :key="num"
-                  v-model="link[item]"
-									@on-change="(value) => $data.link[item] = value"
-                  placeholder="请选择"
-                >
-                  <m-option
-                    v-for="(item, index) in netWorkList"
-                    :key="item.address"
-                    :label="item.address"
-                    :value="item.address"
+              <template v-if="!isCreate">
+                <template v-for="(item, num) in networkNum">
+                  <m-select
+                    type="text"
+                    :prop="`link${item}`"
+                    :label="`link${item}`"
+                    labelWidth="100px"
+                    validateEvent
+                    :key="num"
+                    v-model="link[item]"
+                    @on-change="(value) => ($data.link[item] = value)"
+                    placeholder="请选择"
                   >
-                    <template v-show="index === 0">
-                      <div class="table-header__tr">
-                        <span class="table-td">CIDR</span>
-                        <span class="table-td">接口</span>
-                        <span class="table-td">活动</span>
-                        <span class="table-td">备注</span>
+                    <m-option
+                      v-for="(item, index) in netWorkList"
+                      :key="item.address"
+                      :label="item.address"
+                      :value="item.address"
+                    >
+                      <template v-show="index === 0">
+                        <div class="table-header__tr">
+                          <span class="table-td">CIDR</span>
+                          <span class="table-td">接口</span>
+                          <span class="table-td">活动</span>
+                          <span class="table-td">备注</span>
+                        </div>
+                      </template>
+                      <div class="table-tr">
+                        <span class="table-td" :title="item.address">{{
+                          item.address
+                        }}</span>
+                        <span class="table-td" :title="item.iface">{{
+                          item.iface
+                        }}</span>
+                        <span class="table-td">
+                          <table-info-state
+                            :content="item.active === 1 ? '是' : '否'"
+                            :state="item.active === 1 ? 'actived' : 'unactived'"
+                          ></table-info-state>
+                        </span>
+                        <span class="table-td" :title="item.comment">
+                          {{ item.comment }}
+                        </span>
                       </div>
-                    </template>
-                    <div class="table-tr">
-                      <span class="table-td" :title="item.address">{{ item.address }}</span>
-                      <span class="table-td" :title="item.iface">{{ item.iface }}</span>
-                      <span class="table-td">
-                        <table-info-state
-                          :content="item.active === 1 ? '是' : '否'"
-                          :state="item.active === 1 ? 'actived' : 'unactived'"
-                        ></table-info-state>
-                      </span>
-                      <span class="table-td" :title="item.comment">
-                        {{ item.comment }}
-                      </span>
-                    </div>
-                  </m-option>
-                </m-select>
-                <m-button
-                  type="danger"
-                  icon="el-icon-delete"
-                  @on-click="handleLinkDelete(item, num)"
-                  :key="item"
-                  >删除</m-button
-                >
+                    </m-option>
+                  </m-select>
+                  <m-button
+                    type="danger"
+                    icon="el-icon-delete"
+                    @on-click="handleLinkDelete(item, num)"
+                    :key="item"
+                    >删除</m-button
+                  >
+                </template>
               </template>
-							</template>
-							<div>
-								<m-button
-                type="primary"
-                icon="el-icon-plus"
-                @on-click="handleLinkChange"
-								v-if="!isCreate"
-                >添加</m-button>Multiple links are used as failover, lower numbers have higher priority.
-							</div>
+              <div>
+                <m-button
+                  type="primary"
+                  icon="el-icon-plus"
+                  @on-click="handleLinkChange"
+                  v-if="!isCreate"
+                  >添加</m-button
+                >Multiple links are used as failover, lower numbers have higher
+                priority.
+              </div>
             </dd>
           </dl>
         </div>
       </div>
     </template>
     <template slot="footer">
-      <Dialog :visible="showLog"
-              @close="closeLog"
-              :_style="{
-      width: '800px',
-    }"
-    title="Task Viewer: 加入集群">
+      <Dialog
+        :visible="showLog"
+        @close="closeLog"
+        :_style="{
+          width: '800px',
+        }"
+        title="Task Viewer: 加入集群"
+      >
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
             <m-tab-panel label="输出" name="log"></m-tab-panel>
-             <m-tab-panel label="状态" name="status"></m-tab-panel>
+            <m-tab-panel label="状态" name="status"></m-tab-panel>
           </m-tab>
-          <m-button class="create-btn" type="primary" @on-click="stopTask1" :disabled="db.addClusterStatusObj.status !== 'running'"
-          >停止</m-button>
+          <m-button
+            class="create-btn"
+            type="primary"
+            @on-click="stopTask1"
+            :disabled="db.addClusterStatusObj.status !== 'running'"
+            >停止</m-button
+          >
           <el-scrollbar style="height: 100%">
-             <div class="taskmodal-content">
-               <div class="table" v-if="tab === 'log'">
-                <div class="table-tr" v-for="item in db.addClusterLogList" :key="item.n">
-                  {{item.t}}
+            <div class="taskmodal-content">
+              <div class="table" v-if="tab === 'log'">
+                <div
+                  class="table-tr"
+                  v-for="item in db.addClusterLogList"
+                  :key="item.n"
+                >
+                  {{ item.t }}
                 </div>
               </div>
               <div class="table" v-if="tab === 'status'">
-                  <template v-for="(item, key) in db.addClusterStatusObj">
-                    <div class="table-tr" v-if="!['exitstatus', 'id', 'pstart'].includes(key)" :key="key">
-                      <div class="table-td">{{$t(`clusterStatus.${key}`)}}</div>
-                      <div class="table-td" v-if="key === 'starttime'">{{dateFormat(new Date(item * 1000), 'yyyy-MM-dd hh:mm')}}</div>
-                      <div class="table-td" v-else>{{item}}</div>
+                <template v-for="(item, key) in db.addClusterStatusObj">
+                  <div
+                    class="table-tr"
+                    v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
+                    :key="key"
+                  >
+                    <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
+                    <div class="table-td" v-if="key === 'starttime'">
+                      {{
+                        dateFormat(new Date(item * 1000), "yyyy-MM-dd hh:mm")
+                      }}
                     </div>
-                  </template>
+                    <div class="table-td" v-else>{{ item }}</div>
+                  </div>
+                </template>
               </div>
-             </div>
+            </div>
           </el-scrollbar>
         </template>
         <template slot="footer">
@@ -474,7 +511,7 @@ export default {
       isCreate: true,
       networkNum: [],
       showLog: false,
-      tab: 'log',
+      tab: "log",
       rules: {
         clusterName: {
           error: false,
@@ -509,9 +546,9 @@ export default {
       link: {},
       netWorkList: [],
       isAdvice: true,
-			initnum: 1,
+      initnum: 1,
       deleteNum: [],
-      interVal: null
+      interVal: null,
     };
   },
   mounted() {
@@ -603,11 +640,11 @@ export default {
         if (joinInfo.ring_addr !== undefined) {
           this.ring0Needed = joinInfo.ring_addr[0] !== joinInfo.ipAddress;
         }
-        this.fingerprint = joinInfo.fingerprint
+        this.fingerprint = joinInfo.fingerprint;
         this.ring1Needed = !!joinInfo.totem["interface"]["1"];
         this.ring1Possible = !!joinInfo.totem["interface"]["1"];
         this.hostname = joinInfo.ipAddress;
-        this.link0 = '';
+        this.link0 = "";
         totem = joinInfo.totem;
         if (!this.ring1Needed) {
           props.concat("link0");
@@ -624,28 +661,30 @@ export default {
       if (this.rules["clusterName"].error) return;
       let param = {
         clustername: this.clusterName,
-			};
-			if(this.isAdvice) {
-				for(let i in this.link) {
-			  	param[`link${i}`] = this.link[i]
-				}
-				param['link0'] = this.link0;
+      };
+      if (this.isAdvice) {
+        for (let i in this.link) {
+          param[`link${i}`] = this.link[i];
+        }
+        param["link0"] = this.link0;
       }
       this.createCluster(param).then((res) => {
-         this.showLog = true;
-         this.interVal = setInterval(() => this.queryStatus(this.db.addClusterStatusObj.node, this.db.addClusterStatusObj.upid), 3000);
-     });
+        this.showLog = true;
+        this.interVal = setInterval(
+          () =>
+            this.queryStatus(
+              this.db.addClusterStatusObj.node,
+              this.db.addClusterStatusObj.upid
+            ),
+          3000
+        );
+      });
     },
     //整体校验
     validateAll() {
       let props;
       if (this.type === "join") {
-        props = [
-          "hostname",
-          "password",
-          "fingerprint",
-          "link0"
-        ];
+        props = ["hostname", "password", "fingerprint", "link0"];
       }
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
@@ -658,57 +697,74 @@ export default {
         password: this.password,
         link0: this.link0,
         fingerprint: this.fingerprint,
-			};
-			for(let i in this.link) {
-				param[`link${i}`] = this.link[i]
-			}
+      };
+      for (let i in this.link) {
+        param[`link${i}`] = this.link[i];
+      }
       this.clusterJoin(param)
-          .then(() => {
-            this.showLog = true;
-            this.interVal = setInterval(() => this.queryStatus(this.db.addClusterStatusObj.node, this.db.addClusterStatusObj.upid), 3000);
-          }).catch((res) => {
-            this.$confirm.error({
+        .then(() => {
+          this.showLog = true;
+          this.interVal = setInterval(
+            () =>
+              this.queryStatus(
+                this.db.addClusterStatusObj.node,
+                this.db.addClusterStatusObj.upid
+              ),
+            3000
+          );
+        })
+        .catch((res) => {
+          this.$confirm
+            .error({
               msg: res,
-              type: 'error'
-            }).then(() => {})
-              .catch(() => {})
-          })
+              type: "error",
+            })
+            .then(() => {})
+            .catch(() => {});
+        });
     },
     handleTabChange(value) {
       this.tab = value;
     },
     handleLinkChange() {
-      if(this.deleteNum.length > 0) {
-				this.$set(this.$data.link, this.deleteNum[0], `link${this.deleteNum[0]}`);
-				this.$data.link[this.deleteNum[0]] = "";
-				this.networkNum.push(this.deleteNum[0]);
-				this.deleteNum.splice(0,1);
-				return;
-			}
-			let key = this.initnum++;
-			this.networkNum.push(key);
+      if (this.deleteNum.length > 0) {
+        this.$set(
+          this.$data.link,
+          this.deleteNum[0],
+          `link${this.deleteNum[0]}`
+        );
+        this.$data.link[this.deleteNum[0]] = "";
+        this.networkNum.push(this.deleteNum[0]);
+        this.deleteNum.splice(0, 1);
+        return;
+      }
+      let key = this.initnum++;
+      this.networkNum.push(key);
       this.$set(this.$data.link, key, `link${key}`);
       this.$data.link[key] = "";
     },
     handleLinkDelete(item, num) {
-			this.networkNum.splice(num, 1);
-			delete this.$data.link[item];
-			this.deleteNum.push(item);
+      this.networkNum.splice(num, 1);
+      delete this.$data.link[item];
+      this.deleteNum.push(item);
     },
     closeLog() {
       this.showLog = false;
       this.close();
     },
     stopTask1() {
-      this.stopTask(this.db.addClusterStatusObj.node, this.db.addClusterStatusObj.upid);
-    }
+      this.stopTask(
+        this.db.addClusterStatusObj.node,
+        this.db.addClusterStatusObj.upid
+      );
+    },
   },
   beforeDestroy() {
-    if(this.interVal) {
+    if (this.interVal) {
       clearInterval(this.interVal);
-      this.interVal = null
+      this.interVal = null;
     }
-  }
+  },
 };
 </script>
 
@@ -719,8 +775,8 @@ export default {
   display: inline-block;
   vertical-align: -webkit-baseline-middle;
 }
-.m-button{
-	height: 33px;
+.m-button {
+  height: 33px;
   line-height: 28px;
 }
 .create-btn {

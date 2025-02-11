@@ -102,10 +102,18 @@
                         <div class="table-td">容量</div>
                       </div>
                       <div class="table-row">
-                        <div class="table-td" :title="item.storage">{{ item.storage }}</div>
-                        <div class="table-td" :title="item.type">{{ item.type }}</div>
-                        <div class="table-td" :title="byteToSize(item.avail)">{{ byteToSize(item.avail) }}</div>
-                        <div class="table-td" :title="byteToSize(item.total)">{{ byteToSize(item.total) }}</div>
+                        <div class="table-td" :title="item.storage">
+                          {{ item.storage }}
+                        </div>
+                        <div class="table-td" :title="item.type">
+                          {{ item.type }}
+                        </div>
+                        <div class="table-td" :title="byteToSize(item.avail)">
+                          {{ byteToSize(item.avail) }}
+                        </div>
+                        <div class="table-td" :title="byteToSize(item.total)">
+                          {{ byteToSize(item.total) }}
+                        </div>
                       </div>
                     </m-option>
                   </template>

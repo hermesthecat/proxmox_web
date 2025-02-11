@@ -30,36 +30,36 @@
       ></option-edit-modal>
       <template v-if="node.type === 'qemu'">
         <el-table
-            :data="hardwareList"
-            :show-header="false"
-            highlight-current-row
-            @row-click="handleSingleSelect"
-          >
-            <el-table-column width="55px">
-              <template slot-scope="scope">
-                <el-radio :label="scope.row.type" v-model="current"
-                  >&nbsp;</el-radio
-                >
-              </template>
-            </el-table-column>
-            <el-table-column label="名称" prop="name" width="200px">
-              <template slot-scope="scope">
-                <div>
-                  <span>{{ scope.row.name }}</span>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column label="值" prop="value">
-              <template slot-scope="scope">
-                <div>
-                  {{ scope.row && scope.row.render && scope.row.render(false) }}
-                </div>
-                <div class="pending">
-                  {{ scope.row && scope.row.render && scope.row.render(true) }}
-                </div>
-              </template>
-            </el-table-column>
-          </el-table>
+          :data="hardwareList"
+          :show-header="false"
+          highlight-current-row
+          @row-click="handleSingleSelect"
+        >
+          <el-table-column width="55px">
+            <template slot-scope="scope">
+              <el-radio :label="scope.row.type" v-model="current"
+                >&nbsp;</el-radio
+              >
+            </template>
+          </el-table-column>
+          <el-table-column label="名称" prop="name" width="200px">
+            <template slot-scope="scope">
+              <div>
+                <span>{{ scope.row.name }}</span>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="值" prop="value">
+            <template slot-scope="scope">
+              <div>
+                {{ scope.row && scope.row.render && scope.row.render(false) }}
+              </div>
+              <div class="pending">
+                {{ scope.row && scope.row.render && scope.row.render(true) }}
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
       </template>
       <template v-if="node.type === 'lxc'">
         <el-table
@@ -112,7 +112,7 @@ import {
   render_hotplug_features,
   render_spice_enhancements,
   render_qga_features,
-  parsePropertyString
+  parsePropertyString,
 } from "@libs/utils/index";
 import { gettext } from "@src/i18n/local_zhCN.js";
 import BaseIcon from "@src/components/icon/BaseIcon.vue";
@@ -269,27 +269,28 @@ export default {
                 undefined,
                 pending
               );
-              let order = pending ? (_this.store &&
-                _this.store.boot &&
-                _this.store.boot.data &&
-                _this.store.boot.data.pending) || 'cdn'
-                :
-                (_this.store &&
-                  _this.store.boot &&
-                  _this.store.boot.data &&
-                  _this.store.boot.data.value) ||
-                "cdn";
+              let order = pending
+                ? (_this.store &&
+                    _this.store.boot &&
+                    _this.store.boot.data &&
+                    _this.store.boot.data.pending) ||
+                  "cdn"
+                : (_this.store &&
+                    _this.store.boot &&
+                    _this.store.boot.data &&
+                    _this.store.boot.data.value) ||
+                  "cdn";
               if (/^\s*$/.test(order)) {
-                return gettext('(No boot device selected)');
+                return gettext("(No boot device selected)");
               }
               let boot = parsePropertyString(order, "legacy");
               if (boot.order) {
-                let list = boot.order.split(';');
-                let ret = '';
+                let list = boot.order.split(";");
+                let ret = "";
                 let i = 1;
-                list.forEach(dev => {
+                list.forEach((dev) => {
                   if (ret) {
-                    ret += ', ';
+                    ret += ", ";
                   }
                   ret += dev;
                 });
@@ -317,10 +318,14 @@ export default {
                 }
               }
               if (pending) if (text === `Disk 'scsi0', CD-ROM, Network`) return;
-              if(pending) return _this.store &&
-                _this.store.boot &&
-                _this.store.boot.data &&
-                _this.store.boot.data.pending &&  this.store.boot.data.pending;
+              if (pending)
+                return (
+                  _this.store &&
+                  _this.store.boot &&
+                  _this.store.boot.data &&
+                  _this.store.boot.data.pending &&
+                  this.store.boot.data.pending
+                );
               return text;
             },
           },
@@ -595,10 +600,10 @@ export default {
                   _this.store.onboot &&
                     _this.store.onboot.data &&
                     _this.store.onboot.data.value
-                )
-            }
+                );
+            },
           },
-         //启动
+          //启动
           {
             name: "开机启动顺序",
             type: "startup",
@@ -626,7 +631,11 @@ export default {
             type: "ostype",
             itemId: "ostype",
             render: function (pending) {
-              return _this.store.ostype && _this.store.ostype.data && _this.store.ostype.data.value;
+              return (
+                _this.store.ostype &&
+                _this.store.ostype.data &&
+                _this.store.ostype.data.value
+              );
             },
           },
           {
@@ -634,7 +643,11 @@ export default {
             type: "arch",
             itemId: "arch",
             render: function (pending) {
-              return _this.store.arch && _this.store.arch.data && _this.store.arch.data.value;
+              return (
+                _this.store.arch &&
+                _this.store.arch.data &&
+                _this.store.arch.data.value
+              );
             },
           },
           {
@@ -642,29 +655,64 @@ export default {
             type: "console",
             itemId: "editconsole",
             render: function (pending) {
-              if(!pending)
-              return _this.store.console && _this.store.console.data && _this.store.console.data.value  === 1 ? '已启用' : '已启用';
-              else return _this.store.console && _this.store.console.data && _this.store.console.data.pending ?  (_this.store.console.data.pending === 1 ? '已启用' : '已禁用') : '';
+              if (!pending)
+                return _this.store.console &&
+                  _this.store.console.data &&
+                  _this.store.console.data.value === 1
+                  ? "已启用"
+                  : "已启用";
+              else
+                return _this.store.console &&
+                  _this.store.console.data &&
+                  _this.store.console.data.pending
+                  ? _this.store.console.data.pending === 1
+                    ? "已启用"
+                    : "已禁用"
+                  : "";
             },
           },
           {
             name: gettext("TTY count"),
-            type: 'tty',
-            itemId: 'edittty',
+            type: "tty",
+            itemId: "edittty",
             render: function (pending) {
-              if(!pending)
-               return _this.store.tty && _this.store.tty && _this.store.tty.data.value || 2;
-              else return _this.store.tty && _this.store.tty && _this.store.tty.data.pending && _this.store.tty.data.pending || '';
+              if (!pending)
+                return (
+                  (_this.store.tty &&
+                    _this.store.tty &&
+                    _this.store.tty.data.value) ||
+                  2
+                );
+              else
+                return (
+                  (_this.store.tty &&
+                    _this.store.tty &&
+                    _this.store.tty.data.pending &&
+                    _this.store.tty.data.pending) ||
+                  ""
+                );
             },
           },
           {
             name: gettext("Console mode"),
-            type: 'cmode',
-            itemId: 'editcmode',
-           render: function (pending) {
-              if(!pending)
-               return _this.store.cmode && _this.store.cmode.data && _this.store.cmode.data.value ||  'tty';
-              else return _this.store.cmode && _this.store.cmode && _this.store.cmode.data.pending && _this.store.cmode.data.pending || '';
+            type: "cmode",
+            itemId: "editcmode",
+            render: function (pending) {
+              if (!pending)
+                return (
+                  (_this.store.cmode &&
+                    _this.store.cmode.data &&
+                    _this.store.cmode.data.value) ||
+                  "tty"
+                );
+              else
+                return (
+                  (_this.store.cmode &&
+                    _this.store.cmode &&
+                    _this.store.cmode.data.pending &&
+                    _this.store.cmode.data.pending) ||
+                  ""
+                );
             },
           },
           {
@@ -683,31 +731,40 @@ export default {
           },
           {
             name: gettext("Unprivileged container"),
-            type: 'unprivileged',
-            itemId: 'unprivileged',
+            type: "unprivileged",
+            itemId: "unprivileged",
             render: function (pending) {
-                return  _this.store &&
-                    _this.store.unprivileged &&
-                    _this.store.unprivileged.data &&
-                    _this.store.unprivileged.data.value === 1 ? '是' : '否'
+              return _this.store &&
+                _this.store.unprivileged &&
+                _this.store.unprivileged.data &&
+                _this.store.unprivileged.data.value === 1
+                ? "是"
+                : "否";
             },
           },
           {
             name: gettext("Features"),
-            type: 'features',
-            itemId: 'editfeatures',
-             render: function (pending) {
-               if(!pending)
-                return  _this.store &&
+            type: "features",
+            itemId: "editfeatures",
+            render: function (pending) {
+              if (!pending)
+                return (
+                  (_this.store &&
                     _this.store.features &&
                     _this.store.features.data &&
-                    _this.store.features.data.value || '无'
-               else return _this.store &&
+                    _this.store.features.data.value) ||
+                  "无"
+                );
+              else
+                return (
+                  (_this.store &&
                     _this.store.features &&
                     _this.store.features.data &&
-                    _this.store.features.data.pending || ''
-            }
-          }
+                    _this.store.features.data.pending) ||
+                  ""
+                );
+            },
+          },
         ];
         //_this.setDisabled();
       });
@@ -912,7 +969,12 @@ export default {
       //由于js将0视为false所以转化为'0'做判断
       return (this.store[this.current] &&
       this.store[this.current].data &&
-      !isEmpty((this.store[this.current].data.pending || this.store[this.current].data === 0) ? String(this.store[this.current].data.pending) : undefined)
+      !isEmpty(
+        this.store[this.current].data.pending ||
+          this.store[this.current].data === 0
+          ? String(this.store[this.current].data.pending)
+          : undefined
+      )
         ? true
         : false) ||
         (this.store[this.current] &&
@@ -922,11 +984,10 @@ export default {
         : false;
     },
     canDisabled() {
-      if(this.node.type === 'qemu')
-       return !this.inType('serial', 'efidisk') || !this.current;
-      else
-      return !/^(edit)/.test(this.currentObj.itemId) || !this.current;
-    }
+      if (this.node.type === "qemu")
+        return !this.inType("serial", "efidisk") || !this.current;
+      else return !/^(edit)/.test(this.currentObj.itemId) || !this.current;
+    },
   },
 };
 </script>

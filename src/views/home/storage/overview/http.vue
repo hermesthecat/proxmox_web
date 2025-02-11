@@ -14,16 +14,21 @@ export default {
               data: res.data,
             });
           }
-        }).catch(() => {
-           this.updateDbObject({
-              name: "storageObj",
-              data: {},
-            });
+        })
+        .catch(() => {
+          this.updateDbObject({
+            name: "storageObj",
+            data: {},
+          });
         });
     },
     queryRrdData() {
-       let [timeframe, cf] = [this.timeframe.replace(/(.*?)\((.*?)\)/g, "$1"), this.timeframe.replace(/(.*?)\((.*?)\)/g, "$2")];
-      if(/[\u4e00-\u9fa5]/.test(timeframe) || /[\u4e00-\u9fa5]/.test(cf)) return;
+      let [timeframe, cf] = [
+        this.timeframe.replace(/(.*?)\((.*?)\)/g, "$1"),
+        this.timeframe.replace(/(.*?)\((.*?)\)/g, "$2"),
+      ];
+      if (/[\u4e00-\u9fa5]/.test(timeframe) || /[\u4e00-\u9fa5]/.test(cf))
+        return;
       this.loading = true;
       return this.$http
         .get(

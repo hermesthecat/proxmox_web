@@ -1,6 +1,8 @@
 <template>
   <m-dialog
-    :title="modalType === 'edit' ? '编辑：CD/DVE Driver' : '添加: CD/DVE Driver'"
+    :title="
+      modalType === 'edit' ? '编辑：CD/DVE Driver' : '添加: CD/DVE Driver'
+    "
     :visible="visible"
     v-if="visible"
     @confirm="confirm"
@@ -107,10 +109,18 @@
                         <div class="table-td">容量</div>
                       </div>
                       <div class="table-tr">
-                        <div class="table-td" :title="item.storage">{{ item.storage }}</div>
-                        <div class="table-td" :title="item.type">{{ item.type }}</div>
-                        <div class="table-td" :title="byteToSize(item.avail)">{{ byteToSize(item.avail) }}</div>
-                        <div class="table-td" :title="byteToSize(item.total)">{{ byteToSize(item.total) }}</div>
+                        <div class="table-td" :title="item.storage">
+                          {{ item.storage }}
+                        </div>
+                        <div class="table-td" :title="item.type">
+                          {{ item.type }}
+                        </div>
+                        <div class="table-td" :title="byteToSize(item.avail)">
+                          {{ byteToSize(item.avail) }}
+                        </div>
+                        <div class="table-td" :title="byteToSize(item.total)">
+                          {{ byteToSize(item.total) }}
+                        </div>
                       </div>
                     </m-option>
                   </div>
@@ -143,11 +153,20 @@
                         <div class="table-td">大小</div>
                       </div>
                       <div class="table-tr">
-                        <div class="table-td" :title="render_storage_content(null, null, item) || ''">
+                        <div
+                          class="table-td"
+                          :title="
+                            render_storage_content(null, null, item) || ''
+                          "
+                        >
                           {{ render_storage_content(null, null, item) }}
                         </div>
-                        <div class="table-td" :title="item.format">{{ item.format }}</div>
-                        <div class="table-td" :title="byteToSize(item.size)">{{ byteToSize(item.size) }}</div>
+                        <div class="table-td" :title="item.format">
+                          {{ item.format }}
+                        </div>
+                        <div class="table-td" :title="byteToSize(item.size)">
+                          {{ byteToSize(item.size) }}
+                        </div>
                       </div>
                     </m-option>
                   </div>
@@ -255,30 +274,29 @@ export default {
     byteToSize,
     __init__() {
       let _this = this;
-      _this.queryConfig({ _dc: new Date().getTime() })
-          .then(res => {
-            if(_this.modalType === 'edit') {
-              if(_this.param.type) {
-               _this.parseValue(_this.db.qemuConfigObj[_this.param.type]);
-               _this.device = _this.param.type.replace(/\d$/, '');
-               _this.deviceIndex = _this.param.type.replace(/[A-Za-z]/g, '')
-              }
-             }
-          });
+      _this.queryConfig({ _dc: new Date().getTime() }).then((res) => {
+        if (_this.modalType === "edit") {
+          if (_this.param.type) {
+            _this.parseValue(_this.db.qemuConfigObj[_this.param.type]);
+            _this.device = _this.param.type.replace(/\d$/, "");
+            _this.deviceIndex = _this.param.type.replace(/[A-Za-z]/g, "");
+          }
+        }
+      });
       this.queryStorage({ format: 1, content: "iso" });
     },
     parseValue(value) {
-      let values = value.split(',');
-      if(values) {
-         for(let i in values) {
-           if(/(\.iso)$/.test(values[i])) {
-             this.mediaType = 'iso';
-             this.image = values[i];
-             this.storage = values[i].split(':')[0];
-           } else if(values[i] !== 'media=cdrom'){
-             this.mediaType = values[i];
-           }
-         }
+      let values = value.split(",");
+      if (values) {
+        for (let i in values) {
+          if (/(\.iso)$/.test(values[i])) {
+            this.mediaType = "iso";
+            this.image = values[i];
+            this.storage = values[i].split(":")[0];
+          } else if (values[i] !== "media=cdrom") {
+            this.mediaType = values[i];
+          }
+        }
       }
     },
     confirm() {
@@ -290,26 +308,26 @@ export default {
         digest: this.db.qemuConfigObj.digest,
         background_delay: 5,
       };
-      if(this.mediaType !== 'edit') {
-         this.createHardWare(param)
-        .then((res) => {
-          this.close();
-        })
-        .catch((res) => {
-          this.$confirm.confirm({
-            msg: res,
+      if (this.mediaType !== "edit") {
+        this.createHardWare(param)
+          .then((res) => {
+            this.close();
+          })
+          .catch((res) => {
+            this.$confirm.confirm({
+              msg: res,
+            });
           });
-        });
       } else {
-         this.updateHardWare(param)
-        .then((res) => {
-          this.close();
-        })
-        .catch((res) => {
-          this.$confirm.confirm({
-            msg: res,
+        this.updateHardWare(param)
+          .then((res) => {
+            this.close();
+          })
+          .catch((res) => {
+            this.$confirm.confirm({
+              msg: res,
+            });
           });
-        });
       }
     },
     close() {
@@ -326,7 +344,7 @@ export default {
       let value = String(this[prop]).trim();
       this.rules[prop].error = false;
       this.rules[prop].message = "";
-      if (/^\s*$/.test(value) && this.mediaType === 'iso') {
+      if (/^\s*$/.test(value) && this.mediaType === "iso") {
         this.rules[prop].error = true;
         this.rules[prop].message = "不能为空";
         return;

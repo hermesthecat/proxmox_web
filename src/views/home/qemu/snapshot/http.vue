@@ -16,7 +16,7 @@ export default {
      * @param {_dc: 时间戳}
      */
     querySnapShotList(param) {
-      return  this.$http
+      return this.$http
         .get(`json/nodes/${this.node.node}/${this.node.id}/snapshot`, param)
         .then((res) => {
           if (res.data) {
@@ -61,7 +61,7 @@ export default {
           if (res.data.status !== "running") {
             this.done = true;
             //this.showDeleteLog = false;
-            if(this.__init__) {
+            if (this.__init__) {
               this.__init__();
             }
             if (this.interVal) {
@@ -143,19 +143,26 @@ export default {
           this.incEventFail(event);
           return Promise.reject(res);
         });
-		},
-		/**
-		 * 回滚
-		*/
-		rollback(name) {
-			 let event = this.createEvent(`action.qemu.snapshot.rollback`);
-			return this.$http.post(`json/nodes/${this.node.node}/${this.node.id}/snapshot/${name}/rollback`, null, {
-				headers: {
-					'content-type': 'application/x-www-form-urlencoded; charset=utf8;'
-				}
-			}).then(res => {
-				this.incEventSuccess(event);
-			 if (res.data) {
+    },
+    /**
+     * 回滚
+     */
+    rollback(name) {
+      let event = this.createEvent(`action.qemu.snapshot.rollback`);
+      return this.$http
+        .post(
+          `json/nodes/${this.node.node}/${this.node.id}/snapshot/${name}/rollback`,
+          null,
+          {
+            headers: {
+              "content-type":
+                "application/x-www-form-urlencoded; charset=utf8;",
+            },
+          }
+        )
+        .then((res) => {
+          this.incEventSuccess(event);
+          if (res.data) {
             this.done = false;
             this.showDeleteLog = true;
             //查询删除进度
@@ -167,7 +174,7 @@ export default {
           this.incEventFail(event);
           return Promise.reject(res);
         });
-		}
+    },
   },
 };
 </script>

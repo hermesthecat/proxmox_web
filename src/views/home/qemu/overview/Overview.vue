@@ -12,7 +12,13 @@
       </m-select>
     </div>
     <div class="overview-content__top">
-      <div class="overview-content__top_left" :style="{'padding-right': isTempalte ? '0px' : '20px', 'margin-bottom': isTempalte ? '0px' : '20px'}">
+      <div
+        class="overview-content__top_left"
+        :style="{
+          'padding-right': isTempalte ? '0px' : '20px',
+          'margin-bottom': isTempalte ? '0px' : '20px',
+        }"
+      >
         <overview-card>
           <div slot="title">状态</div>
           <div
@@ -122,26 +128,26 @@
     </div>
     <div class="overview-content__center" v-if="!isTempalte">
       <div class="overview-content__center_left">
-         <overview-card>
-      <div slot="title">内存利用率</div>
-      <template slot="content">
-        <line-graph :param="memory"  v-loading="rrdLoading"></line-graph>
-      </template>
+        <overview-card>
+          <div slot="title">内存利用率</div>
+          <template slot="content">
+            <line-graph :param="memory" v-loading="rrdLoading"></line-graph>
+          </template>
         </overview-card>
       </div>
       <div class="overview-content__center_right">
         <overview-card>
-      <div slot="title">网络流量</div>
-      <template slot="content">
-        <line-graph :param="network"  v-loading="rrdLoading"></line-graph>
-      </template>
-    </overview-card>
+          <div slot="title">网络流量</div>
+          <template slot="content">
+            <line-graph :param="network" v-loading="rrdLoading"></line-graph>
+          </template>
+        </overview-card>
       </div>
     </div>
     <overview-card v-if="!isTempalte">
       <div slot="title">磁盘IO</div>
       <template slot="content">
-        <line-graph :param="disk"  v-loading="rrdLoading"></line-graph>
+        <line-graph :param="disk" v-loading="rrdLoading"></line-graph>
       </template>
     </overview-card>
     <Dialog
@@ -323,7 +329,7 @@ export default {
       this.handleIntervalChange(this.timeframe);
     },
     handleIntervalChange(value) {
-      if(/[\u4e00-\u9fa5]/.test(value)) return;
+      if (/[\u4e00-\u9fa5]/.test(value)) return;
       this.timeframe = value;
       this.queryRrdData();
       if (this.interval) {
@@ -432,11 +438,11 @@ export default {
       display: flex;
     }
   }
-  &__center{
-     height: 340px;
-     display: flex;
-     background: #f5f5f5;
-    &_right{
+  &__center {
+    height: 340px;
+    display: flex;
+    background: #f5f5f5;
+    &_right {
       flex-grow: 1;
       flex-basis: auto;
       flex-shrink: 1;
@@ -453,7 +459,7 @@ export default {
     }
   }
 }
-.card{
+.card {
   height: 320px;
 }
 </style>

@@ -74,7 +74,7 @@ export default {
     isCreate: {
       type: Boolean,
       default: false,
-		}
+    },
   },
   data() {
     return {
@@ -84,7 +84,7 @@ export default {
         group: {
           error: false,
           message: "",
-        }
+        },
       },
     };
   },
@@ -98,7 +98,7 @@ export default {
       } else {
         Object.assign(this.$data, this.$options.data());
         Object.keys(this.param).forEach((it) => {
-					if(it === 'sid') this.vmid = this.param[it];
+          if (it === "sid") this.vmid = this.param[it];
           else this[it] = this.param[it];
         });
       }
@@ -140,8 +140,8 @@ export default {
               .then(() => this.close());
           });
       } else {
-				param['digest'] = this.param.digest;
-				param['rename'] = this.param.group;
+        param["digest"] = this.param.digest;
+        param["rename"] = this.param.group;
         this.updateFireWallGroup(param)
           .then((res) => {
             this.close();

@@ -8,20 +8,26 @@
     :title="title"
     @close="$emit('close')"
   >
-    <div slot="content" style="max-height: 500px;">
-      <component :is="type" :ref="type" :isCreate="isCreate" :param="param" :isAdvice="isAdvice"></component>
+    <div slot="content" style="max-height: 500px">
+      <component
+        :is="type"
+        :ref="type"
+        :isCreate="isCreate"
+        :param="param"
+        :isAdvice="isAdvice"
+      ></component>
     </div>
-   <template slot="footer" v-if="type === 'nfs' || type === 'cifs'">
-     <div class="label_box">
-          <label>
-            <input type="checkbox" v-model="isAdvice" />
-            <div>高级</div>
-          </label>
-        </div>
+    <template slot="footer" v-if="type === 'nfs' || type === 'cifs'">
+      <div class="label_box">
+        <label>
+          <input type="checkbox" v-model="isAdvice" />
+          <div>高级</div>
+        </label>
+      </div>
       <m-button class="create-btn" type="primary" @on-click="confirm"
-          >创建</m-button
-        >
-	</template>
+        >创建</m-button
+      >
+    </template>
   </Dialog>
 </template>
 
@@ -37,7 +43,7 @@ import CreateCephFsStorage from "./CreateCephFsStorage";
 import CreateIscsiStorage from "./CreateIscsiStorage";
 import CreasteZfsStorage from "./CreateZfsStorage";
 import CreateRbdStorage from "./CreateRbdStorage";
-import CreateZfsPoolStorage from './CreateZfsPoolStorage'
+import CreateZfsPoolStorage from "./CreateZfsPoolStorage";
 import CreateLvmThin from "./CreateLvmThin";
 export default {
   name: "CreateStorageModal",
@@ -53,8 +59,8 @@ export default {
     iscsi: CreateIscsiStorage,
     cephfs: CreateCephFsStorage,
     rbd: CreateRbdStorage,
-		zfs: CreasteZfsStorage,
-		zfspool: CreateZfsPoolStorage
+    zfs: CreasteZfsStorage,
+    zfspool: CreateZfsPoolStorage,
   },
   props: {
     visible: {
@@ -68,19 +74,19 @@ export default {
     type: {
       type: String,
       default: "",
-		},
-		isCreate: {
-			type: Boolean,
+    },
+    isCreate: {
+      type: Boolean,
       default: true,
-		},
-		param: {
-			type: Object
-		}
+    },
+    param: {
+      type: Object,
+    },
   },
   data() {
     return {
       isAdvice: false,
-    }
+    };
   },
   methods: {
     cancel() {
@@ -135,8 +141,8 @@ export default {
           type: "nfs",
           disable: this.$refs.nfs.$data.disable ? 0 : 1,
         };
-        if(this.isAdvice && this.$refs.nfs.$data.options !== '__default__') {
-          param['options'] = `vers=${this.$refs.nfs.$data.options}`;
+        if (this.isAdvice && this.$refs.nfs.$data.options !== "__default__") {
+          param["options"] = `vers=${this.$refs.nfs.$data.options}`;
         }
       }
       if (this.type === "cifs") {
@@ -153,12 +159,12 @@ export default {
           domain: this.$refs.cifs.$data.domain,
           type: "cifs",
           disable: this.$refs.cifs.$data.disable ? 0 : 1,
-				};
-        if(this.isAdvice && this.$refs.cifs.$data.option !== '__default__') {
-          param['smbversion'] = this.$refs.cifs.$data.option;
+        };
+        if (this.isAdvice && this.$refs.cifs.$data.option !== "__default__") {
+          param["smbversion"] = this.$refs.cifs.$data.option;
         }
-        if(!param.password) delete param.password;
-				if(!this.isCreate) delete param.share;
+        if (!param.password) delete param.password;
+        if (!this.isCreate) delete param.share;
       }
       if (this.type === "glusterfs") {
         if (this.$refs.glusterfs.validateAll()) return;
@@ -172,11 +178,11 @@ export default {
           content: this.$refs.glusterfs.$data.content.join(","),
           type: "glusterfs",
           disable: this.$refs.glusterfs.$data.disable ? 0 : 1,
-				};
-				if(!this.isCreate) {
-					delete param.server2;
-					delete param.volume;
-				}
+        };
+        if (!this.isCreate) {
+          delete param.server2;
+          delete param.volume;
+        }
       }
       if (this.type === "iscsi") {
         if (this.$refs.iscsi.validateAll()) return;
@@ -189,11 +195,11 @@ export default {
           type: "iscsi",
           disable: this.$refs.iscsi.$data.disable ? 0 : 1,
         };
-				if (!this.$refs.iscsi.$data.lun) delete param.content;
-				if(!this.isCreate) {
-					delete param.portal;
-					delete param.target;
-				}
+        if (!this.$refs.iscsi.$data.lun) delete param.content;
+        if (!this.isCreate) {
+          delete param.portal;
+          delete param.target;
+        }
       }
       if (this.type === "cephfs") {
         if (this.$refs.cephfs.validateAll()) return;
@@ -237,16 +243,16 @@ export default {
           nowritecache: this.$refs.zfs.$data.writecache ? 0 : 1,
           type: "zfs",
           disable: this.$refs.zfs.$data.disable ? 0 : 1,
-				};
-				if(!this.isCreate) {
-					delete param.portal;
-					delete param.target;
-					delete param.iscsiprovider;
-					delete param.blocksize;
-					delete param.pool
-				}
-			}
-			if (this.type === "zfspool") {
+        };
+        if (!this.isCreate) {
+          delete param.portal;
+          delete param.target;
+          delete param.iscsiprovider;
+          delete param.blocksize;
+          delete param.pool;
+        }
+      }
+      if (this.type === "zfspool") {
         if (this.$refs.zfspool.validateAll()) return;
         param = {
           storage: this.$refs.zfspool.$data.storage,
@@ -256,19 +262,19 @@ export default {
           sparse: this.$refs.zfspool.$data.sparse ? 1 : 0,
           type: "zfspool",
           disable: this.$refs.zfspool.$data.disable ? 0 : 1,
-				};
-				if(!this.isCreate) {
-					delete param.pool;
-				}
-			}
-			if(this.isCreate)
-				this.createStorage(param).then(() => {
-					this.cancel();
-				});
-			else
-			 this.updateStorage(param).then(() => {
-					this.cancel();
-				});
+        };
+        if (!this.isCreate) {
+          delete param.pool;
+        }
+      }
+      if (this.isCreate)
+        this.createStorage(param).then(() => {
+          this.cancel();
+        });
+      else
+        this.updateStorage(param).then(() => {
+          this.cancel();
+        });
     },
   },
   watch: {

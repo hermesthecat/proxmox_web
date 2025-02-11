@@ -1,5 +1,5 @@
 <script>
-import { parse_task_upid } from '@libs/utils/index';
+import { parse_task_upid } from "@libs/utils/index";
 export default {
   name: "NodeAptUpdateHttp",
   data() {
@@ -76,7 +76,7 @@ export default {
           _dc: new Date().getTime(),
         })
         .then((res) => {
-				  if(!res.data) return;
+          if (!res.data) return;
           if (res.data.status !== "running" && this.interVal) {
             clearInterval(this.interVal);
             this.interVal = null;
@@ -91,18 +91,19 @@ export default {
       return this.$http.del(`json/nodes/${node}/tasks/${pid}`).then(() => {
         this.querySubscriptionInfo();
       });
-		},
-		queryChangeLog(param) {
-			return this.$http.get(`json/nodes/${this.node}/apt/changelog`,param)
-			           .then(res => {
-									 if(res.data) {
-										 this.updateDbObject({
-											 name: 'changeLogObj',
-											 data: res
-										 })
-									 }
-								 })
-		}
+    },
+    queryChangeLog(param) {
+      return this.$http
+        .get(`json/nodes/${this.node}/apt/changelog`, param)
+        .then((res) => {
+          if (res.data) {
+            this.updateDbObject({
+              name: "changeLogObj",
+              data: res,
+            });
+          }
+        });
+    },
   },
 };
 </script>

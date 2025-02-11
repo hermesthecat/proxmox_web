@@ -1,19 +1,19 @@
 <script>
-import { quickSort } from '@src/libs/utils';
+import { quickSort } from "@src/libs/utils";
 export default {
   name: "CreateQemuHttp",
   methods: {
     queryNodeList() {
       return this.$http.get("/json/nodes").then((res) => {
         if (res.data) {
-          this.nodeList = quickSort(res.data, 'node', '-');
+          this.nodeList = quickSort(res.data, "node", "-");
         }
       });
     },
     queryPoolList() {
       return this.$http.get("/json/pools").then((res) => {
         if (res.data) {
-          this.poolList = quickSort(res.data, 'poolid', '-');
+          this.poolList = quickSort(res.data, "poolid", "-");
         }
       });
     },
@@ -31,11 +31,11 @@ export default {
     },
     queryStorageList(param) {
       return this.$http
-        .get(`/json/nodes/${this.nodename}/storage`,param)
+        .get(`/json/nodes/${this.nodename}/storage`, param)
         .then((res) => {
           if (res.data) {
-            this.storageList = quickSort(res.data, 'storage', '-');
-            return Promise.resolve(quickSort(res.data, 'storage', '-'));
+            this.storageList = quickSort(res.data, "storage", "-");
+            return Promise.resolve(quickSort(res.data, "storage", "-"));
           }
         });
     },
@@ -47,7 +47,7 @@ export default {
         })
         .then((res) => {
           if (res.data) {
-            this.imageStorageList = quickSort(res.data, 'storage', '-');
+            this.imageStorageList = quickSort(res.data, "storage", "-");
           }
         });
     },
@@ -58,7 +58,7 @@ export default {
         })
         .then((res) => {
           if (res.data) {
-            this.isoList = quickSort(res.data, 'volid', '-');
+            this.isoList = quickSort(res.data, "volid", "-");
           }
         });
     },
@@ -69,7 +69,7 @@ export default {
         })
         .then((res) => {
           if (res.data) {
-            this.networkList = quickSort(res.data, 'iface', '-');
+            this.networkList = quickSort(res.data, "iface", "-");
           }
         });
     },
@@ -85,7 +85,8 @@ export default {
           if (res.data) {
             this.incEventSuccess(event);
           }
-        }).catch(res => {
+        })
+        .catch((res) => {
           return Promise.reject(res);
         });
     },
@@ -102,7 +103,8 @@ export default {
             this.incEventSuccess(event);
             this.queryStatus(this.nodename, res.data);
           }
-        }).catch(res => {
+        })
+        .catch((res) => {
           return Promise.reject(res);
         });
     },
@@ -152,34 +154,36 @@ export default {
       return this.$http.del(`json/nodes/${node}/tasks/${pid}`).then(() => {
         this.querySubscriptionInfo();
       });
-		},
-		queryClusterLog() {
-			return this.$http.get(`json/cluster/log`)
-			           .then(res => {
-									 if(res.data) {
-										 this.updateTable({
-											 tableName: 'clusterLogList',
-											 list: res.data
-										 })
-									 }
-								 })
+    },
+    queryClusterLog() {
+      return this.$http.get(`json/cluster/log`).then((res) => {
+        if (res.data) {
+          this.updateTable({
+            tableName: "clusterLogList",
+            list: res.data,
+          });
+        }
+      });
     },
     /**
      * 修改密码 @param {password:}
-    */
+     */
     updatePsw(param) {
-     let event = this.createEvent(`action.password.update`);
-     return this.$http.put(`json/access/password`, param, {
-       headers: {
-         'Content-Type': 'application/x-www-form-urlencoded; charset=utf8;'
-       }
-     }).then(res => {
-       this.incEventSuccess(event);
-     }).catch(res => {
-       this.incEventFail(event);
-       return Promise.reject(res);
-     })
-    }
+      let event = this.createEvent(`action.password.update`);
+      return this.$http
+        .put(`json/access/password`, param, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded; charset=utf8;",
+          },
+        })
+        .then((res) => {
+          this.incEventSuccess(event);
+        })
+        .catch((res) => {
+          this.incEventFail(event);
+          return Promise.reject(res);
+        });
+    },
   },
 };
 </script>

@@ -18,8 +18,8 @@ class Confirm {
   }
 
   info(options) {
-    Object.assign(this.vm,defaultOptions , options,{
-      type:'info'
+    Object.assign(this.vm, defaultOptions, options, {
+      type: 'info'
     });
     if (isVNode(this.vm.msg)) {
       this.vm.$slots.default = [this.vm.msg];
@@ -34,8 +34,8 @@ class Confirm {
   }
 
   warning(options) {
-    Object.assign(this.vm,defaultOptions , options,{
-      type:'warning'
+    Object.assign(this.vm, defaultOptions, options, {
+      type: 'warning'
     });
     if (isVNode(this.vm.msg)) {
       this.vm.$slots.default = [this.vm.msg];
@@ -56,8 +56,8 @@ class Confirm {
      * **/
     //const vm = new VueComponent().$mount();
     //合并所有选项
-    Object.assign(this.vm,defaultOptions , options,{
-      type:'confirm'
+    Object.assign(this.vm, defaultOptions, options, {
+      type: 'confirm'
     });
     //如果是虚拟dom节点的话默认将信息复制给插槽
     if (isVNode(this.vm.msg)) {
@@ -74,8 +74,8 @@ class Confirm {
   }
 
   error(options) {
-    Object.assign(this.vm,defaultOptions , options,{
-      type:'error'
+    Object.assign(this.vm, defaultOptions, options, {
+      type: 'error'
     });
     if (isVNode(this.vm.msg)) {
       this.vm.$slots.default = [this.vm.msg];
@@ -90,8 +90,8 @@ class Confirm {
   }
 
   alert(options) {
-    Object.assign(this.vm,defaultOptions , options,{
-      type:'alert'
+    Object.assign(this.vm, defaultOptions, options, {
+      type: 'alert'
     });
     if (isVNode(this.vm.msg)) {
       this.vm.$slots.default = [this.vm.msg];
@@ -109,7 +109,7 @@ class Confirm {
     setTimeout(() => {
       document.body.removeChild(document.querySelector(`[data-id='${this.idList.pop()}']`));
       document.body.classList.toggle('hidden');
-    },500)
+    }, 500)
   }
 
   closeAll() {
@@ -118,7 +118,7 @@ class Confirm {
         document.body.removeChild(document.querySelector(`[data-id='${id}']`));
         document.body.classList.toggle('hidden');
       })
-    },500)
+    }, 500)
   }
 }
 // function confirm (options) {

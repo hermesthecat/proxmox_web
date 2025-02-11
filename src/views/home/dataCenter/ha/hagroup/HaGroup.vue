@@ -1,14 +1,25 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button type="primary" icon="el-icon-plus" @on-click="showModal('create')">创建</m-button>
-      <m-button type="primary" icon="el-icon-edit" @on-click="showModal('edit')" :disabled="selectedList.length !== 1">编辑</m-button>
+      <m-button
+        type="primary"
+        icon="el-icon-plus"
+        @on-click="showModal('create')"
+        >创建</m-button
+      >
+      <m-button
+        type="primary"
+        icon="el-icon-edit"
+        @on-click="showModal('edit')"
+        :disabled="selectedList.length !== 1"
+        >编辑</m-button
+      >
       <m-button
         type="danger"
         v-confirm="{
-            msg: '确定要删除已选择项?',
-            ok: () => handleDelete(),
-            icon:'icon-question'
+          msg: '确定要删除已选择项?',
+          ok: () => handleDelete(),
+          icon: 'icon-question',
         }"
         icon="el-icon-delete"
         :disabled="selectedList.length <= 0"
@@ -35,7 +46,10 @@
         :visible="visible"
         v-if="visible"
         :modal-type="type"
-        @close="visible = false; __init__()"
+        @close="
+          visible = false;
+          __init__();
+        "
       ></create-ha-group-modal>
     </div>
   </page-template>
@@ -44,14 +58,14 @@
 import HaHttp from "@src/views/home/dataCenter/ha/http";
 import PageTemplate from "@src/components/page/PageTemplate";
 import MButton from "@src/components/button/Button";
-import CreateHaGroupModal from './CreateHaGroupModal';
+import CreateHaGroupModal from "./CreateHaGroupModal";
 export default {
   name: "HaGroup",
   mixins: [HaHttp],
   components: {
     PageTemplate,
     MButton,
-    CreateHaGroupModal
+    CreateHaGroupModal,
   },
   data() {
     return {
@@ -89,7 +103,7 @@ export default {
     },
     handleDelete() {
       this.deleteHaGroup();
-    }
+    },
   },
 };
 </script>

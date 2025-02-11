@@ -1,15 +1,40 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button type="primary" @on-click="showModal('create')" icon="el-icon-plus">添加</m-button>
-			<m-button type="warning" @on-click="showModal('copy')" icon="el-icon-copy-document"
-                :disabled="inStatus() || selectedList && selectedList[0] && selectedList[0].type === 'group'">拷贝</m-button>
-			<m-button type="primary" @on-click="showModal('rule')" icon="el-icon-folder-add" :disabled="inStatus()">插入：安全组</m-button>
-			<m-button type="danger" v-confirm="{
-                  msg: '确认要删除已选择项?',
-                  icon: 'icon-question',
-                  ok: () => handleDelete()
-                }" icon="el-icon-delete" :disabled="selectedList.length <=0 ">删除</m-button>
+      <m-button
+        type="primary"
+        @on-click="showModal('create')"
+        icon="el-icon-plus"
+        >添加</m-button
+      >
+      <m-button
+        type="warning"
+        @on-click="showModal('copy')"
+        icon="el-icon-copy-document"
+        :disabled="
+          inStatus() ||
+          (selectedList && selectedList[0] && selectedList[0].type === 'group')
+        "
+        >拷贝</m-button
+      >
+      <m-button
+        type="primary"
+        @on-click="showModal('rule')"
+        icon="el-icon-folder-add"
+        :disabled="inStatus()"
+        >插入：安全组</m-button
+      >
+      <m-button
+        type="danger"
+        v-confirm="{
+          msg: '确认要删除已选择项?',
+          icon: 'icon-question',
+          ok: () => handleDelete(),
+        }"
+        icon="el-icon-delete"
+        :disabled="selectedList.length <= 0"
+        >删除</m-button
+      >
       <m-button
         type="info"
         icon="el-icon-edit"
@@ -24,10 +49,14 @@
         ref="dataTable"
         @selection-change="handleSelect"
       >
-        <el-table-column type="selection" width="55" prop="pos"></el-table-column>
-				<el-table-column width="55" prop="pos"></el-table-column>
+        <el-table-column
+          type="selection"
+          width="55"
+          prop="pos"
+        ></el-table-column>
+        <el-table-column width="55" prop="pos"></el-table-column>
         <el-table-column label="启用" prop="enable">
-					<template slot-scope="scope">
+          <template slot-scope="scope">
             <table-info-state
               :content="
                 scope.row.enable && scope.row.enable === 1 ? '是' : '否'
@@ -39,27 +68,32 @@
               "
             ></table-info-state>
           </template>
-				</el-table-column>
-        <el-table-column
-          label="类别"
-          prop="type"
-        ></el-table-column>
-        <el-table-column label="操作" prop="action"></el-table-column>
-        <el-table-column label="宏" prop="macro">
         </el-table-column>
-				<el-table-column label="接口" prop="iface"></el-table-column>
-				<el-table-column label="源" prop="source"></el-table-column>
-				<el-table-column label="目标" prop="dest"></el-table-column>
-				<el-table-column label="协议" prop="proto"></el-table-column>
-				<el-table-column label="目标端口" prop="dport"></el-table-column>
-				<el-table-column label="源端口" prop="sport"></el-table-column>
-				<el-table-column label="Log级别" prop="log"></el-table-column>
-				<el-table-column label="备注" prop="comment"></el-table-column>
-				<el-table-column >
-					<template slot-scope="scope">
-						<m-button type="info" :icon="scope.row.enable === 0 ? 'el-icon-video-play' : 'el-icon-video-pause'" @on-click="handleEnable(scope.row)">{{scope.row.enable === 0 ? '启用' : '停用'}}</m-button>
-					</template>
-				</el-table-column>
+        <el-table-column label="类别" prop="type"></el-table-column>
+        <el-table-column label="操作" prop="action"></el-table-column>
+        <el-table-column label="宏" prop="macro"> </el-table-column>
+        <el-table-column label="接口" prop="iface"></el-table-column>
+        <el-table-column label="源" prop="source"></el-table-column>
+        <el-table-column label="目标" prop="dest"></el-table-column>
+        <el-table-column label="协议" prop="proto"></el-table-column>
+        <el-table-column label="目标端口" prop="dport"></el-table-column>
+        <el-table-column label="源端口" prop="sport"></el-table-column>
+        <el-table-column label="Log级别" prop="log"></el-table-column>
+        <el-table-column label="备注" prop="comment"></el-table-column>
+        <el-table-column>
+          <template slot-scope="scope">
+            <m-button
+              type="info"
+              :icon="
+                scope.row.enable === 0
+                  ? 'el-icon-video-play'
+                  : 'el-icon-video-pause'
+              "
+              @on-click="handleEnable(scope.row)"
+              >{{ scope.row.enable === 0 ? "启用" : "停用" }}</m-button
+            >
+          </template>
+        </el-table-column>
       </el-table>
       <create-firewall-Rule-modal
         :title="title"
@@ -69,7 +103,10 @@
         v-if="visible"
         :modal-type="type"
         :isGroup="isGroup"
-        @close="visible = false; queryFireWallList()"
+        @close="
+          visible = false;
+          queryFireWallList();
+        "
       ></create-firewall-Rule-modal>
     </div>
   </page-template>
@@ -78,14 +115,14 @@
 import NodeFireWallHttp from "@src/views/home/node/firewall/http";
 import PageTemplate from "@src/components/page/PageTemplate";
 import MButton from "@src/components/button/Button";
-import CreateFirewallRuleModal from './CreateFirewallRuleModal';
+import CreateFirewallRuleModal from "./CreateFirewallRuleModal";
 export default {
   name: "Access",
   mixins: [NodeFireWallHttp],
   components: {
     PageTemplate,
     MButton,
-    CreateFirewallRuleModal
+    CreateFirewallRuleModal,
   },
   data() {
     return {
@@ -95,7 +132,7 @@ export default {
       selectedList: [],
       isCreate: true,
       param: {},
-      isGroup: false
+      isGroup: false,
     };
   },
   mounted() {
@@ -110,11 +147,19 @@ export default {
     showModal(type) {
       this.type = type;
       this.isCreate = type === "create";
-      this.title = type === "create" ? "添加：规则" : type === 'copy' ? "复制：规则" : type === 'edit' ? "编辑：规则" : "添加：安全组";
+      this.title =
+        type === "create"
+          ? "添加：规则"
+          : type === "copy"
+          ? "复制：规则"
+          : type === "edit"
+          ? "编辑：规则"
+          : "添加：安全组";
       this.param = type === "create" ? {} : this.selectedList[0];
       this.visible = true;
       debugger;
-      this.isGroup =  this.selectedList[0] && this.selectedList[0].type === 'group';
+      this.isGroup =
+        this.selectedList[0] && this.selectedList[0].type === "group";
     },
     //按钮是否可点击
     inStatus() {
@@ -127,11 +172,11 @@ export default {
     //删除防火墙
     handleDelete(type) {
       this.deleteFireWallRule();
-		},
-		handleCommand(command) {
-			 this.type = command;
-			 this.visible = true;
-		}
+    },
+    handleCommand(command) {
+      this.type = command;
+      this.visible = true;
+    },
   },
 };
 </script>

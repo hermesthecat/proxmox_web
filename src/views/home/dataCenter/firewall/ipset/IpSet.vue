@@ -12,7 +12,7 @@
         v-confirm="{
           msg: '确定要删除已选择项?',
           ok: () => handleDelete(),
-          icon:'icon-question'
+          icon: 'icon-question',
         }"
         icon="el-icon-delete"
         :disabled="selectedList.length <= 0"
@@ -49,8 +49,8 @@
                   type="danger"
                   v-confirm="{
                     msg: '确定要删除已选择项?',
-                    icon:  'icon-question',
-                    ok: () => handleCidrDelete()
+                    icon: 'icon-question',
+                    ok: () => handleCidrDelete(),
                   }"
                   icon="el-icon-delete"
                   :disabled="selectedCidrList.length <= 0"
@@ -73,23 +73,26 @@
                     type="selection"
                     width="55"
                   ></el-table-column>
-                  <el-table-column label="IP/CIDR" prop="cidr"></el-table-column>
+                  <el-table-column
+                    label="IP/CIDR"
+                    prop="cidr"
+                  ></el-table-column>
                   <el-table-column
                     label="备注"
                     prop="comment"
                   ></el-table-column>
-									<el-table-column
-                    label="错误信息"
-                  >
-									   <template slot-scope="scope">
-											 <span>{{scope.row.errors && scope.row.errors.cidr && scope.row.errors.cidr}}</span>
-										 </template>
-									</el-table-column>
-										<el-table-column
-                    label="匹配"
-                  >
-									   <template slot-scope="scope">
-											 <table-info-state
+                  <el-table-column label="错误信息">
+                    <template slot-scope="scope">
+                      <span>{{
+                        scope.row.errors &&
+                        scope.row.errors.cidr &&
+                        scope.row.errors.cidr
+                      }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="匹配">
+                    <template slot-scope="scope">
+                      <table-info-state
                         :content="
                           scope.row.nomatch && scope.row.nomatch === 1
                             ? '是'
@@ -101,8 +104,8 @@
                             : 'unActived'
                         "
                       ></table-info-state>
-										 </template>
-									</el-table-column>
+                    </template>
+                  </el-table-column>
                 </el-table>
               </div>
             </page-template>
@@ -134,7 +137,7 @@
         :modal-type="type"
         @close="
           visible = false;
-          __init__()
+          __init__();
         "
       ></create-ipset-modal>
     </div>
@@ -152,8 +155,8 @@ export default {
   components: {
     PageTemplate,
     MButton,
-    'create-ipset-modal': CreateIPSetModal,
-    'create-ipset-cidr-modal': CreateIPSetCidrModal,
+    "create-ipset-modal": CreateIPSetModal,
+    "create-ipset-cidr-modal": CreateIPSetCidrModal,
   },
   data() {
     return {
@@ -201,16 +204,16 @@ export default {
       this.deleteIpset().catch((res) => {
         this.$confirm.error({
           msg: res,
-          icon: 'icon-error'
+          icon: "icon-error",
         });
       });
     },
     handleCidrDelete() {
       this.deleteIpsetCidr(this.name);
-		},
-		//保证每一行只能展开一列
+    },
+    //保证每一行只能展开一列
     expandChange(row, expandedRows) {
-			let that = this;
+      let that = this;
       if (expandedRows.length) {
         that.expands = [];
         if (row) {

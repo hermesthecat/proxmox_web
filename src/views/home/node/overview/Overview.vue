@@ -263,7 +263,7 @@ export default {
   components: {
     OverviewCard,
     LinePercentChart,
-    SingleLine
+    SingleLine,
   },
   data() {
     return {
@@ -406,12 +406,18 @@ export default {
     },
     //折线图数据
     queryRrdData() {
-      let [timeframe, cf] = [this.timeframe.replace(/(.*?)\((.*?)\)/g, "$1"), this.timeframe.replace(/(.*?)\((.*?)\)/g, "$2")];
-      if(/[\u4e00-\u9fa5]/.test(timeframe) || /[\u4e00-\u9fa5]/.test(cf)) return;
+      let [timeframe, cf] = [
+        this.timeframe.replace(/(.*?)\((.*?)\)/g, "$1"),
+        this.timeframe.replace(/(.*?)\((.*?)\)/g, "$2"),
+      ];
+      if (/[\u4e00-\u9fa5]/.test(timeframe) || /[\u4e00-\u9fa5]/.test(cf))
+        return;
       this.rrdLoading = true;
       this.$http
         .get(
-          `/json/nodes/${this.node}/rrddata?timeframe=${encodeURIComponent(timeframe)}&cf=${encodeURIComponent(cf)}&_dc=`+ new Date().getTime()
+          `/json/nodes/${this.node}/rrddata?timeframe=${encodeURIComponent(
+            timeframe
+          )}&cf=${encodeURIComponent(cf)}&_dc=` + new Date().getTime()
         )
         .then((res) => {
           this.rrdLoading = false;
@@ -447,13 +453,14 @@ export default {
             func: this.byteToSize,
             time: res.data.map((it) => it.time),
           });
-        }).catch(res => {
-        this.rrdLoading = false;
-      });
+        })
+        .catch((res) => {
+          this.rrdLoading = false;
+        });
     },
     //定时请求
     handleIntervalChange(value) {
-      if(/[\u4e00-\u9fa5]/.test(value)) return;
+      if (/[\u4e00-\u9fa5]/.test(value)) return;
       this.timeframe = value;
       this.queryRrdData();
     },

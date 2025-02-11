@@ -30,7 +30,7 @@
                 v-confirm="{
                   msg: '确定要删除已选择项?',
                   ok: () => handleDelete(),
-                  icon:'icon-question'
+                  icon: 'icon-question',
                 }"
                 icon="el-icon-delete"
                 :disabled="selectedList.length <= 0"
@@ -81,7 +81,7 @@
                 v-confirm="{
                   msg: '确定要删除已选择项?',
                   ok: () => handlePluginDelete(),
-                  icon:'icon-question'
+                  icon: 'icon-question',
                 }"
                 icon="el-icon-delete"
                 :disabled="selectedPluginList.length <= 0"
@@ -112,7 +112,7 @@
               queryAcmeAccountList();
             "
           ></create-acme-account-modal>
-					 <create-acme-plugin-modal
+          <create-acme-plugin-modal
             :title="pluginTitle"
             :isCreate="pluginIsCreate"
             :param="pluginParam"
@@ -126,28 +126,28 @@
           ></create-acme-plugin-modal>
 
           <m-dialog
-              :visible="showLog"
-              @close="closeLog"
-              :_style="{
-                width: '800px',
-              }"
-              title="Task Viewer: 任务进度"
-            >
-              <template slot="content">
-                <m-tab v-model="tab" @tab-click="handleTabChange">
-                  <m-tab-panel label="输出" name="log"></m-tab-panel>
-                  <m-tab-panel label="状态" name="status"></m-tab-panel>
-                </m-tab>
-                <m-button
-                  class="create-btn m-margin-top-10"
-                  type="primary"
-                  @on-click="stopTask1"
-                  :disabled="db.addClusterStatusObj.status !== 'running'"
-                  >停止</m-button
-                >
-                <el-scrollbar style="height:100%">
-                  <div class="taskmodal-content">
-                    <div class="table" v-if="tab === 'log'">
+            :visible="showLog"
+            @close="closeLog"
+            :_style="{
+              width: '800px',
+            }"
+            title="Task Viewer: 任务进度"
+          >
+            <template slot="content">
+              <m-tab v-model="tab" @tab-click="handleTabChange">
+                <m-tab-panel label="输出" name="log"></m-tab-panel>
+                <m-tab-panel label="状态" name="status"></m-tab-panel>
+              </m-tab>
+              <m-button
+                class="create-btn m-margin-top-10"
+                type="primary"
+                @on-click="stopTask1"
+                :disabled="db.addClusterStatusObj.status !== 'running'"
+                >停止</m-button
+              >
+              <el-scrollbar style="height: 100%">
+                <div class="taskmodal-content">
+                  <div class="table" v-if="tab === 'log'">
                     <div
                       class="table-tr"
                       v-for="item in db.addClusterLogList"
@@ -163,21 +163,28 @@
                         v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
                         :key="key"
                       >
-                        <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
+                        <div class="table-td">
+                          {{ $t(`clusterStatus.${key}`) }}
+                        </div>
                         <div class="table-td" v-if="key === 'starttime'">
-                          {{ dateFormat(new Date(item * 1000), "yyyy-MM-dd hh:mm") }}
+                          {{
+                            dateFormat(
+                              new Date(item * 1000),
+                              "yyyy-MM-dd hh:mm"
+                            )
+                          }}
                         </div>
                         <div class="table-td" v-else>{{ item }}</div>
                       </div>
                     </template>
                   </div>
-                  </div>
-                </el-scrollbar>
-              </template>
-              <template slot="footer">
-                <span></span>
-              </template>
-         </m-dialog>
+                </div>
+              </el-scrollbar>
+            </template>
+            <template slot="footer">
+              <span></span>
+            </template>
+          </m-dialog>
         </div>
       </div>
     </overview-card>
@@ -189,7 +196,7 @@ import AcmeHttp from "@src/views/home/dataCenter/acme/http";
 import PageTemplate from "@src/components/page/PageTemplate";
 import MButton from "@src/components/button/Button";
 import CreateAcmeAccountModal from "./CreateAcmeAccountModal";
-import CreateAcmePluginModal from './CreateAcmePluginModal';
+import CreateAcmePluginModal from "./CreateAcmePluginModal";
 import { dateFormat } from "@libs/utils/index";
 export default {
   name: "Acme",
@@ -198,8 +205,8 @@ export default {
     PageTemplate,
     OverviewCard,
     MButton,
-		CreateAcmeAccountModal,
-		CreateAcmePluginModal
+    CreateAcmeAccountModal,
+    CreateAcmePluginModal,
   },
   data() {
     return {
@@ -211,13 +218,13 @@ export default {
       param: {},
       showStatus: true,
       showResource: true,
-			resourceList: [],
-			selectedPluginList: [],
-			pluginType: "create",
+      resourceList: [],
+      selectedPluginList: [],
+      pluginType: "create",
       pluginVisible: false,
       pluginTitle: "创建：复制作业",
-			pluginIsCreate: true,
-			pluginParam: {},
+      pluginIsCreate: true,
+      pluginParam: {},
       acmePluginList: [],
       showLog: false,
       interVal: null,
@@ -232,10 +239,11 @@ export default {
     //初始化查找
     __init__() {
       return Promise.all([
-				this.queryAcmePluginsList()
-				    .then(() => {
-							this.acmePluginList = this.db.acmePluginList.filter((it) => it.type !== 'standalone')
-						}),
+        this.queryAcmePluginsList().then(() => {
+          this.acmePluginList = this.db.acmePluginList.filter(
+            (it) => it.type !== "standalone"
+          );
+        }),
         this.queryAcmeAccountList(),
       ]);
     },
@@ -256,13 +264,13 @@ export default {
       this.selectedList = row;
     },
     //选择插件表格多选
-		handlePluginSelect(row) {
-			this.selectedPluginList = row;
+    handlePluginSelect(row) {
+      this.selectedPluginList = row;
     },
     /**
      * 删除插件
-    */
-		handlePluginDelete() {
+     */
+    handlePluginDelete() {
       this.deleteAcmePlugin().catch((res) => {
         this.$confirm.confirm({
           msg: res,
@@ -272,31 +280,32 @@ export default {
     },
     /***
      * 删除账户
-    */
+     */
     handleDelete() {
-          this.deleteAcmeAccount().then((res) => {
-            this.showLog = true;
-            this.interVal = setInterval(
-              () => {
-                this.queryLog( this.db.addClusterStatusObj.node,
-                  this.db.addClusterStatusObj.upid)
-                this.queryStatus(
-                  this.db.addClusterStatusObj.node,
-                  this.db.addClusterStatusObj.upid
-                )
-              },
-              3000
+      this.deleteAcmeAccount()
+        .then((res) => {
+          this.showLog = true;
+          this.interVal = setInterval(() => {
+            this.queryLog(
+              this.db.addClusterStatusObj.node,
+              this.db.addClusterStatusObj.upid
             );
-          }).catch((res) => {
-             this.$confirm.confirm({
-              msg: res,
-              type: "info",
-            });
-          })
+            this.queryStatus(
+              this.db.addClusterStatusObj.node,
+              this.db.addClusterStatusObj.upid
+            );
+          }, 3000);
+        })
+        .catch((res) => {
+          this.$confirm.confirm({
+            msg: res,
+            type: "info",
+          });
+        });
     },
     /**
      * 是否展示表格
-    */
+     */
     handleCollpise(type) {
       if (type === "status") {
         this.showStatus = !this.showStatus;
@@ -306,17 +315,18 @@ export default {
     },
     /**
      * 是否展示插件相关弹框
-    */
-		showPlginModal(type) {
-			this.pluginType = type;
+     */
+    showPlginModal(type) {
+      this.pluginType = type;
       this.pluginIsCreate = type === "create";
-      this.pluginTitle = type === "create" ? "创建：ACME DNS Plugin" : "编辑：ACME DNS Plugin";
+      this.pluginTitle =
+        type === "create" ? "创建：ACME DNS Plugin" : "编辑：ACME DNS Plugin";
       this.pluginParam = type === "create" ? {} : this.selectedPluginList[0];
       this.pluginVisible = true;
     },
     /**
      * 停止运行中的任务
-    */
+     */
     stopTask1() {
       this.stopTask(
         this.db.addClusterStatusObj.node,
@@ -325,19 +335,19 @@ export default {
     },
     /**
      * 关闭日志弹框
-    */
+     */
     closeLog() {
       this.showLog = false;
       this.__init__();
     },
     /**
      * 切换tab
-    */
+     */
     handleTabChange(value) {
       this.tab = value;
     },
   },
-   beforeDestroy() {
+  beforeDestroy() {
     if (this.interVal) {
       clearInterval(this.interVal);
       this.interVal = null;
@@ -388,7 +398,7 @@ export default {
 /deep/.card {
   min-height: auto !important;
 }
-/deep/.page-template__content{
-  height: auto!important;;
+/deep/.page-template__content {
+  height: auto !important;
 }
 </style>

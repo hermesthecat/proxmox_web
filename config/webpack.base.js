@@ -1,19 +1,19 @@
 const webpack = require('webpack');
 const path = require("path");
-const MiniCssExtractPlugin       = require("mini-css-extract-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HappyPack = require('happypack');
-const HtmlWebpackPlugin          = require('html-webpack-plugin');
-const {VueLoaderPlugin}          = require('vue-loader');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { VueLoaderPlugin } = require('vue-loader');
 const manifest = require('../vendor-manifest.json');
 //拆分三方库并将其注入到html中
-const AddAssetHtmlPlugin         = require('add-asset-html-webpack-plugin');
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const os = require('os');
 //开启线程
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
 function resolve(dirname) {
-  return path.resolve(__dirname,  dirname);
+  return path.resolve(__dirname, dirname);
 }
 const isDevMode = process.env.NODE_ENV === 'development' ? true : false;
 module.exports = {
@@ -24,7 +24,7 @@ module.exports = {
   },
   output: {
     publicPath: isDevMode ? '/public/' : '/',
-    path: path.resolve(__dirname,'../public/dist'),
+    path: path.resolve(__dirname, '../public/dist'),
     filename: isDevMode ? 'js/[name].[hash:8].js' : 'mhflex/js/[name].[hash:8].js',
     chunkFilename: isDevMode ? 'js/[name].[hash:8].js' : 'mhflex/js/[name].[hash:8].js',
   },
@@ -33,14 +33,14 @@ module.exports = {
     rules: [{
       test: /\.(js)$/,
       loader: 'happypack/loader?id=happyBabel',
-    },{
+    }, {
       test: /\.(vue)$/,
       loader: 'vue-loader'
-    },{
+    }, {
       test: /\.(c|le)ss$/,
       use: [
         'vue-style-loader',
-        !isDevMode ? 'style-loader': MiniCssExtractPlugin.loader,
+        !isDevMode ? 'style-loader' : MiniCssExtractPlugin.loader,
         {
           loader: 'css-loader',
           options: {
@@ -59,7 +59,7 @@ module.exports = {
           }
         }
       ]
-    },{
+    }, {
       test: /\.(png|jpg|svg|jpeg|gif)$/,
       use: [
         {
@@ -70,7 +70,7 @@ module.exports = {
           }
         }
       ]
-    },{
+    }, {
       test: /\.(woff|eot|ttf|woff2)$/,
       loader: 'url-loader',
       options: {
@@ -82,17 +82,17 @@ module.exports = {
     {
       test: /\.md$/,
       use: [
-         { 
-           loader: 'vue-loader'
-         },
-         { 
-           loader: 'vue-markdown-loader/lib/markdown-compiler',
-           options: {
+        {
+          loader: 'vue-loader'
+        },
+        {
+          loader: 'vue-markdown-loader/lib/markdown-compiler',
+          options: {
             raw: true
           }
         }
       ]
-   }]
+    }]
   },
   resolve: {
     extensions: ['.js', '.vue', '.less', '.css'],
@@ -122,7 +122,7 @@ module.exports = {
           resolve('../node_modules/element-ui/src'),
           resolve('../node_modules/element-ui/packages'),
           resolve('../node_modules/ace-builds'),
-         ],
+        ],
         options: {
           babelrc: true,
           cacheDirectory: true, // 启用缓存
@@ -139,8 +139,8 @@ module.exports = {
       loaders: [{
         loader: 'vue-loader',
         options: {
-           babelrc: true,
-           cacheDirectory: true // 启用缓存
+          babelrc: true,
+          cacheDirectory: true // 启用缓存
         }
       }],
       //代表共享进程池，即多个 HappyPack 实例都使用同一个共享进程池中的子进程去处理任务，以防止资源占用过多。

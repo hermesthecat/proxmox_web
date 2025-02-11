@@ -37,7 +37,7 @@ const element = {
     vue.use(Input);
     vue.use(Form);
     vue.use(FormItem);
-    vue.component('m-input',MInput);
+    vue.component('m-input', MInput);
     vue.component('m-dropdown', MDropdown);
     vue.component('m-dropdown-item', MDropdownItem);
     vue.use(Radio);

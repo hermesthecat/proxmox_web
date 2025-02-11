@@ -5,7 +5,7 @@
         type="primary"
         @on-click="showModal()"
         icon="el-icon-view"
-				:disabled="selectedList.length !== 1"
+        :disabled="selectedList.length !== 1"
         >查看</m-button
       >
     </div>
@@ -19,7 +19,7 @@
         @input="throttle(filter('user'), 1000)"
         placeholder="请输入用户名"
       >
-         <i slot="prefix" class="el-icon-search"></i>
+        <i slot="prefix" class="el-icon-search"></i>
       </m-input>
       <m-checkbox
         label="仅错误"
@@ -32,14 +32,14 @@
       <el-table
         :data="chunkDataList"
         ref="dataTable"
-				:row-key="setRowKeys"
+        :row-key="setRowKeys"
         :expand-row-keys="expands"
-				@expand-change="expandChange"
-				:row-class-name="setRoleCalssName"
+        @expand-change="expandChange"
+        :row-class-name="setRoleCalssName"
         @selection-change="handleSelect"
         @sort-change="handleSort"
       >
-			 <el-table-column type="expand">
+        <el-table-column type="expand">
           <template slot-scope="props">
             <table-info-state
               :content="props.row.status && props.row.status"
@@ -52,7 +52,7 @@
               "
             ></table-info-state>
           </template>
-          </el-table-column>
+        </el-table-column>
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="开始" prop="starttime" sortable>
           <template slot-scope="scope">
@@ -78,9 +78,7 @@
         <el-table-column label="用户名" prop="user"></el-table-column>
         <el-table-column label="描述" prop="type">
           <template slot-scope="scope">
-            {{
-             render_upid(scope.row.pid, null, scope.row)
-            }}
+            {{ render_upid(scope.row.pid, null, scope.row) }}
           </template>
         </el-table-column>
         <el-table-column label="状态" prop="disable" show-overflow-tooltip>
@@ -98,16 +96,28 @@
           </template>
         </el-table-column>
       </el-table>
-       <el-pagination class="page-table-pagination"
-          @size-change="(val) => {pageSize = val; chunks()}"
-          @current-change="(val) => {currentPage = val; chunks()}"
-          :current-page="currentPage"
-          :page-sizes="[10, 20, 30, 40, 50]"
-          :page-size="pageSize"
-          :total="qemuTaskList.length"
-           layout="total, sizes, prev, pager, next, jumper">
+      <el-pagination
+        class="page-table-pagination"
+        @size-change="
+          (val) => {
+            pageSize = val;
+            chunks();
+          }
+        "
+        @current-change="
+          (val) => {
+            currentPage = val;
+            chunks();
+          }
+        "
+        :current-page="currentPage"
+        :page-sizes="[10, 20, 30, 40, 50]"
+        :page-size="pageSize"
+        :total="qemuTaskList.length"
+        layout="total, sizes, prev, pager, next, jumper"
+      >
       </el-pagination>
-			<Dialog
+      <Dialog
         :visible="showLog"
         @close="closeLog"
         :_style="{
@@ -127,34 +137,36 @@
             :disabled="db.addClusterStatusObj.status !== 'running'"
             >停止</m-button
           >
-         <el-scrollbar style="height: 100%">
-          <div class="taskmodal-content">
-					  <div class="table" v-if="tab === 'log'">
-            <div
-              class="table-tr"
-              v-for="item in db.addClusterLogList"
-              :key="item.n"
-            >
-              {{ item.t }}
-            </div>
-          </div>
-          <div class="table" v-if="tab === 'status'">
-            <template v-for="(item, key) in db.addClusterStatusObj">
-              <div
-                class="table-tr"
-                v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-                :key="key"
-              >
-                <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
-                <div class="table-td" v-if="key === 'starttime'">
-                  {{ dateFormat(new Date(item * 1000), "yyyy-MM-dd hh:mm") }}
+          <el-scrollbar style="height: 100%">
+            <div class="taskmodal-content">
+              <div class="table" v-if="tab === 'log'">
+                <div
+                  class="table-tr"
+                  v-for="item in db.addClusterLogList"
+                  :key="item.n"
+                >
+                  {{ item.t }}
                 </div>
-                <div class="table-td" v-else>{{ item }}</div>
               </div>
-            </template>
-          </div>
-				 </div>
-         </el-scrollbar>
+              <div class="table" v-if="tab === 'status'">
+                <template v-for="(item, key) in db.addClusterStatusObj">
+                  <div
+                    class="table-tr"
+                    v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
+                    :key="key"
+                  >
+                    <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
+                    <div class="table-td" v-if="key === 'starttime'">
+                      {{
+                        dateFormat(new Date(item * 1000), "yyyy-MM-dd hh:mm")
+                      }}
+                    </div>
+                    <div class="table-td" v-else>{{ item }}</div>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </el-scrollbar>
         </template>
         <template slot="footer">
           <span></span>
@@ -168,14 +180,20 @@ import QemuTaskHttp from "@src/views/home/qemu/task/http";
 import PageTemplate from "@src/components/page/PageTemplate";
 import MButton from "@src/components/button/Button";
 import Dialog from "@src/components/dialog/Dialog";
-import { dateFormat, render_upid, quickSort, throttle, chunkData } from "@libs/utils/index";
+import {
+  dateFormat,
+  render_upid,
+  quickSort,
+  throttle,
+  chunkData,
+} from "@libs/utils/index";
 export default {
   name: "Replication",
   mixins: [QemuTaskHttp],
   components: {
     PageTemplate,
     MButton,
-    Dialog
+    Dialog,
   },
   data() {
     return {
@@ -184,48 +202,51 @@ export default {
       title: "创建：复制作业",
       selectedList: [],
       isCreate: true,
-			param: {},
-			user: '',
-			param: {},
+      param: {},
+      user: "",
+      param: {},
       showLog: false,
       interVal: null,
-			tab: 'log',
+      tab: "log",
       error: false,
       currentPage: 1,
       pageSize: 10,
       expands: [],
       qemuTaskList: [],
-      chunkDataList: []
+      chunkDataList: [],
     };
   },
   mounted() {
     this.__init__();
   },
   methods: {
-		dateFormat,
+    dateFormat,
     render_upid,
     throttle,
     chunkData,
     //初始化查找
     __init__() {
       let _this = this;
-      this.queryTask()
-          .then(res => {
-           _this.qemuTaskList = quickSort(this.db.nodeTaskList, "starttime");
-            _this.chunks();
-          });
+      this.queryTask().then((res) => {
+        _this.qemuTaskList = quickSort(this.db.nodeTaskList, "starttime");
+        _this.chunks();
+      });
     },
     //是否展示弹框
     async showModal() {
-      if(this.selectedList.length !== 1) return;
-			this.title = `查看： ${this.render_upid(null, null, this.selectedList[0])}`;
-			this.queryLog(this.selectedList[0].node, this.selectedList[0].upid);
-			this.queryStatus(this.selectedList[0].node, this.selectedList[0].upid);
-			this.interVal = await setInterval(() => {
-          this.queryLog(this.selectedList[0].node, this.selectedList[0].upid);
-					this.queryStatus(this.selectedList[0].node, this.selectedList[0].upid);
-			}, 3000);
-			this.showLog = true;
+      if (this.selectedList.length !== 1) return;
+      this.title = `查看： ${this.render_upid(
+        null,
+        null,
+        this.selectedList[0]
+      )}`;
+      this.queryLog(this.selectedList[0].node, this.selectedList[0].upid);
+      this.queryStatus(this.selectedList[0].node, this.selectedList[0].upid);
+      this.interVal = await setInterval(() => {
+        this.queryLog(this.selectedList[0].node, this.selectedList[0].upid);
+        this.queryStatus(this.selectedList[0].node, this.selectedList[0].upid);
+      }, 3000);
+      this.showLog = true;
     },
     //按钮是否可点击
     inStatus() {
@@ -233,22 +254,24 @@ export default {
     },
     //选择
     handleSelect(row) {
-      if(row)
-      this.selectedList = row;
-		},
-		 handleTabChange(tab) {
-			this.tab = tab;
-		},
+      if (row) this.selectedList = row;
+    },
+    handleTabChange(tab) {
+      this.tab = tab;
+    },
     closeLog() {
-			 if (this.interVal) {
-         clearInterval(this.interVal);
-         this.interVal = null;
+      if (this.interVal) {
+        clearInterval(this.interVal);
+        this.interVal = null;
       }
       this.showLog = false;
       this.__init__();
-		},
-		stopTask1() {
-      this.stopTask(this.db.addClusterStatusObj.node, this.db.addClusterStatusObj.upid);
+    },
+    stopTask1() {
+      this.stopTask(
+        this.db.addClusterStatusObj.node,
+        this.db.addClusterStatusObj.upid
+      );
     },
     handleDelete(type) {
       this.$confirm
@@ -260,8 +283,8 @@ export default {
           this.delete(type);
         })
         .catch(() => {});
-		},
-		expandChange(row, expandedRows) {
+    },
+    expandChange(row, expandedRows) {
       var that = this;
       if (expandedRows.length) {
         that.expands = [];
@@ -274,22 +297,22 @@ export default {
     },
     setRowKeys(row) {
       return row.upid;
-		},
-		//设置row className
-		setRoleCalssName({row, rowIndex}) {
-      if(row.status !== 'OK') {
-				return 'run-error'
-			}
-		},
+    },
+    //设置row className
+    setRoleCalssName({ row, rowIndex }) {
+      if (row.status !== "OK") {
+        return "run-error";
+      }
+    },
     filter(type) {
       if (type === "user") {
-				if(this.user){
-				this.qemuTaskList = this.db.nodeTaskList.filter((item) => {
-          return item.user === this.user;
-        });
-				} else {
-					this.__init__();
-				}
+        if (this.user) {
+          this.qemuTaskList = this.db.nodeTaskList.filter((item) => {
+            return item.user === this.user;
+          });
+        } else {
+          this.__init__();
+        }
       } else if (type === "error") {
         if (this.error) {
           this.qemuTaskList = this.db.nodeTaskList.filter((item) => {
@@ -302,14 +325,20 @@ export default {
       this.chunks();
     },
     //排序
-    handleSort({colume, prop, order}) {
+    handleSort({ colume, prop, order }) {
       let _this = this;
-      if(order !== null)
-      _this.qemuTaskList = quickSort(_this.db.nodeTaskList, prop, order === 'ascending' ? '+' : '-');
+      if (order !== null)
+        _this.qemuTaskList = quickSort(
+          _this.db.nodeTaskList,
+          prop,
+          order === "ascending" ? "+" : "-"
+        );
     },
     chunks() {
-      this.chunkDataList = chunkData(this.qemuTaskList, this.pageSize)[this.currentPage - 1];
-    }
+      this.chunkDataList = chunkData(this.qemuTaskList, this.pageSize)[
+        this.currentPage - 1
+      ];
+    },
   },
 };
 </script>
@@ -334,14 +363,14 @@ export default {
     display: inline-flex;
   }
 }
-/deep/.run-error{
-	background: #f3d6d7!important;
-	color: #fff!important;
-	&:hover{
-		color: #606266!important;
-	}
+/deep/.run-error {
+  background: #f3d6d7 !important;
+  color: #fff !important;
+  &:hover {
+    color: #606266 !important;
+  }
 }
-/deep/.tool-bar-right{
-   flex: 2;
+/deep/.tool-bar-right {
+  flex: 2;
 }
 </style>

@@ -22,9 +22,11 @@
             >更新</m-button
           >
         </span>
-            <m-dropdown-item command="html5" name="novnc">NoVNC</m-dropdown-item>
-            <m-dropdown-item command="vv" name="virt-viewer">SPICE</m-dropdown-item>
-            <m-dropdown-item command="xtermjs" name="xtermjs">xtermjs</m-dropdown-item>
+        <m-dropdown-item command="html5" name="novnc">NoVNC</m-dropdown-item>
+        <m-dropdown-item command="vv" name="virt-viewer">SPICE</m-dropdown-item>
+        <m-dropdown-item command="xtermjs" name="xtermjs"
+          >xtermjs</m-dropdown-item
+        >
       </m-dropdown>
       <m-button
         type="warning"
@@ -79,39 +81,40 @@
             :disabled="db.addClusterStatusObj.status !== 'running'"
             >停止</m-button
           >
-         <el-scrollbar style="height: 100%">
-          <div class="taskmodal-content">
-					  <div class="table" v-if="tab === 'log'">
-            <div
-              class="table-tr"
-              v-for="item in db.addClusterLogList"
-              :key="item.n"
-            >
-              {{ item.t }}
-            </div>
-          </div>
-          <div class="table" v-if="tab === 'status'">
-            <template v-for="(item, key) in db.addClusterStatusObj">
-              <div
-                class="table-tr"
-                v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-                :key="key"
-              >
-                <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
-                <div class="table-td" v-if="key === 'starttime'">
-                  {{ dateFormat(new Date(item * 1000), "yyyy-MM-dd hh:mm") }}
+          <el-scrollbar style="height: 100%">
+            <div class="taskmodal-content">
+              <div class="table" v-if="tab === 'log'">
+                <div
+                  class="table-tr"
+                  v-for="item in db.addClusterLogList"
+                  :key="item.n"
+                >
+                  {{ item.t }}
                 </div>
-                <div class="table-td" v-else>{{ item }}</div>
               </div>
-            </template>
-          </div>
-				 </div>
-         </el-scrollbar>
+              <div class="table" v-if="tab === 'status'">
+                <template v-for="(item, key) in db.addClusterStatusObj">
+                  <div
+                    class="table-tr"
+                    v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
+                    :key="key"
+                  >
+                    <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
+                    <div class="table-td" v-if="key === 'starttime'">
+                      {{
+                        dateFormat(new Date(item * 1000), "yyyy-MM-dd hh:mm")
+                      }}
+                    </div>
+                    <div class="table-td" v-else>{{ item }}</div>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </el-scrollbar>
         </template>
-				<template slot="content" v-if="modalType === 'changeLog'">
-           <ace-editor v-model="changeLogContent"
-				               ref="ace-editor"></ace-editor>
-				</template>
+        <template slot="content" v-if="modalType === 'changeLog'">
+          <ace-editor v-model="changeLogContent" ref="ace-editor"></ace-editor>
+        </template>
         <template slot="footer">
           <span></span>
         </template>
@@ -125,7 +128,7 @@ import PageTemplate from "@src/components/page/PageTemplate";
 import Dialog from "@src/components/dialog/Dialog";
 import MButton from "@src/components/button/Button";
 import { dateFormat, openConsoleWindow } from "@libs/utils/index";
-import AceEditor from '@src/components/ace/AceEditor';
+import AceEditor from "@src/components/ace/AceEditor";
 export default {
   name: "Replication",
   mixins: [NodeAptUpdateHttp],
@@ -133,7 +136,7 @@ export default {
     PageTemplate,
     MButton,
     Dialog,
-    AceEditor
+    AceEditor,
   },
   data() {
     return {
@@ -145,20 +148,20 @@ export default {
       interVal: null,
       visible: false,
       isCreate: false,
-			tab: 'log',
-			modalType: "",
-			changeLogContent: '',
+      tab: "log",
+      modalType: "",
+      changeLogContent: "",
     };
   },
   mounted() {
     this.__init__();
   },
   methods: {
-		dateFormat,
+    dateFormat,
     //初始化查找
     __init__() {
       let _this = this;
-			_this.queryAptUpdateList();
+      _this.queryAptUpdateList();
     },
     //选择
     handleSelect(row) {
@@ -166,25 +169,28 @@ export default {
     },
     //切换tab触发事件
     handleTabChange(tab) {
-			this.tab = tab;
-		},
+      this.tab = tab;
+    },
     //关闭日志页面
     closeLog() {
-			 if (this.interVal) {
-         clearInterval(this.interVal);
-         this.interVal = null;
+      if (this.interVal) {
+        clearInterval(this.interVal);
+        this.interVal = null;
       }
       this.showLog = false;
       this.__init__();
-		},
+    },
     //停止任务
-		stopTask1() {
-      this.stopTask(this.db.addClusterStatusObj.node, this.db.addClusterStatusObj.upid);
+    stopTask1() {
+      this.stopTask(
+        this.db.addClusterStatusObj.node,
+        this.db.addClusterStatusObj.upid
+      );
     },
     //选择哪种方式创建
     handleCommand(type) {
-			let _this = this;
-		  openConsoleWindow(type, 'upgrade', 0, _this.node, '', '');
+      let _this = this;
+      openConsoleWindow(type, "upgrade", 0, _this.node, "", "");
     },
     //更新
     handleRefresh() {
@@ -196,34 +202,42 @@ export default {
           })
           .then((res) => {
             this.update().then((res) => {
-							this.showLog = true;
-							this.interVal = setInterval(() => {
-                 	this.queryLog(this.db.addClusterStatusObj.node, this.db.addClusterStatusObj.upid);
-							    this.queryStatus(this.db.addClusterStatusObj.node, this.db.addClusterStatusObj.upid);
-							}, 3000)
+              this.showLog = true;
+              this.interVal = setInterval(() => {
+                this.queryLog(
+                  this.db.addClusterStatusObj.node,
+                  this.db.addClusterStatusObj.upid
+                );
+                this.queryStatus(
+                  this.db.addClusterStatusObj.node,
+                  this.db.addClusterStatusObj.upid
+                );
+              }, 3000);
               this.modalType = "log";
             });
           });
       });
-		},
-		//变更日志
-		showChangeLog() {
-			let param =  {
-				_dc: new Date().getTime(),
-				name: this.selectedList[0].Package,
-        version: this.selectedList[0].Version,
-       }, _this = this;
-       _this.showLog = true;
-			this.queryChangeLog(param)
-			    .then(res => {
-						_this.changeLogContent = _this.db.changeLogObj.data;
-            _this.modalType = 'changeLog';
-					}).catch(res  => {
-						_this.$confirm.confirm({
-							msg: res
-						})
-					})
-		},
+    },
+    //变更日志
+    showChangeLog() {
+      let param = {
+          _dc: new Date().getTime(),
+          name: this.selectedList[0].Package,
+          version: this.selectedList[0].Version,
+        },
+        _this = this;
+      _this.showLog = true;
+      this.queryChangeLog(param)
+        .then((res) => {
+          _this.changeLogContent = _this.db.changeLogObj.data;
+          _this.modalType = "changeLog";
+        })
+        .catch((res) => {
+          _this.$confirm.confirm({
+            msg: res,
+          });
+        });
+    },
   },
   //销毁定时任务
   beforeDestroy() {

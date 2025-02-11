@@ -2,8 +2,8 @@ const path = require('path')
 const webpack = require('webpack')
 const { merge } = require('webpack-merge');
 const webpackConfigBase = require('./webpack.base')
-const { CleanWebpackPlugin }  = require('clean-webpack-plugin');
-const UglifyJsPlugin=require('uglifyjs-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const os = require('os');
 let selfIp;
 try {
@@ -26,9 +26,9 @@ const webpackConfigDev = {
     }),
     new webpack.HotModuleReplacementPlugin(),
   ],
-  optimization:{
+  optimization: {
     minimize: false,
-    minimizer:[
+    minimizer: [
       new UglifyJsPlugin({
         uglifyOptions: {
           output: {
@@ -59,7 +59,7 @@ const webpackConfigDev = {
       '/api2/*': {//代理请求前缀
         target: 'https://10.10.10.46:8006/',//代理服务端路径
         secure: false,
-        changeOrigin:true,
+        changeOrigin: true,
         ws: true
         //changeOrigin: true,
         //pathRewrite: {'^/api' : ''}//请求到服务端后是否重写路径
@@ -68,7 +68,7 @@ const webpackConfigDev = {
         target: 'https://10.10.10.46:8006/',//代理服务端路径
         secure: false,
         changeOrigin: true,
-        pathRewrite: {'/shell/' : '/'}//请求到服务端后是否重写路径
+        pathRewrite: { '/shell/': '/' }//请求到服务端后是否重写路径
       },
       '/xtermjs/*': {
         target: 'https://10.10.10.46:8006/',//代理服务端路径
@@ -85,7 +85,7 @@ const webpackConfigDev = {
         target: 'wss://10.10.10.46:8006/',//代理服务端路径
         secure: false,
         ws: true,
-        pathRewrite: {'wss://localhost:3333/' : 'wss://10.10.10.46:8006/'},
+        pathRewrite: { 'wss://localhost:3333/': 'wss://10.10.10.46:8006/' },
         changeOrigin: true
       },
       '/pve-docs/*': {

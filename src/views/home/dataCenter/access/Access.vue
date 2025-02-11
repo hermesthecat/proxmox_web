@@ -5,7 +5,7 @@
         trigger="click"
         icon="fa fa-user"
         @on-change="handleCommand"
-         style="
+        style="
           width: 8rem;
           height: 30px;
           line-height: 30px;
@@ -20,7 +20,9 @@
             >添加</m-button
           >
         </span>
-        <m-dropdown-item icon="fa fa-users" command="group">权限组</m-dropdown-item>
+        <m-dropdown-item icon="fa fa-users" command="group"
+          >权限组</m-dropdown-item
+        >
         <m-dropdown-item icon="fa fa-user" command="user"
           >用户权限</m-dropdown-item
         >
@@ -30,10 +32,10 @@
       </m-dropdown>
       <m-button
         type="danger"
-         v-confirm="{
-            msg: `你确定你要删除已选择项吗?`,
-            ok: () => handleDelete()
-				  }"
+        v-confirm="{
+          msg: `你确定你要删除已选择项吗?`,
+          ok: () => handleDelete(),
+        }"
         icon="el-icon-delete"
         :disabled="selectedList.length <= 0"
         >删除</m-button
@@ -74,7 +76,10 @@
         :visible="visible"
         v-if="visible"
         :modal-type="type"
-        @close="visible = false; __init__()"
+        @close="
+          visible = false;
+          __init__();
+        "
       ></create-access-modal>
     </div>
   </page-template>
@@ -83,14 +88,14 @@
 import DataCenterAccessHttp from "@src/views/home/dataCenter/access/http";
 import PageTemplate from "@src/components/page/PageTemplate";
 import MButton from "@src/components/button/Button";
-import CreateAccessModal from './CreateAccessModal';
+import CreateAccessModal from "./CreateAccessModal";
 export default {
   name: "Access",
   mixins: [DataCenterAccessHttp],
   components: {
     PageTemplate,
     MButton,
-    CreateAccessModal
+    CreateAccessModal,
   },
   data() {
     return {
@@ -128,11 +133,11 @@ export default {
     },
     handleDelete(type) {
       this.delete(type);
-		},
-		handleCommand(command) {
-			 this.type = command;
-			 this.visible = true;
-		}
+    },
+    handleCommand(command) {
+      this.type = command;
+      this.visible = true;
+    },
   },
 };
 </script>

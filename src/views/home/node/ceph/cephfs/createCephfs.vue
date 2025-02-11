@@ -30,7 +30,8 @@
               <div class="table-tr">
                 <div class="table-td">{{ item.node }}</div>
                 <div class="table-td" style="height: 28px; line-height: 28px">
-                  <line-charts style="margin: 11px 0px;"
+                  <line-charts
+                    style="margin: 11px 0px"
                     :value="
                       Number(
                         (item && item.maxmem && item.mem
@@ -41,7 +42,8 @@
                   ></line-charts>
                 </div>
                 <div class="table-td" style="height: 28px; line-height: 28px">
-                  <line-charts style="margin: 11px 0px;"
+                  <line-charts
+                    style="margin: 11px 0px"
                     :value="Number((item && item.cpu ? item.cpu : 0) * 100)"
                   ></line-charts>
                 </div>
@@ -81,40 +83,40 @@
         <div class="warning">将行的CephFs添加到集群存储配置</div>
       </template>
       <template v-if="modalType === 'log'">
-          <div slot="toolbar-right" style="flex: 2 1 auto">
-            <m-input
-              prop="expire"
-              labelWidth="60px"
-              label="选择日期"
-              style="vertical-align: top"
-              :__conStyle="{ width: '355px' }"
-            >
-              <template slot="other">
-                <el-date-picker
-                  v-model="datetime"
-                  type="daterange"
-                  format="yyyy-MM-dd hh:mm"
-                  value-format="yyyy-MM-dd hh:mm"
-                  placeholder="选择日期"
-                >
-                </el-date-picker>
-              </template>
-            </m-input>
-            <m-button
-              type="primary"
-              style="vertical-align: middle"
-              @on-click="__init__()"
-              icon="el-icon-refresh"
-              >更新</m-button
-            >
-          </div>
-          <div slot="page-content">
-            <ul class="log-content">
-              <el-scrollbar style="height: 450px">
-                <li v-for="log in logList" :key="log.n">{{ log.t }}</li>
-              </el-scrollbar>
-            </ul>
-          </div>
+        <div slot="toolbar-right" style="flex: 2 1 auto">
+          <m-input
+            prop="expire"
+            labelWidth="60px"
+            label="选择日期"
+            style="vertical-align: top"
+            :__conStyle="{ width: '355px' }"
+          >
+            <template slot="other">
+              <el-date-picker
+                v-model="datetime"
+                type="daterange"
+                format="yyyy-MM-dd hh:mm"
+                value-format="yyyy-MM-dd hh:mm"
+                placeholder="选择日期"
+              >
+              </el-date-picker>
+            </template>
+          </m-input>
+          <m-button
+            type="primary"
+            style="vertical-align: middle"
+            @on-click="__init__()"
+            icon="el-icon-refresh"
+            >更新</m-button
+          >
+        </div>
+        <div slot="page-content">
+          <ul class="log-content">
+            <el-scrollbar style="height: 450px">
+              <li v-for="log in logList" :key="log.n">{{ log.t }}</li>
+            </el-scrollbar>
+          </ul>
+        </div>
       </template>
       <m-dialog
         :visible="showLog"
@@ -234,7 +236,7 @@ export default {
     this.__init__();
   },
   methods: {
-		dateFormat,
+    dateFormat,
     __init__() {
       let _this = this;
       //当为虚拟机是过滤为添加的虚拟机
@@ -306,20 +308,19 @@ export default {
     confirm() {
       if (this.validateAll()) return;
       if (this.modalType === "metadata") {
-        this.addMds(this.nodename)
-          .then((res) => {
-            this.showLog = true;
-            this.interVal = setInterval(() => {
-              this.queryStatus(
-                this.db.addClusterStatusObj.node,
-                this.db.addClusterStatusObj.upid
-              );
-              this.queryLog(
-                this.db.addClusterStatusObj.node,
-                this.db.addClusterStatusObj.upid
-              );
-            }, 3000);
-          });
+        this.addMds(this.nodename).then((res) => {
+          this.showLog = true;
+          this.interVal = setInterval(() => {
+            this.queryStatus(
+              this.db.addClusterStatusObj.node,
+              this.db.addClusterStatusObj.upid
+            );
+            this.queryLog(
+              this.db.addClusterStatusObj.node,
+              this.db.addClusterStatusObj.upid
+            );
+          }, 3000);
+        });
       } else {
         let param = {
           pg_num: this.placement_groups,

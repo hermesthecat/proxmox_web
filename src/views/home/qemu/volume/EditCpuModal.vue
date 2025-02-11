@@ -28,7 +28,13 @@
               :error-msg="rules['sockets'].message"
               :show-error="rules['sockets'].error"
             />
-            <m-select labelWidth="100px" label="类别" v-model="cpu" prop="cpu" @on-change="handleCpuChange">
+            <m-select
+              labelWidth="100px"
+              label="类别"
+              v-model="cpu"
+              prop="cpu"
+              @on-change="handleCpuChange"
+            >
               <m-option
                 v-for="(item, index) in cpuList"
                 :key="item.value"
@@ -44,8 +50,12 @@
                   </template>
 
                   <div class="table-tr">
-                    <div class="table-td" :title="item.value">{{ item.value }}</div>
-                    <div class="table-td" :title="item.vendor">{{ item.vendor }}</div>
+                    <div class="table-td" :title="item.value">
+                      {{ item.value }}
+                    </div>
+                    <div class="table-td" :title="item.vendor">
+                      {{ item.vendor }}
+                    </div>
                   </div>
                 </div>
               </m-option>
@@ -251,26 +261,29 @@ export default {
       });
     },
     confirm() {
-			let cpu = '';
-			for(let i in this.vmCpuFlagItems) {
-				if(this.flags[this.vmCpuFlagItems[i].flag] === 'on') {
-					cpu+=`+${this.vmCpuFlagItems[i].flag};`
-				} else if(this.flags[this.vmCpuFlagItems[i].flag] === 'off') {
-					cpu+=`-${this.vmCpuFlagItems[i].flag};`
-				}
-			}
+      let cpu = "";
+      for (let i in this.vmCpuFlagItems) {
+        if (this.flags[this.vmCpuFlagItems[i].flag] === "on") {
+          cpu += `+${this.vmCpuFlagItems[i].flag};`;
+        } else if (this.flags[this.vmCpuFlagItems[i].flag] === "off") {
+          cpu += `-${this.vmCpuFlagItems[i].flag};`;
+        }
+      }
       let param = {
         sockets: this.sockets,
         cores: this.cores,
-				digest: this.db.qemuConfigObj.digest,
-				cpu: this.cpu
-			};
-			if(this.isAdvice)  {
-				param['vcpus'] = this.vcpus;
-				param['cpulimit'] =this.cpulimit;
-				param['numa'] = this.numa ? 1 : 0;
-				param['cpu'] = `${this.cpu},${cpu ? `flags=${cpu}` : ''}`.replace(/(\,|\;)$/, '')
-			}
+        digest: this.db.qemuConfigObj.digest,
+        cpu: this.cpu,
+      };
+      if (this.isAdvice) {
+        param["vcpus"] = this.vcpus;
+        param["cpulimit"] = this.cpulimit;
+        param["numa"] = this.numa ? 1 : 0;
+        param["cpu"] = `${this.cpu},${cpu ? `flags=${cpu}` : ""}`.replace(
+          /(\,|\;)$/,
+          ""
+        );
+      }
       Object.keys(param).forEach((key) => {
         if (!param[key]) delete param[key];
       });
@@ -295,33 +308,35 @@ export default {
         this.rules[prop].error = true;
         this.rules[prop].message = "不能为空";
         return;
-			}
-			if(value && prop === 'vcpus') {
-				if(this.sockets <= value) {
-					this.rules[prop].error = true;
-          this.rules[prop].message = `vcpus不能小于${this.sockets ? this.sockets : 0}`;
-           return;
-				}
-			}
-			if(value && prop === 'cpuunits') {
-				if(value < 8) {
-					this.rules[prop].error = true;
+      }
+      if (value && prop === "vcpus") {
+        if (this.sockets <= value) {
+          this.rules[prop].error = true;
+          this.rules[prop].message = `vcpus不能小于${
+            this.sockets ? this.sockets : 0
+          }`;
+          return;
+        }
+      }
+      if (value && prop === "cpuunits") {
+        if (value < 8) {
+          this.rules[prop].error = true;
           this.rules[prop].message = `cpu权重不能小于8`;
-           return;
-				}
-			}
+          return;
+        }
+      }
     },
     validateAll() {
-			let props = ["sockets", 'cores'];
-			if(this.isAdvice) {
-				props = ["sockets", 'cores', 'vcpus', 'cpuunits'];
-			}
+      let props = ["sockets", "cores"];
+      if (this.isAdvice) {
+        props = ["sockets", "cores", "vcpus", "cpuunits"];
+      }
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
     },
     handleCpuChange(value) {
       this.cpu = value;
-    }
+    },
   },
   watch: {
     visible: function (newVal, oldVal) {

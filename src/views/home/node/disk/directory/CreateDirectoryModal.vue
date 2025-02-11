@@ -19,10 +19,10 @@
                 labelWidth="100px"
                 @on-change="handleDestSelect"
                 v-model="device"
-								validateEvent
-								@validate="validate"
-								:error-msg="rules['device'].message"
-								:show-error="rules['device'].error"
+                validateEvent
+                @validate="validate"
+                :error-msg="rules['device'].message"
+                :show-error="rules['device'].error"
                 :readonly="true"
                 placeholder="请选择磁盘"
               >
@@ -41,49 +41,47 @@
                       </div>
                     </template>
                     <div class="table-tr">
-                      <span class="table-td" :title="item.devpath">{{ item.devpath }}</span>
-                      <span class="table-td" :title="item.size && byteToSize(item.size) || 0">{{ item.size && byteToSize(item.size) || 0 }}</span>
-                      <span class="table-td" :title="item.serial">{{ item.serial }}</span>
+                      <span class="table-td" :title="item.devpath">{{
+                        item.devpath
+                      }}</span>
+                      <span
+                        class="table-td"
+                        :title="(item.size && byteToSize(item.size)) || 0"
+                        >{{ (item.size && byteToSize(item.size)) || 0 }}</span
+                      >
+                      <span class="table-td" :title="item.serial">{{
+                        item.serial
+                      }}</span>
                     </div>
                   </div>
                 </m-option>
               </m-select>
-							<m-select
+              <m-select
                 prop="filesystem"
                 label="文件系统"
                 labelWidth="100px"
                 @on-change="handleFsSelect"
                 v-model="filesystem"
-								validateEvent
-								@validate="validate"
-								:error-msg="rules['filesystem'].message"
-								:show-error="rules['filesystem'].error"
+                validateEvent
+                @validate="validate"
+                :error-msg="rules['filesystem'].message"
+                :show-error="rules['filesystem'].error"
                 :readonly="false"
                 placeholder="请选择磁盘"
               >
-                <m-option
-                  key="ext4"
-                  label="ext4"
-                  value="ext4"
-                >
-                </m-option>
-								<m-option
-                  key="xfs"
-                  label="xfs"
-                  value="xfs"
-                >
-                </m-option>
+                <m-option key="ext4" label="ext4" value="ext4"> </m-option>
+                <m-option key="xfs" label="xfs" value="xfs"> </m-option>
               </m-select>
               <m-input
                 type="text"
                 prop="name"
                 label="名称"
                 labelWidth="100px"
-								v-model="name"
+                v-model="name"
                 validateEvent
-								@validate="validate"
-								:error-msg="rules['name'].message"
-								:show-error="rules['name'].error"
+                @validate="validate"
+                :error-msg="rules['name'].message"
+                :show-error="rules['name'].error"
                 :placeholder="'请输入名称'"
               />
               <m-checkbox
@@ -122,27 +120,27 @@ export default {
     title: {
       type: String,
       default: "",
-    }
+    },
   },
   data() {
     return {
-			device: '',
-			name: '',
-			add_storage: true,
-			filesystem: '',
+      device: "",
+      name: "",
+      add_storage: true,
+      filesystem: "",
       rules: {
         name: {
           error: false,
           message: "",
-				},
-				device: {
-					error: false,
-					message: "",
-				},
-				filesystem: {
-					error: false,
-					message: "",
-				}
+        },
+        device: {
+          error: false,
+          message: "",
+        },
+        filesystem: {
+          error: false,
+          message: "",
+        },
       },
     };
   },
@@ -154,17 +152,17 @@ export default {
     //请求磁盘
     async __init__() {
       let _this = this;
-      this.queryListNodeDiskList({type: 'unused'});
-		},
-		//选择磁盘
+      this.queryListNodeDiskList({ type: "unused" });
+    },
+    //选择磁盘
     handleDestSelect(value) {
       this.device = value;
-		},
-		//关闭弹框
+    },
+    //关闭弹框
     close() {
       this.$emit("close");
-		},
-		//校验表单
+    },
+    //校验表单
     validate(prop) {
       let value = String(this[prop]).trim();
       this.rules[prop].error = false;
@@ -174,38 +172,38 @@ export default {
         this.rules[prop].message = "不能为空";
         return;
       }
-		},
-		//整体校验表单
+    },
+    //整体校验表单
     validateAll() {
-      let props = ['name', 'device', 'filesystem'];
+      let props = ["name", "device", "filesystem"];
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
-		},
-		//选择文件系统
-		handleFsSelect(value) {
-			this.filesystem = value;
-		},
-		//确定添加
+    },
+    //选择文件系统
+    handleFsSelect(value) {
+      this.filesystem = value;
+    },
+    //确定添加
     confirm() {
       if (this.validateAll()) return;
       let param = {
-				name: this.name,
-				add_storage: this.add_storage ? 1 : 0,
-				device: this.device,
-				filesystem: this.filesystem
+        name: this.name,
+        add_storage: this.add_storage ? 1 : 0,
+        device: this.device,
+        filesystem: this.filesystem,
       };
 
-         this.createDirectory(param)
-          .then((res) => {
-            this.close();
-          })
-          .catch((res) => {
-            this.$confirm
-              .info({
-                msg: res,
-              })
-							.then(() => this.close());
-				})
+      this.createDirectory(param)
+        .then((res) => {
+          this.close();
+        })
+        .catch((res) => {
+          this.$confirm
+            .info({
+              msg: res,
+            })
+            .then(() => this.close());
+        });
     },
   },
   watch: {

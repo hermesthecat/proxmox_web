@@ -1,32 +1,34 @@
 <script>
-import { deepCopy} from '@libs/utils/index';
+import { deepCopy } from "@libs/utils/index";
 export default {
-	name: 'QemuFireWallHttp',
-	data() {
+  name: "QemuFireWallHttp",
+  data() {
     return {
       node: {},
     };
   },
   mounted() {
     let _this = this,
-    last = window.localStorage.getItem("lastsel") || "[]";
+      last = window.localStorage.getItem("lastsel") || "[]";
     _this.node = (JSON.parse(last) && JSON.parse(last)) || "";
   },
-	methods: {
+  methods: {
     /***
      * 查找规则
-    */
-		queryFireWallList() {
-      return this.$http.get(`json/nodes/${this.node.node}/${this.node.id}/firewall/rules`).then((res) => {
-        if (res.data) {
-          this.updateTable({
-            tableName: "qemuLxcFireWallRuleList",
-            list: res.data,
-          });
-        }
-      });
-		},
-		queryMacrosList() {
+     */
+    queryFireWallList() {
+      return this.$http
+        .get(`json/nodes/${this.node.node}/${this.node.id}/firewall/rules`)
+        .then((res) => {
+          if (res.data) {
+            this.updateTable({
+              tableName: "qemuLxcFireWallRuleList",
+              list: res.data,
+            });
+          }
+        });
+    },
+    queryMacrosList() {
       return this.$http.get("json/cluster/firewall/macros").then((res) => {
         if (res.data) {
           this.updateTable({
@@ -36,14 +38,16 @@ export default {
         }
       });
     },
-		deleteFireWallRule() {
+    deleteFireWallRule() {
       let event = this.createEvent("action.firewall.delete");
       let tasks = [],
         p;
       this.selectedList.forEach((item) => {
         ((it) => {
           p = this.$http
-            .del(`json/nodes/${this.node.node}/${this.node.id}/firewall/rules/${it.pos}`)
+            .del(
+              `json/nodes/${this.node.node}/${this.node.id}/firewall/rules/${it.pos}`
+            )
             .then(() => {
               this.incEventSuccess(event);
               this.__init__();
@@ -55,8 +59,8 @@ export default {
         tasks.push(p);
       });
       return Promise.all(tasks);
-		},
-		 queryMacrosList() {
+    },
+    queryMacrosList() {
       return this.$http.get("json/cluster/firewall/macros").then((res) => {
         if (res.data) {
           this.updateTable({
@@ -67,23 +71,32 @@ export default {
       });
     },
     queryRefsList(param) {
-      return this.$http.get(`json/nodes/${this.node.node}/${this.node.id}/firewall/refs`, param).then((res) => {
-        if (res.data) {
-          this.updateTable({
-            tableName: "fireWallResfList",
-            list: res.data,
-          });
-        }
-      });
+      return this.$http
+        .get(
+          `json/nodes/${this.node.node}/${this.node.id}/firewall/refs`,
+          param
+        )
+        .then((res) => {
+          if (res.data) {
+            this.updateTable({
+              tableName: "fireWallResfList",
+              list: res.data,
+            });
+          }
+        });
     },
     createFireWall(param) {
       let event = this.createEvent(`action.firewall.create`);
       return this.$http
-        .post(`json/nodes/${this.node.node}/${this.node.id}/firewall/rules`, param, {
-          headers: {
-            "content-type": "application/x-www-form-urlencoded; charset=utf8",
-          },
-        })
+        .post(
+          `json/nodes/${this.node.node}/${this.node.id}/firewall/rules`,
+          param,
+          {
+            headers: {
+              "content-type": "application/x-www-form-urlencoded; charset=utf8",
+            },
+          }
+        )
         .then((res) => {
           this.incEventSuccess(event);
         })
@@ -91,16 +104,20 @@ export default {
           this.incEventFail(event);
           return Promise.reject(res);
         });
-		},
-		 //编辑更新防火墙
+    },
+    //编辑更新防火墙
     updateFireWall(id, param) {
       let event = this.createEvent("action.firewall.update");
       return this.$http
-        .put(`json/nodes/${this.node.node}/${this.node.id}/firewall/rules/${id}`, param, {
-          headers: {
-            "content-type": "application/x-www-form-urlencoded; charset=utf8",
-          },
-        })
+        .put(
+          `json/nodes/${this.node.node}/${this.node.id}/firewall/rules/${id}`,
+          param,
+          {
+            headers: {
+              "content-type": "application/x-www-form-urlencoded; charset=utf8",
+            },
+          }
+        )
         .then(() => {
           this.incEventSuccess(event);
         })
@@ -119,12 +136,15 @@ export default {
           });
         }
       });
-		},
-		 queryFireWallById(id) {
+    },
+    queryFireWallById(id) {
       return this.$http
-        .get(`json/nodes/${this.node.node}/${this.node.id}/firewall/rules/${id}`, {
-          _dc: new Date().getTime(),
-        })
+        .get(
+          `json/nodes/${this.node.node}/${this.node.id}/firewall/rules/${id}`,
+          {
+            _dc: new Date().getTime(),
+          }
+        )
         .then((res) => {
           if (res.data) {
             this.updateDbObject({
@@ -133,8 +153,8 @@ export default {
             });
           }
         });
-		},
-		handleEnable(param) {
+    },
+    handleEnable(param) {
       let event = this.createEvent(
           `action.firewall.${param.enable === 0 ? "enable" : "stop"}`
         ),
@@ -143,11 +163,15 @@ export default {
       delete params.ipversion;
       params.enable = params.enable === 0 ? 1 : 0;
       return this.$http
-        .put(`json/nodes/${this.node.node}/${this.node.id}/firewall/rules/${param.pos}`, params, {
-          headers: {
-            "content-type": "application/x-www-form-urlencoded; charset=utf8",
-          },
-        })
+        .put(
+          `json/nodes/${this.node.node}/${this.node.id}/firewall/rules/${param.pos}`,
+          params,
+          {
+            headers: {
+              "content-type": "application/x-www-form-urlencoded; charset=utf8",
+            },
+          }
+        )
         .then((res) => {
           this.__init__();
           this.incEventSuccess(event);
@@ -159,32 +183,37 @@ export default {
     },
     /**
      * 查询虚拟机防火墙alias
-    */
-   queryFireWallAlias() {
-     return this.$http.get(`json/nodes/${this.node.node}/${this.node.id}/firewall/aliases`)
-                .then(res => {
-                  if(res.data) {
-                    this.updateTable({
-                      tableName: 'fireWallAliasList',
-                      list: res.data
-                    })
-                  }
-                })
-   },
-   /**
-    * 创建虚拟机别名
-   */
+     */
+    queryFireWallAlias() {
+      return this.$http
+        .get(`json/nodes/${this.node.node}/${this.node.id}/firewall/aliases`)
+        .then((res) => {
+          if (res.data) {
+            this.updateTable({
+              tableName: "fireWallAliasList",
+              list: res.data,
+            });
+          }
+        });
+    },
+    /**
+     * 创建虚拟机别名
+     */
     createFireWallAlias(param) {
-       let _this = this,
-      last = window.localStorage.getItem("lastsel") || "[]";
+      let _this = this,
+        last = window.localStorage.getItem("lastsel") || "[]";
       _this.node = (JSON.parse(last) && JSON.parse(last)) || "";
       let event = this.createEvent("action.firewall.alias.create");
       return this.$http
-        .post(`json/nodes/${_this.node.node}/${  _this.node.id}/firewall/aliases`, param, {
-          headers: {
-            "content-type": "application/x-www-form-urlencoded; charset=utf8",
-          },
-        })
+        .post(
+          `json/nodes/${_this.node.node}/${_this.node.id}/firewall/aliases`,
+          param,
+          {
+            headers: {
+              "content-type": "application/x-www-form-urlencoded; charset=utf8",
+            },
+          }
+        )
         .then(() => {
           this.incEventSuccess(event);
         })
@@ -194,16 +223,19 @@ export default {
         });
     },
     /**
-    * 单个查询虚拟机别名
-   */
+     * 单个查询虚拟机别名
+     */
     queryFireWallAliasById(id) {
-       let _this = this,
-      last = window.localStorage.getItem("lastsel") || "[]";
+      let _this = this,
+        last = window.localStorage.getItem("lastsel") || "[]";
       _this.node = (JSON.parse(last) && JSON.parse(last)) || "";
       return this.$http
-        .get(`json/nodes/${_this.node.node}/${_this.node.id}/firewall/aliases/${id}`, {
-          _dc: new Date().getTime(),
-        })
+        .get(
+          `json/nodes/${_this.node.node}/${_this.node.id}/firewall/aliases/${id}`,
+          {
+            _dc: new Date().getTime(),
+          }
+        )
         .then((res) => {
           if (res.data) {
             this.updateDbObject({
@@ -214,19 +246,23 @@ export default {
         });
     },
     /**
-    * 更新虚拟机别名
-   */
+     * 更新虚拟机别名
+     */
     updateFireWallAlias(name, param) {
       let _this = this,
-      last = window.localStorage.getItem("lastsel") || "[]";
+        last = window.localStorage.getItem("lastsel") || "[]";
       _this.node = (JSON.parse(last) && JSON.parse(last)) || "";
       let event = this.createEvent("action.firewall.alias.update");
       return this.$http
-        .put(`json/nodes/${ _this.node.node}/${ _this.node.id}/firewall/aliases/${name}`, param, {
-          headers: {
-            "content-type": "application/x-www-form-urlencoded; charset=utf8",
-          },
-        })
+        .put(
+          `json/nodes/${_this.node.node}/${_this.node.id}/firewall/aliases/${name}`,
+          param,
+          {
+            headers: {
+              "content-type": "application/x-www-form-urlencoded; charset=utf8",
+            },
+          }
+        )
         .then(() => {
           this.incEventSuccess(event);
         })
@@ -236,8 +272,8 @@ export default {
         });
     },
     /**
-    * 删除虚拟机防火墙别名
-   */
+     * 删除虚拟机防火墙别名
+     */
     deleteFireWallAlias() {
       let event = this.createEvent("action.firewall.alias.delete");
       let tasks = [],
@@ -245,7 +281,9 @@ export default {
       this.selectedList.forEach((item) => {
         ((it) => {
           p = this.$http
-            .del(`json/nodes/${this.node.node}/${this.node.id}/firewall/aliases/${it.name}`)
+            .del(
+              `json/nodes/${this.node.node}/${this.node.id}/firewall/aliases/${it.name}`
+            )
             .then(() => {
               this.incEventSuccess(event);
               this.__init__();
@@ -258,7 +296,7 @@ export default {
         tasks.push(p);
       });
       return Promise.all(tasks);
-    }
-	}
-}
+    },
+  },
+};
 </script>

@@ -84,7 +84,7 @@ export default {
         poolid: {
           error: false,
           message: "",
-        }
+        },
       },
     };
   },
@@ -95,14 +95,13 @@ export default {
     async __init__() {
       if (this.modalType === "create")
         Object.assign(this.$data, this.$options.data());
-			else {
-				 Object.assign(this.$data, this.$options.data());
-				 await this.queryPoolsObj({poolid: this.param.poolid})
-				     .then(() => {
-               	 this.poolid = this.param.poolid;
-				         this.comment = this.db.poolsObj.comment &&  this.db.poolsObj.comment;
-						 })
-			}
+      else {
+        Object.assign(this.$data, this.$options.data());
+        await this.queryPoolsObj({ poolid: this.param.poolid }).then(() => {
+          this.poolid = this.param.poolid;
+          this.comment = this.db.poolsObj.comment && this.db.poolsObj.comment;
+        });
+      }
     },
     close() {
       this.$emit("close");
@@ -127,7 +126,7 @@ export default {
       let param = {
         poolid: this.poolid,
         comment: this.comment,
-			};
+      };
       if (this.modalType === "create") {
         this.createPool(param)
           .then((res) => {
@@ -143,8 +142,8 @@ export default {
               .catch(() => {});
           });
       } else {
-				this.updatePool(param)
-				.then((res) => {
+        this.updatePool(param)
+          .then((res) => {
             this.close();
           })
           .catch((res) => {
@@ -155,7 +154,7 @@ export default {
               })
               .then(() => {})
               .catch(() => {});
-          });;
+          });
       }
     },
   },

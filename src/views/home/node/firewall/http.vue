@@ -1,8 +1,8 @@
 <script>
-import { deepCopy} from '@libs/utils/index';
+import { deepCopy } from "@libs/utils/index";
 export default {
-	name: 'NodeFireWallHttp',
-	data() {
+  name: "NodeFireWallHttp",
+  data() {
     return {
       node: "",
     };
@@ -11,18 +11,20 @@ export default {
     let last = window.localStorage.getItem("lastsel") || "[]";
     this.node = (JSON.parse(last).node && JSON.parse(last).node) || "";
   },
-	methods: {
-		queryFireWallList() {
-      return this.$http.get(`json/nodes/${this.node}/firewall/rules`).then((res) => {
-        if (res.data) {
-          this.updateTable({
-            tableName: "nodeFireWallRuleList",
-            list: res.data,
-          });
-        }
-      });
-		},
-		queryMacrosList() {
+  methods: {
+    queryFireWallList() {
+      return this.$http
+        .get(`json/nodes/${this.node}/firewall/rules`)
+        .then((res) => {
+          if (res.data) {
+            this.updateTable({
+              tableName: "nodeFireWallRuleList",
+              list: res.data,
+            });
+          }
+        });
+    },
+    queryMacrosList() {
       return this.$http.get("json/cluster/firewall/macros").then((res) => {
         if (res.data) {
           this.updateTable({
@@ -32,7 +34,7 @@ export default {
         }
       });
     },
-		deleteFireWallRule() {
+    deleteFireWallRule() {
       let event = this.createEvent("action.firewall.delete");
       let tasks = [],
         p;
@@ -51,8 +53,8 @@ export default {
         tasks.push(p);
       });
       return Promise.all(tasks);
-		},
-		 queryMacrosList() {
+    },
+    queryMacrosList() {
       return this.$http.get("json/cluster/firewall/macros").then((res) => {
         if (res.data) {
           this.updateTable({
@@ -87,8 +89,8 @@ export default {
           this.incEventFail(event);
           return Promise.reject(res);
         });
-		},
-		 //编辑更新防火墙
+    },
+    //编辑更新防火墙
     updateFireWall(id, param) {
       let event = this.createEvent("action.firewall.update");
       return this.$http
@@ -115,8 +117,8 @@ export default {
           });
         }
       });
-		},
-		 queryFireWallById(id) {
+    },
+    queryFireWallById(id) {
       return this.$http
         .get(`json/nodes/${this.node}/firewall/rules/${id}`, {
           _dc: new Date().getTime(),
@@ -129,8 +131,8 @@ export default {
             });
           }
         });
-		},
-		handleEnable(param) {
+    },
+    handleEnable(param) {
       let event = this.createEvent(
           `action.firewall.${param.enable === 0 ? "enable" : "stop"}`
         ),
@@ -153,6 +155,6 @@ export default {
           return Promise.reject(res);
         });
     },
-	}
-}
+  },
+};
 </script>

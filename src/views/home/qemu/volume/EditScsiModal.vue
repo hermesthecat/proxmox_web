@@ -1,6 +1,8 @@
 <template>
   <m-dialog
-    :title="modalType !== 'edit' ? '添加: SCSI控制器类型' : '编辑: SCSI控制器类型'"
+    :title="
+      modalType !== 'edit' ? '添加: SCSI控制器类型' : '编辑: SCSI控制器类型'
+    "
     :visible="visible"
     v-if="visible"
     @confirm="confirm"
@@ -15,7 +17,13 @@
         <dl>
           <dt>基本信息</dt>
           <dd>
-            <m-select labelWidth="100px" label="类别" v-model="scsihw" prop="cpu" @on-change="handleScsiChange">
+            <m-select
+              labelWidth="100px"
+              label="类别"
+              v-model="scsihw"
+              prop="cpu"
+              @on-change="handleScsiChange"
+            >
               <m-option
                 v-for="(item, index) in scsiHwItems"
                 :key="index"
@@ -23,7 +31,7 @@
                 :label="item.label"
               >
               </m-option>
-            </m-select>          
+            </m-select>
           </dd>
         </dl>
       </div>
@@ -60,7 +68,7 @@ export default {
   data() {
     return {
       scsiHwItems: SCSIHWLIST,
-			scsihw: "",
+      scsihw: "",
     };
   },
   mounted() {
@@ -70,14 +78,14 @@ export default {
     __init__() {
       let _this = this;
       _this.queryConfig({ _dc: new Date().getTime() }).then((res) => {
-				_this.scsihw = _this.db.qemuConfigObj.scsihw;
+        _this.scsihw = _this.db.qemuConfigObj.scsihw;
       });
     },
     confirm() {
       let param = {
-        scsihw:`${this.scsihw}`,
-				digest: this.db.qemuConfigObj.digest,
-			};
+        scsihw: `${this.scsihw}`,
+        digest: this.db.qemuConfigObj.digest,
+      };
       Object.keys(param).forEach((key) => {
         if (!param[key]) delete param[key];
       });
@@ -96,7 +104,7 @@ export default {
     },
     handleScsiChange(value) {
       this.scsihw = value;
-    }
+    },
   },
   watch: {
     visible: function (newVal, oldVal) {

@@ -29,7 +29,7 @@ export default {
       this.Tabs.barStyle = {
         width: this.$refs.tab_item.clientWidth + "px",
         transform: `translateX(${this.$refs.tab_item.offsetLeft}px)`,
-			};
+      };
       this.Tabs.handleChange(this.name);
     },
     init() {
@@ -43,7 +43,7 @@ export default {
         });
       }
     },
-  }
+  },
 };
 </script>
 

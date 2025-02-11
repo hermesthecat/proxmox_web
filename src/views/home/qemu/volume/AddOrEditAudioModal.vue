@@ -39,7 +39,13 @@
               v-model="driver"
               :disabled="true"
             >
-              <div slot="other" class="disabled" style="padding-left: 5px; height: 28px; line-height: 28px;">spice</div>
+              <div
+                slot="other"
+                class="disabled"
+                style="padding-left: 5px; height: 28px; line-height: 28px"
+              >
+                spice
+              </div>
             </m-input>
           </dd>
         </dl>
@@ -99,7 +105,7 @@ export default {
   },
   methods: {
     __init__() {
-			let _this = this;
+      let _this = this;
       this.queryConfig({ _dc: new Date().getTime() }).then((res) => {
         if (_this.modalType === "edit") {
           if (_this.param.type) {

@@ -19,11 +19,11 @@
                 labelWidth="100px"
                 @on-change="handleDestSelect"
                 v-model="device"
-								validateEvent
-								@validate="validate"
+                validateEvent
+                @validate="validate"
                 required
-								:error-msg="rules['device'].message"
-								:show-error="rules['device'].error"
+                :error-msg="rules['device'].message"
+                :show-error="rules['device'].error"
                 :readonly="false"
                 placeholder="请选择磁盘"
               >
@@ -42,9 +42,17 @@
                       </div>
                     </template>
                     <div class="table-tr">
-                      <span class="table-td" :title="item.devpath">{{ item.devpath }}</span>
-                      <span class="table-td" :title="item.size && byteToSize(item.size) || 0">{{ item.size && byteToSize(item.size) || 0 }}</span>
-                      <span class="table-td" :title="item.serial">{{ item.serial }}</span>
+                      <span class="table-td" :title="item.devpath">{{
+                        item.devpath
+                      }}</span>
+                      <span
+                        class="table-td"
+                        :title="(item.size && byteToSize(item.size)) || 0"
+                        >{{ (item.size && byteToSize(item.size)) || 0 }}</span
+                      >
+                      <span class="table-td" :title="item.serial">{{
+                        item.serial
+                      }}</span>
                     </div>
                   </div>
                 </m-option>
@@ -54,12 +62,12 @@
                 prop="name"
                 label="名称"
                 labelWidth="100px"
-								v-model="name"
+                v-model="name"
                 validateEvent
-								@validate="validate"
+                @validate="validate"
                 required
-								:error-msg="rules['name'].message"
-								:show-error="rules['name'].error"
+                :error-msg="rules['name'].message"
+                :show-error="rules['name'].error"
                 :placeholder="'请输入名称'"
               />
               <m-checkbox
@@ -99,22 +107,22 @@ export default {
     title: {
       type: String,
       default: "",
-    }
+    },
   },
   data() {
     return {
-			device: '',
-			name: '',
-			add_storage: true,
+      device: "",
+      name: "",
+      add_storage: true,
       rules: {
         name: {
           error: false,
           message: "",
-				},
-				device: {
-					error: false,
+        },
+        device: {
+          error: false,
           message: "",
-				}
+        },
       },
     };
   },
@@ -126,17 +134,17 @@ export default {
     //请求磁盘
     async __init__() {
       let _this = this;
-      this.queryListNodeDiskList({type: 'unused'});
-		},
-		//选择磁盘
+      this.queryListNodeDiskList({ type: "unused" });
+    },
+    //选择磁盘
     handleDestSelect(value) {
       this.device = value;
-		},
-		//关闭弹框
+    },
+    //关闭弹框
     close() {
       this.$emit("close");
-		},
-		//校验表单
+    },
+    //校验表单
     validate(prop) {
       let value = String(this[prop]).trim();
       this.rules[prop].error = false;
@@ -146,33 +154,33 @@ export default {
         this.rules[prop].message = "不能为空";
         return;
       }
-		},
-		//整体校验表单
+    },
+    //整体校验表单
     validateAll() {
-      let props = ['name', 'device'];
+      let props = ["name", "device"];
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
-		},
-		//确定添加
+    },
+    //确定添加
     confirm() {
       if (this.validateAll()) return;
       let param = {
-				name: this.name,
-				add_storage: this.add_storage ? 1 : 0,
-				device: this.device
+        name: this.name,
+        add_storage: this.add_storage ? 1 : 0,
+        device: this.device,
       };
 
-         this.createThin(param)
-          .then((res) => {
-            this.close();
-          })
-          .catch((res) => {
-            this.$confirm
-              .info({
-                msg: res,
-              })
-							.then(() => this.close());
-				})
+      this.createThin(param)
+        .then((res) => {
+          this.close();
+        })
+        .catch((res) => {
+          this.$confirm
+            .info({
+              msg: res,
+            })
+            .then(() => this.close());
+        });
     },
   },
   watch: {
