@@ -19,7 +19,7 @@ function resolve(relatedPath) {
 const webpackConfigDev = {
   mode: 'development',
   plugins: [
-    // 定义环境变量为开发环境
+    // Define environment variable as development
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
       IS_DEVELOPMETN: true,
@@ -56,40 +56,40 @@ const webpackConfigDev = {
     host: selfIp,
     port: PORT,
     proxy: {
-      '/api2/*': {//代理请求前缀
-        target: 'https://10.10.10.46:8006/',//代理服务端路径
+      '/api2/*': {// Proxy request prefix
+        target: 'https://10.10.10.46:8006/',// Proxy server path
         secure: false,
         changeOrigin: true,
         ws: true
         //changeOrigin: true,
-        //pathRewrite: {'^/api' : ''}//请求到服务端后是否重写路径
+        //pathRewrite: {'^/api' : ''}// Whether to rewrite path after reaching server
       },
-      '/shell/*': {//代理请求前缀
-        target: 'https://10.10.10.46:8006/',//代理服务端路径
+      '/shell/*': {// Proxy request prefix
+        target: 'https://10.10.10.46:8006/',// Proxy server path
         secure: false,
         changeOrigin: true,
-        pathRewrite: { '/shell/': '/' }//请求到服务端后是否重写路径
+        pathRewrite: { '/shell/': '/' }// Whether to rewrite path after reaching server
       },
       '/xtermjs/*': {
-        target: 'https://10.10.10.46:8006/',//代理服务端路径
+        target: 'https://10.10.10.46:8006/',// Proxy server path
         secure: false,
         changeOrigin: true,
         ws: true
       },
       '/novnc/*': {
-        target: 'https://10.10.10.46:8006/',//代理服务端路径
+        target: 'https://10.10.10.46:8006/',// Proxy server path
         secure: false,
         changeOrigin: true
       },
       '/vncwebsocket': {
-        target: 'wss://10.10.10.46:8006/',//代理服务端路径
+        target: 'wss://10.10.10.46:8006/',// Proxy server path
         secure: false,
         ws: true,
         pathRewrite: { 'wss://localhost:3333/': 'wss://10.10.10.46:8006/' },
         changeOrigin: true
       },
       '/pve-docs/*': {
-        target: 'https://10.10.10.46:8006/',//代理服务端路径
+        target: 'https://10.10.10.46:8006/',// Proxy server path
         secure: false,
         ws: true,
         changeOrigin: true

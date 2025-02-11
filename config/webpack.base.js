@@ -5,11 +5,11 @@ const HappyPack = require('happypack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
 const manifest = require('../vendor-manifest.json');
-//拆分三方库并将其注入到html中
+// Split third-party libraries and inject them into HTML
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const os = require('os');
-//开启线程
+// Enable multi-threading
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
 function resolve(dirname) {
@@ -44,8 +44,8 @@ module.exports = {
         {
           loader: 'css-loader',
           options: {
-            importLoaders: 2, // 之前有2个loaders
-            //modules: true, // 启用cssModules
+            importLoaders: 2, // Previous 2 loaders
+            //modules: true, // Enable CSS Modules
             sourceMap: isDevMode ? true : false
           }
         },
@@ -125,13 +125,14 @@ module.exports = {
         ],
         options: {
           babelrc: true,
-          cacheDirectory: true, // 启用缓存
+          cacheDirectory: true, // Enable caching
           comments: false
         }
       }],
-      //代表共享进程池，即多个 HappyPack 实例都使用同一个共享进程池中的子进程去处理任务，以防止资源占用过多。
+      // Represents a shared process pool, where multiple HappyPack instances use the same shared process pool's child processes to handle tasks,
+      // preventing excessive resource usage
       threadPool: happyThreadPool,
-      //允许 HappyPack 输出日志
+      // Allow HappyPack to output logs
       verbose: false,
     }),
     new HappyPack({
@@ -140,12 +141,13 @@ module.exports = {
         loader: 'vue-loader',
         options: {
           babelrc: true,
-          cacheDirectory: true // 启用缓存
+          cacheDirectory: true // Enable caching
         }
       }],
-      //代表共享进程池，即多个 HappyPack 实例都使用同一个共享进程池中的子进程去处理任务，以防止资源占用过多。
+      // Represents a shared process pool, where multiple HappyPack instances use the same shared process pool's child processes to handle tasks,
+      // preventing excessive resource usage
       threadPool: happyThreadPool,
-      //允许 HappyPack 输出日志
+      // Allow HappyPack to output logs
       verbose: false
     }),
     new HappyPack({
@@ -154,8 +156,8 @@ module.exports = {
         {
           loader: 'css-loader',
           options: {
-            importLoaders: 2, // 之前有2个loaders
-            //modules: true, // 启用cssModules
+            importLoaders: 2, // Previous 2 loaders
+            //modules: true, // Enable CSS Modules
             sourceMap: isDevMode ? true : false
           }
         },
@@ -170,9 +172,10 @@ module.exports = {
           }
         }
       ],
-      //代表共享进程池，即多个 HappyPack 实例都使用同一个共享进程池中的子进程去处理任务，以防止资源占用过多。
+      // Represents a shared process pool, where multiple HappyPack instances use the same shared process pool's child processes to handle tasks,
+      // preventing excessive resource usage
       threadPool: happyThreadPool,
-      //允许 HappyPack 输出日志
+      // Allow HappyPack to output logs
       verbose: false,
     }),
     new webpack.DllReferencePlugin({
