@@ -3,13 +3,13 @@
     :visible="visible"
     @close="close"
     @cancel="close"
-    title="修改密码"
+    title="Change Password"
     @confirm="confirm"
   >
     <template slot="content">
       <div class="modify-form">
         <m-input
-          label="密码"
+          label="Password"
           labelWidth="100px"
           v-model="password"
           prop="password"
@@ -17,18 +17,18 @@
           validateEvent
           @validate="validate"
           :show-error="rules['password'].error"
-          placeholder="请输入密码"
+          placeholder="Please enter password"
           :error-msg="rules['password'].message"
         />
         <m-input
-          label="确认密码"
+          label="Confirm Password"
           labelWidth="100px"
           v-model="confirmPsw"
           type="password"
           prop="confirmPsw"
           validateEvent
           @validate="validate"
-          placeholder="请确认密码"
+          placeholder="Please confirm password"
           :show-error="rules['confirmPsw'].error"
           :error-msg="rules['confirmPsw'].message"
         />
@@ -43,7 +43,7 @@ export default {
   name: "ModifyPswModal",
   mixins: [HeaderHttp],
   /**
-   * porps 父组件所传属性
+   * Props passed from parent component
    */
   props: {
     visible: {
@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     /**
-     * 单个校验
+     * Single field validation
      */
     validate(prop) {
       let value = String(this[prop]).trim();
@@ -85,19 +85,19 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空!";
+        this.rules[prop].message = "Cannot be empty!";
         return;
       }
       if (value && prop === "confirmPsw" && this.password) {
         if (value !== this.password) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "两次输入密码不一致!";
+          this.rules[prop].message = "Passwords do not match!";
           return;
         }
       }
     },
     /**
-     * 整体校验
+     * Validate all fields
      */
     validateAll() {
       let props = ["password", "confirmPsw"];
@@ -105,17 +105,17 @@ export default {
       return props.some((prop) => this.rules[prop].error === true);
     },
     /**
-     * 关闭弹框
+     * Close dialog
      */
     close() {
       this.$emit("close");
     },
     /**
-     * 确认修改
+     * Confirm changes
      */
     confirm() {
       if (this.validateAll()) return;
-      //获取数据中心名称
+      // Get data center name
       let ticket = window.localStorage.getItem("ticket") || "{}",
         tic = JSON.parse(ticket);
       let param = {

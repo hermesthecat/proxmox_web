@@ -33,7 +33,7 @@ export default {
     name: String,
   },
   methods: {
-    //点击下拉框时触发的时间
+    // Event triggered when clicking dropdown item
     handleClick(e) {
       stopEvent(e);
       if (!this.disabled) this.Dropdown.handleChange("on-change", this.command);

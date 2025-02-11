@@ -6,7 +6,7 @@
         <label class="inline-block">Virtual Environment 6.0-4</label>
         <span class="inline-block">
           <m-input
-            placeholder="搜索"
+            placeholder="Search"
             v-model="searchModel"
             ref="search-input"
             @blur="handleBlur"
@@ -23,7 +23,7 @@
               highlight-current-row
               @row-click="handelRowClick"
             >
-              <el-table-column prop="type" label="类别" width="120">
+              <el-table-column prop="type" label="Category" width="120">
                 <template slot-scope="scope">
                   <span>
                     <i
@@ -56,7 +56,7 @@
                   </span>
                 </template>
               </el-table-column>
-              <el-table-column label="描述" width="120">
+              <el-table-column label="Description" width="120">
                 <template slot-scope="scope">
                   <span v-if="scope.row.type === 'pool'">pools</span>
                   <span
@@ -74,9 +74,9 @@
                   }}</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="node" label="节点" width="120">
+              <el-table-column prop="node" label="Node" width="120">
               </el-table-column>
-              <el-table-column prop="pool" label="资源池" width="120">
+              <el-table-column prop="pool" label="Resource Pool" width="120">
               </el-table-column>
             </el-table>
           </div>
@@ -103,23 +103,23 @@
           class="header-container-content-item"
           target="_blank"
           href="/pve-docs/index.html"
-          ><i class="fa fa-book"></i>文档</a
+          ><i class="fa fa-book"></i>Documentation</a
         >
         <li class="header-container-content-item" @click="showCreateVm = true">
-          <i class="fa fa-desktop"></i>创建虚拟机
+          <i class="fa fa-desktop"></i>Create VM
         </li>
         <li
           class="header-container-content-item"
           @click="() => (visibleLxc = true)"
         >
-          <i class="fa fa-cube"></i>创建CT
+          <i class="fa fa-cube"></i>Create CT
         </li>
         <li
           class="header-container-content-item"
           style="padding: 0 10px"
           @click="() => (visible = true)"
         >
-          <i class="fa fa-list"></i><span>日志</span>
+          <i class="fa fa-list"></i><span>Logs</span>
         </li>
         <li
           class="header-container-content-item"
@@ -133,13 +133,13 @@
           >
             <span slot="label">{{ userid }}</span>
             <DropdownItem icon="fa fa-fw fa-key" command="psw"
-              >密码</DropdownItem
+              >Password</DropdownItem
             >
             <DropdownItem icon="fa fa-fw fa-lock" command="TFA"
               >TFA</DropdownItem
             >
             <DropdownItem icon="fa fa-fw fa-sign-out" command="layout"
-              >注销</DropdownItem
+              >Logout</DropdownItem
             >
           </Dropdown>
         </li>
@@ -201,7 +201,7 @@ export default {
       showCreateVm: false,
       visible: false,
       visibleLxc: false,
-      visiblePsw: false, //是否展示修改密码页面
+      visiblePsw: false, // Whether to show password modification page
       userid: "",
       title: "",
       isCreate: false,
@@ -212,7 +212,7 @@ export default {
   },
   computed: {
     /**
-     * 过滤resource数据并根据type排序 升序
+     * Filter resource data and sort by type in ascending order
      */
     searchTable() {
       let _this = this;
@@ -231,7 +231,7 @@ export default {
   },
   methods: {
     /**
-     * 处理登出 重置密码等
+     * Handle logout and password reset
      */
     handleCommand(command) {
       switch (command) {
@@ -241,7 +241,7 @@ export default {
         case "TFA":
           this.type = "tfa";
           this.isCreate = false;
-          this.title = "二次验证";
+          this.title = "Two-Factor Authentication";
           this.param = { userid: this.userid };
           this.visibleTfa = true;
           break;
@@ -259,7 +259,7 @@ export default {
       this.queryResource();
     },
     /**
-     * 查询资源
+     * Query resources
      */
     queryResource() {
       this.$http.get("/json/cluster/resources").then((res) => {
@@ -271,16 +271,16 @@ export default {
         }
       });
     },
-    //设置状态class
+    // Set status class
     setStautsCls(record, type) {
       let status = "";
       let objType = type;
       if (record.template && this.isTemplate(record.template)) {
-        // 模板
+        // Template
         objType = "template";
         status = type;
       } else {
-        // 出其他以外的记录
+        // Other records
         status = record.status
           ? record.status + " ha-" + record.hastate
           : " ha-" + record.hastate;
@@ -291,7 +291,7 @@ export default {
       return status;
     },
     /**
-     * 判断是否为模板如果为undefined或者template为0则不是模板
+     * Check if it's a template. If undefined or template is 0, it's not a template
      */
     isTemplate(tmpl) {
       if (tmpl && String(tmpl) !== "0") {
@@ -304,14 +304,14 @@ export default {
       this.updateSearchObj(row);
       this.showSearchTable = false;
     },
-    /***
-     * 聚焦
+    /**
+     * Focus
      */
     searchModelFocus(e) {
       this.showSearchTable = true;
     },
     /**
-     * 隐藏搜索
+     * Hide search
      */
     handleBlur() {
       setTimeout(() => {

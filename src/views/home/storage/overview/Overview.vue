@@ -12,7 +12,7 @@
       </m-select>
     </div>
     <overview-card style="width: calc(100%)">
-      <div slot="title">状态</div>
+      <div slot="title">Status</div>
       <div slot="content" class="card-content">
         <div class="card-item">
           <single-line
@@ -20,28 +20,28 @@
               db.storageObj &&
               db.storageObj.enabled &&
               db.storageObj.enabled === 1
-                ? '是'
-                : '否'
+                ? 'Yes'
+                : 'No'
             "
           />
           <single-line
-            title="活动"
+            title="Active"
             :desc="
               db.storageObj &&
               db.storageObj.active &&
               db.storageObj.active === 1
-                ? '是'
-                : '否'
+                ? 'Yes'
+                : 'No'
             "
           />
           <single-line
-            title="内容"
+            title="Content"
             :desc="
               db.storageObj && db.storageObj.content && db.storageObj.content
             "
           />
           <single-line
-            title="类别"
+            title="Category"
             :desc="
               db.storageObj &&
               db.storageObj.type &&
@@ -72,13 +72,13 @@
                   : 0) * 100
               )
             "
-            title="使用率"
+            title="Usage"
           />
         </div>
       </div>
     </overview-card>
     <overview-card style="width: calc(100%)">
-      <div slot="title">使用率</div>
+      <div slot="title">Usage</div>
       <template slot="content">
         <line-graph :param="usedRate" v-loading="loading"></line-graph>
       </template>
@@ -109,43 +109,43 @@ export default {
       loading: false,
       intervalList: [
         {
-          label: "小时（平均）",
+          label: "Hour (Average)",
           value: "hour(AVERAGE)",
         },
         {
-          label: "小时（最大）",
+          label: "Hour (Maximum)",
           value: "hour(MAX)",
         },
         {
-          label: "天（平均）",
+          label: "Day (Average)",
           value: "day(AVERAGE)",
         },
         {
-          label: "天（最大）",
+          label: "Day (Maximum)",
           value: "day(MAX)",
         },
         {
-          label: "周（平均）",
+          label: "Week (Average)",
           value: "week(AVERAGE)",
         },
         {
-          label: "周（最大）",
+          label: "Week (Maximum)",
           value: "week(MAX)",
         },
         {
-          label: "月（平均）",
+          label: "Month (Average)",
           value: "month(AVERAGE)",
         },
         {
-          label: "月（最大）",
+          label: "Month (Maximum)",
           value: "month(MAX)",
         },
         {
-          label: "年（平均）",
+          label: "Year (Average)",
           value: "year(AVERAGE)",
         },
         {
-          label: "年（最大）",
+          label: "Year (Maximum)",
           value: "year(MAX)",
         },
       ],

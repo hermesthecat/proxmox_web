@@ -9,7 +9,7 @@
   >
     <div class="log" v-show="visible">
       <div class="btn" @click="close">
-        <span class="btn-txt">隐藏</span
+        <span class="btn-txt">Hide</span
         ><i class="el-icon-d-arrow-right btn-icon"></i>
       </div>
       <div class="m-scroll-wrapper log-scroll-container" v-if="visible">
@@ -19,8 +19,8 @@
             @tab-click="handleLogTypeChange"
             class="log-tab"
           >
-            <m-tab-panel label="任务" name="task"></m-tab-panel>
-            <m-tab-panel label="集群" name="cluster"></m-tab-panel>
+            <m-tab-panel label="Tasks" name="task"></m-tab-panel>
+            <m-tab-panel label="Cluster" name="cluster"></m-tab-panel>
           </m-tab>
           <div v-if="logType === 'task'" class="log-wrapper">
             <div
@@ -42,7 +42,7 @@
               ></base-icon>
               <span>{{ render_upid(item.pid, null, item) }}</span>
               <div class="log-time">
-                开始时间：{{
+                Start Time: {{
                   dateFormat(
                     new Date(item.starttime * 1000),
                     "yyyy-MM-dd hh:mm"
@@ -50,7 +50,7 @@
                 }}
               </div>
               <div v-if="item.endtime" class="log-time">
-                结束时间：{{
+                End Time: {{
                   dateFormat(new Date(item.endtime * 1000), "yyyy-MM-dd hh:mm")
                 }}
               </div>
@@ -65,18 +65,18 @@
               :title="item.msg"
             >
               <div>
-                时间：{{
+                Time: {{
                   dateFormat(new Date(item.time * 1000), "yyyy-MM-dd hh:mm")
                 }}
               </div>
-              <div>节点：{{ item.node ? item.node : "" }}</div>
-              <div>服务：{{ item.tag ? item.tag : "" }}</div>
-              <div>pid：{{ item.pid ? item.pid : "" }}</div>
-              <div>用户名：{{ item.user ? item.user : "" }}</div>
+              <div>Node: {{ item.node ? item.node : "" }}</div>
+              <div>Service: {{ item.tag ? item.tag : "" }}</div>
+              <div>PID: {{ item.pid ? item.pid : "" }}</div>
+              <div>Username: {{ item.user ? item.user : "" }}</div>
               <div>
-                严重程度：{{ item.pri ? render_serverity(item.pri) : "" }}
+                Severity: {{ item.pri ? render_serverity(item.pri) : "" }}
               </div>
-              <div>消息：{{ item.msg ? item.msg : "" }}</div>
+              <div>Message: {{ item.msg ? item.msg : "" }}</div>
             </div>
           </div>
         </div>
@@ -93,19 +93,19 @@
         :_style="{
           width: '800px',
         }"
-        title="Task Viewer: 任务详情"
+        title="Task Viewer: Task Details"
       >
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
-            <m-tab-panel label="输出" name="log"></m-tab-panel>
-            <m-tab-panel label="状态" name="status"></m-tab-panel>
+            <m-tab-panel label="Output" name="log"></m-tab-panel>
+            <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
           <m-button
             class="create-btn m-margin-top-10"
             type="primary"
             @on-click="stopTask1"
             :disabled="db.addClusterStatusObj.status !== 'running'"
-            >停止</m-button
+            >Stop</m-button
           >
           <el-scrollbar style="height: 100%" id="log-taskModal">
             <div class="taskmodal-content" ref="taskmodal-content">
@@ -195,13 +195,13 @@ export default {
         this.taksList = quickSort(this.db.clusterTaskList, "starttime");
       });
     },
-    //关闭弹框
+    // Close dialog
     close() {
       setTimeout(() => {
         this.$emit("close");
       });
     },
-    //查看任务详情日志
+    // View task detail logs
     handleShowTasks(item) {
       this.queryLog(item.node, item.upid);
       this.queryStatus(item.node, item.upid);
@@ -212,7 +212,7 @@ export default {
       this.tab = "log";
       this.showLog = true;
     },
-    //切换tab
+    // Switch tab
     handleTabChange(value) {
       this.tab = value;
     },
@@ -230,7 +230,7 @@ export default {
           break;
       }
     },
-    //结束任务
+    // End task
     stopTask1() {
       this.stopTask(
         this.db.addClusterStatusObj.node,
@@ -242,7 +242,7 @@ export default {
         }
       });
     },
-    //关闭任务进度
+    // Close task progress
     closeLog() {
       if (this.interVal) {
         clearInterval(this.interVal);
@@ -250,39 +250,33 @@ export default {
       }
       this.showLog = false;
     },
-    //组件进入之前
+    // Before component enter
     beforeEnter(el) {
-      //设置组件进入前动画
       el.style.webkitTransform = `translate3d(0, 100%, 0) scale3d(0, 0, 0)`;
       el.style.transform = `translate3d(0, 100%, 0) scale3d(1.01, 1.01, 1.01)`;
     },
-    //组件进入中
+    // Component entering
     enter(el) {
-      //设置组件进入前中
       el.style.webkitTransform = `translate3d(0, 50%, 0) scale3d(1.01, 1.01, 1.01)`;
       el.style.transform = `translate3d(0, 50%, 0) scale3d(1.01, 1.01, 1.01)`;
     },
-    //组件进入后
+    // After component enter
     afterEnter(el) {
-      //设置组件进入后动画
       el.style.webkitTransform = `translate3d(0, 0, 0) scale3d(1, 1, 1)`;
       el.style.transform = `translate3d(0, 0, 0) scale3d(1, 1, 1)`;
     },
-    //组件离开前
+    // Before component leave
     beforeLeave(el) {
-      //设置组件进入后动画
       el.style.webkitTransform = `translate3d(0, 0, 0) scale3d(1, 1, 1)`;
       el.style.transform = `translate3d(0, 0, 0) scale3d(1, 1, 1)`;
     },
-    //组件离开时
+    // Component leaving
     leave(el) {
-      //组件离开时动画
       el.style.webkitTransform = `translate3d(0, 50%, 0) scale3d(0.5, 0.5, 0.5)`;
       el.style.transform = `translate3d(0, 50%, 0) scale3d(0.5, 0.5, 0.5)`;
     },
-    //组件离开后
+    // After component leave
     afterLeave(el) {
-      //组件离开后动画
       el.style.webkitTransform = `translate3d(0, 100%, 0) scale3d(0, 0, 0)`;
       el.style.transform = `translate3d(0, 100%, 0) scale3d(0, 0, 0)`;
     },

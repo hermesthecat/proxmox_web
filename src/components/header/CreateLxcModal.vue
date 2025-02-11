@@ -4,7 +4,7 @@
     @close="close()"
     @confirm="confirm"
     @cancel="cancel"
-    cancelText="重置"
+    cancelText="Reset"
     :_style="{
       width: '100%',
       height: 'calc(100%)',
@@ -15,38 +15,38 @@
       bottom: '0',
       'overflow-y': 'clip',
     }"
-    title="创建虚拟机"
+    title="Create Virtual Machine"
   >
     <template slot="content">
       <div>
-        <!--步骤条-->
+        <!--Step indicator-->
         <m-steps :active="step" @change="handleStepChange">
-          <m-step title="一般"></m-step>
-          <m-step title="模板"></m-step>
-          <m-step title="根磁盘"></m-step>
+          <m-step title="General"></m-step>
+          <m-step title="Template"></m-step>
+          <m-step title="Root Disk"></m-step>
           <m-step title="CPU">CPU</m-step>
-          <m-step title="内存">内存</m-step>
-          <m-step title="网络">网络</m-step>
+          <m-step title="Memory">Memory</m-step>
+          <m-step title="Network">Network</m-step>
           <m-step title="DNS">DNS</m-step>
-          <m-step title="确认">确认</m-step>
+          <m-step title="Confirm">Confirm</m-step>
         </m-steps>
       </div>
-      <!--第一步添加名称vmid等-->
+      <!--Step 1: Add name, vmid etc-->
       <div v-show="step === 1" class="m-form__content">
         <div class="m-form__section">
           <dl>
             <dd>
-              <!--input组件validateEvent表示需要校验， show-error表示校验是否通过；error-msg表示校验未通过时的提示信息； validate校验；v-modal输入值-->
+              <!--Input component validateEvent indicates validation is required, show-error indicates whether validation passed; error-msg shows validation failure message; validate for validation; v-modal for input value-->
               <m-input
                 v-model="hostname"
                 prop="hostname"
-                label="主机名"
+                label="Hostname"
                 labelWidth="100px"
                 validateEvent
                 :show-error="rules['hostname'].error"
                 :error-msg="rules['hostname'].message"
                 @validate="validate"
-                placeholder="请输入名称"
+                placeholder="Please enter name"
               />
               <m-input
                 v-model="vmid"
@@ -59,12 +59,12 @@
                 :show-error="rules['vmid'].error"
                 :error-msg="rules['vmid'].message"
                 @validate="validate"
-                placeholder="请输入名称"
+                placeholder="Please enter ID"
               />
 
               <m-select
                 prop="nodename"
-                label="节点"
+                label="Node"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
@@ -74,7 +74,7 @@
                 required
                 @on-change="(value) => (nodename = value)"
                 v-model="nodename"
-                placeholder="请选择节点"
+                placeholder="Please select node"
               >
                 <m-option
                   v-for="(item, index) in nodeList"
@@ -83,9 +83,9 @@
                   :value="item.node"
                 >
                   <div v-if="index === 0" class="table-tr">
-                    <div class="table-td">节点</div>
-                    <div class="table-td">内存使用率</div>
-                    <div class="table-td">CPU使用率</div>
+                    <div class="table-td">Node</div>
+                    <div class="table-td">Memory Usage</div>
+                    <div class="table-td">CPU Usage</div>
                   </div>
                   <div class="table-tr">
                     <span class="table-td" :title="item.node">{{
@@ -123,7 +123,7 @@
 
               <m-select
                 prop="pool"
-                label="资源池"
+                label="Resource Pool"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
@@ -132,7 +132,7 @@
                 :readonly="false"
                 @on-change="(value) => (pool = value)"
                 v-model="pool"
-                placeholder="请选择节点"
+                placeholder="Please select node"
               >
                 <m-option
                   v-for="(item, index) in poolList"
@@ -141,8 +141,8 @@
                   :value="item.poolid"
                 >
                   <div v-if="index === 0" class="table-tr">
-                    <div class="table-td">池</div>
-                    <div class="table-td">描述</div>
+                    <div class="table-td">Pool</div>
+                    <div class="table-td">Description</div>
                   </div>
                   <div class="table-tr">
                     <span class="table-td" :title="item.poolid">{{
@@ -159,39 +159,39 @@
                 v-model="password"
                 type="password"
                 prop="password"
-                label="密码"
+                label="Password"
                 labelWidth="100px"
                 validateEvent
                 :show-error="rules['password'].error"
                 :error-msg="rules['password'].message"
                 @validate="validate"
-                placeholder="请输入密码"
+                placeholder="Please enter password"
               />
 
               <m-input
                 v-model="vPsw"
                 type="password"
                 prop="vPsw"
-                label="确认密码"
+                label="Confirm Password"
                 labelWidth="100px"
                 validateEvent
                 :show-error="rules['vPsw'].error"
                 :error-msg="rules['vPsw'].message"
                 @validate="validate"
-                placeholder="请输入确认密码"
+                placeholder="Please confirm password"
               />
 
               <m-input
                 v-model="ssh"
                 type="text"
                 prop="ssh"
-                label="SSH公钥"
+                label="SSH Public Key"
                 labelWidth="100px"
                 validateEvent
                 :show-error="rules['ssh'].error"
                 :error-msg="rules['ssh'].message"
                 @validate="validate"
-                placeholder="请输入ssh公钥"
+                placeholder="Please enter SSH public key"
               />
               <m-button type="primary" style="position: relative">
                 <input
@@ -200,26 +200,26 @@
                   @change="uploadSsh"
                   class="upload-input"
                 />
-                加载SSH秘钥文件
+                Load SSH Key File
               </m-button>
 
               <m-checkbox
                 v-model="unprivileged"
-                label="无特权的容器"
+                label="Unprivileged Container"
                 labelWidth="100px"
               ></m-checkbox>
             </dd>
           </dl>
         </div>
       </div>
-      <!--第二步镜像选择方式-->
+      <!--Step 2: Image selection method-->
       <div v-if="step === 2" class="m-form__content">
         <div class="m-form__section">
           <dl>
             <dd>
               <m-select
                 prop="storage"
-                label="存储"
+                label="Storage"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
@@ -229,7 +229,7 @@
                 :readonly="false"
                 @on-change="handleStorageSelect"
                 v-model="storage"
-                placeholder="请选择节点"
+                placeholder="Please select node"
               >
                 <m-option
                   v-for="(item, index) in storageList"
@@ -238,10 +238,10 @@
                   :value="item.storage"
                 >
                   <div v-if="index === 0" class="table-tr">
-                    <div class="table-td">名称</div>
-                    <div class="table-td">类别</div>
-                    <div class="table-td">可用</div>
-                    <div class="table-td">容量</div>
+                    <div class="table-td">Name</div>
+                    <div class="table-td">Type</div>
+                    <div class="table-td">Available</div>
+                    <div class="table-td">Capacity</div>
                   </div>
                   <div class="table-tr">
                     <span class="table-td" :title="item.storage">{{
@@ -262,7 +262,7 @@
 
               <m-select
                 prop="tmpl"
-                label="模板"
+                label="Template"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
@@ -272,7 +272,7 @@
                 :readonly="false"
                 @on-change="(value) => (tmpl = value)"
                 v-model="tmpl"
-                placeholder="请选择节点"
+                placeholder="Please select disk image"
               >
                 <m-option
                   v-for="(item, index) in isoList"
@@ -290,9 +290,9 @@
                   "
                 >
                   <div v-if="index === 0" class="table-tr">
-                    <div class="table-td">名称</div>
-                    <div class="table-td">格式</div>
-                    <div class="table-td">大小</div>
+                    <div class="table-td">Name</div>
+                    <div class="table-td">Format</div>
+                    <div class="table-td">Size</div>
                   </div>
                   <div class="table-tr">
                     <span
@@ -319,15 +319,15 @@
           </dl>
         </div>
       </div>
-      <!--配置显卡-->
+      <!--Configure GPU-->
       <div v-if="step === 3" class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>显卡</dt>
+            <dt>GPU</dt>
             <dd>
               <m-select
                 prop="rootStorage"
-                label="存储"
+                label="Storage"
                 labelWidth="100px"
                 @on-change="(value) => (rootStorage = value)"
                 v-model="rootStorage"
@@ -337,7 +337,7 @@
                 :show-error="rules['rootStorage'].error"
                 required
                 :readonly="false"
-                placeholder="请选存储"
+                placeholder="Please select storage"
               >
                 <div class="table">
                   <m-option
@@ -347,10 +347,10 @@
                     :label="item.storage"
                   >
                     <div v-if="index === 0" class="table-tr">
-                      <div class="table-td">名称</div>
-                      <div class="table-td">类别</div>
-                      <div class="table-td">可用</div>
-                      <div class="table-td">容量</div>
+                      <div class="table-td">Name</div>
+                      <div class="table-td">Type</div>
+                      <div class="table-td">Available</div>
+                      <div class="table-td">Capacity</div>
                     </div>
                     <div class="table-tr">
                       <div class="table-td" :title="item.storage">
@@ -372,7 +372,7 @@
               <m-input
                 type="number"
                 labelWidth="100px"
-                label="磁盘大小（GiB）"
+                label="Disk Size (GiB)"
                 v-model="size"
                 :max="131072"
                 validateEvent
@@ -388,11 +388,11 @@
         </div>
         <div class="m-form__section" v-if="isAdvice">
           <dl>
-            <dt>高级</dt>
+            <dt>Advanced</dt>
             <dd>
               <m-checkbox
                 v-model="quota"
-                label="启用配额"
+                label="Enable Quota"
                 :disabled="!isQuota()"
                 labelWidth="100px"
               />
@@ -400,7 +400,7 @@
                 v-model="acl"
                 prop="acl"
                 @on-change="(value) => (acl = value)"
-                placeholder="请输入磁盘映像"
+                placeholder="Please enter disk image"
                 label="ACLs"
                 labelWidth="100px"
               >
@@ -413,7 +413,7 @@
               </m-select>
               <m-checkbox
                 v-model="replicate"
-                label="跳过复制"
+                label="Skip Replication"
                 labelWidth="100px"
               />
               <m-select
@@ -421,8 +421,8 @@
                 type="multiple"
                 prop="mountoptions"
                 @on-change="(value) => (mountoptions = value)"
-                placeholder="选择挂载选项"
-                label="挂载选项"
+                placeholder="Select mount options"
+                label="Mount Options"
                 labelWidth="100px"
               >
                 <m-option
@@ -437,7 +437,7 @@
           </dl>
         </div>
       </div>
-      <!--配置驱动-->
+      <!--Configure drivers-->
       <div v-if="step === 4" class="m-form__content">
         <div class="m-form__section">
           <dl>
@@ -453,8 +453,8 @@
                 required
                 :show-error="rules['cores'].error"
                 :error-msg="rules['cores'].message"
-                placeholder="请输入核数"
-                label="核"
+                placeholder="Please enter number of cores"
+                label="Cores"
                 labelWidth="100px"
               />
             </dd>
@@ -462,7 +462,7 @@
         </div>
 
         <div class="m-margin-top-10 m-form__section" v-if="isAdvice">
-          <dt>高级</dt>
+          <dt>Advanced</dt>
           <dd>
             <m-input
               type="number"
@@ -474,8 +474,8 @@
               required
               :show-error="rules['cpulimit'].error"
               :error-msg="rules['cpulimit'].message"
-              placeholder="请输入CPU限制"
-              label="CPU限制"
+              placeholder="Please enter CPU limit"
+              label="CPU Limit"
               labelWidth="100px"
             />
             <m-input
@@ -488,19 +488,19 @@
               required
               :show-error="rules['cpuunits'].error"
               :error-msg="rules['cpuunits'].message"
-              placeholder="请输入CPU权重"
-              label="CPU权重"
+              placeholder="Please enter CPU weight"
+              label="CPU Weight"
               labelWidth="100px"
             />
           </dd>
         </div>
       </div>
 
-      <!--配置CPU等信息-->
+      <!--Configure CPU and other information-->
       <div v-if="step === 5" class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-input
                 type="number"
@@ -512,8 +512,8 @@
                 required
                 :show-error="rules['memory'].error"
                 :error-msg="rules['memory'].message"
-                placeholder="请输入内存"
-                label="内存（MiB）"
+                placeholder="Please enter memory"
+                label="Memory (MiB)"
                 labelWidth="100px"
               />
               <m-input
@@ -526,8 +526,8 @@
                 required
                 :show-error="rules['swap'].error"
                 :error-msg="rules['swap'].message"
-                placeholder="请输入交换分区"
-                label="交换分区（MiB）"
+                placeholder="Please enter swap"
+                label="Swap (MiB)"
                 labelWidth="100px"
               />
             </dd>
@@ -535,20 +535,20 @@
         </div>
       </div>
 
-      <!--配置内存-->
+      <!--Configure memory-->
       <div v-if="step === 6" class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-input
                 v-model="name"
                 prop="name"
-                label="名称"
+                label="Name"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
-                placeholder="形如：eth0"
+                placeholder="Format: eth0"
                 required
                 :show-error="rules['name'].error"
                 :error-msg="rules['name'].message"
@@ -557,11 +557,11 @@
               <m-input
                 v-model="hwaddr"
                 prop="hwaddr"
-                label="MAC地址"
+                label="MAC Address"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
-                placeholder="形如：2A:75:78:42:45:37"
+                placeholder="Format: 2A:75:78:42:45:37"
                 :show-error="rules['hwaddr'].error"
                 :error-msg="rules['hwaddr'].message"
               />
@@ -569,7 +569,7 @@
               <m-select
                 v-model="bridge"
                 prop="bridge"
-                label="桥接"
+                label="Bridge"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
@@ -585,9 +585,9 @@
                   :value="item.iface"
                 >
                   <div v-if="index === 0" class="table-tr">
-                    <div class="table-td">桥接</div>
-                    <div class="table-td">活动</div>
-                    <div class="table-td">备注</div>
+                    <div class="table-td">Bridge</div>
+                    <div class="table-td">Active</div>
+                    <div class="table-td">Comment</div>
                   </div>
                   <div class="table-tr">
                     <div class="table-td" :title="item.iface">
@@ -596,7 +596,7 @@
                     <div class="table-td" :title="item.active">
                       <table-info-state
                         :content="
-                          item.active && item.active === 1 ? '是' : '否'
+                          item.active && item.active === 1 ? 'Yes' : 'No'
                         "
                         :state="
                           item.active && item.active === 1
@@ -616,25 +616,25 @@
                 v-model="tag"
                 prop="tag"
                 type="number"
-                label="VLAN标签"
+                label="VLAN Tag"
                 labelWidth="100px"
-                placeholder="请输入VLAN标签"
+                placeholder="Please enter VLAN tag"
               />
 
               <m-input
                 v-model="rate"
                 type="number"
                 prop="rate"
-                label="速率限制(MiB)"
+                label="Rate Limit (MiB)"
                 labelWidth="100px"
                 :min="0"
-                placeholder="请输入速率限制"
+                placeholder="Please enter rate limit"
               />
 
               <m-checkbox
                 v-model="firewall"
                 prop="firewall"
-                label="防火墙"
+                label="Firewall"
                 labelWidth="100px"
               />
             </dd>
@@ -651,7 +651,7 @@
                     v-model="ip4type"
                   />
                   <div></div>
-                  <span>静态</span>
+                  <span>Static</span>
                 </label>
                 <label class="m-input__radio">
                   <input
@@ -686,11 +686,11 @@
               <m-input
                 v-model="gw"
                 prop="gw"
-                label="网关(IPv4)"
+                label="Gateway (IPv4)"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
-                placeholder="形如：10.10.10.0"
+                placeholder="Format: 10.10.10.0"
                 :show-error="rules['gw'].error"
                 :disabled="ip4type !== 'static'"
                 :error-msg="rules['gw'].message"
@@ -710,7 +710,7 @@
                     v-model="ip6type"
                   />
                   <div></div>
-                  <span>静态</span>
+                  <span>Static</span>
                 </label>
                 <label class="m-input__radio">
                   <input
@@ -761,12 +761,12 @@
               <m-input
                 v-model="gw6"
                 prop="gw6"
-                label="网关(IPv6)"
+                label="Gateway (IPv6)"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
                 :show-error="rules['gw6'].error"
-                placeholder="形如：2001:DB8::42"
+                placeholder="Format: 2001:DB8::42"
                 :disabled="ip6type !== 'static'"
                 :error-msg="rules['gw6'].message"
               />
@@ -775,40 +775,40 @@
         </div>
       </div>
 
-      <!--配置网络-->
+      <!--Configure network-->
       <div v-if="step === 7" class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-input
                 v-model="searchdomain"
                 prop="searchdomain"
-                label="DNS域"
+                label="DNS Domain"
                 labelWidth="100px"
-                placeholder="请输入DNS域"
+                placeholder="Please enter DNS domain"
               />
 
               <m-input
                 v-model="nameserver"
                 prop="nameserver"
-                label="DNS服务器"
+                label="DNS Server"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
                 :show-error="rules['nameserver'].error"
-                placeholder="形如：192.168.1.1"
+                placeholder="Format: 192.168.1.1"
                 :error-msg="rules['nameserver'].message"
               />
             </dd>
           </dl>
         </div>
       </div>
-      <!--展示配置参数-->
+      <!--Display configuration parameters-->
       <div v-if="step === 8" class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>预览</dt>
+            <dt>Preview</dt>
             <dd>
               <div class="table">
                 <div class="table-tr">
@@ -821,9 +821,9 @@
                 </div>
               </div>
             </dd>
-            <dt>是否自启动</dt>
+            <dt>Auto Start</dt>
             <dd>
-              <m-checkbox v-model="start">创建后自启动</m-checkbox>
+              <m-checkbox v-model="start">Auto start after creation</m-checkbox>
             </dd>
           </dl>
         </div>
@@ -833,28 +833,28 @@
       <div class="label_box">
         <label>
           <input type="checkbox" v-model="isAdvice" />
-          <div>高级</div>
+          <div>Advanced</div>
         </label>
       </div>
       <m-button
         type="primary"
         style="height: 40px; line-height: 40px; width: 100px"
         @on-click="prev()"
-        >上一步</m-button
+        >Previous</m-button
       >
       <m-button
         type="primary"
         style="height: 40px; line-height: 40px; width: 100px"
         @on-click="next()"
         v-show="step < 8"
-        >下一步</m-button
+        >Next</m-button
       >
       <m-button
         type="primary"
         style="height: 40px; line-height: 40px; width: 100px"
         @on-click="confirm()"
         v-show="step === 8"
-        >确定</m-button
+        >Confirm</m-button
       >
       <m-dialog
         :visible="showLog"
@@ -862,19 +862,19 @@
         :_style="{
           width: '800px',
         }"
-        title="Task Viewer: 恢复"
+        title="Task Viewer: Recovery"
       >
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
-            <m-tab-panel label="输出" name="log"></m-tab-panel>
-            <m-tab-panel label="状态" name="status"></m-tab-panel>
+            <m-tab-panel label="Output" name="log"></m-tab-panel>
+            <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
           <m-button
             class="create-btn m-margin-top-10"
             type="primary"
             @on-click="stopTask1"
             :disabled="db.addClusterStatusObj.status !== 'running'"
-            >停止</m-button
+            >Stop</m-button
           >
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
@@ -1014,9 +1014,9 @@ export default {
         { label: "nosuid", value: "nosuid" },
       ],
       aclsItems: [
-        { value: "__default__", label: "默认" },
-        { value: "1", label: "已启用" },
-        { value: "0", label: "已禁用" },
+        { value: "__default__", label: "Default" },
+        { value: "1", label: "Enabled" },
+        { value: "0", label: "Disabled" },
       ],
       params: {},
       rules: {
@@ -1131,13 +1131,13 @@ export default {
     this.__init__();
   },
   methods: {
-    flotToFixed, //格式化内存、磁盘数据
-    byteToSize, //格式化内存、磁盘数据
+    flotToFixed,
+    byteToSize,
     percentToFixed,
     dateFormat,
-    //确定添加
+    // Confirm add
     confirm() {
-      //创建请求
+      // Create request
       delete this.params.nodename;
       this.createLxc(
         Object.assign(this.params, {
@@ -1159,7 +1159,7 @@ export default {
           });
         });
     },
-    //结束任务
+    // End task
     stopTask1() {
       this.stopTask(
         this.db.addClusterStatusObj.node,
@@ -1179,7 +1179,7 @@ export default {
       this.$emit("close");
     },
     /**
-     * 上传ssh
+     * Upload SSH
      */
     uploadSsh() {
       let file = this.$refs.uploadFile.files[0],
@@ -1192,20 +1192,20 @@ export default {
       rs.readAsText(file);
     },
     cancel() {},
-    //下一步按钮所做操作
+    // Next button operations
     async next() {
-      //整体校验没一步的表单
+      // Validate form for each step
       if (this.validateAll()) return;
-      //校验通过则步骤加1
+      // If validation passes, increment step
       if (this.step < 8) ++this.step;
       if (this.step === 2) {
-        //查询存储
+        // Query storage
         await this.queryStorageList({ format: 1, content: "vztmpl" }).then(
           (res) => {
             this.storage = this.storageList[0].storage;
           }
         );
-        //根据存储查询相应的模板列表并初始化
+        // Query template list based on storage and initialize
         this.queryIsoList({ storage: this.storage, content: "vztmpl" }).then(
           (res) => {
             this.tmpl =
@@ -1216,7 +1216,7 @@ export default {
         );
       }
       if (this.step === 3) {
-        //查询存储
+        // Query storage
         this.queryStorageList({ format: 1, content: "rootdir" }).then(
           (data) => {
             this.rootStorageList = data || [];
@@ -1228,15 +1228,15 @@ export default {
         );
       }
       if (this.step === 6) {
-        //查询网络初始化网络选择
+        // Query network and initialize network selection
         Promise.all([this.queryNetWorkList()]).then(() => {
           this.bridge =
             this.networkList.length > 0 ? this.networkList[0].iface : "";
         });
       }
       if (this.step === 8) {
-        //拼接添加请求参数
-        //网络
+        // Build add request parameters
+        // Network
         let network = "";
         if (this.name) network += `name=${this.name},`;
         if (this.bridge) network += `bridge=${this.bridge},`;
@@ -1252,7 +1252,7 @@ export default {
           network += `ip=${this.ip4type},`;
         if (this.ip6type && this.ip6type !== "static")
           network += `ip6=${this.ip6type},`;
-        //根磁盘
+        // Root disk
         let rootDisk = "";
         rootDisk += `${this.rootStorage}:${this.size},`;
         if (this.isAdvice) {
@@ -1263,7 +1263,7 @@ export default {
             rootDisk += `mountoptions=${this.mountoptions.join(";")},`;
           if (this.quota) rootDisk += `quota=1,`;
         }
-        //os模板
+        // OS template
         let tmpl = "";
         tmpl += `${this.storage}:vztmpl/${this.tmpl},`;
         let baseParams = {};
@@ -1294,16 +1294,16 @@ export default {
         this.params = baseParams;
       }
     },
-    //上一步
+    // Previous step
     prev() {
-      //步骤逐次递减直到为1
+      // Decrease step count until 1
       if (this.step > 1) --this.step;
     },
-    //关闭
+    // Close
     close() {
       this.$emit("close", false);
     },
-    //整体校验
+    // Overall validation
     validateAll() {
       let props = [];
       if (this.step === 1)
@@ -1323,7 +1323,7 @@ export default {
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
     },
-    //逐个校验
+    // Individual validation
     validate(prop) {
       let value = String(this[prop]).trim();
       this.rules[prop].error = false;
@@ -1342,67 +1342,64 @@ export default {
           "rootStorage",
         ].includes(prop)
       ) {
-        //判断是否为空
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
       if (value && prop == "hostname" && !/^\w/.test(value)) {
-        //判断名称
         this.rules[prop].error = true;
-        this.rules[prop].message = "名称以数字或字母开头";
+        this.rules[prop].message = "Name must start with a letter or number";
         return;
       }
       if (prop == "vmid" && !/\d/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "VM ID只能是数字";
+        this.rules[prop].message = "VM ID must be numeric";
         return;
       }
       if (prop == "vmid" && value < this.nextid) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "VM ID不能小于初始值";
+        this.rules[prop].message = "VM ID cannot be less than initial value";
         return;
       }
       if (prop === "vPsw" && value) {
         if (value !== this.password) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "两次输入的密码不一致!";
+          this.rules[prop].message = "Passwords do not match!";
           return;
         }
       }
       if (prop === "name") {
         if (/[\u4e00-\u9fa5]/.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "名称中不能存在汉字!";
+          this.rules[prop].message = "Name cannot contain Chinese characters!";
           return;
         }
       }
       if (value && prop === "ip") {
         if (!IP4_cidr_match.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "IPv4/CIDR格式不正确!";
+          this.rules[prop].message = "Invalid IPv4/CIDR format!";
           return;
         }
       }
       if (value && prop === "ip6") {
         if (!IP6_cidr_match.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message =
-            "IPv6/CIDR格式不正确! 示例：2001:DB8::42/64";
+          this.rules[prop].message = "Invalid IPv6/CIDR format! Example: 2001:DB8::42/64";
           return;
         }
       }
       if (value && prop === "gw") {
         if (!IP4_match.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "网关格式不正确! 示例： 2001:DB8::42";
+          this.rules[prop].message = "Invalid gateway format! Example: 10.10.10.1";
           return;
         }
       }
       if (value && prop === "gw6") {
         if (!IP6_match.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "网关格式不正确!";
+          this.rules[prop].message = "Invalid gateway format!";
           return;
         }
       }
@@ -1413,7 +1410,7 @@ export default {
           )
         ) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "mac格式不正确!";
+          this.rules[prop].message = "Invalid MAC address format!";
           return;
         }
       }
@@ -1425,18 +1422,18 @@ export default {
         )
       ) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "格式不正确!";
+        this.rules[prop].message = "Invalid format!";
         return;
       }
       if (prop === "cpuunits" && value && Number(value) < 8) {
         this.rules[prop].error = true;
-        this.rules[prop].message = `值不能小于8`;
+        this.rules[prop].message = "Value cannot be less than 8";
         return;
       }
       if (value && prop === "ssh") {
         if (!parseSSHKey(this.ssh)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = `公钥格式不正确!`;
+          this.rules[prop].message = "Invalid public key format!";
           return;
         }
       }
@@ -1452,7 +1449,7 @@ export default {
         this.nodename = this.nodeList && this.nodeList[0].node;
       });
     },
-    //选择存储
+    // Select storage
     handleStorageSingleList(val) {
       this.storageRadio = val.storage;
       this.queryIsoList({ storage: this.storageRadio, content: "iso" }).then(
@@ -1461,7 +1458,7 @@ export default {
         }
       );
     },
-    //选择镜像存储
+    // Select image storage
     handleImageStorageChange(val) {
       this.imageStorageRadio = val;
       this.storageType = this.imageStorageList.filter(
@@ -1470,7 +1467,7 @@ export default {
       if (this.storageType === "dir") this.format = "qcow2";
       else this.format = "raw";
     },
-    //选择存储并请求模板列表
+    // Select storage and request template list
     handleStorageSelect(val) {
       this.storage = val;
       this.queryIsoList({ storage: this.storage, content: "vztmpl" }).then(
@@ -1487,7 +1484,7 @@ export default {
       this.tab = value;
     },
   },
-  //页面销毁之前取消定时任务
+  // Cancel timer task before page destruction
   beforeDestroy() {
     if (this.interVal) {
       clearInterval(this.interVal);

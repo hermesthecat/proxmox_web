@@ -63,75 +63,75 @@ import { getEvent } from "@libs/utils/";
 export default {
   name: "MInput",
   props: {
-    //input label名称
+    // Input label name
     label: String,
-    //input label的宽度
+    // Input label width
     labelWidth: {
       type: String,
     },
-    //input 框类型 text、password、textarea、password等
+    // Input type: text, password, textarea, etc.
     type: {
       type: String,
       default: "text",
     },
-    //placeholder
+    // Placeholder
     placeholder: {
       type: String,
       default: "",
     },
-    //输入框值
+    // Input value
     value: {
       type: [String, Number],
     },
-    //最大长度
+    // Maximum length
     minLength: [String, Number],
-    //最小长度
+    // Minimum length
     maxLenght: [String, Number],
-    //是否展示密码
+    // Whether to show password
     showPassword: {
       type: Boolean,
       default: false,
     },
-    //是否可操作
+    // Whether it's disabled
     disabled: {
       type: Boolean,
       default: false,
     },
-    //前缀的icon子图或图片
+    // Prefix icon or image
     prefixIcon: {
       type: String,
     },
     suffixIcon: {
       type: String,
     },
-    //是否需要校验
+    // Whether validation is needed
     validateEvent: {
       type: Boolean,
       default: false,
     },
-    //校验不通过时提示信息
+    // Error message when validation fails
     errorMsg: {
       type: String,
       default: "",
     },
-    //属性名
+    // Property name
     prop: {
       type: [String],
     },
-    // 是否校验通过
+    // Whether validation passed
     showError: {
       type: Boolean,
       default: false,
     },
-    //如果有改变input框外层的宽度等样式需求配置此参数
+    // Configure this parameter if you need to change the outer container style
     _style: {
       type: Object,
     },
-    //如果有改变input框的宽度等样式需求配置此参数
+    // Configure this parameter if you need to change the input style
     __conStyle: {
       type: Object,
     },
-    //textarea的行数
+    // Number of rows for textarea
     rows: {
       type: [String, Number],
       validator: function (value) {
@@ -142,12 +142,12 @@ export default {
         return true;
       },
     },
-    //是否需要清除按钮
+    // Whether to show clear button
     clearable: {
       type: Boolean,
       default: false,
     },
-    //是否只读
+    // Whether it's readonly
     readonly: {
       type: Boolean,
       default: false,
@@ -189,8 +189,8 @@ export default {
     },
   },
   methods: {
-    /***
-     * 处理input事件
+    /**
+     * Handle input event
      */
     handleInput(event) {
       let ev = getEvent(event),
@@ -200,24 +200,24 @@ export default {
         this.$emit("validate", this.prop);
       }
     },
-    /***
-     * 处理change事件
+    /**
+     * Handle change event
      */
     handleChange(event) {
       let ev = getEvent(event),
         value = ev.target.value || ev.srcElement.value;
       this.$emit("change", value);
     },
-    /***
-     * 处理focus事件
+    /**
+     * Handle focus event
      */
     handleFocus(event) {
       let ev = getEvent(event),
         value = ev.target.value || ev.srcElement.value;
       this.$emit("focus", value);
     },
-    /***
-     * 处理blur事件
+    /**
+     * Handle blur event
      */
     handleBlur(event) {
       let ev = getEvent(event),

@@ -25,7 +25,7 @@
 </template>
 
 <script>
-//下拉选择框选项组件
+// Dropdown select component
 export default {
   name: "dropdown",
   provide() {
@@ -34,7 +34,7 @@ export default {
     };
   },
   computed: {
-    //渲染dropmenu
+    // Render dropdown menu
     renderDropMenu() {
       if (this.isOpen && this.$refs["dropdown-menu"]) {
         const el =
@@ -83,11 +83,11 @@ export default {
     };
   },
   mounted() {
-    //当窗口大小改变时不展示下拉框
+    // Hide dropdown when window is resized
     window.addEventListener("resize", () => (this.isOpen = false));
   },
   methods: {
-    //改变下拉框触发的回调
+    // Callback triggered when dropdown changes
     handleChange(type, command) {
       this.$emit("on-change", command);
       this.isOpen = false;
@@ -99,13 +99,13 @@ export default {
         document.body.removeChild(this.$refs["dropdown-menu"]);
       }
     },
-    //在下拉框失去焦点时隐藏
+    // Hide dropdown when it loses focus
     handleBlur() {
       this.isOpen = false;
     },
   },
   destroyed() {
-    //移除resize监听事件
+    // Remove resize event listener
     window.removeEventListener("resize", () => (this.isOpen = false));
   },
 };

@@ -19,7 +19,7 @@
               {{ $t("login.username.empty") }}
             </div>
             <div class="error error-msg" v-else-if="invalidusername">
-              用户名或密码错误
+              Username or password incorrect
             </div>
           </div>
           <div class="pve-login_content__form-item">
@@ -36,7 +36,7 @@
               {{ $t("login.password.empty") }}
             </div>
             <div class="error error-msg" v-else-if="invalidpassword">
-              用户名或密码错误
+              Username or password incorrect
             </div>
           </div>
           <div class="pve-login_content__form-select">
@@ -98,10 +98,10 @@ export default {
       lang:
         getCookie("PVELangCookie") ||
         setCookie("PVELangCookie", "zh_CN") ||
-        "zh_CN", //设置默认展示语言
+        "zh_CN", // Set default display language
       loading: false,
       realmList: [],
-      //语言选择框
+      // Language selection box
       langList: [
         {
           value: "zh_CN",
@@ -121,7 +121,7 @@ export default {
     };
   },
   methods: {
-    //单个校验
+    // Single validation
     validate(name) {
       let input = String(this[name]).trim();
       this[`empty${name}`] = false;
@@ -130,23 +130,23 @@ export default {
         this[`empty${name}`] = true;
       }
     },
-    //整体校验
+    // Overall validation
     validateAll() {
       let props = ["username", "password"];
       props.forEach((prop) => this.validate(prop));
-      //有一个校验不通过则不能登录
+      // Cannot login if validation fails
       return props.some(
         (prop) =>
           this[`empty${prop}`] === true || this[`invalid${prop}`] === true
       );
     },
-    //按回车登录
+    // Press Enter to login
     keyCodeLogin(event) {
       if (event.keyCode === 13) {
         this.login();
       }
     },
-    //登录接口
+    // Login interface
     login() {
       if (this.validateAll()) return;
       this.loading = true;
@@ -168,12 +168,12 @@ export default {
         )
         .then((res) => {
           if (res.data) {
-            //登录成功后将token存储到本地存储
+            // Store token in local storage after successful login
             window.localStorage.setItem(
               "CSRFPreventionToken",
               res.data.CSRFPreventionToken || ""
             );
-            //设置cookie
+            // Set cookie
             setCookie("PVEAuthCookie", res.data.ticket, null, "/", null, false);
             this.updateDB({
               dbName: "cap",
@@ -187,7 +187,7 @@ export default {
               "ticket",
               JSON.stringify(res.data) || ""
             );
-            //当有最后登录的路由时跳转到次路由
+            // Redirect to last login route if available
             let lastLink = window.localStorage.getItem("lastLink") || "";
             this.update401Count({
               response401count: 0,
@@ -196,7 +196,7 @@ export default {
             if (lastLink) {
               this.$router.push({ path: lastLink });
             } else {
-              //当没有最后登录路由时跳转到地域中心概览页面并将路由赋值给最后登录页面
+              // Redirect to regional center overview page when no last login route exists and set route as last login page
               this.$router.push({ path: "/datacenter/overview" });
               window.localStorage.setItem("lastLink", "datacenter/overview");
             }
@@ -213,13 +213,13 @@ export default {
           });
         });
     },
-    //改变国际化
+    // Change internationalization
     changeLang(event) {
       let ev = getEvent(event);
       setCookie("PVELangCookie", getEventTarget(ev).value);
       window.location.href = "/login";
     },
-    //查询domain
+    // Query domain
     queryDomain() {
       this.$http.get("json/access/domains").then((res) => {
         if (res.data) {
@@ -231,11 +231,11 @@ export default {
   },
   mounted() {
     this.queryDomain();
-    //监听keyup事件在按回车时提交表单
+    // Listen for keyup events when Enter is pressed to submit the form
     window.addEventListener("keyup", this.keyCodeLogin, false);
   },
   beforeDestroy() {
-    //销毁监听
+    // Destroy listener
     window.removeEventListener("keyup", this.keyCodeLogin, false);
   },
 };

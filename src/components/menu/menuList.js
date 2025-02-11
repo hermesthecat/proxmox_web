@@ -1,5 +1,5 @@
 /**
- * 数据中心对应菜单
+ * Data Center Menu List
  * */
 const dataCenterMenuList = [
   {
@@ -154,7 +154,7 @@ const dataCenterMenuList = [
   }
 ];
 /**
- * 节点对应菜单
+ * Node Menu List
  * */
 const nodeMenuList = [
   {
@@ -353,7 +353,7 @@ const nodeMenuList = [
 ]
 
 /**
- * 节点对应菜单
+ * QEMU Menu List
  * */
 const qemuMenuList = [
   {
@@ -485,7 +485,7 @@ const qemuMenuList = [
   }
 ]
 /**
- * 存储相关菜单
+ * Storage Menu List
 */
 const storageList = [
   {
@@ -511,7 +511,7 @@ const storageList = [
   }
 ]
 /**
- * 资源池相关菜单
+ * Resource Pool Menu List
 */
 const poolList = [
   {

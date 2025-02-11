@@ -108,7 +108,7 @@ export default {
           return Promise.reject(res);
         });
     },
-    //查询任务
+    // Query tasks
     queryClusterTask() {
       return this.$http.get(`json/cluster/tasks`).then((res) => {
         if (res.data) {
@@ -166,7 +166,7 @@ export default {
       });
     },
     /**
-     * 修改密码 @param {password:}
+     * Update password @param {password:}
      */
     updatePsw(param) {
       let event = this.createEvent(`action.password.update`);

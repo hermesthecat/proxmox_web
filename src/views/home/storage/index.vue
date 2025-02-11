@@ -7,7 +7,7 @@
             storages &&
             storages.node &&
             storages.storage &&
-            `存储'${storages.storage}'在节点'${storages.node}'上`
+            `Storage '${storages.storage}' on node '${storages.node}'`
           }}
         </div>
       </div>
@@ -32,7 +32,7 @@
 import PvMenu from "@src/components/menu/Menu";
 import MScrollbar from "@src/components/scroll/Scrollbar";
 import MButton from "@src/components/button/Button";
-//菜单tree
+// Menu tree
 import { storageList } from "@src/components/menu/menuList";
 export default {
   name: "StorageIndex",

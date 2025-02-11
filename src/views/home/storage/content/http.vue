@@ -127,7 +127,7 @@ export default {
         this.querySubscriptionInfo();
       });
     },
-    //删除内容
+    // Delete content
     delete() {
       if (this.selectedList.length > 0) {
         let tasks = [],
@@ -155,7 +155,7 @@ export default {
         return Promise.all(tasks);
       }
     },
-    //查询config
+    // Query config
     queryConfigByVolid(param) {
       return this.$http
         .get(`json/nodes/${this.node}/vzdump/extractconfig`, param)
@@ -165,7 +165,7 @@ export default {
           }
         });
     },
-    //查询下一个vmid
+    // Query next vmid
     queryNextVmId(param) {
       return this.$http.get(`json/cluster/nextid`, param).then((res) => {
         if (res.data) {
@@ -173,7 +173,7 @@ export default {
         }
       });
     },
-    //查询存储
+    // Query storage
     queryStorage(param) {
       return this.$http
         .get(`json/nodes/${this.node}/storage`, param)
@@ -186,7 +186,7 @@ export default {
           }
         });
     },
-    //恢复
+    // Restore
     doRestore(url, params) {
       let event = this.createEvent(`action.storage.content.restore`);
       return this.$http

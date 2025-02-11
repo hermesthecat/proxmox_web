@@ -4,7 +4,7 @@
     @close="close()"
     @confirm="confirm"
     @cancel="cancel"
-    cancelText="重置"
+    cancelText="Reset"
     :_style="{
       width: '100%',
       height: 'calc(100%)',
@@ -15,29 +15,29 @@
       bottom: '0',
       'overflow-y': 'clip',
     }"
-    title="创建虚拟机"
+    title="Create Virtual Machine"
   >
     <template slot="content">
       <div>
-        <!--步骤条-->
+        <!--Step indicator-->
         <m-steps :active="step" @change="handleStepChange">
-          <m-step title="一般"></m-step>
-          <m-step title="操作系统"></m-step>
-          <m-step title="系统"></m-step>
-          <m-step title="硬盘">硬盘</m-step>
+          <m-step title="General"></m-step>
+          <m-step title="Operating System"></m-step>
+          <m-step title="System"></m-step>
+          <m-step title="Hard Disk">Hard Disk</m-step>
           <m-step title="CPU">CPU</m-step>
-          <m-step title="内存">内存</m-step>
-          <m-step title="网络">网络</m-step>
-          <m-step title="确认">确认</m-step>
+          <m-step title="Memory">Memory</m-step>
+          <m-step title="Network">Network</m-step>
+          <m-step title="Confirm">Confirm</m-step>
         </m-steps>
       </div>
-      <!--第一步添加名称vmid等-->
+      <!--Step 1: Add name, vmid etc-->
       <div v-show="step === 1" class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>名称</dt>
+            <dt>Name</dt>
             <dd>
-              <!--input组件validateEvent表示需要校验， show-error表示校验是否通过；error-msg表示校验未通过时的提示信息； validate校验；v-modal输入值-->
+              <!--Input component validateEvent indicates validation is required, show-error indicates whether validation passed; error-msg shows validation failure message; validate for validation; v-modal for input value-->
               <m-input
                 v-model="name"
                 prop="name"
@@ -46,7 +46,7 @@
                 :show-error="rules['name'].error"
                 :error-msg="rules['name'].message"
                 @validate="validate"
-                placeholder="请输入名称"
+                placeholder="Please enter name"
               />
             </dd>
           </dl>
@@ -63,15 +63,15 @@
                 :error-msg="rules['vmid'].message"
                 v-model="vmid"
                 :min="100"
-                placeholder="请输入VM ID"
+                placeholder="Please enter VM ID"
               />
             </dd>
           </dl>
         </div>
-        <!--选择节点-->
+        <!--Select node-->
         <div class="m-form__section">
           <dl>
-            <dt>节点</dt>
+            <dt>Node</dt>
             <dd>
               <el-table
                 :data="nodeList"
@@ -87,10 +87,10 @@
                 </el-table-column>
                 <el-table-column
                   prop="node"
-                  label="节点"
+                  label="Node"
                   width="180"
                 ></el-table-column>
-                <el-table-column label="内存使用率" width="180">
+                <el-table-column label="Memory Usage Rate" width="180">
                   <template slot-scope="scope">
                     <span>{{
                       scope.row.mem &&
@@ -99,7 +99,7 @@
                     }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="CPU使用率" width="180">
+                <el-table-column label="CPU Usage Rate" width="180">
                   <template slot-scope="scope">
                     <span>{{
                       scope.row.cpu && flotToFixed(scope.row.cpu, 2)
@@ -110,10 +110,10 @@
             </dd>
           </dl>
         </div>
-        <!--选择资源池-->
+        <!--Select resource pool-->
         <div class="m-form__section">
           <dl>
-            <dt>资源池</dt>
+            <dt>Resource Pool</dt>
             <dd>
               <el-table
                 @current-change="handleCurrentPoolChange"
@@ -129,22 +129,22 @@
                 </el-table-column>
                 <el-table-column
                   prop="poolid"
-                  label="资源池"
+                  label="Resource Pool"
                   width="180"
                 ></el-table-column>
                 <el-table-column
                   prop="description"
-                  label="备注"
+                  label="Note"
                   width="180"
                 ></el-table-column>
               </el-table>
             </dd>
           </dl>
         </div>
-        <!--是否开机自启动-->
+        <!--Auto start on boot-->
         <div class="m-form__section" v-if="isAdvice">
           <dl>
-            <dt>开机自启动</dt>
+            <dt>Auto Start</dt>
             <dd>
               <label class="m-form__checkbox">
                 <input type="checkbox" v-model="onboot" />
@@ -153,34 +153,34 @@
             </dd>
           </dl>
           <dl>
-            <dt>启动/关机顺序</dt>
+            <dt>Startup/Shutdown Order</dt>
             <dd>
               <m-input
                 type="text"
                 v-model="order"
-                placeholder="请输入启动/关机顺序"
+                placeholder="Please enter startup/shutdown order"
               />
             </dd>
           </dl>
           <dl>
-            <dt>启动延时</dt>
+            <dt>Startup Delay</dt>
             <dd>
-              <m-input type="text" v-model="up" placeholder="请输入启动延时" />
+              <m-input type="text" v-model="up" placeholder="Please enter startup delay" />
             </dd>
           </dl>
           <dl>
-            <dt>关机延时</dt>
+            <dt>Shutdown Delay</dt>
             <dd>
               <m-input
                 type="text"
                 v-model="down"
-                placeholder="请输入关机延时"
+                placeholder="Please enter shutdown delay"
               />
             </dd>
           </dl>
         </div>
       </div>
-      <!--第二步镜像选择方式-->
+      <!--Step 2: Image selection method-->
       <div v-if="step === 2" class="m-form__content">
         <div class="m-form__section">
           <dl>
@@ -194,11 +194,11 @@
                 />
                 <div></div>
               </label>
-              使用CD/DVD光盘文件(ISO)
+              Use CD/DVD Disk File (ISO)
             </dt>
             <dd>
               <dl>
-                <dt>存储</dt>
+                <dt>Storage</dt>
                 <dd>
                   <el-table
                     :data="storageList"
@@ -216,26 +216,26 @@
                     </el-table-column>
                     <el-table-column
                       prop="storage"
-                      label="名称"
+                      label="Name"
                     ></el-table-column>
                     <el-table-column
                       prop="type"
-                      label="类别"
+                      label="Category"
                       width="180"
                     ></el-table-column>
-                    <el-table-column label="可用" width="180">
+                    <el-table-column label="Available" width="180">
                       <template slot-scope="scope">
                         <span>{{ byteToSize(scope.row.avail) }}</span>
                       </template>
                     </el-table-column>
-                    <el-table-column label="容量">
+                    <el-table-column label="Capacity">
                       <template slot-scope="scope">
                         <span>{{ byteToSize(scope.row.total) }}</span>
                       </template>
                     </el-table-column>
                   </el-table>
                 </dd>
-                <dt>镜像</dt>
+                <dt>Image</dt>
                 <dd>
                   <el-table
                     :data="isoList"
@@ -250,14 +250,14 @@
                     </el-table-column>
                     <el-table-column
                       prop="volid"
-                      label="名称"
+                      label="Name"
                     ></el-table-column>
                     <el-table-column
                       prop="format"
-                      label="格式"
+                      label="Format"
                       width="180"
                     ></el-table-column>
-                    <el-table-column label="大小">
+                    <el-table-column label="Size">
                       <template slot-scope="scope">
                         <span>{{ byteToSize(scope.row.size) }}</span>
                       </template>
@@ -280,7 +280,7 @@
                 />
                 <div></div>
               </label>
-              使用物理CD/DVD驱动器
+              Use Physical CD/DVD Drive
             </dt>
           </dl>
         </div>
@@ -296,16 +296,16 @@
                 />
                 <div></div>
               </label>
-              不使用任何介质
+              Do Not Use Any Medium
             </dt>
           </dl>
         </div>
         <div class="m-form__section">
           <dl>
-            <dt>访客OS</dt>
+            <dt>Guest OS</dt>
             <dd>
               <div class="m-form__select" style="width: 250px">
-                <label>类别</label>
+                <label>Category</label>
                 <select
                   class="m-form__select_inner"
                   v-model="osType"
@@ -322,7 +322,7 @@
                 </select>
               </div>
               <div class="m-margin-top-10 m-form__select" style="width: 250px">
-                <label>版本</label>
+                <label>Version</label>
                 <select class="m-form__select_inner" v-model="version">
                   <option
                     v-for="item of versionList"
@@ -337,11 +337,11 @@
           </dl>
         </div>
       </div>
-      <!--配置显卡-->
+      <!--Configure graphics card-->
       <div v-if="step === 3" class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>显卡</dt>
+            <dt>Graphics Card</dt>
             <dd>
               <div class="m-margin-top-10 m-form__select" style="width: 215px">
                 <select class="m-form__select_inner" v-model="vga">
@@ -355,7 +355,7 @@
                 </select>
               </div>
             </dd>
-            <dt>SCSI控制器</dt>
+            <dt>SCSI Controller</dt>
             <dd>
               <div class="m-margin-top-10 m-form__select" style="width: 215px">
                 <select class="m-form__select_inner" v-model="scsihw">
@@ -369,7 +369,7 @@
                 </select>
               </div>
             </dd>
-            <dt>Qemu代理</dt>
+            <dt>Qemu Agent</dt>
             <dd>
               <label class="m-form__checkbox">
                 <input type="checkbox" v-model="agent" />
@@ -409,7 +409,7 @@
               </div>
             </dd>
             <template v-if="bios === 'ovmf'">
-              <dt>添加EFI磁盘</dt>
+              <dt>Add EFI Disk</dt>
               <dd>
                 <label class="m-form__checkbox">
                   <input type="checkbox" v-model="efi" />
@@ -417,16 +417,16 @@
                 </label>
               </dd>
               <div class="m-margin-top-10" v-if="efi">
-                <dt>存储</dt>
+                <dt>Storage</dt>
                 <dd>
                   <m-select
                     prop="storage"
-                    label="存储"
+                    label="Storage"
                     labelWidth="100px"
                     @on-change="handleImageStorageChange"
                     v-model="imageStorageRadio"
                     :readonly="false"
-                    placeholder="请选存储"
+                    placeholder="Please select storage"
                   >
                     <div class="table">
                       <m-option
@@ -436,10 +436,10 @@
                         :label="item.storage"
                       >
                         <div v-if="index === 0" class="table-tr">
-                          <div class="table-td">名称</div>
-                          <div class="table-td">类别</div>
-                          <div class="table-td">可用</div>
-                          <div class="table-td">容量</div>
+                          <div class="table-td">Name</div>
+                          <div class="table-td">Category</div>
+                          <div class="table-td">Available</div>
+                          <div class="table-td">Capacity</div>
                         </div>
                         <div class="table-tr">
                           <div class="table-td" :title="item.storage">
@@ -460,13 +460,13 @@
                   </m-select>
                   <m-select
                     prop="format"
-                    label="格式"
+                    label="Format"
                     labelWidth="100px"
                     @on-change="(value) => (format = value)"
                     v-model="format"
                     :readonly="false"
                     :disabled="!storageType || storageType !== 'dir'"
-                    placeholder="请选格式"
+                    placeholder="Please select format"
                   >
                     <m-option
                       v-for="(item, index) in formatList"
@@ -482,15 +482,15 @@
           </dl>
         </div>
       </div>
-      <!--配置驱动-->
+      <!--Configure drivers-->
       <div v-if="step === 4" class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-input
                 type="number"
-                label="总线"
+                label="Bus"
                 v-model="deviceIndex"
                 labelWidth="110px"
                 min="0"
@@ -542,7 +542,7 @@
                     display: inline-block;
                     vertical-align: middle;
                   "
-                  >缓存</label
+                  >Cache</label
                 >
                 <div
                   class="m-margin-top-10 m-form__select"
@@ -569,7 +569,7 @@
                     display: inline-block;
                     vertical-align: middle;
                   "
-                  >SCSI控制器</label
+                  >SCSI Controller</label
                 >
                 VIRTIO SCSI
               </div>
@@ -583,7 +583,7 @@
                     display: inline-block;
                     vertical-align: middle;
                   "
-                  >丢弃</label
+                  >Discard</label
                 >
                 <label class="m-form__checkbox">
                   <input
@@ -597,7 +597,7 @@
               <m-input
                 type="number"
                 labelWidth="110px"
-                label="磁盘大小"
+                label="Disk Size"
                 v-model="disksize"
                 validateEvent
                 @validate="validate"
@@ -609,12 +609,12 @@
 
               <m-select
                 prop="storage"
-                label="存储"
+                label="Storage"
                 labelWidth="100px"
                 @on-change="handleImageStorageChange"
                 v-model="imageStorageRadio"
                 :readonly="false"
-                placeholder="请选存储"
+                placeholder="Please select storage"
               >
                 <div class="table">
                   <m-option
@@ -624,10 +624,10 @@
                     :label="item.storage"
                   >
                     <div v-if="index === 0" class="table-tr">
-                      <div class="table-td">名称</div>
-                      <div class="table-td">类别</div>
-                      <div class="table-td">可用</div>
-                      <div class="table-td">容量</div>
+                      <div class="table-td">Name</div>
+                      <div class="table-td">Category</div>
+                      <div class="table-td">Available</div>
+                      <div class="table-td">Capacity</div>
                     </div>
                     <div class="table-tr">
                       <div class="table-td" :title="item.storage">
@@ -648,13 +648,13 @@
               </m-select>
               <m-select
                 prop="format"
-                label="格式"
+                label="Format"
                 labelWidth="100px"
                 @on-change="(value) => (format = value)"
                 v-model="format"
                 :readonly="false"
                 :disabled="!storageType || storageType !== 'dir'"
-                placeholder="请选格式"
+                placeholder="Please select format"
               >
                 <m-option
                   v-for="(item, index) in formatList"
@@ -668,7 +668,7 @@
           </dl>
         </div>
         <div class="m-margin-top-10 m-form__section" v-if="isAdvice">
-          <dt>高级</dt>
+          <dt>Advanced</dt>
           <dd>
             <div style="margin-bottom: 20px">
               <label
@@ -680,7 +680,7 @@
                   display: inline-block;
                   vertical-align: middle;
                 "
-                >SSD仿真</label
+                >SSD Emulation</label
               >
               <label class="m-form__checkbox">
                 <input
@@ -701,7 +701,7 @@
                   display: inline-block;
                   vertical-align: middle;
                 "
-                >没有备份</label
+                >No Backup</label
               >
               <label class="m-form__checkbox">
                 <input type="checkbox" v-model="backup" />
@@ -739,7 +739,7 @@
                   display: inline-block;
                   vertical-align: middle;
                 "
-                >跳过复制</label
+                >Skip Copy</label
               >
               <label class="m-form__checkbox">
                 <input type="checkbox" v-model="replicate" />
@@ -747,25 +747,25 @@
               </label>
             </div>
             <m-input
-              label="读取限制(MB/s)"
+              label="Read Limit (MB/s)"
               labelWidth="110px"
-              placeholder="无限"
+              placeholder="Unlimited"
               type="number"
               v-model="mbps_rd"
               class="m-margin-top-10"
             />
             <m-input
-              label="写入限制(MB/s)"
+              label="Write Limit (MB/s)"
               labelWidth="110px"
-              placeholder="无限"
+              placeholder="Unlimited"
               type="number"
               v-model="mbps_wr"
               class="m-margin-top-10"
             />
             <m-input
-              label="读取限制(ops/s)"
+              label="Read Limit (ops/s)"
               labelWidth="110px"
-              placeholder="无限"
+              placeholder="Unlimited"
               type="number"
               prop="iops_rd"
               @validate="validate"
@@ -777,9 +777,9 @@
               v-model="iops_rd"
             />
             <m-input
-              label="写入限制(ops/s)"
+              label="Write Limit (ops/s)"
               labelWidth="110px"
-              placeholder="无限"
+              placeholder="Unlimited"
               type="number"
               prop="iops_wr"
               class="m-margin-top-10"
@@ -791,25 +791,25 @@
               v-model="iops_wr"
             />
             <m-input
-              label="读取最大突发(MB)"
+              label="Read Maximum Burst (MB)"
               labelWidth="110px"
-              placeholder="默认"
+              placeholder="Default"
               type="number"
               v-model="mbps_rd_max"
               class="m-margin-top-10"
             />
             <m-input
-              label="写入最大突发(MB)"
+              label="Write Maximum Burst (MB)"
               labelWidth="110px"
-              placeholder="默认"
+              placeholder="Default"
               type="number"
               v-model="mbps_wr_max"
               class="m-margin-top-10"
             />
             <m-input
-              label="读取最大突发(ops)"
+              label="Read Maximum Burst (ops)"
               labelWidth="110px"
-              placeholder="默认"
+              placeholder="Default"
               type="number"
               prop="iops_rd_max"
               @validate="validate"
@@ -821,9 +821,9 @@
               v-model="iops_rd_max"
             />
             <m-input
-              label="写入最大突发(ops)"
+              label="Write Maximum Burst (ops)"
               labelWidth="110px"
-              placeholder="默认"
+              placeholder="Default"
               type="number"
               prop="iops_wr_max"
               @validate="validate"
@@ -837,11 +837,11 @@
           </dd>
         </div>
       </div>
-      <!--配置CPU等信息-->
+      <!--Configure CPU and other information-->
       <div v-if="step === 5" class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-input
                 type="number"
@@ -867,7 +867,7 @@
                     display: inline-block;
                     vertical-align: middle;
                   "
-                  >类别</label
+                  >Category</label
                 >
                 <div
                   class="m-margin-top-10 m-form__select"
@@ -894,7 +894,7 @@
                 :error-msg="rules['cores'].message"
                 v-model="cores"
                 labelWidth="110px"
-                label="核"
+                label="Core"
               />
               <div style="margin-bottom: 20px">
                 <label
@@ -906,7 +906,7 @@
                     display: inline-block;
                     vertical-align: middle;
                   "
-                  >核总数</label
+                  >Total Cores</label
                 >
                 {{ cores }}
               </div>
@@ -915,7 +915,7 @@
         </div>
         <div class="m-form__section" v-if="isAdvice">
           <dl>
-            <dt>高级</dt>
+            <dt>Advanced</dt>
             <dd>
               <m-input
                 type="number"
@@ -935,7 +935,7 @@
                 labelWidth="110px"
                 class="m-margin-top-10"
                 v-model="cpulimit"
-                label="CPU限制"
+                label="CPU Limit"
               />
               <m-input
                 type="number"
@@ -948,7 +948,7 @@
                 :show-error="rules['cpuunits'].error"
                 :error-msg="rules['cpuunits'].message"
                 v-model="cpuunits"
-                label="CPU权重"
+                label="CPU Weight"
               />
               <div style="margin-bottom: 20px">
                 <label
@@ -960,7 +960,7 @@
                     display: inline-block;
                     vertical-align: middle;
                   "
-                  >启用NUMA</label
+                  >Enable NUMA</label
                 >
                 <label class="m-form__checkbox">
                   <input type="checkbox" v-model="numa" />
@@ -969,7 +969,7 @@
               </div>
               <div>
                 <el-table :data="vmCpuFlagItems" class="vm-cpu__flag">
-                  <el-table-column label="操作" width="130px;">
+                  <el-table-column label="Operation" width="130px;">
                     <div slot-scope="scope" class="cpu-check">
                       <label class="cpu-label">{{
                         flags[scope.row.flag]
@@ -986,23 +986,23 @@
                     prop="flag"
                     width="80px"
                   ></el-table-column>
-                  <el-table-column label="描述" prop="desc"></el-table-column>
+                  <el-table-column label="Description" prop="desc"></el-table-column>
                 </el-table>
               </div>
             </dd>
           </dl>
         </div>
       </div>
-      <!--配置内存-->
+      <!--Configure memory-->
       <div v-if="step === 6" class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-input
                 type="number"
                 labelWidth="110px"
-                label="内存"
+                label="Memory"
                 prop="memory"
                 validateEvent
                 class="m-margin-top-10"
@@ -1017,12 +1017,12 @@
         </div>
         <div class="m-form__section" v-if="isAdvice">
           <dl>
-            <dt>高级</dt>
+            <dt>Advanced</dt>
             <dd>
               <m-input
                 type="number"
                 labelWidth="110px"
-                label="最小内存"
+                label="Minimum Memory"
                 prop="ballon"
                 validateEvent
                 class="m-margin-top-10"
@@ -1036,7 +1036,7 @@
               <m-input
                 type="number"
                 labelWidth="110px"
-                label="共享"
+                label="Shared"
                 v-model="shares"
                 :disabled="!balloncheck || ballon === memory"
               />
@@ -1050,7 +1050,7 @@
                     display: inline-block;
                     vertical-align: middle;
                   "
-                  >Balloning设备</label
+                  >Balloning Device</label
                 >
                 <label class="m-form__checkbox">
                   <input type="checkbox" v-model="balloncheck" />
@@ -1061,10 +1061,10 @@
           </dl>
         </div>
       </div>
-      <!--配置网络-->
+      <!--Configure network-->
       <div v-if="step === 7" class="m-form__content">
         <div class="m-form__section">
-          <dt>基本信息</dt>
+          <dt>Basic Information</dt>
           <dd>
             <div style="margin-bottom: 20px">
               <label
@@ -1076,7 +1076,7 @@
                   display: inline-block;
                   vertical-align: middle;
                 "
-                >无网络设备</label
+                >No Network Device</label
               >
               <label class="m-form__checkbox">
                 <input type="checkbox" v-model="hasnetwork" />
@@ -1087,14 +1087,14 @@
               type="number"
               labelWidth="110px"
               class="m-margin-top-10"
-              label="VLAN标签"
+              label="VLAN Tag"
               v-model="tag"
               :disabled="hasnetwork"
             />
             <m-input
               type="number"
               labelWidth="110px"
-              label="MAC地址"
+              label="MAC Address"
               class="m-margin-top-10"
               v-model="mac"
               :disabled="hasnetwork"
@@ -1110,7 +1110,7 @@
                   display: inline-block;
                   vertical-align: middle;
                 "
-                >模型</label
+                >Model</label
               >
               <div
                 class="m-margin-top-10 m-form__select"
@@ -1140,7 +1140,7 @@
                     display: inline-block;
                     vertical-align: middle;
                   "
-                  >防火墙</label
+                  >Firewall</label
                 >
                 <label class="m-form__checkbox">
                   <input
@@ -1155,7 +1155,7 @@
           </dd>
         </div>
         <div class="m-form__section" v-show="!hasnetwork">
-          <dt>网络</dt>
+          <dt>Network</dt>
           <dd>
             <el-table :data="networkList">
               <el-table-column width="50">
@@ -1165,13 +1165,13 @@
                   >
                 </template>
               </el-table-column>
-              <el-table-column label="调节" prop="iface"></el-table-column>
-              <el-table-column label="活动" prop="type">
+              <el-table-column label="Adjust" prop="iface"></el-table-column>
+              <el-table-column label="Active" prop="type">
                 <template slot-scope="scope">
-                  <span>{{ scope.row.active ? "是" : "不是" }}</span>
+                  <span>{{ scope.row.active ? "Yes" : "No" }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="备注">
+              <el-table-column label="Note">
                 <template slot-scope="scope">
                   <span></span>
                 </template>
@@ -1181,7 +1181,7 @@
         </div>
         <div class="m-form__section" v-if="isAdvice">
           <dl>
-            <dt>高级</dt>
+            <dt>Advanced</dt>
             <dd>
               <div style="margin-bottom: 20px">
                 <label
@@ -1193,7 +1193,7 @@
                     display: inline-block;
                     vertical-align: middle;
                   "
-                  >断开</label
+                  >Disconnect</label
                 >
                 <label class="m-form__checkbox">
                   <input
@@ -1207,7 +1207,7 @@
               <m-input
                 type="number"
                 labelWidth="110px"
-                label="速率限制"
+                label="Rate Limit"
                 v-model="rate"
                 :disabled="hasnetwork"
               />
@@ -1222,11 +1222,11 @@
           </dl>
         </div>
       </div>
-      <!--展示配置参数-->
+      <!--Display configuration parameters-->
       <div v-if="step === 8" class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>预览</dt>
+            <dt>Preview</dt>
             <dd>
               <div class="table">
                 <div class="table-tr">
@@ -1243,7 +1243,7 @@
         </div>
         <div class="m-form__section">
           <dl>
-            <dt>创建后自启动</dt>
+            <dt>Auto Start After Creation</dt>
             <dd>
               <div style="margin-bottom: 20px">
                 <label class="m-form__checkbox">
@@ -1260,28 +1260,28 @@
       <div class="label_box">
         <label>
           <input type="checkbox" v-model="isAdvice" />
-          <div>高级</div>
+          <div>Advanced</div>
         </label>
       </div>
       <m-button
         type="primary"
         style="height: 40px; line-height: 40px; width: 100px"
         @on-click="prev()"
-        >上一步</m-button
+        >Previous</m-button
       >
       <m-button
         type="primary"
         style="height: 40px; line-height: 40px; width: 100px"
         @on-click="next()"
         v-show="step < 8"
-        >下一步</m-button
+        >Next</m-button
       >
       <m-button
         type="primary"
         style="height: 40px; line-height: 40px; width: 100px"
         @on-click="confirm()"
         v-show="step === 8"
-        >确定</m-button
+        >Confirm</m-button
       >
     </template>
   </Dialog>
@@ -1404,15 +1404,15 @@ export default {
       imageStorageRadio: "",
       formatList: [
         {
-          label: "Raw磁盘映像（raw）",
+          label: "Raw disk image (raw)",
           value: "raw",
         },
         {
-          label: "VMware映像格式（vmdk）",
+          label: "VMware image format (vmdk)",
           value: "vmdk",
         },
         {
-          label: "QEMU映像格式（qcow2）",
+          label: "QEMU image format (qcow2)",
           value: "qcow2",
         },
       ],
@@ -1516,11 +1516,11 @@ export default {
     this.__init__();
   },
   methods: {
-    flotToFixed, //格式化内存、磁盘数据
-    byteToSize, //格式化内存、磁盘数据
-    //确定添加
+    flotToFixed, // Format memory and disk data
+    byteToSize, // Format memory and disk data
+    // Confirm add
     confirm() {
-      //创建请求
+      // Create request
       this.createQemu(
         Object.assign(this.params, { start: this.start ? 1 : 0 })
       ).catch((res) => {
@@ -1532,14 +1532,14 @@ export default {
       this.close();
     },
     cancel() {},
-    //下一步按钮所做操作
+    // Next button operations
     async next() {
-      //整体校验没一步的表单
+      // Overall form validation for each step
       if (this.validateAll()) return;
-      //校验通过则步骤加1
+      // If validation passes, step up by 1
       if (this.step < 8) ++this.step;
       if (this.step === 2) {
-        //查询存储
+        // Query storage
         await this.queryStorageList({
           format: 1,
           content: "iso",
@@ -1547,7 +1547,7 @@ export default {
           this.mediaType = "iso";
           this.storageRadio = this.storageList[0].storage;
         });
-        //根据存储查询相应的镜像列表
+        // Query image list based on storage
         this.queryIsoList({ storage: this.storageRadio, content: "iso" }).then(
           (res) => {
             this.isoRadio =
@@ -1556,7 +1556,7 @@ export default {
         );
       }
       if (this.step === 3) {
-        //查询镜像
+        // Query image
         Promise.all([this.queryImageStorageList()]).then(() => {
           this.imageStorageRadio =
             this.imageStorageList.length > 0
@@ -1569,20 +1569,20 @@ export default {
         });
       }
       if (this.step === 5) {
-        //设置vmCpuflag初始化
+        // Set vmCpuflag initialization
         this.vmCpuFlagItems.forEach((item) => {
           this.$set(this.flags, item.flag, "default");
         });
       }
       if (this.step === 7) {
-        //查询网络初始化网络选择
+        // Query network initialization for network selection
         Promise.all([this.queryNetWorkList()]).then(() => {
           this.networkRadio =
             this.networkList.length > 0 ? this.networkList[0].iface : "";
         });
       }
       if (this.step === 8) {
-        //拼接添加请求参数
+        // Concatenate add request parameters
         let device = "";
         if (this.cache) device += `cache=${this.cache},`;
         if (this.discard)
@@ -1678,17 +1678,17 @@ export default {
       }
     },
     handleStepChange() {},
-    //上一步
+    // Previous step
     prev() {
-      //步骤逐次递减直到为1
+      // Step down until 1
       if (this.step > 1) --this.step;
     },
-    //关闭
+    // Close
     close() {
       this.visible = false;
       this.$emit("close", false);
     },
-    //整体校验
+    // Overall validation
     validateAll() {
       let props = [];
       if (this.step === 1) props = ["name", "nodename", "vmid"];
@@ -1720,31 +1720,31 @@ export default {
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
     },
-    //逐个校验
+    // Individual validation
     validate(prop) {
       let value = String(this[prop]).trim();
       this.rules[prop].error = false;
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
-        //判断是否为空
+        // Check if empty
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
       if (prop == "name" && !/^\w/.test(value)) {
-        //判断名称
+        // Check name
         this.rules[prop].error = true;
-        this.rules[prop].message = "名称以数字或字母开头";
+        this.rules[prop].message = "Name must start with a letter or number";
         return;
       }
       if (prop == "vmid" && !/\d/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "VM ID只能是数字";
+        this.rules[prop].message = "VM ID must be a number";
         return;
       }
       if (prop == "vmid" && value < this.nextid) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "VM ID不能小于初始值";
+        this.rules[prop].message = "VM ID cannot be less than initial value";
         return;
       }
       if (
@@ -1753,17 +1753,17 @@ export default {
         Number(value) < 10
       ) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "值不能小于10";
+        this.rules[prop].message = "Value cannot be less than 10";
         return;
       }
       if (prop === "vcpus" && value && Number(value) > Number(this.cores)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = `值不能大于${this.cores}`;
+        this.rules[prop].message = `Value cannot be greater than ${this.cores}`;
         return;
       }
       if (prop === "cpuunits" && value && Number(value) < 8) {
         this.rules[prop].error = true;
-        this.rules[prop].message = `值不能小于8`;
+        this.rules[prop].message = `Value cannot be less than 8`;
         return;
       }
     },
@@ -1777,17 +1777,17 @@ export default {
         this.nodename = this.nodeList && this.nodeList[0].node;
       });
     },
-    //表格单选
+    // Single selection in table
     handleCurrentChange(val) {
       this.nodename = val.node;
       this.templateRadio = val.id;
     },
-    //--选择资源池--
+    //-- Select resource pool --
     handleCurrentPoolChange(val) {
       this.pool = val.poolid;
       this.poolRadio = val.poolid;
     },
-    //选择存储
+    // Select storage
     handleStorageSingleList(val) {
       this.storageRadio = val.storage;
       this.queryIsoList({ storage: this.storageRadio, content: "iso" }).then(
@@ -1796,7 +1796,7 @@ export default {
         }
       );
     },
-    //选择镜像存储
+    // Select image storage
     handleImageStorageChange(val) {
       this.imageStorageRadio = val;
       this.storageType = this.imageStorageList.filter(
@@ -1808,7 +1808,7 @@ export default {
     handleStorageSlect(val) {
       this.imageStorageRadio = val.storage;
     },
-    //设置操作系统版本以及类型
+    // Set operating system version and type
     handleOsTypeChange(event) {
       let ev = getEvent(event),
         value = ev.target.value || ev.srcElement.value;
