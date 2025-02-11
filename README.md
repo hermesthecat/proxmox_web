@@ -1,75 +1,76 @@
 # Proxmox_web
-基于Proxmox-ve_6.2.1后端的，前端开源项目，运用[Vue + vuex + element + vue-router]开发，包括虚拟机管理、克隆、备份、复制
 
-以及Lvm、Lvm-thin、ceph本地存储等
+A frontend open-source project based on Proxmox-ve_6.2.1 backend, developed using [Vue + vuex + element + vue-router]. Includes virtual machine management, cloning, backup, replication,
 
-感谢开源社区，感谢promox-ve提供后端开源项目！
+as well as Lvm, Lvm-thin, ceph local storage, etc.
 
-如果帮助到了您一点点，star 一下吧 🙂
+Thanks to the open-source community, and thanks to promox-ve for providing the backend open-source project!
 
-##后端代码部署
-   安装proxmox-ve_6.2-1.iso版本
-   
-##前端代码部署
+If this helped you even a little bit, please give it a star 🙂
 
-    1、下载代码 https://github.com/mingheinfo/proxmox_web.git
-	
-	2、在package.json目录下运行  npm run build
-	
-    3、编译完成后在public目录下得到 dist目录
-	
-	4、安装nginx apt-get install nginx
-	
-	5、在/etc/nginx下创建crt目录执行
-	
-	   Linux系统下生成证书：
-	   
-       1、生成秘钥key,运行:
-	   
+## Backend Code Deployment
+
+Install proxmox-ve_6.2-1.iso version
+
+## Frontend Code Deployment
+
+    1. Download code from https://github.com/hermesthecat/proxmox_web.git
+
+    2. Run 'npm run build' in the package.json directory
+
+    3. After compilation, you'll get the dist directory in the public folder
+
+    4. Install nginx: apt-get install nginx
+
+    5. Create crt directory under /etc/nginx and execute
+
+       Generate certificate on Linux system:
+
+       1. Generate key, run:
+
        openssl genrsa -des3 -out server.key 2048
-	   
-       会有两次要求输入密码,输入同一个即可输入密码然后你就获得了一个server.key文件. 
-	   
-       2、以后使用此文件(通过openssl提供的命令或API)可能经常回要求输入密码,如果想去除输入密码的步骤可以使用以下命令:
-	   
+
+       You'll be asked to enter a password twice, enter the same one. Then you'll get a server.key file.
+
+       2. If you want to remove the password prompt when using this file (through openssl commands or API), use the following command:
+
           openssl rsa -in server.key -out server.key
-		  
-       3、创建服务器证书的申请文件server.csr,运行:
-	   
+
+       3. Create server certificate request file server.csr, run:
+
           openssl req -new -key server.key -out server.csr
-		  
-         其中Country Name填CN,Common Name填主机名也可以不填,如果不填浏览器会认为不安全.(例如你以后的url为https://abcd/xxxx….这里就可以填abcd),其他的都可以不填. 
-		 
-       4、创建CA证书:
-	   
+
+         For Country Name enter CN, Common Name can be your hostname or left blank. If left blank, browser will mark it as unsafe. (e.g., if your future URL will be https://abcd/xxxx…, you can enter abcd here). Others can be left blank.
+
+       4. Create CA certificate:
+
           openssl req -new -x509 -key server.key -out ca.crt -days 3650
-		  
-          此时,你可以得到一个ca.crt的证书,这个证书用来给自己的证书签名. 
-		  
-       5、创建自当前日期起有效期为期十年的服务器证书server.crt：
-	   
+
+          Now you'll get a ca.crt certificate, which is used to sign your own certificate.
+
+       5. Create server certificate server.crt valid for 10 years from current date:
+
           openssl x509 -req -days 3650 -in server.csr -CA ca.crt -CAkey server.key -CAcreateserial -out server.crt
-		  
-       6、 ls你的文件夹,可以看到一共生成了5个文件:
-	   
-          ca.crt   ca.srl    server.crt   server.csr   server.key其中,server.crt和server.key就是你的nginx需要的证书文件. 
-		  
-	6、将3步得到的dist目录下的文件放置到 /var/www/mhflex 目录下
-	
-	7、配置nginx.conf文件 将package.json统计目录下nginx.conf文件替换/etc/nginx/nginx.conf文件
-	
-	8、完成以上步骤后执行 nginx 命令
-	
-	打开链接 https://ip:3000/login 就可以测试相关业务了
 
-##截图：
+       6. If you ls your folder, you'll see 5 files generated:
 
-![登录](https://github.com/mingheinfo/proxmox_web/blob/master/public/login.png)
+          ca.crt   ca.srl    server.crt   server.csr   server.key
+          Among these, server.crt and server.key are the certificate files needed by nginx.
 
-![监控](https://github.com/mingheinfo/proxmox_web/blob/master/public/chart.png)
+    6. Place the files from the dist directory obtained in step 3 into /var/www/mhflex directory
 
-![首页](https://github.com/mingheinfo/proxmox_web/blob/master/public/home.png)
-  
-![节点](https://github.com/mingheinfo/proxmox_web/blob/master/public/node.png)
+    7. Configure nginx.conf file: Replace /etc/nginx/nginx.conf with the nginx.conf file from the package.json directory
 
+    8. After completing above steps, execute the 'nginx' command
 
+    Open the link https://ip:3000/login to test related functions
+
+## Screenshots:
+
+![Login](https://github.com/hermesthecat/proxmox_web/blob/master/public/login.png)
+
+![Monitoring](https://github.com/hermesthecat/proxmox_web/blob/master/public/chart.png)
+
+![Homepage](https://github.com/hermesthecat/proxmox_web/blob/master/public/home.png)
+
+![Node](https://github.com/hermesthecat/proxmox_web/blob/master/public/node.png)
