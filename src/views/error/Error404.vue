@@ -5,8 +5,8 @@
       <div class="error404-main__zero"></div>
       <div class="error404-main__text" style="margin-left: -5px">4</div>
     </div>
-    <a class="error404-link" @click="goHome">回到首页</a>
-    <a class="error404-link" @click="back">回到上一页</a>
+    <a class="error404-link" @click="goHome">Back to Home</a>
+    <a class="error404-link" @click="back">Back to Previous</a>
   </div>
 </template>
 

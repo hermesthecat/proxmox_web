@@ -106,7 +106,7 @@ export default {
       });
       return Promise.all(tasks);
     },
-    //查询domain
+    // Query domain
     queryDomain() {
       this.$http.get("json/access/domains").then((res) => {
         if (res.data) {
@@ -124,7 +124,7 @@ export default {
         }
       });
     },
-    //创建用户
+    // Create user
     createAccessUser(param) {
       let event = this.createEvent("action.access.user.create");
       return this.$http
@@ -352,8 +352,8 @@ export default {
         });
     },
     /**
-     * 更新组
-     * **/
+     * Update group
+     * */
     updateGroup(param) {
       let event = this.createEvent("action.access.group.create");
       let params = deepCopy(param);
@@ -374,8 +374,8 @@ export default {
         });
     },
     /**
-     * 删除组
-     * **/
+     * Delete group
+     * */
     deleteGroupById() {
       let event = this.createEvent("action.access.group.delete");
       let tasks = [],
@@ -397,8 +397,8 @@ export default {
       return Promise.all(tasks);
     },
     /**
-     * 删除域
-     * **/
+     * Delete domain
+     * */
     deleteAccessDomainById() {
       let event = this.createEvent("action.access.group.delete");
       let tasks = [],
@@ -420,8 +420,8 @@ export default {
       return Promise.all(tasks);
     },
     /**
-     * 同步域
-     * **/
+     * Sync domain
+     * */
     syncAccessDomainById(realname, param) {
       let event = this.createEvent("action.access.domain.sync");
       if (!realname) return;

@@ -100,7 +100,7 @@
           v-else
           @mouseleave.stop="isOpen = false"
         >
-          暂无数据
+          No Data
         </div>
       </div>
     </transition>
@@ -200,7 +200,7 @@ export default {
     },
     placeholder: {
       type: String,
-      default: "请选择",
+      default: "Please select",
     },
     required: {
       type: Boolean,
@@ -221,7 +221,7 @@ export default {
     };
   },
   mounted() {
-    //当窗口大小改变时不展示下拉框
+    // Don't show dropdown when window size changes
     this.selected = this.setSelected();
     this.selectValues = this.value;
     window.addEventListener("resize", this.handleOptionBlur);
@@ -229,7 +229,7 @@ export default {
   },
   methods: {
     setSelected() {
-      let selected = []; //清空上次选择，设置重新选择
+      let selected = []; // Clear previous selection and set new selection
       for (let i = 0; i < this.cachedOptions.length; i++) {
         if (this.type === "multiple") {
           if (this.value.includes(this.cachedOptions[i].value)) {
@@ -243,7 +243,7 @@ export default {
       }
       return selected;
     },
-    //改变下拉框触发的回调
+    // Callback triggered when dropdown changes
     handleChange(type, value, selected) {
       if (this.type === "multiple") {
         if (selected) {
@@ -266,7 +266,7 @@ export default {
       this.$emit("validate", this.prop);
       this.selected = this.setSelected();
     },
-    //处理多选隐藏
+    // Handle multiple selection hide
     handleOptionBlur(event) {
       stopEvent(event);
       this.isOpen = false;
@@ -278,7 +278,7 @@ export default {
         this.$refs["select-option"].childNodes.length <= 0;
       this.$emit("visible-change");
     },
-    //点击下拉选择框之外的区域隐藏选择框
+    // Hide select box when clicking outside dropdown area
     showOption(event) {
       event.stopPropagation
         ? event.stopPropagation()
@@ -288,7 +288,7 @@ export default {
     },
   },
   destroyed() {
-    //移除resize监听事件
+    // Remove resize event listener
     window.removeEventListener("resize", this.handleOptionBlur);
     document.removeEventListener("click", this.showOption, false);
   },

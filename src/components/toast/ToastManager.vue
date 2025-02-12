@@ -58,9 +58,9 @@
               $t(item.action, { name: "" })
             }}</span>
             <span v-if="item.resultType === 'success'"
-              >成功 {{ item.count }}</span
+              >Success {{ item.count }}</span
             >
-            <span v-if="item.resultType === 'fail'">失败 {{ item.count }}</span>
+            <span v-if="item.resultType === 'fail'">Failed {{ item.count }}</span>
           </span>
           <!--<img @click="deleteToast($event, item)" style="position: absolute; right: 15px; top: 18px; cursor: pointer;" src="~assets/close.svg" />-->
           <span style="position: absolute; top: 0; right: 15px">
@@ -77,7 +77,7 @@
 </template>
 
 <script>
-//提示框
+// Toast notification component
 import VueMixins from "@src/mixins/VuexMixins";
 import { stopEvent } from "@libs/utils";
 /* eslint no-unused-vars: ["error", { "varsIgnorePattern": ".*" }] */

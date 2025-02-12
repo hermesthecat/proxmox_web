@@ -11,13 +11,13 @@
       <div class="m-form__content" v-if="isCreate">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-input
                 type="text"
                 prop="name"
                 labelWidth="100px"
-                label="名称"
+                label="Name"
                 v-model="name"
                 validateEvent
                 @validate="validate"
@@ -25,13 +25,13 @@
                 :show-error="rules['name'].error"
                 :error-msg="rules['name'].message"
                 v-if="modalType === 'create'"
-                placeholder="请输入名称"
+                placeholder="Please enter name"
               />
               <m-input
                 type="text"
                 prop="domains"
                 labelWidth="100px"
-                label="名称"
+                label="Name"
                 v-model="domains"
                 validateEvent
                 @validate="validate"
@@ -39,11 +39,11 @@
                 :show-error="rules.domains.error"
                 :error-msg="rules.domains.message"
                 v-if="modalType !== 'create'"
-                placeholder="请输入名称"
+                placeholder="Please enter name"
               />
               <m-select
                 prop="directory"
-                label="ACME目录"
+                label="ACME Directory"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
@@ -54,7 +54,7 @@
                 @on-change="handleDirectorySelect"
                 v-model="directory"
                 :disabled="!isCreate"
-                placeholder="请选择ACME目录"
+                placeholder="Please select ACME directory"
               >
                 <m-option
                   v-for="(item, index) in db.directoriesList"
@@ -65,8 +65,8 @@
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
-                        <span class="table-td">名称</span>
-                        <span class="table-td">url</span>
+                        <span class="table-td">Name</span>
+                        <span class="table-td">URL</span>
                       </div>
                     </template>
                     <div class="table-tr">
@@ -81,13 +81,13 @@
                 </m-option>
               </m-select>
               <div class="service-police">
-                <div class="service-police-label">服务条款</div>
+                <div class="service-police-label">Terms of Service</div>
                 <div class="service-police-content">
-                  {{ this.tos_url ? this.tos_url : "载入中" }}
+                  {{ this.tos_url ? this.tos_url : "Loading" }}
                 </div>
               </div>
               <m-checkbox
-                label="接受Tos"
+                label="Accept ToS"
                 v-model="tos_url__checked"
                 labelWidth="100px"
               ></m-checkbox>
@@ -103,7 +103,7 @@
                 required
                 :show-error="rules.contact.error"
                 :error-msg="rules.contact.message"
-                placeholder="请输入E-mail"
+                placeholder="Please enter E-mail"
               />
             </dd>
           </dl>
@@ -112,7 +112,7 @@
       <div class="m-form__content" v-if="!isCreate">
         <div class="m-form__section">
           <div class="service-police">
-            <div class="service-police-label">Eamil</div>
+            <div class="service-police-label">Email</div>
             <div class="service-police-content">
               {{
                 db.acmeAccountObj.account.contact &&
@@ -121,7 +121,7 @@
             </div>
           </div>
           <div class="service-police">
-            <div class="service-police-label">已创建</div>
+            <div class="service-police-label">Created</div>
             <div class="service-police-content">
               {{
                 db.acmeAccountObj.account.createdAt &&
@@ -130,7 +130,7 @@
             </div>
           </div>
           <div class="service-police">
-            <div class="service-police-label">状态</div>
+            <div class="service-police-label">Status</div>
             <div class="service-police-content">
               {{
                 db.acmeAccountObj.account.status &&
@@ -139,7 +139,7 @@
             </div>
           </div>
           <div class="service-police">
-            <div class="service-police-label">目录</div>
+            <div class="service-police-label">Directory</div>
             <div class="service-police-content">
               <a
                 :href="
@@ -153,7 +153,7 @@
             </div>
           </div>
           <div class="service-police">
-            <div class="service-police-label">服务条款</div>
+            <div class="service-police-label">Terms of Service</div>
             <div class="service-police-content">
               <a
                 :href="db.acmeAccountObj.tos && db.acmeAccountObj.tos"
@@ -170,19 +170,19 @@
         :_style="{
           width: '800px',
         }"
-        title="Task Viewer: 任务进度"
+        title="Task Viewer: Task Progress"
       >
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
-            <m-tab-panel label="输出" name="log"></m-tab-panel>
-            <m-tab-panel label="状态" name="status"></m-tab-panel>
+            <m-tab-panel label="Output" name="log"></m-tab-panel>
+            <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
           <m-button
             class="create-btn m-margin-top-10"
             type="primary"
             @on-click="stopTask1"
             :disabled="db.addClusterStatusObj.status !== 'running'"
-            >停止</m-button
+            >Stop</m-button
           >
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
@@ -330,13 +330,13 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
       if (value && prop === "contact") {
         if (!/^\w+@[a-zA-Z0-9]{2,10}(?:\.[a-z]{2,4}){1,3}$/.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "邮箱格式不正确";
+          this.rules[prop].message = "Invalid email format";
           return;
         }
       }

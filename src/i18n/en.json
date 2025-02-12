@@ -309,7 +309,7 @@
   "datacenter-firewall-group": "Security Group",
   "datacenter-firewall-alias": "Alias",
   "datacenter-firewall-ipset": "IPSet",
-  "datacenter-help": "快照克隆帮助",
+  "datacenter-help": "Snapshot Clone Help",
   "certificates": {
     "filename": "Name",
     "notafter": "Expires",

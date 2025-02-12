@@ -18,8 +18,8 @@
  * ======`-.____`-.___\_____/___.-`____.-'====== *
  *                    `=---='                    *
  * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ *
- *             佛祖保佑       永无BUG              *
- *         此代码经过开光处理，不可能存在bug！        *
+ *         Buddha bless us with no bugs          *
+ *    This code has been blessed, no bugs!       *
  * * * * * * * * * * * * * * * * * * * * * * * **/
 
 import axios from 'axios';
@@ -28,13 +28,13 @@ import { Loading } from 'element-ui'
 
 export default class Http {
   /**
-   * 构造函数传入的是自定义的一些配置，
-   * axios相关的全局配置使用sxAjax实例进行配置：
-   * sxAjax.defaults.xxx sxAjax.mockDefaults.xxx进行配置
+   * Constructor takes custom configurations,
+   * Axios related global configurations use sxAjax instance:
+   * sxAjax.defaults.xxx sxAjax.mockDefaults.xxx for configuration
    *
-   * @param onShowErrorTip 如何显示错误提示
-   * @param onShowSuccessTip 如何显示成功提示
-   * @param isMock 区分哪些请求需要mock，比如：url以约定'/mock'开头的请求，使用mock等方式。
+   * @param onShowErrorTip How to display error tips
+   * @param onShowSuccessTip How to display success tips
+   * @param isMock Distinguish which requests need mock, e.g.: requests starting with '/mock', using mock etc.
    */
   constructor({
     onShowSuccessTip = (/* response, successTip  */) => true,
@@ -60,7 +60,7 @@ export default class Http {
     instance.defaults.headers.post['Content-Type'] = 'application/json';
     instance.defaults.headers.put['Content-Type'] = 'application/json';
     instance.defaults.baseURL = '/';
-    instance.defaults.withCredentials = true; // 跨域携带cookie
+    instance.defaults.withCredentials = true; // Enable cross-origin cookies
   }
 
   /**
@@ -68,7 +68,7 @@ export default class Http {
    * @param url
    * @param d
    * @param method
-   * @param options 配置数据，最常用是【successTip】属性，也可以吧url data method覆盖掉；
+   * @param options Configuration data, most commonly used is the [successTip] property, can also override url data method
    * @returns {Promise}
    */
   ajax(url, d = {}, method = 'get', options = {}) {
@@ -76,18 +76,18 @@ export default class Http {
     //  if(url.indexOf('resources') < 0 && url.indexOf('ticket') <0 && url.indexOf('domains')<0) {
     //    loadingInstance = Loading.service({ fullscreen: true});
     //  }
-    // 有 null的情况
+    // Handle null case
     let data = d || {};
     options = options || {};
 
     let {
-      successTip = false, // 默认false，不展示
-      errorTip, //  = method === 'get' ? '获取数据失败！' : '操作失败！', // 默认失败提示
-      noEmpty = false, // 过滤掉 值为 null、''、undefined三种参数，不传递给后端
+      successTip = false, // Default false, don't show
+      errorTip, //  = method === 'get' ? 'Failed to get data!' : 'Operation failed!', // Default error message
+      noEmpty = false, // Filter out parameters with values null, '', undefined, don't send to backend
       originResponse = false,
     } = options;
 
-    // 删除 参数对象中为 null '' undefined 的数据，不发送给后端
+    // Delete data where values are null, '', undefined, don't send to backend
     if (noEmpty === true && typeof data === 'object' && !Array.isArray(data)) {
       const noEmptyData = {};
 
@@ -111,7 +111,7 @@ export default class Http {
     let instance = this.instance;
 
     /*
-     * 封装内不做处理，如果需要，通过如下方式，或者其他方法自行处理
+     * No processing in wrapper, if needed, handle through following method or other methods
      * axiosInstance.interceptors.request.use(cfg => {
      *   // Do something before request is sent
      *   return cfg;
@@ -127,8 +127,8 @@ export default class Http {
     }
     /*
     *
-    * Content-Type application/x-www-form-urlencoded 存在问题
-    * 参见：https://github.com/axios/axios/issues/362
+    * Content-Type application/x-www-form-urlencoded has issues
+    * See: https://github.com/axios/axios/issues/362
     *
     * */
     const defaultsContentType = instance.defaults.headers[method]['Content-Type']
@@ -151,8 +151,8 @@ export default class Http {
 
     let params = {};
     if (isGet || isDelete) {
-      params = data; // params 是get或delete请求拼接到url上的
-      data = null; // data 是put、post 等请求发送的数据
+      params = data; // params are appended to url for get or delete requests
+      data = null; // data is sent in put, post requests
     }
 
     const ajaxPromise = new Promise((resolve, reject) => {
@@ -169,7 +169,7 @@ export default class Http {
         //loadingInstance && loadingInstance.close();
       }, err => {
         const isCanceled = err && err.message && err.message.canceled;
-        if (isCanceled) return; // 如果是用户主动cancel，不做任何处理，不会触发任何函数
+        if (isCanceled) return; // If user actively cancels, do nothing and don't trigger any functions
         this.onShowErrorTip(err, errorTip);
         if (err.response && err.response.data && err.response.data && err.response.data.errors) reject(err.response.data.errors);
         else reject(err.response && err.response.statusText && err.response.statusText);
@@ -188,10 +188,10 @@ export default class Http {
   }
 
   /**
-   * 发送一个get请求，一般用于查询操作
-   * @param {string} url 请求路径
-   * @param {object} [params] 传输给后端的数据，正常请求会转换成query string 拼接到url后面
-   * @param {object} [options] axios 配置参数
+   * Send a GET request, generally used for query operations
+   * @param {string} url Request path
+   * @param {object} [params] Data sent to backend, normally converted to query string and appended to url
+   * @param {object} [options] Axios configuration parameters
    * @returns {Promise}
    */
   get(url, params, options) {
@@ -199,22 +199,21 @@ export default class Http {
   }
 
   /**
-   * 发送一个post请求，一般用于添加操作
-   * @param {string} url 请求路径
-   * @param {object} [data] 传输给后端的数据
-   * @param {object} [options] axios 配置参数
+   * Send a POST request, generally used for add operations
+   * @param {string} url Request path
+   * @param {object} [data] Data sent to backend
+   * @param {object} [options] Axios configuration parameters
    * @returns {Promise}
    */
   post(url, data, options) {
     return this.ajax(url, data, 'post', options);
   }
 
-
   /**
-   * 发送一个put请求，一般用于更新操作
-   * @param {string} url 请求路径
-   * @param {object} [data] 传输给后端的数据
-   * @param {object} [options] axios 配置参数
+   * Send a PUT request, generally used for update operations
+   * @param {string} url Request path
+   * @param {object} [data] Data sent to backend
+   * @param {object} [options] Axios configuration parameters
    * @returns {Promise}
    */
   put(url, data, options) {
@@ -222,10 +221,10 @@ export default class Http {
   }
 
   /**
-   * 发送一个patch请求，一般用于更新部分数据
-   * @param {string} url 请求路径
-   * @param {object} [data] 传输给后端的数据
-   * @param {object} [options] axios 配置参数
+   * Send a PATCH request, generally used for partial data updates
+   * @param {string} url Request path
+   * @param {object} [data] Data sent to backend
+   * @param {object} [options] Axios configuration parameters
    * @returns {Promise}
    */
   patch(url, data, options) {
@@ -233,10 +232,10 @@ export default class Http {
   }
 
   /**
-   * 发送一个delete请求，一般用于删除数据，params会被忽略（http协议中定义的）
-   * @param {string} url 请求路径
-   * @param {object} [data] 传输给后端的数据
-   * @param {object} [options] axios 配置参数
+   * Send a DELETE request, generally used for deleting data, params will be ignored (defined in HTTP protocol)
+   * @param {string} url Request path
+   * @param {object} [data] Data sent to backend
+   * @param {object} [options] Axios configuration parameters
    * @returns {Promise}
    */
   del(url, data, options) {

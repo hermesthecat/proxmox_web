@@ -28,23 +28,23 @@ var IP6_bracket_match = new RegExp("^\\[(" + IPV6_REGEXP + ")\\]");
 
 var IP64_match = new RegExp("^(?:" + IPV6_REGEXP + "|" + IPV4_REGEXP + ")$");
 
-//获得event对象兼容ie
+// Get event object compatible with IE
 function getEvent(ev) {
   return ev || window.event;
 }
-//阻止事件冒泡
+// Stop event bubbling
 function stopEvent(ev) {
-  //如果提供了事件对象，则这是一个非IE浏览器
+  // If event object is provided, this is a non-IE browser
   if (ev && ev.stopPropagation)
-    //因此它支持W3C的stopPropagation()方法
+    // Therefore it supports W3C's stopPropagation() method
     ev.stopPropagation();
   else
-    //否则，我们需要使用IE的方式来取消事件冒泡
+    // Otherwise, we need to use IE's way to cancel event bubbling
     window.event.cancelBubble = true;
 }
 /**
- * @param fn要触发的回调，
- * @param delay隔多少时间触发
+ * @param fn callback to trigger
+ * @param delay time interval to trigger
  * */
 function debounce(fn, delay) {
   let timer;
@@ -61,9 +61,9 @@ function debounce(fn, delay) {
 }
 
 /**
- * 节流函数
- * @param fn要出发的回调
- * @param delay隔多少时间触发
+ * Throttle function
+ * @param fn callback to trigger
+ * @param delay time interval to trigger
  * */
 function throttle(func, delay, immediate) {
   let prev = Date.now();
@@ -83,7 +83,7 @@ function throttle(func, delay, immediate) {
 }
 
 /**
- * 解析cookie
+ * Parse cookie
  * */
 function parseCookie() {
   let cookies = document.cookie.split(";");
@@ -96,7 +96,7 @@ function parseCookie() {
 }
 
 /**
- * 设置cookie
+ * Set cookie
  * */
 function setCookie(name, value) {
   var argv = arguments,
@@ -111,7 +111,7 @@ function setCookie(name, value) {
   document.cookie = str;
 }
 /**
- * @param name 获得cookie值
+ * @param name Get cookie value
  * */
 function getCookie(name) {
   var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
@@ -121,7 +121,7 @@ function getCookie(name) {
     return null;
 }
 /**
- * 删除cookie
+ * Delete cookie
  * */
 function delCookie(name, path) {
   if (this.get(name)) {
@@ -130,7 +130,7 @@ function delCookie(name, path) {
   }
 }
 /**
- * 树形结构数据处理
+ * Tree structure data processing
  * */
 function treeNode(data, cb) {
   let loop = item => {
@@ -143,7 +143,7 @@ function treeNode(data, cb) {
   return loop(data);
 }
 /**
- * 格式化日期
+ * Format date
  * */
 function dateFormat(date, format) {
   if (!date) return;
@@ -171,7 +171,7 @@ function padLeftZero(str) {
 }
 
 /**
- * 数组去重
+ * Array deduplication
  * */
 function arrayToHeavy(arr) {
   let newArr = [];
@@ -184,12 +184,12 @@ function arrayToHeavy(arr) {
 }
 
 /**
- * 冒泡排序
+ * Bubble sort
  * */
 function bubbleSort(arr) {
-  //控制循环
+  // Control loop
   for (let i = 0; i < arr.length; i++) {
-    //遍历数组
+    // Traverse array
     for (let j = 0; j < arr.length - i - 1; j++) {
       let temp;
       if (arr[j] > arr[j + 1]) {
@@ -202,15 +202,15 @@ function bubbleSort(arr) {
   return arr;
 }
 /**
- * 快速排序 @parma array原数组;
- * prop 根据哪个字段排序
- * order 默认降序排列 -表示降序, +表示升序
+ * Quick sort @param array original array;
+ * prop sort by which field
+ * order default descending order - means descending, + means ascending
  * */
 function quickSort(array, prop, order = '-') {
   if (!Array.isArray(array)) return;
   let sort = (arr, left = 0, right = arr.length - 1) => {
     if (left >= right) return;
-    let i = left, j = right, baseVal = arr[j]//以最后一个元素为基准;
+    let i = left, j = right, baseVal = arr[j] // Use last element as base
     while (i < j) {
       if (Object.prototype.toString.call(arr[i]) === '[object Object]' || Object.prototype.toString.call(arr[j]) === '[object Object]') {
         if (order == '-') {
@@ -243,16 +243,16 @@ function quickSort(array, prop, order = '-') {
         arr[i] = arr[j];
       }
     }
-    arr[j] = baseVal;//当i=j时基准值放在中央位置完成一次循环
-    sort(arr, left, j - 1);//baseVal左边进行排序
-    sort(arr, j + 1, right);//baseVal右边分组进行排序
+    arr[j] = baseVal; // When i=j put base value in center position to complete one cycle
+    sort(arr, left, j - 1); // Sort left side of baseVal
+    sort(arr, j + 1, right); // Sort right side of baseVal
   }
-  const newArr = array.concat();//深拷贝数组新数组改变不改变原数组
+  const newArr = array.concat(); // Deep copy array, new array changes don't affect original array
   sort(newArr);
   return newArr;
 }
 /**
- * 深拷贝对象
+ * Deep copy object
  * */
 function deepCopy(source) {
   if (!isObject(source)) return source;
@@ -269,25 +269,25 @@ function deepCopy(source) {
   return target;
 }
 /**
- * 判断是否是对象
+ * Check if it's an object
  * */
 function isObject(obj) {
   return typeof obj === 'object' || obj !== null
 }
 /**
- * 每个英文字母首字母大写
+ * Capitalize first letter of each English word
  * */
 function capitalizeToAll(str) {
   return str.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
 }
 /**
- * 首字母大写
+ * Capitalize first letter
  * */
 function capitalizeToFirst(str) {
   return str.toLowerCase().replace(/\b([\w|']+)\b/, (o) => o.replace(o.charAt(0), o.charAt(0).toUpperCase()))
 }
 /**
- * 格式化size
+ * Format size
  * */
 function byteToSize(bytes, unit, width) {
   bytes = Number(bytes);
@@ -295,15 +295,15 @@ function byteToSize(bytes, unit, width) {
   if (bytes < 0) bytes = 0;
   if (typeof width === 'undefined') width = 2;
   if (typeof unit === 'undefined') unit = 'iB';
-  let num = Math.pow(10, width);//指数函数10的几次方
-  var sizes = ['K', 'M', 'G', 'T', 'P'];//单位
-  if (unit) {//单位存在
+  let num = Math.pow(10, width); // Exponential function 10 to the power of n
+  var sizes = ['K', 'M', 'G', 'T', 'P']; // Units
+  if (unit) { // Unit exists
     sizes.unshift('');
   } else {
     sizes.unshift('Byte')
   }
   if (bytes === 0) return '0 ' + sizes[0] + unit;
-  var i = Math.floor(Math.log(bytes) / Math.log(1024));//求1024的自然对数
+  var i = Math.floor(Math.log(bytes) / Math.log(1024)); // Calculate natural logarithm of 1024
   // for 0.xxxx number
   if (i < 0) i = 0;
   if (sizes[i] === 'B') num = 1;
@@ -311,7 +311,7 @@ function byteToSize(bytes, unit, width) {
   return Math.round(bytes / Math.pow(1024, i) * num) / num + ' ' + sizes[i] + unit;
 }
 /**
- * 获得event时间target兼容ie
+ * Get event target compatible with IE
  * */
 function getEventTarget(event) {
   return event.target || event.srcElement;
@@ -357,7 +357,7 @@ function render_uptime(value, metaData, record, rowIndex, colIndex, store) {
   return format_duration_long(uptime);
 }
 /**
- * 加载所有图片
+ * Load all images
  * */
 function requireAll2Obj(requireContext) {
   let obj = {}
@@ -368,7 +368,7 @@ function requireAll2Obj(requireContext) {
   return obj
 }
 /**
- * 打开控制台
+ * Open console
  * */
 function openConsoleWindow(viewer, vmtype, vmid, nodename, vmname, cmd) {
   // kvm, lxc, shell, upgrade
@@ -596,7 +596,7 @@ function getIdentityUuid() {
   }
   return identityUuid
 }
-//判断是否是叶子节点
+// Check if it's a leaf node
 function isLeaf() {
   return this.get('leaf') === true;
 }
@@ -636,14 +636,109 @@ function get_object_icon_class(type, record, typeDefaults) {
 }
 
 /**
- * 保留n为小数
-*/
+ * Precise addition
+ */
+function add(num1, num2) {
+  const num1Digits = (num1.toString().split('.')[1] || '').length;
+  const num2Digits = (num2.toString().split('.')[1] || '').length;
+  const baseNum = Math.pow(10, Math.max(num1Digits, num2Digits));
+  return (num1 * baseNum + num2 * baseNum) / baseNum;
+};
+/**
+ * Precise subtraction
+ * */
+function subtract(num1, num2) {
+  const num1Digits = (num1.toString().split('.')[1] || '').length;
+  const num2Digits = (num2.toString().split('.')[1] || '').length;
+  const baseNum = Math.pow(10, Math.max(num1Digits, num2Digits));
+  return (num1 * baseNum - num2 * baseNum) / baseNum;
+}
+
+/**
+ * Precise multiplication
+ * @param {arg1} represents floating point number
+ * @param {arg2} represents floating point number
+ * Decimal places equal to sum of decimal places of each multiplier
+ * */
+function multiply(arg1, arg2) {
+  // m represents number of decimal points
+  var m = 0, s1 = arg1.toString(), s2 = arg2.toString();
+  try {
+    m += s1.split(".")[1].length
+  }
+  catch (e) {
+
+  }
+  try {
+    m += s2.split(".")[1].length
+  }
+  catch (e) {
+
+  }
+  return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
+}
+
+/**
+ * Precise division
+ * */
+function divide(arg1, arg2) {
+  var t1 = 0, t2 = 0, r1, r2;
+  try {
+    t1 = arg1.toString().split(".")[1].length
+  }
+  catch (e) {
+
+  }
+  try {
+    t2 = arg2.toString().split(".")[1].length
+  }
+  catch (e) {
+
+  }
+  r1 = Number(arg1.toString().replace(".", ""));
+  r2 = Number(arg2.toString().replace(".", ""));
+  return (r1 / r2) * Math.pow(10, t2 - t1);
+};
+
+// Upload large files in chunks
+function uploadChunks(index = 0, chunkSize = 1024 * 1024, totalSize, finishCb) {
+  let start = index * chunkSize,
+    total = totalSize;
+  if (start >= total) {
+    finishCb();
+  }
+  while (start < total) {
+    let formData = new FormData(),
+      { filename, ext } = file.name.split('.'),
+      blob = file.slice(start, start + chunkSize),
+      blobname = `${filename}.${index}.${ext}`;
+    blobfile = new File([blob], blobname);
+    formData.append(file, blobfile);
+    axios.post('/upload', formData).then(res => {
+      uploadChunks(index + 1);
+    })
+  }
+}
+
+// Default is 'SeaBIOS'
+function render_qemu_bios(value) {
+  if (!value) {
+    return 'Default' + ' (SeaBIOS)';
+  } else if (value === 'seabios') {
+    return "SeaBIOS";
+  } else if (value === 'ovmf') {
+    return "OVMF (UEFI)";
+  } else {
+    return value;
+  }
+}
+
+// Keep n decimal places
 function flotToFixed(num, position) {
   return Math.round(num * Math.pow(10, position)) / Math.pow(10, position);
 }
-/**
- * 计算百分比
-*/
+
+// Calculate percentage
 function percentToFixed(num, digit) {
   let m = Math.pow(10, digit),
     a = Math.round(num * m, 10) / m,
@@ -661,9 +756,8 @@ function percentToFixed(num, digit) {
   }
   return Number(d.replace(".", "")) * Number(e.replace(".", "")) / Math.pow(10, c) + '%';
 }
-/**
- * copy信息
-*/
+
+// Copy information
 function copyText(content) {
   let targetElm
   if (content.indexOf('\n') !== -1) {
@@ -679,7 +773,6 @@ function copyText(content) {
     range.selectNode(targetElm)
     window.getSelection().removeAllRanges()
     Promise.resolve().then(() => {
-      // var range = document.createRange()
       range.selectNode(targetElm)
       window.getSelection().addRange(range)
       document.execCommand('copy')
@@ -688,9 +781,8 @@ function copyText(content) {
     })
   })
 }
-/***
- * 指纹解析
-*/
+
+// Fingerprint parsing
 function printPropertyString(data, defaultKey) {
   let stringparts = [],
     gotDefaultKeyVal = false,
@@ -710,19 +802,13 @@ function printPropertyString(data, defaultKey) {
   }
   return stringparts.join(',');
 }
-//http代理
+
+// HTTP proxy
 function httpProxy(v) {
   return (/^http:\/\/.*$/).test(v);
 }
 
-function macPrefix(v) {
-  return (/^[a-f0-9][02468ace](?::[a-f0-9]{2}){0,2}:?$/i).test(v);
-}
-
-function proxmoxMail(v) {
-  return (/^(\w+)([\-+.][\w]+)*@(\w[\-\w]*\.){1,5}([A-Za-z]){2,63}$/).test(v);
-}
-//解析任务id
+// Parse task ID
 function parse_task_upid(upid) {
   var task = {};
 
@@ -741,12 +827,10 @@ function parse_task_upid(upid) {
   task.id = res[8];
   task.user = res[9];
 
-  //task.desc = format_task_description(task.type, task.id);
   return task;
 }
-/***
- * 判断值是否为空
-*/
+
+// Check if value is empty
 const isEmpty = function (val) {
   // null or undefined
   if (val == null) return true;
@@ -778,9 +862,8 @@ const isEmpty = function (val) {
 
   return false;
 }
-/***
- * 解析ACMA证书
-*/
+
+// Parse ACME certificate
 function parseACME(value) {
   if (!value) {
     return {};
@@ -810,9 +893,8 @@ function parseACME(value) {
 
   return res;
 }
-/**
- * 上传文件并在展示内容
-*/
+
+// Upload file and display content
 function uplodFile(file, callback) {
   if (file.size > 8192) {
     Vue.$confim.error({
@@ -826,9 +908,8 @@ function uplodFile(file, callback) {
   };
   reader.readAsText(file);
 }
-/**
- * 图片上传
-*/
+
+// Image upload
 function uploadImage(file, callback) {
   let reader = new FileReader();
   reader.onerror = function (evt) {
@@ -839,7 +920,8 @@ function uploadImage(file, callback) {
   }
   reader.readAsDataURL(file);
 }
-//或得xhr对象
+
+// Get xhr object
 function getHttpXhr() {
   if (window.XMLHttpRequest) {
     return new XMLHttpRequest();
@@ -847,12 +929,13 @@ function getHttpXhr() {
     return new ActiveXObject();
   }
 }
-//文件上传下载，进度，错误
+
+// File upload/download, progress, error
 function uploadFile(url, data, callback) {
-  //或得xhr对象
+  // Get xhr object
   let xhr = getHttpXhr();
   return new Promise((resolve, reject) => {
-    //监听readState对象
+    // Monitor readState object
     xhr.onreadystatechange = function (res) {
       if (xhr.readyState == 4 && xhr.status === 200) {
         resolve(xhr.responseText);
@@ -863,12 +946,13 @@ function uploadFile(url, data, callback) {
     xhr.addEventListener("load", (ev) => callback(ev, xhr), false);
     xhr.addEventListener("error", (ev) => callback(ev, xhr), false)
     xhr.upload.addEventListener('progress', (ev) => callback(ev, xhr), false)
-    xhr.withCredentials = true;//设置跨域
+    xhr.withCredentials = true; // Set cross-domain
     xhr.open("POST", url, true);
     xhr.send(data);
   })
 }
-//获取文件Url
+
+// Get file URL
 function getFileUrl(file) {
   if (window.webkitURL) {
     return window.webkitURL.createObjectURL(file);
@@ -879,15 +963,7 @@ function getFileUrl(file) {
   }
 }
 
-function render_upid(value, metaData, record) {
-  var type = record.type;
-  var id = record.id;
-
-  return format_task_description(type, id);
-}
-/***
- * 格式化任务日志描述
-*/
+// Format task log description
 function format_task_description(type, id) {
   var farray = task_desc_table[type];
   var text;
@@ -906,660 +982,12 @@ function format_task_description(type, id) {
   return text;
 }
 
-const contentTypes = {
-  'images': gettext('Disk image'),
-  'backup': gettext('VZDump backup file'),
-  'vztmpl': gettext('Container template'),
-  'iso': gettext('ISO image'),
-  'rootdir': gettext('Container'),
-  'snippets': gettext('Snippets')
-}
-//判断是否是Number类型
+// Check if it's a Number type
 function isNumber(value) {
   return typeof value === 'number'
 }
-function format_content_types(value) {
-  return value.split(',').sort().map(function (ct) {
-    return contentTypes[ct] || ct;
-  }).join(', ');
-}
-function leftPad(string, size, character) {
-  var result = String(string);
-  character = character || " ";
-  while (result.length < size) {
-    result = character + result;
-  }
-  return result;
-}
 
-function render_storage_content(value, metaData, record) {
-  var data = record;
-  if (isNumber(data.channel) &&
-    isNumber(data.id) &&
-    isNumber(data.lun)) {
-    return "CH " +
-      leftPad(data.channel, 2, '0') +
-      " ID " + data.id + " LUN " + data.lun;
-  }
-  return data.volid.replace(/^.*?:(.*?\/)?/, '');
-}
-const task_desc_table = {
-  acmenewcert: ['SRV', gettext('Order Certificate')],
-  acmeregister: ['ACME Account', gettext('Register')],
-  acmedeactivate: ['ACME Account', gettext('Deactivate')],
-  acmeupdate: ['ACME Account', gettext('Update')],
-  acmerefresh: ['ACME Account', gettext('Refresh')],
-  acmerenew: ['SRV', gettext('Renew Certificate')],
-  acmerevoke: ['SRV', gettext('Revoke Certificate')],
-  'auth-realm-sync': [gettext('Realm'), gettext('Sync')],
-  'auth-realm-sync-test': [gettext('Realm'), gettext('Sync Preview')],
-  'move_volume': ['CT', gettext('Move Volume')],
-  clustercreate: ['', gettext('Create Cluster')],
-  clusterjoin: ['', gettext('Join Cluster')],
-  diskinit: ['Disk', gettext('Initialize Disk with GPT')],
-  vncproxy: ['VM/CT', gettext('Console')],
-  spiceproxy: ['VM/CT', gettext('Console') + ' (Spice)'],
-  vncshell: ['', gettext('Shell')],
-  spiceshell: ['', gettext('Shell') + ' (Spice)'],
-  qmsnapshot: ['VM', gettext('Snapshot')],
-  qmrollback: ['VM', gettext('Rollback')],
-  qmdelsnapshot: ['VM', gettext('Delete Snapshot')],
-  qmcreate: ['VM', gettext('Create')],
-  qmrestore: ['VM', gettext('Restore')],
-  qmdestroy: ['VM', gettext('Destroy')],
-  qmigrate: ['VM', gettext('Migrate')],
-  qmclone: ['VM', gettext('Clone')],
-  qmmove: ['VM', gettext('Move disk')],
-  qmtemplate: ['VM', gettext('Convert to template')],
-  qmstart: ['VM', gettext('Start')],
-  qmstop: ['VM', gettext('Stop')],
-  qmreset: ['VM', gettext('Reset')],
-  qmshutdown: ['VM', gettext('Shutdown')],
-  qmreboot: ['VM', gettext('Reboot')],
-  qmsuspend: ['VM', gettext('Hibernate')],
-  qmpause: ['VM', gettext('Pause')],
-  qmresume: ['VM', gettext('Resume')],
-  qmconfig: ['VM', gettext('Configure')],
-  vzsnapshot: ['CT', gettext('Snapshot')],
-  vzrollback: ['CT', gettext('Rollback')],
-  vzdelsnapshot: ['CT', gettext('Delete Snapshot')],
-  vzcreate: ['CT', gettext('Create')],
-  vzrestore: ['CT', gettext('Restore')],
-  vzdestroy: ['CT', gettext('Destroy')],
-  vzmigrate: ['CT', gettext('Migrate')],
-  vzclone: ['CT', gettext('Clone')],
-  vztemplate: ['CT', gettext('Convert to template')],
-  vzstart: ['CT', gettext('Start')],
-  vzstop: ['CT', gettext('Stop')],
-  vzmount: ['CT', gettext('Mount')],
-  vzumount: ['CT', gettext('Unmount')],
-  vzshutdown: ['CT', gettext('Shutdown')],
-  vzreboot: ['CT', gettext('Reboot')],
-  vzsuspend: ['CT', gettext('Suspend')],
-  vzresume: ['CT', gettext('Resume')],
-  push_file: ['CT', gettext('Push file')],
-  pull_file: ['CT', gettext('Pull file')],
-  hamigrate: ['HA', gettext('Migrate')],
-  hastart: ['HA', gettext('Start')],
-  hastop: ['HA', gettext('Stop')],
-  hashutdown: ['HA', gettext('Shutdown')],
-  srvstart: ['SRV', gettext('Start')],
-  srvstop: ['SRV', gettext('Stop')],
-  srvrestart: ['SRV', gettext('Restart')],
-  srvreload: ['SRV', gettext('Reload')],
-  cephcreatemgr: ['Ceph Manager', gettext('Create')],
-  cephdestroymgr: ['Ceph Manager', gettext('Destroy')],
-  cephcreatemon: ['Ceph Monitor', gettext('Create')],
-  cephdestroymon: ['Ceph Monitor', gettext('Destroy')],
-  cephcreateosd: ['Ceph OSD', gettext('Create')],
-  cephdestroyosd: ['Ceph OSD', gettext('Destroy')],
-  cephcreatepool: ['Ceph Pool', gettext('Create')],
-  cephdestroypool: ['Ceph Pool', gettext('Destroy')],
-  cephfscreate: ['CephFS', gettext('Create')],
-  cephcreatemds: ['Ceph Metadata Server', gettext('Create')],
-  cephdestroymds: ['Ceph Metadata Server', gettext('Destroy')],
-  imgcopy: ['', gettext('Copy data')],
-  imgdel: ['', gettext('Erase data')],
-  unknownimgdel: ['', gettext('Destroy image from unknown guest')],
-  download: ['', gettext('Download')],
-  vzdump: ['VM/CT', gettext('Backup')],
-  aptupdate: ['', gettext('Update package database')],
-  startall: ['', gettext('Start all VMs and Containers')],
-  stopall: ['', gettext('Stop all VMs and Containers')],
-  migrateall: ['', gettext('Migrate all VMs and Containers')],
-  dircreate: [gettext('Directory Storage'), gettext('Create')],
-  lvmcreate: [gettext('LVM Storage'), gettext('Create')],
-  lvmthincreate: [gettext('LVM-Thin Storage'), gettext('Create')],
-  zfscreate: [gettext('ZFS Storage'), gettext('Create')]
-}
-const log_severity_hash = {
-  0: "panic",
-  1: "alert",
-  2: "critical",
-  3: "error",
-  4: "warning",
-  5: "notice",
-  6: "info",
-  7: "debug"
-}
-//渲染日志级别
-function render_serverity(value) {
-  return log_severity_hash[value] || value;
-}
-/***
- * 格式化字符串描述将字符串中的{数字}用参数中的值代替
-*/
-function stringFormat(str) {
-  let arg = arguments;
-  for (let i in arg) {
-    str = str.replace(/(\{\d+\})/, function (o) {
-      return arg[Number(i) + 1];
-    }
-    )
-  }
-  return str;
-}
-
-function render_qemu_bios(value) {
-  if (!value) {
-    return '默认' + ' (SeaBIOS)';
-  } else if (value === 'seabios') {
-    return "SeaBIOS";
-  } else if (value === 'ovmf') {
-    return "OVMF (UEFI)";
-  } else {
-    return value;
-  }
-}
-function render_kvm_vga_driver(value) {
-  if (!value) {
-    return "默认";
-  }
-  let vga = parsePropertyString(value, 'type');
-  let text = kvm_vga_drivers[vga.type];
-  if (!vga.type) {
-    text = "默认";
-  }
-  if (text) {
-    return text + ' (' + value + ')';
-  }
-  return value;
-}
-
-function parsePropertyString(value, defaultKey) {
-  let res = {},
-    error;
-
-  if (typeof value !== 'string' || value === '') {
-    return res;
-  }
-
-  value.split(',').forEach((p) => {
-    let kv = p.split('=', 2);
-    if (!isEmpty(kv[1])) {
-      res[kv[0]] = kv[1];
-    } else if (!isEmpty(defaultKey)) {
-      if (!isEmpty(res[defaultKey])) {
-        error = 'defaultKey may be only defined once in propertyString';
-        return false; // break
-      }
-      res[defaultKey] = kv[0];
-    } else {
-      error = 'invalid propertyString, not a key=value pair and no defaultKey defined';
-      return false; // break
-    }
-  });
-
-  if (error !== undefined) {
-    console.error(error);
-    return;
-  }
-
-  return res;
-}
-
-const diskControllerMaxIDs = {
-  ide: 4,
-  sata: 6,
-  scsi: 31,
-  virtio: 16,
-}
-
-function forEachBus(types, func) {
-  var busses = Object.keys(diskControllerMaxIDs);
-  var i, j, count, cont;
-
-  if (Array.isArray(types)) {
-    busses = types;
-  } else if (!isEmpty(types)) {
-    busses = [types];
-  }
-
-  // check if we only have valid busses
-  for (i = 0; i < busses.length; i++) {
-    if (!diskControllerMaxIDs[busses[i]]) {
-      throw "invalid bus: '" + busses[i] + "'";
-    }
-  }
-
-  for (i = 0; i < busses.length; i++) {
-    count = diskControllerMaxIDs[busses[i]];
-    for (j = 0; j < count; j++) {
-      cont = func(busses[i], j);
-      if (!cont && cont !== undefined) {
-        return;
-      }
-    }
-  }
-}
-//解析启动
-function parseStartup(value) {
-  if (value === undefined) {
-    return;
-  }
-
-  var res = {};
-
-  var errors = false;
-  value.split(',').forEach(function (p) {
-    if (!p || p.match(/^\s*$/)) {
-      return; // continue
-    }
-
-    var match_res;
-
-    if ((match_res = p.match(/^(order)?=(\d+)$/)) !== null) {
-      res.order = match_res[2];
-    } else if ((match_res = p.match(/^up=(\d+)$/)) !== null) {
-      res.up = match_res[1];
-    } else if ((match_res = p.match(/^down=(\d+)$/)) !== null) {
-      res.down = match_res[1];
-    } else {
-      errors = true;
-      return false; // break
-    }
-  });
-
-  if (errors) {
-    return;
-  }
-  return res;
-}
-
-function render_kvm_ostype(value) {
-  var osinfo = get_kvm_osinfo(value);
-  if (osinfo.desc && osinfo.desc !== '-') {
-    return osinfo.base + ' ' + osinfo.desc;
-  } else {
-    return osinfo.base;
-  }
-}
-const kvm_ostypes = {
-  'Linux': [
-    { desc: '5.x - 2.6 Kernel', val: 'l26' },
-    { desc: '2.4 Kernel', val: 'l24' }
-  ],
-  'Microsoft Windows': [
-    { desc: '10/2016/2019', val: 'win10' },
-    { desc: '8.x/2012/2012r2', val: 'win8' },
-    { desc: '7/2008r2', val: 'win7' },
-    { desc: 'Vista/2008', val: 'w2k8' },
-    { desc: 'XP/2003', val: 'wxp' },
-    { desc: '2000', val: 'w2k' }
-  ],
-  'Solaris Kernel': [
-    { desc: '-', val: 'solaris' }
-  ],
-  'Other': [
-    { desc: '-', val: 'other' }
-  ]
-}
-
-function get_kvm_osinfo(value) {
-  var info = { base: 'Other' }; // default
-  if (value) {
-    Object.keys(kvm_ostypes).forEach(function (k) {
-      kvm_ostypes[k].forEach(function (e) {
-        if (e.val === value) {
-          info = { desc: e.desc, base: k };
-        }
-      });
-    });
-  }
-  return info;
-}
-
-function render_hotplug_features(value) {
-  var fa = [];
-
-  if (!value || (value === '0')) {
-    return gettext('Disabled');
-  }
-
-  if (value === '1') {
-    value = 'disk,network,usb';
-  }
-
-  value.split(',').forEach(function (el) {
-    if (el === 'disk') {
-      fa.push(gettext('Disk'));
-    } else if (el === 'network') {
-      fa.push(gettext('Network'));
-    } else if (el === 'usb') {
-      fa.push('USB');
-    } else if (el === 'memory') {
-      fa.push(gettext('Memory'));
-    } else if (el === 'cpu') {
-      fa.push(gettext('CPU'));
-    } else {
-      fa.push(el);
-    }
-  });
-
-  return fa.join(', ');
-}
-
-function render_spice_enhancements(values) {
-  let props = parsePropertyString(values);
-  if (isEmpty(props)) {
-    return '否';
-  }
-
-  let output = [];
-  if (parseBoolean(props.foldersharing)) {
-    output.push('Folder Sharing: ' + gettext('Enabled'));
-  }
-  if (props.videostreaming === 'all' || props.videostreaming === 'filter') {
-    output.push('Video Streaming: ' + props.videostreaming);
-  }
-  return output.join(', ');
-}
-function parseBoolean(value, default_value) {
-  if (isEmpty(value)) {
-    return default_value;
-  }
-  value = value.toLowerCase();
-  return value === '1' ||
-    value === 'on' ||
-    value === 'yes' ||
-    value === 'true';
-}
-
-
-function render_qga_features(value) {
-  if (!value) {
-    return '默认' + ' (已禁用)';
-  }
-  var props = parsePropertyString(value, 'enabled');
-  if (props && props.enabled && !parseBoolean(props.enabled)) {
-    return '已禁用';
-  }
-
-  delete props.enabled;
-  var agentstring = '可用';
-
-  Object.keys(props).forEach((value, index) => {
-    var keystring = '';
-    agentstring += ', ' + value + ': ';
-
-    if (value === 'type') {
-      let map = {
-        isa: "ISA",
-        virtio: "VirtIO",
-      };
-      agentstring += map[props[value]] || '未知';
-    } else {
-      if (parseBoolean(value)) {
-        agentstring += '可用';
-      } else {
-        agentstring += '可用';
-      }
-    }
-  });
-
-  return agentstring;
-}
-
-function format_duration_short(ut) {
-
-  if (ut < 60) {
-    return ut.toFixed(1) + 's';
-  }
-
-  if (ut < 3600) {
-    var mins = ut / 60;
-    return mins.toFixed(1) + 'm';
-  }
-
-  if (ut < 86400) {
-    var hours = ut / 3600;
-    return hours.toFixed(1) + 'h';
-  }
-
-  var days = ut / 86400;
-  return days.toFixed(1) + 'd';
-}
-
-/**
- * 格式化日期带有星期 Fri Nov 27 2020 09:04:55 GMT+0800
- * @param value 时间戳
-*/
-function formatDateForWeek(value, format) {
-  if (isEmpty(value)) return;
-  let date = new Date(value);
-  let d = {
-    'M+': date.getMonth() + 1,
-    'd+': date.getDate(),
-    'h+': date.getHours(),
-    'm+': date.getMinutes(),
-    's+': date.getSeconds(),
-  }
-  if (/(y+)/.test(format)) {
-    format = format.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
-  }
-  let week = {
-    5: '星期五',
-    4: '星期四',
-    3: '星期三',
-    2: '星期二',
-    1: '星期一',
-    6: '星期六',
-    0: '星期日'
-  }
-  if (/(w+)/.test(format)) {
-    format = format.replace(RegExp.$1, (week[date.getDay()] + ' '))
-  }
-  for (let o in d) {
-    if (new RegExp(`(${o})`).test(format)) {
-      let str = d[o] + ''
-      format = format.replace(RegExp.$1, RegExp.$1.length === 1 ? str : padLeftZero(str))
-    }
-  }
-  return format;
-}
-
-const mp_counts = { mps: 256, unused: 256 };
-
-function forEachMP(func, includeUnused) {
-  var i, cont;
-  for (i = 0; i < mp_counts.mps; i++) {
-    cont = func('mp', i);
-    if (!cont && cont !== undefined) {
-      return;
-    }
-  }
-
-  if (!includeUnused) {
-    return;
-  }
-
-  for (i = 0; i < mp_counts.unused; i++) {
-    cont = func('unused', i);
-    if (!cont && cont !== undefined) {
-      return;
-    }
-  }
-}
-/***
- * 解析公钥数据 @param key公钥字符串
-*/
-function parseSSHKey(key) {
-  //                |--- options can have quotes--|     type    key        comment
-  var keyre = /^(?:((?:[^\s"]|\"(?:\\.|[^"\\])*")+)\s+)?(\S+)\s+(\S+)(?:\s+(.*))?$/;
-  var typere = /^(?:ssh-(?:dss|rsa|ed25519)|ecdsa-sha2-nistp\d+)$/;
-
-  var m = key.match(keyre);
-  if (!m) {
-    return null;
-  }
-  if (m.length < 3 || !m[2]) { // [2] is always either type or key
-    return null;
-  }
-  if (m[1] && m[1].match(typere)) {
-    return {
-      type: m[1],
-      key: m[2],
-      comment: m[3]
-    };
-  }
-  if (m[2].match(typere)) {
-    return {
-      options: m[1],
-      type: m[2],
-      key: m[3],
-      comment: m[4]
-    };
-  }
-  return null;
-}
-
-/**
- * 展示错误信息
- * **/
-function confirm(message, type, icon, yesText) {
-  return this.$confirm[type ? type : 'error']({
-    msg: message,
-    icon: icon ? icon : 'icon-error',
-    yesBtnText: yesText ? yesText : '确定'
-  })
-}
-
-/**
- * 前端分组
- * **/
-function chunkData(arr, pageSize) {
-  let num = 0, chunkArr = [];
-  //计算总页数当页码大于总条数时除以总条数
-  if (pageSize <= arr.length) {
-    num = Math.ceil(arr.length / pageSize)
-  } else {
-    num = Math.ceil(arr.length / arr.length)
-  }
-  for (let i = 0, j = 0; i < num; i++) {
-    let newArr = [], k = (i + 1) * pageSize;;
-    while (j < arr.length) {
-      while (j < k) {
-        if (arr[j]) {
-          newArr.push(arr[j]);
-        }
-        j++;
-        continue;
-      }
-      if (j == k) break;
-    }
-    chunkArr.push(newArr);
-  }
-  return chunkArr;
-}
-
-const on = (function () {
-  if (document.addEventListener) {
-    return function (element, event, handler) {
-      if (element && event && handler) {
-        element.addEventListener(event, handler, false);
-      }
-    };
-  } else {
-    return function (element, event, handler) {
-      if (element && event && handler) {
-        element.attachEvent('on' + event, handler);
-      }
-    };
-  }
-})();
-
-/* istanbul ignore next */
-const off = (function () {
-  if (document.removeEventListener) {
-    return function (element, event, handler) {
-      if (element && event) {
-        element.removeEventListener(event, handler, false);
-      }
-    };
-  } else {
-    return function (element, event, handler) {
-      if (element && event) {
-        element.detachEvent('on' + event, handler);
-      }
-    };
-  }
-})();
-
-function parseQemuDrive(key, value) {
-  if (!(key && value)) {
-    return;
-  }
-
-  var res = {};
-
-  var match_res = key.match(/^([a-z]+)(\d+)$/);
-  if (!match_res) {
-    return;
-  }
-  res['interface'] = match_res[1];
-  res.index = match_res[2];
-
-  var errors = false;
-  value.split(',').forEach(function (p) {
-    if (!p || p.match(/^\s*$/)) {
-      return; // continue
-    }
-    var match_res = p.match(/^([a-z_]+)=(\S+)$/);
-    if (!match_res) {
-      if (!p.match(/\=/)) {
-        res.file = p;
-        return; // continue
-      }
-      errors = true;
-      return false; // break
-    }
-    var k = match_res[1];
-    if (k === 'volume') {
-      k = 'file';
-    }
-
-    if (typeof res[k] !== 'undefined') {
-      errors = true;
-      return false; // break
-    }
-
-    var v = match_res[2];
-
-    if (k === 'cache' && v === 'off') {
-      v = 'none';
-    }
-
-    res[k] = v;
-  });
-
-  if (errors || !res.file) {
-    return;
-  }
-
-  return res;
-}
-
-//数组对象去重
+// Array object deduplication
 function getUniqueObj(arrays) {
   let newArr = [],
     str = '',
@@ -1573,20 +1001,14 @@ function getUniqueObj(arrays) {
   }
   return newArr;
 }
-//判断是否有这个class
+
+// Check if it has this class
 function hasClass(cls) {
   let classes = this.className.split(' ');
   return classes.includes(cls);
 }
 
-
-function isIE() {
-  if (!!window.ActiveXObject || 'ActiveXObject' in window) {
-    return true;
-  }
-  return false;
-}
-//得到ie浏览器版本
+// Get IE browser version
 function ieVersion() {
   let userAgent = window.navigator.userAgent,
     isMSIE = userAgent.indexOf('MSIE') > -1;
@@ -1599,72 +1021,7 @@ function ieVersion() {
   }
 }
 
-/**
- * 精确加法
- */
-function add(num1, num2) {
-  const num1Digits = (num1.toString().split('.')[1] || '').length;
-  const num2Digits = (num2.toString().split('.')[1] || '').length;
-  const baseNum = Math.pow(10, Math.max(num1Digits, num2Digits));
-  return (num1 * baseNum + num2 * baseNum) / baseNum;
-};
-/**
- * 精确减法
- * **/
-function subtract(num1, num2) {
-  const num1Digits = (num1.toString().split('.')[1] || '').length;
-  const num2Digits = (num2.toString().split('.')[1] || '').length;
-  const baseNum = Math.pow(10, Math.max(num1Digits, num2Digits));
-  return (num1 * baseNum - num2 * baseNum) / baseNum;
-}
-
-/**
- * 精确乘法
- * @param {arg1} 表示浮点数
- * @param {arg2} 表示浮点数
- * 小数点等于每个乘数的小数点位数相加
- * **/
-function multiply(arg1, arg2) {
-  //m表示有多少个小数点
-  var m = 0, s1 = arg1.toString(), s2 = arg2.toString();
-  try {
-    m += s1.split(".")[1].length
-  }
-  catch (e) {
-
-  }
-  try {
-    m += s2.split(".")[1].length
-  }
-  catch (e) {
-
-  }
-  return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
-}
-
-/**
- * 精确除法
- * **/
-function divide(arg1, arg2) {
-  var t1 = 0, t2 = 0, r1, r2;
-  try {
-    t1 = arg1.toString().split(".")[1].length
-  }
-  catch (e) {
-
-  }
-  try {
-    t2 = arg2.toString().split(".")[1].length
-  }
-  catch (e) {
-
-  }
-  r1 = Number(arg1.toString().replace(".", ""));
-  r2 = Number(arg2.toString().replace(".", ""));
-  return (r1 / r2) * Math.pow(10, t2 - t1);
-};
-
-//大文件分段上传
+// Upload large files in chunks
 function uploadChunks(index = 0, chunkSize = 1024 * 1024, totalSize, finishCb) {
   let start = index * chunkSize,
     total = totalSize;

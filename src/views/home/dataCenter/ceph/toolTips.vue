@@ -48,18 +48,18 @@ export default {
     };
   },
   mounted() {
-    //获取父组件的el
+    // Get parent component's element
     this.referenceElm = this.$el;
     if (this.$el.nodeType === 1) {
-      //给父组件设置toltipId;
+      // Set tooltip ID for parent component
       this.$el.setAttribute("aria-describedby", this.tooltipId);
-      //给父组件设置的tabindex 使其具有聚焦属性
+      // Set tabindex for parent component to make it focusable
       this.$el.setAttribute("tabindex", this.tabindex);
-      //鼠标进入时展示提示
+      // Show tooltip on mouse enter
       on(this.referenceElm, "mouseenter", this.show);
-      //鼠标离开时隐藏组件
+      // Hide tooltip on mouse leave
       on(this.referenceElm, "mouseleave", this.hide);
-      //聚焦
+      // Focus
       on(this.referenceElm, "focus", () => {
         if (!this.$slots.default || !this.$slots.default.length) {
           this.handleFocus();
@@ -72,9 +72,9 @@ export default {
           this.handleFocus();
         }
       });
-      //当失去焦点时隐藏组件
+      // Hide component when focus is lost
       on(this.referenceElm, "blur", this.handleBlur);
-      //当点击时失去焦点时隐藏组件
+      // Hide component when clicked and focus is lost
       on(this.referenceElm, "click", this.removeFocusing);
     }
     if (this.popperVM) {
@@ -84,7 +84,7 @@ export default {
     }
   },
   methods: {
-    //隐藏tip提示
+    // Hide tooltip
     handleClosePopper() {
       if ((this.enterable && this.expectedState) || this.manual) return;
       clearTimeout(this.timeout);
@@ -99,7 +99,7 @@ export default {
         this.doDestroy();
       }
     },
-    //渲染第一个元素也就是所谓的默认插槽
+    // Render first element (default slot)
     getFirstElement() {
       const slots = this.$slots.default;
       if (!Array.isArray(slots)) return null;
@@ -112,14 +112,14 @@ export default {
       return element;
     },
     doDestroy() {},
-    //设置展开状态
+    // Set expected state
     setExpectedState(expectedState) {
       if (expectedState === false) {
         clearTimeout(this.timeoutPending);
       }
       this.expectedState = expectedState;
     },
-    //展示提示框
+    // Show tooltip
     handleShowPopper() {
       if (!this.expectedState || this.manual) return;
       clearTimeout(this.timeout);

@@ -22,7 +22,7 @@ export default {
     colEl.style.left = el.clientWidth + "px";
   },
   methods: {
-    //计算左侧菜单栏的宽度
+    // Calculate the width of the left menu bar
     handleMouseDown(event) {
       stopEvent(event);
       this.initX = event.clientX;
@@ -30,7 +30,7 @@ export default {
       document.addEventListener("mousemove", this.handleMouseMove, 50, false);
       document.addEventListener("mouseup", this.handleMouseUp, 50, false);
     },
-    //移动左侧菜单栏
+    // Move the left menu bar
     handleMouseMove(event) {
       stopEvent(event);
       event.preventDefault();
@@ -45,7 +45,7 @@ export default {
         return;
       }
     },
-    //取消移动
+    // Cancel movement
     handleMouseUp(event) {
       stopEvent(event);
       event.preventDefault();

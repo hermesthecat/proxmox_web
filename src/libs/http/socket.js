@@ -24,7 +24,7 @@ export default class Socket {
 		this.timeoutObj = null;
 		this.serverTimeoutObj = null;
 		this.cb = cb;
-		this.timeout = 60 * 1000;//心跳时间
+		this.timeout = 60 * 1000; // Heartbeat interval
 	}
 
 	onmessage() {
@@ -35,7 +35,7 @@ export default class Socket {
 				this.isReconnet = false;
 			}
 	}
-	//接收服务器端数据
+	// Receive data from server
 	getMsg(ev) {
 		this.cb(ev);
 	}
@@ -43,12 +43,12 @@ export default class Socket {
 	onerror() {
 		if (this.socket)
 			this.socket.onerror = () => {
-				console.log('websocket服务出错了---onerror');
+				console.log('WebSocket service error - onerror');
 				this.start();
 				this.reconnet(this.url);
 			}
 	}
-	//重连
+	// Reconnect
 	reconnet() {
 		if (this.lockReconnet)
 			return false
@@ -59,26 +59,26 @@ export default class Socket {
 			this.lockReconnet = false
 		}, 60 * 1000)
 	}
-	//打开socket链接
+	// Open socket connection
 	onopen() {
 		if (this.socket)
 			this.socket.onopen = () => {
-				console.log('socket连接成功')
-				if (this.isReconnet) {//执行全局回调函数
-					console.log('websocket重新连接了');
+				console.log('Socket connection successful')
+				if (this.isReconnet) { // Execute global callback function
+					console.log('WebSocket reconnected');
 					this.isReconnet = false
 				}
 			}
 	}
-	//断开socket链接
+	// Close socket connection
 	onclose() {
 		if (this.socket)
 			this.socket.onclose = () => {
-				console.log("socket连接已关闭");
+				console.log("Socket connection closed");
 				this.reset();
 			}
 	}
-	sendMsg(arg) { //发送数据,接收数据
+	sendMsg(arg) { // Send data, receive data
 		let data = Object.create(null);
 		if (this.socket)
 			if (this.socket.readyState === 1) {
@@ -86,7 +86,7 @@ export default class Socket {
 				this.socket.send(arg);
 			} else {
 				setTimeout(() => {
-					console.log(socket, '等待socket链接成功')
+					console.log(socket, 'Waiting for socket connection to succeed')
 					this.sendMsg(data)
 				}, 1500)
 				return false
@@ -101,7 +101,7 @@ export default class Socket {
 	start() {
 		if (this.socket)
 			this.timeoutObj = setTimeout(() => {
-				//发送数据，如果onmessage能接收到数据，表示连接正常,然后在onmessage里面执行reset方法清除定时器
+				// Send data, if onmessage can receive data, connection is normal, then execute reset method in onmessage to clear timer
 				this.socket.send('heart check')
 				this.serverTimeoutObj = setTimeout(() => {
 					this.socket.close()
@@ -117,13 +117,13 @@ export default class Socket {
 		this.url = url;
 		this.cb = cb;
 		if ('WebSocket' in window) {
-			//无nginx
+			// Without nginx
 			//this.socket = new WebSocket('ws://' + location.origin.replace(/(http\:\/\/|https:\/\/)/, '') + '/ws' +this.url + `?accessToken=${window.localStorage.getItem("accessToken")}`)
-			this.socket = new WebSocket(this.url)//有nginx
+			this.socket = new WebSocket(this.url) // With nginx
 		} else if ('MozWebSocket' in window) {
-			//无nginx
+			// Without nginx
 			//this.socket = new MozWebSocket('ws://' + location.origin.replace(/(http\:\/\/|https:\/\/)/, '') + '/ws' + this.url + `?accessToken=${window.localStorage.getItem("accessToken")}`)
-			this.socket = new MozWebSocket(this.url)//有nginx
+			this.socket = new MozWebSocket(this.url) // With nginx
 		}
 		this.onopen();
 		this.onmessage();

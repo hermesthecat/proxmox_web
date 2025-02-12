@@ -3,7 +3,7 @@ import VueI18n from 'vue-i18n';
 import { getCookie } from "@libs/utils";
 import zh_CN from './zh_CN.json';
 import en from './en.json';
-//国际化配置
+// Internationalization configuration
 Vue.use(VueI18n);
 const messages = {
   "zh_CN": Object.assign(zh_CN),

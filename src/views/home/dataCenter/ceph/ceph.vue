@@ -3,9 +3,9 @@
     <div class="ceph-content">
       <div class="ceph-top">
         <div class="ceph-top__left">
-          <div class="ceph-top__title">健康</div>
+          <div class="ceph-top__title">Health</div>
           <div class="ceph-top__health">
-            <h1 class="ceph-title">状态</h1>
+            <h1 class="ceph-title">Status</h1>
             <div
               class="ceph-top__health_icon"
               :class="{
@@ -26,9 +26,9 @@
           </div>
           <div class="ceph-top__health_info">
             <div class="ceph-table">
-              <div class="ceph-table-tr" label="严重度" prop="severity">
-                <div class="ceph-table-td">严重度</div>
-                <div class="ceph-table-td">概要</div>
+              <div class="ceph-table-tr" label="Severity" prop="severity">
+                <div class="ceph-table-td">Severity</div>
+                <div class="ceph-table-td">Summary</div>
                 <div class="ceph-table-td"></div>
               </div>
               <el-scrollbar :no-resize="false" style="height: 100%">
@@ -36,7 +36,7 @@
                   v-for="(heal, index) in healthList"
                   :key="index"
                   class="ceph-table-tr"
-                  label="概要"
+                  label="Summary"
                   prop="message"
                 >
                   <div class="ceph-table-td ceph-table-severity">
@@ -62,7 +62,7 @@
         </div>
         <div class="ceph-top__right">
           <div class="ceph-top__right_content">
-            <div class="ceph-top__title">状态</div>
+            <div class="ceph-top__title">Status</div>
             <div class="ceph-top__status">
               <div class="ceph-title">OSD</div>
               <div class="ceph-table" style="padding-top: 0">
@@ -70,17 +70,17 @@
                   <div class="ceph-table-td"></div>
                   <div class="ceph-table-td">
                     <span class="dot dot-heal"></span>
-                    <span class="ceph-table-text">进入</span>
+                    <span class="ceph-table-text">In</span>
                   </div>
                   <div class="ceph-table-td">
                     <span class="dot dot-warning"></span>
-                    <span class="ceph-table-text">输出</span>
+                    <span class="ceph-table-text">Out</span>
                   </div>
                 </div>
                 <div class="ceph-table-tr">
                   <div class="ceph-table-td">
                     <span class="fa fa-fw good fa-arrow-circle-up"></span>
-                    <span class="ceph-table-text">上</span>
+                    <span class="ceph-table-text">Up</span>
                   </div>
                   <div class="ceph-table-td">
                     {{ osdMap.upin }}
@@ -92,7 +92,7 @@
                 <div class="ceph-table-tr">
                   <div class="ceph-table-td">
                     <span class="fa fa-fw good fa-arrow-circle-down"></span>
-                    <span class="ceph-table-text">下</span>
+                    <span class="ceph-table-text">Down</span>
                   </div>
                   <div class="ceph-table-td">
                     {{ osdMap.downin }}
@@ -102,7 +102,7 @@
                   </div>
                 </div>
               </div>
-              <div>总额： {{ osdMap.total }}</div>
+              <div>Total: {{ osdMap.total }}</div>
             </div>
             <div class="ceph-top__pgs">
               <div class="ceph-title">PGs</div>
@@ -136,15 +136,15 @@
             </div>
           </div>
           <div>
-            <div class="ceph-top__title">服务</div>
+            <div class="ceph-top__title">Services</div>
             <div class="ceph-top__service">
               <div class="ceph-top__mon">
-                <div class="ceph-title">监视器</div>
+                <div class="ceph-title">Monitor</div>
                 <tool-tips v-for="mo of mon" :key="mo.name">
                   <div slot="content">
-                    <li>主机：{{ mo.name }}</li>
-                    <li>地址：{{ mo.addrs }}</li>
-                    <li>版本：{{ mo.ceph_version_short }}</li>
+                    <li>Host: {{ mo.name }}</li>
+                    <li>Address: {{ mo.addrs }}</li>
+                    <li>Version: {{ mo.ceph_version_short }}</li>
                   </div>
                   <div class="ceph-top__mon_item">
                     <i class="fa fa-building"></i>{{ mo.name }}
@@ -162,17 +162,17 @@
                 </tool-tips>
               </div>
               <div class="ceph-top__mgr">
-                <div class="ceph-title">管理HA</div>
+                <div class="ceph-title">Manager HA</div>
                 <tool-tips
                   class="ceph-top__mon_item"
                   v-for="mo of mgr"
                   :key="mo.name"
                 >
                   <div slot="content">
-                    <li>主机：{{ mo.name }}</li>
-                    <li>地址：{{ mo.addrs }}</li>
-                    <li>状态：{{ mo.statuses && mo.statuses.join(",") }}</li>
-                    <li>版本：{{ mo.ceph_version_short }}</li>
+                    <li>Host: {{ mo.name }}</li>
+                    <li>Address: {{ mo.addrs }}</li>
+                    <li>Status: {{ mo.statuses && mo.statuses.join(",") }}</li>
+                    <li>Version: {{ mo.ceph_version_short }}</li>
                   </div>
                   <div class="ceph-top__mon_item">
                     <i class="fa fa-building"></i>{{ mo.name }}
@@ -197,10 +197,10 @@
                   :key="mo.name"
                 >
                   <div slot="content">
-                    <li>主机：{{ mo.name }}</li>
-                    <li>地址：{{ mo.addr }}</li>
-                    <li>状态：{{ mo.statuses && mo.statuses.join(",") }}</li>
-                    <li>版本：{{ mo.ceph_version_short }}</li>
+                    <li>Host: {{ mo.name }}</li>
+                    <li>Address: {{ mo.addr }}</li>
+                    <li>Status: {{ mo.statuses && mo.statuses.join(",") }}</li>
+                    <li>Version: {{ mo.ceph_version_short }}</li>
                   </div>
                   <div class="ceph-top__mon_item">
                     <i class="fa fa-building"></i>{{ mo.name }}
@@ -222,12 +222,12 @@
         </div>
       </div>
       <div class="ceph-bottom">
-        <div class="ceph-top__title">性能</div>
+        <div class="ceph-top__title">Performance</div>
         <div class="ceph-bottom__content">
           <div class="ceph-bottom__used">
             <div class="card-item">
               <mh-circle
-                title="使用率"
+                title="Usage"
                 :value="usage.used && usage.used * 100"
                 :label="usage.text"
               >
@@ -235,17 +235,17 @@
             </div>
           </div>
           <div class="ceph-bottom__file">
-            <div style="hieght: 100px; width: 100%">
+            <div style="height: 100px; width: 100%">
               <overview-card>
-                <div slot="title">读取</div>
+                <div slot="title">Read</div>
                 <template slot="content">
                   <line-graph :param="reads" style="height: 50px"></line-graph>
                 </template>
               </overview-card>
             </div>
-            <div style="hieght: 100px; width: 100%">
+            <div style="height: 100px; width: 100%">
               <overview-card>
-                <div slot="title">写入</div>
+                <div slot="title">Write</div>
                 <template slot="content">
                   <line-graph :param="writes" style="height: 50px"></line-graph>
                 </template>
@@ -307,24 +307,24 @@ export default {
       },
       statecategories: [
         {
-          text: "未知",
+          text: "Unknown",
           count: 0,
           states: [],
           cls: "faded",
           color: "",
         },
         {
-          text: "清除",
+          text: "Clean",
           cls: "good",
           color: "",
         },
         {
-          text: "工作",
+          text: "Working",
           cls: "warning",
           color: "",
         },
         {
-          text: "错误",
+          text: "Error",
           cls: "critical",
           color: "",
         },

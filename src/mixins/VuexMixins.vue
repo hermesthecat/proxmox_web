@@ -4,7 +4,7 @@ import EventController from "@src/components/toast/eventController";
 export default {
   name: "VuexMixins",
   methods: {
-    //vuex中dipatch触发的事件
+    // Actions dispatched in vuex
     ...mapActions({
       updateDB: "UPDATE_DB",
       updateTable: "UPDATE_TABLE",
@@ -18,13 +18,13 @@ export default {
       updateChangeTree: "UPDATE_CHANGE_TREE",
       update401Count: "UPDATE_401_COUNT",
     }),
-    //vuex中commit触发提交同步mutations事件
+    // Mutations committed synchronously in vuex
     ...mapMutations({
       commitUpateLastSelect: "UPDATE_LAST_SELECT",
       commitUpdateChangeTree: "UPDATE_CHANGE_TREE",
       commitUpdateTable: "UPDATE_TABLE",
     }),
-    //创建事件
+    // Create event
     createEvent: function (
       action,
       name,
@@ -43,25 +43,27 @@ export default {
         this
       );
     },
-    //完成事件
+    // Event finished
     _eventFinished: function (_event) {
       return EventController._eventFinished(_event, this);
     },
-    //事件成功回调
+    // Event success callback
     incEventSuccess: function (event) {
       return EventController.incEventSuccess(event, this);
     },
-    //设置事件成功
+    // Set event success
     setEventSuccess: function (event, content) {
       return EventController.setEventSuccess(event, content, this);
     },
-    //事件失败回调
+    // Event failure callback
     incEventFail: function (event) {
       return EventController.incEventFail(event, this);
     },
+    // Set event failure
     setEventFail: function (event, content) {
       return EventController.setEventFail(event, content, this);
     },
+    // Set event as finished
     setEventFinished: function (event) {
       return EventController.setEventFinished(event, this);
     },

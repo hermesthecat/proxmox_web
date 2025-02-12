@@ -23,10 +23,10 @@ export default {
             return confirm
               .call(
                 this,
-                "Ceph没有在此节点上安装。你想现在安装吗？",
+                "Ceph is not installed on this node. Would you like to install it now?",
                 "info",
                 "icon-warning",
-                "安装ceph-nautilus"
+                "Install ceph-nautilus"
               )
               .then((res) => {
                 return Promise.reject("not installed");

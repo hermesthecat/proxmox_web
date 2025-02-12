@@ -5,7 +5,7 @@
   </div>
 </template>
 <script>
-//表格状态组件
+// Table state component
 export default {
   name: "InfoState",
   props: {
@@ -19,7 +19,7 @@ export default {
     },
   },
   computed: {
-    //计算属性根据状态计算不同的类名，根据不同的类名得到不同的颜色状态
+    // Compute different class names based on state, different colors for different states
     __class() {
       return {
         actived: this.state === "actived",

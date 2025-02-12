@@ -2,11 +2,11 @@
   <div class="page-template">
     <div class="tool-bar">
       <div class="tool-bar-left">
-        <!--工具栏左侧区-->
+        <!-- Left Toolbar Area -->
         <slot name="toolbar-left"></slot>
       </div>
       <div class="tool-bar-right">
-        <!--工具栏右侧区-->
+        <!-- Right Toolbar Area -->
         <slot name="toolbar-right"></slot>
       </div>
       <div v-if="$slots['toolbar']">
@@ -15,7 +15,7 @@
     </div>
     <div class="page-template__content" ref="page-template__content">
       <el-scrollbar style="height: 100%">
-        <!--主页面区-->
+        <!-- Main Content Area -->
         <slot name="page-content"></slot>
       </el-scrollbar>
     </div>

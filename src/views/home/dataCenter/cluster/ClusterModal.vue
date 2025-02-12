@@ -11,14 +11,14 @@
       right: '0',
       bottom: '0',
     }"
-    title="集群加入信息"
+    title="Cluster Join Information"
   >
     <template slot="content" v-if="type === 'info'">
-      <h1>在此处复制加入信息并在要添加的节点上使用它。</h1>
+      <h1>Copy the join information here and use it on the node you want to add.</h1>
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>ip地址</dt>
+            <dt>IP Address</dt>
             <dd>
               <m-input
                 type="text"
@@ -27,12 +27,12 @@
                 readonly
                 :_style="{ width: '650px' }"
                 :__conStyle="{ width: 'auto' }"
-                placeholder="请输入IP地址"
+                placeholder="Please enter IP address"
               />
             </dd>
           </dl>
           <dl>
-            <dt>指纹</dt>
+            <dt>Fingerprint</dt>
             <dd>
               <m-input
                 type="text"
@@ -41,12 +41,12 @@
                 readonly
                 :_style="{ width: '650px' }"
                 :__conStyle="{ width: 'auto' }"
-                placeholder="请输入指纹"
+                placeholder="Please enter fingerprint"
               />
             </dd>
           </dl>
           <dl>
-            <dt>加入信息</dt>
+            <dt>Join Information</dt>
             <dd>
               <m-input
                 ref="info"
@@ -57,7 +57,7 @@
                 :_style="{ width: '650px' }"
                 readonly
                 :__conStyle="{ width: 'auto' }"
-                placeholder="请输入信息"
+                placeholder="Please enter information"
               />
             </dd>
           </dl>
@@ -68,7 +68,7 @@
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>集群名称</dt>
+            <dt>Cluster Name</dt>
             <dd>
               <m-input
                 type="text"
@@ -79,14 +79,14 @@
                 :show-error="rules.clusterName.error"
                 :error-msg="rules.clusterName.message"
                 v-model="clusterName"
-                placeholder="请输入集群名称"
+                placeholder="Please enter cluster name"
               />
             </dd>
           </dl>
         </div>
         <div class="m-form__section" v-show="isAdvice">
           <dl>
-            <dt>网络</dt>
+            <dt>Network</dt>
             <dd>
               <m-select
                 type="text"
@@ -101,7 +101,7 @@
                 :readonly="false"
                 @on-change="(value) => (link0 = value)"
                 v-model="link0"
-                placeholder="请选择"
+                placeholder="Please select"
               >
                 <m-option
                   v-for="(item, index) in netWorkList"
@@ -112,9 +112,9 @@
                   <template v-show="index === 0">
                     <div class="table-header__tr">
                       <span class="table-td">CIDR</span>
-                      <span class="table-td">接口</span>
-                      <span class="table-td">活动</span>
-                      <span class="table-td">备注</span>
+                      <span class="table-td">Interface</span>
+                      <span class="table-td">Active</span>
+                      <span class="table-td">Comment</span>
                     </div>
                   </template>
                   <div class="table-tr">
@@ -126,7 +126,7 @@
                     }}</span>
                     <span class="table-td" :title="item.active">
                       <table-info-state
-                        :content="item.active === 1 ? '是' : '否'"
+                        :content="item.active === 1 ? 'Yes' : 'No'"
                         :state="item.active === 1 ? 'actived' : 'unactived'"
                       ></table-info-state>
                     </span>
@@ -136,7 +136,7 @@
                   </div>
                 </m-option>
               </m-select>
-              <template v-for="(item, num) in networkNum">
+              <template v-for="(item, num) in networkNum" :key="num">
                 <m-select
                   type="text"
                   :prop="`link${item}`"
@@ -145,8 +145,7 @@
                   validateEvent
                   v-model="link[item]"
                   @on-change="(value) => ($data.link[item] = value)"
-                  placeholder="请选择"
-                  :key="num"
+                  placeholder="Please select"
                 >
                   <m-option
                     v-for="(item, index) in netWorkList"
@@ -157,9 +156,9 @@
                     <template v-show="index === 0">
                       <div class="table-header__tr">
                         <span class="table-td">CIDR</span>
-                        <span class="table-td">接口</span>
-                        <span class="table-td">活动</span>
-                        <span class="table-td">备注</span>
+                        <span class="table-td">Interface</span>
+                        <span class="table-td">Active</span>
+                        <span class="table-td">Comment</span>
                       </div>
                     </template>
                     <div class="table-tr">
@@ -171,7 +170,7 @@
                       }}</span>
                       <span class="table-td" :title="item.active">
                         <table-info-state
-                          :content="item.active === 1 ? '是' : '否'"
+                          :content="item.active === 1 ? 'Yes' : 'No'"
                           :state="item.active === 1 ? 'actived' : 'unactived'"
                         ></table-info-state>
                       </span>
@@ -185,15 +184,14 @@
                   type="danger"
                   icon="el-icon-delete"
                   @on-click="handleLinkDelete(item, num)"
-                  :key="num"
-                  >删除</m-button
+                  >Delete</m-button
                 >
               </template>
               <m-button
                 type="primary"
                 icon="el-icon-plus"
                 @on-click="handleLinkChange"
-                >添加</m-button
+                >Add</m-button
               >
             </dd>
           </dl>
@@ -208,12 +206,12 @@
             <div></div>
           </label>
         </div>
-        辅助加入：粘贴编码了的集群加入信息并输入密码。
+        Assisted Join: Paste the encoded cluster join information and enter the password.
       </h1>
       <div class="m-form__content">
         <div class="m-form__section">
           <dl v-if="isCreate">
-            <dt>信息</dt>
+            <dt>Information</dt>
             <dd>
               <m-input
                 type="textarea"
@@ -225,17 +223,17 @@
                 :error-msg="rules.serializedinfo.message"
                 v-model="serializedinfo"
                 @change="searialChange"
-                placeholder="请输入集群名称"
+                placeholder="Please enter cluster name"
               />
             </dd>
           </dl>
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-input
                 type="text"
                 prop="hostname"
-                label="对端地址"
+                label="Remote Address"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
@@ -244,12 +242,12 @@
                 :error-msg="rules.hostname.message"
                 v-model="hostname"
                 :readonly="isCreate"
-                :placeholder="!isCreate ? '请输入对端地址' : ''"
+                :placeholder="!isCreate ? 'Please enter remote address' : ''"
               />
               <m-input
                 type="password"
                 prop="password"
-                label="密码"
+                label="Password"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
@@ -257,12 +255,12 @@
                 :show-error="rules.password.error"
                 :error-msg="rules.password.message"
                 v-model="password"
-                placeholder="请输入密码"
+                placeholder="Please enter password"
               />
               <m-input
                 type="text"
                 prop="fingerprint"
-                label="指纹"
+                label="Fingerprint"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
@@ -271,12 +269,12 @@
                 :show-error="rules.fingerprint.error"
                 :error-msg="rules.fingerprint.message"
                 v-model="fingerprint"
-                :placeholder="!isCreate ? '请输入指纹' : ''"
+                :placeholder="!isCreate ? 'Please enter fingerprint' : ''"
               />
             </dd>
           </dl>
           <dl>
-            <dt>网络</dt>
+            <dt>Network</dt>
             <dd>
               <m-select
                 type="text"
@@ -291,7 +289,7 @@
                 :readonly="false"
                 @on-change="(value) => (link0 = value)"
                 v-model="link0"
-                placeholder="请选择"
+                placeholder="Please select"
               >
                 <m-option
                   v-for="(item, index) in netWorkList"
@@ -302,9 +300,9 @@
                   <template v-if="index === 0">
                     <div class="table-header__tr">
                       <span class="table-td">CIDR</span>
-                      <span class="table-td">接口</span>
-                      <span class="table-td">活动</span>
-                      <span class="table-td">备注</span>
+                      <span class="table-td">Interface</span>
+                      <span class="table-td">Active</span>
+                      <span class="table-td">Comment</span>
                     </div>
                   </template>
                   <div class="table-tr">
@@ -316,7 +314,7 @@
                     }}</span>
                     <span class="table-td">
                       <table-info-state
-                        :content="item.active === 1 ? '是' : '否'"
+                        :content="item.active === 1 ? 'Yes' : 'No'"
                         :state="item.active === 1 ? 'actived' : 'unactived'"
                       ></table-info-state>
                     </span>
@@ -327,17 +325,16 @@
                 </m-option>
               </m-select>
               <template v-if="!isCreate">
-                <template v-for="(item, num) in networkNum">
+                <template v-for="(item, num) in networkNum" :key="num">
                   <m-select
                     type="text"
                     :prop="`link${item}`"
                     :label="`link${item}`"
                     labelWidth="100px"
                     validateEvent
-                    :key="num"
                     v-model="link[item]"
                     @on-change="(value) => ($data.link[item] = value)"
-                    placeholder="请选择"
+                    placeholder="Please select"
                   >
                     <m-option
                       v-for="(item, index) in netWorkList"
@@ -348,9 +345,9 @@
                       <template v-show="index === 0">
                         <div class="table-header__tr">
                           <span class="table-td">CIDR</span>
-                          <span class="table-td">接口</span>
-                          <span class="table-td">活动</span>
-                          <span class="table-td">备注</span>
+                          <span class="table-td">Interface</span>
+                          <span class="table-td">Active</span>
+                          <span class="table-td">Comment</span>
                         </div>
                       </template>
                       <div class="table-tr">
@@ -362,7 +359,7 @@
                         }}</span>
                         <span class="table-td">
                           <table-info-state
-                            :content="item.active === 1 ? '是' : '否'"
+                            :content="item.active === 1 ? 'Yes' : 'No'"
                             :state="item.active === 1 ? 'actived' : 'unactived'"
                           ></table-info-state>
                         </span>
@@ -376,8 +373,7 @@
                     type="danger"
                     icon="el-icon-delete"
                     @on-click="handleLinkDelete(item, num)"
-                    :key="item"
-                    >删除</m-button
+                    >Delete</m-button
                   >
                 </template>
               </template>
@@ -387,7 +383,7 @@
                   icon="el-icon-plus"
                   @on-click="handleLinkChange"
                   v-if="!isCreate"
-                  >添加</m-button
+                  >Add</m-button
                 >Multiple links are used as failover, lower numbers have higher
                 priority.
               </div>
@@ -403,19 +399,19 @@
         :_style="{
           width: '800px',
         }"
-        title="Task Viewer: 加入集群"
+        title="Task Viewer: Join Cluster"
       >
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
-            <m-tab-panel label="输出" name="log"></m-tab-panel>
-            <m-tab-panel label="状态" name="status"></m-tab-panel>
+            <m-tab-panel label="Output" name="log"></m-tab-panel>
+            <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
           <m-button
             class="create-btn"
             type="primary"
             @on-click="stopTask1"
             :disabled="db.addClusterStatusObj.status !== 'running'"
-            >停止</m-button
+            >Stop</m-button
           >
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
@@ -452,21 +448,21 @@
           <span></span>
         </template>
       </Dialog>
-      <m-button @on-click="copy" v-if="type === 'info'">拷贝信息</m-button>
+      <m-button @on-click="copy" v-if="type === 'info'">Copy Information</m-button>
       <template v-if="type === 'create'">
         <div class="label_box">
           <label>
             <input type="checkbox" v-model="isAdvice" />
-            <div>高级</div>
+            <div>Advanced</div>
           </label>
         </div>
         <m-button class="create-btn" type="primary" @on-click="create"
-          >创建</m-button
+          >Create</m-button
         >
       </template>
       <template v-if="type === 'join'">
         <m-button class="create-btn" type="primary" @on-click="joinCluster"
-          >加入</m-button
+          >Join</m-button
         >
       </template>
     </template>
@@ -492,7 +488,7 @@ export default {
       type: Boolean,
       default: true,
     },
-    type: String, //info表示加入信息、create表示创建集群、join表示加入集群
+    type: String, //info for join info, create for create cluster, join for join cluster
   },
   data() {
     return {
@@ -568,12 +564,12 @@ export default {
       if (!joinInfo) {
         return;
       }
-      //将joinInfo转化为string类型的javascript的对象
+      //Convert joinInfo to string type javascript object
       let jsons = JSON.stringify(joinInfo);
-      //对象进行Base64加密
+      //Base64 encode the object
       this.information = Base64.encode(jsons);
     }
-    //创建、加入集群时需要查询网络、配置网络
+    //Query network and configure network when creating or joining cluster
     if (this.type === "create" || this.type === "join") {
       this.queryClusterNetWork().then((res) => {
         this.netWorkList = this.db.netWorkList.filter((item) => {
@@ -586,17 +582,17 @@ export default {
   },
   methods: {
     dateFormat,
-    //关闭弹框
+    //Close dialog
     close() {
       this.$emit("close");
     },
-    //加入信息时需要copy内容
+    //Copy content when joining info
     copy() {
       this.$refs["info"].$el.childNodes[2].children[0].select();
       try {
         document.execCommand("copy");
       } catch (err) {
-        console.log("该浏览器不支持点击复制到剪贴板");
+        console.log("This browser does not support clicking to copy to clipboard");
       }
     },
     handleLink0Change(row) {
@@ -605,7 +601,7 @@ export default {
     handleLink1Change(row) {
       this.link1Radio = row.address;
     },
-    //单个校验字段
+    //Single field validation
     validate(prop) {
       let _this = this,
         value = String(_this[prop]).trim();
@@ -613,13 +609,13 @@ export default {
       _this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         _this.rules[prop].error = true;
-        _this.rules[prop].message = "该字段不能为空!";
+        _this.rules[prop].message = "This field cannot be empty!";
         return;
       }
     },
-    //加入集群时解析输入的base64数据
+    //Parse base64 data when joining cluster
     searialChange() {
-      //几码base64得到信息
+      //Decode base64 to get information
       var jsons = Base64.decode(this.serializedinfo);
       let joinInfo;
       try {
@@ -655,7 +651,7 @@ export default {
         props.forEach((prop) => this.validate(prop));
       }
     },
-    //创建集群
+    //Create cluster
     create() {
       this.validate("clusterName");
       if (this.rules["clusterName"].error) return;
@@ -680,7 +676,7 @@ export default {
         );
       });
     },
-    //整体校验
+    //Overall validation
     validateAll() {
       let props;
       if (this.type === "join") {
@@ -689,7 +685,7 @@ export default {
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
     },
-    //加入集群
+    //Join cluster
     joinCluster() {
       if (this.validateAll()) return;
       let param = {

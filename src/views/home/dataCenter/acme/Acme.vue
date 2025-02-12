@@ -1,7 +1,7 @@
 <template>
   <div style="padding: 20px">
     <overview-card>
-      <div slot="title">账户</div>
+      <div slot="title">Account</div>
       <div
         slot="operate"
         :class="{ 'm-tool-collpise': !showStatus }"
@@ -16,25 +16,25 @@
                 type="primary"
                 @on-click="showModal('create')"
                 icon="el-icon-plus"
-                >添加</m-button
+                >Add</m-button
               >
               <m-button
                 type="info"
                 @on-click="showModal('edit')"
                 icon="el-icon-view"
                 :disabled="selectedList.length !== 1"
-                >查看</m-button
+                >View</m-button
               >
               <m-button
                 type="danger"
                 v-confirm="{
-                  msg: '确定要删除已选择项?',
+                  msg: 'Are you sure you want to delete the selected items?',
                   ok: () => handleDelete(),
                   icon: 'icon-question',
                 }"
                 icon="el-icon-delete"
                 :disabled="selectedList.length <= 0"
-                >删除</m-button
+                >Delete</m-button
               >
             </div>
             <div slot="page-content">
@@ -44,7 +44,7 @@
                 @selection-change="handleSelect"
               >
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column label="名称" prop="name"></el-table-column>
+                <el-table-column label="Name" prop="name"></el-table-column>
               </el-table>
             </div>
           </page-template>
@@ -52,7 +52,7 @@
       </div>
     </overview-card>
     <overview-card>
-      <div slot="title">Challenage Plugins</div>
+      <div slot="title">Challenge Plugins</div>
       <div
         slot="operate"
         :class="{ 'm-tool-collpise': !showResource }"
@@ -67,25 +67,25 @@
                 type="primary"
                 @on-click="showPlginModal('create')"
                 icon="el-icon-plus"
-                >添加</m-button
+                >Add</m-button
               >
               <m-button
                 type="info"
                 @on-click="showPlginModal('edit')"
                 icon="el-icon-edit"
                 :disabled="selectedPluginList.length !== 1"
-                >编辑</m-button
+                >Edit</m-button
               >
               <m-button
                 type="danger"
                 v-confirm="{
-                  msg: '确定要删除已选择项?',
+                  msg: 'Are you sure you want to delete the selected items?',
                   ok: () => handlePluginDelete(),
                   icon: 'icon-question',
                 }"
                 icon="el-icon-delete"
                 :disabled="selectedPluginList.length <= 0"
-                >删除</m-button
+                >Delete</m-button
               >
             </div>
             <div slot="page-content">
@@ -95,8 +95,8 @@
                 @selection-change="handlePluginSelect"
               >
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column label="plugin" prop="plugin"></el-table-column>
-                <el-table-column label="Api" prop="api"></el-table-column>
+                <el-table-column label="Plugin" prop="plugin"></el-table-column>
+                <el-table-column label="API" prop="api"></el-table-column>
               </el-table>
             </div>
           </page-template>
@@ -131,19 +131,19 @@
             :_style="{
               width: '800px',
             }"
-            title="Task Viewer: 任务进度"
+            title="Task Viewer: Task Progress"
           >
             <template slot="content">
               <m-tab v-model="tab" @tab-click="handleTabChange">
-                <m-tab-panel label="输出" name="log"></m-tab-panel>
-                <m-tab-panel label="状态" name="status"></m-tab-panel>
+                <m-tab-panel label="Output" name="log"></m-tab-panel>
+                <m-tab-panel label="Status" name="status"></m-tab-panel>
               </m-tab>
               <m-button
                 class="create-btn m-margin-top-10"
                 type="primary"
                 @on-click="stopTask1"
                 :disabled="db.addClusterStatusObj.status !== 'running'"
-                >停止</m-button
+                >Stop</m-button
               >
               <el-scrollbar style="height: 100%">
                 <div class="taskmodal-content">
@@ -212,7 +212,7 @@ export default {
     return {
       type: "create",
       visible: false,
-      title: "创建：复制作业",
+      title: "Create: Copy Job",
       selectedList: [],
       isCreate: true,
       param: {},
@@ -222,7 +222,7 @@ export default {
       selectedPluginList: [],
       pluginType: "create",
       pluginVisible: false,
-      pluginTitle: "创建：复制作业",
+      pluginTitle: "Create: Copy Job",
       pluginIsCreate: true,
       pluginParam: {},
       acmePluginList: [],
@@ -236,7 +236,7 @@ export default {
   },
   methods: {
     dateFormat,
-    //初始化查找
+    // Initialize search
     __init__() {
       return Promise.all([
         this.queryAcmePluginsList().then(() => {
@@ -247,28 +247,28 @@ export default {
         this.queryAcmeAccountList(),
       ]);
     },
-    //是否展示弹框
+    // Show modal dialog
     showModal(type) {
       this.type = type;
       this.isCreate = type === "create";
-      this.title = type === "create" ? "注册账号" : "查看账号";
+      this.title = type === "create" ? "Register Account" : "View Account";
       this.param = type === "create" ? {} : this.selectedList[0];
       this.visible = true;
     },
-    //按钮是否可点击
+    // Check if button is clickable
     inStatus() {
       return this.selectedList.length <= 0;
     },
-    //选择表格多选
+    // Table multi-select
     handleSelect(row) {
       this.selectedList = row;
     },
-    //选择插件表格多选
+    // Plugin table multi-select
     handlePluginSelect(row) {
       this.selectedPluginList = row;
     },
     /**
-     * 删除插件
+     * Delete plugin
      */
     handlePluginDelete() {
       this.deleteAcmePlugin().catch((res) => {
@@ -278,8 +278,8 @@ export default {
         });
       });
     },
-    /***
-     * 删除账户
+    /**
+     * Delete account
      */
     handleDelete() {
       this.deleteAcmeAccount()
@@ -304,7 +304,7 @@ export default {
         });
     },
     /**
-     * 是否展示表格
+     * Show/hide table
      */
     handleCollpise(type) {
       if (type === "status") {
@@ -314,18 +314,18 @@ export default {
       }
     },
     /**
-     * 是否展示插件相关弹框
+     * Show plugin modal
      */
     showPlginModal(type) {
       this.pluginType = type;
       this.pluginIsCreate = type === "create";
       this.pluginTitle =
-        type === "create" ? "创建：ACME DNS Plugin" : "编辑：ACME DNS Plugin";
+        type === "create" ? "Create: ACME DNS Plugin" : "Edit: ACME DNS Plugin";
       this.pluginParam = type === "create" ? {} : this.selectedPluginList[0];
       this.pluginVisible = true;
     },
     /**
-     * 停止运行中的任务
+     * Stop running task
      */
     stopTask1() {
       this.stopTask(
@@ -334,14 +334,14 @@ export default {
       );
     },
     /**
-     * 关闭日志弹框
+     * Close log dialog
      */
     closeLog() {
       this.showLog = false;
       this.__init__();
     },
     /**
-     * 切换tab
+     * Switch tab
      */
     handleTabChange(value) {
       this.tab = value;

@@ -3,10 +3,10 @@ import { Message } from 'element-ui';
 import axios from 'axios';
 import qs from 'qs';
 
-// 声明一个 Map 用于存储每个请求的标识 和 取消函数
+// Declare a Map to store request identifiers and cancel functions
 const pending = new Map()
 /**
- * 添加请求
+ * Add request
  * @param {Object} config 
  */
 const addPending = (config) => {
@@ -17,13 +17,13 @@ const addPending = (config) => {
     qs.stringify(config.data)
   ].join('&');
   config.cancelToken = new axios.CancelToken(cancel => {
-    if (!pending.has(url)) { // 如果 pending 中不存在当前请求，则添加进去
+    if (!pending.has(url)) { // If the current request doesn't exist in pending, add it
       pending.set(url, cancel);
     }
   })
 }
 /**
- * 移除请求
+ * Remove request
  * @param {Object} config 
  */
 const removePending = (config) => {
@@ -33,14 +33,14 @@ const removePending = (config) => {
     qs.stringify(config.params),
     qs.stringify(config.data)
   ].join('&')
-  if (pending.has(url)) { // 如果在 pending 中存在当前请求标识，需要取消当前请求，并且移除
+  if (pending.has(url)) { // If current request exists in pending, cancel it and remove
     const cancel = pending.get(url)
     cancel(url)
     pending.delete(url)
   }
 }
 /**
- * 清空 pending 中的请求（在路由跳转时调用）
+ * Clear requests in pending (called during route changes)
  */
 const clearPending = () => {
   for (const [url, cancel] of pending) {
@@ -54,7 +54,7 @@ function handleError(error, errorTip) {
   if (error.error.response && error.error.response.status === 401) {
     let count = window.vm.$store.state.db.exceptionLogin.response401count || 0;
     window.vm.$store.dispatch('UPDATE_401_COUNT', { response401count: ++count });
-    //当用户鉴权失败后为了良好的用户体验，先不要直接跳转到登录页面
+    // When user authentication fails, don't redirect to login page immediately for better user experience
     if (window.vm.$store.state.db.exceptionLogin.response401count > 5) {
       window.location.href = '/login';
       window.vm.$store.dispatch('UPDATE_401_COUNT', { silenceAuthFailures: false });
@@ -74,16 +74,16 @@ const http = new Http({
 });
 
 http.defaults.baseURL = '/api2';
-// 请求前拦截
+// Intercept before request
 
 http.instance.interceptors.request.use(cfg => {
-  //添加token验证头
+  // Add token verification header
   // Do something before request is sent
   if (cfg.url !== "/json/access/ticket")
     cfg.headers['CSRFPreventionToken'] = window.localStorage.getItem('CSRFPreventionToken') || '';
   if (cfg.url !== '/json/cluster/resources') {
-    removePending(cfg) // 在请求开始前，对之前的请求做检查取消操作
-    addPending(cfg) // 将当前请求添加到 pending 中
+    removePending(cfg) // Before starting request, check and cancel previous requests
+    addPending(cfg) // Add current request to pending
   }
   return cfg;
 }, error => {
@@ -93,7 +93,7 @@ http.instance.interceptors.request.use(cfg => {
 
 
 http.instance.interceptors.response.use(response => {
-  removePending(response) // 在请求结束后，移除本次请求
+  removePending(response) // After request completes, remove this request
   return response
 }, error => {
   if (axios.isCancel(error)) {

@@ -3,7 +3,7 @@ import { throttle } from "@libs/utils/index";
 export default {
   name: "m-scrollbar",
   mounted: function () {
-    //初始化滚动条
+    // Initialize scrollbar
     this.initScrollbar();
   },
   destroyed: function () {
@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     initScrollbar: function () {
-      //监听滚动条容器如果存在则断开连接清空
+      // If scrollbar container exists, disconnect observer and clear
       if (this.scrollContainerObserver) {
         this.scrollContainerObserver.disconnect();
         this.scrollContainerObserver = null;
@@ -47,13 +47,13 @@ export default {
         } else {
           self.scrollContainer = self.$el;
         }
-        //监听容器变化
+        // Monitor container changes
         self.scrollContainerObserver = new MutationObserver(function (
           mutations
         ) {
           self.computeScroll();
         });
-        //监听容器中元素的变化
+        // Monitor changes in container elements
         // pass in the target node, as well as the observer options
         self.scrollContainerObserver.observe(self.scrollContainer, {
           childList: true,
@@ -76,15 +76,15 @@ export default {
     }, 20),
     computeScroll: function () {
       if (this.startDrag) return;
-      //当滚动条的高度大于可视区的高度时证明出现滚动条
+      // When scrollbar height is greater than visible area height, show scrollbar
       this.showScrollbar =
         this.scrollElement.scrollHeight - this.scrollContainer.clientHeight > 1;
-      //计算滚动条长度随着滚动条高度越高则滚动条长度越小
+      // Calculate scrollbar length - the higher the scrollbar height, the smaller the scrollbar length
       this.scrollLength =
         (this.scrollContainer.clientHeight *
           this.scrollContainer.clientHeight) /
         this.scrollElement.scrollHeight;
-      //滚动条距离顶部的距离
+      // Distance of scrollbar from top
       this.scrollTop =
         (this.scrollElement.scrollTop / this.scrollElement.scrollHeight) *
         this.scrollContainer.clientHeight;

@@ -5,34 +5,34 @@
         type="primary"
         icon="el-icon-plus"
         @on-click="showModal('create')"
-        >添加</m-button
+        >Add</m-button
       >
       <m-button
         type="danger"
         icon="el-icon-delete"
         v-confirm="{
-          msg: `确定要删除已选项吗?`,
+          msg: `Are you sure you want to delete the selected items?`,
           ok: () => deleteBackUp(),
         }"
         :disabled="selectedList.length <= 0"
-        >删除</m-button
+        >Delete</m-button
       >
       <m-button
         type="primary"
         icon="el-icon-edit"
         @on-click="showModal('edit')"
         :disabled="selectedList.length !== 1"
-        >编辑</m-button
+        >Edit</m-button
       >
       <m-button
         type="info"
         icon="el-icon-video-play"
         v-confirm="{
-          msg: `你确定你要启动已选择的备份作业吗?`,
+          msg: `Are you sure you want to start the selected backup job?`,
           ok: () => runNow(),
         }"
         :disabled="selectedList.length <= 0"
-        >现在运行</m-button
+        >Run Now</m-button
       >
     </div>
     <div slot="page-content">
@@ -42,18 +42,18 @@
         @selection-change="handleSelect"
       >
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="节点" prop="node"></el-table-column>
-        <el-table-column label="星期几" prop="dow">
+        <el-table-column label="Node" prop="node"></el-table-column>
+        <el-table-column label="Day of Week" prop="dow">
           <template slot-scope="scope">
             {{ setDay(scope.row.dow) }}
           </template>
         </el-table-column>
-        <el-table-column label="开始时间" prop="starttime"></el-table-column>
-        <el-table-column label="已启用" prop="enabled">
+        <el-table-column label="Start Time" prop="starttime"></el-table-column>
+        <el-table-column label="Enabled" prop="enabled">
           <template slot-scope="scope">
             <table-info-state
               :content="
-                scope.row.enabled && scope.row.enabled === '1' ? '是' : '否'
+                scope.row.enabled && scope.row.enabled === '1' ? 'Yes' : 'No'
               "
               :state="
                 scope.row.enabled && scope.row.enabled === '1'
@@ -63,13 +63,13 @@
             ></table-info-state>
           </template>
         </el-table-column>
-        <el-table-column label="存储" prop="storage"></el-table-column>
-        <el-table-column label="选择" prop="vmid">
+        <el-table-column label="Storage" prop="storage"></el-table-column>
+        <el-table-column label="Selection" prop="vmid">
           <template slot-scope="scope">
             <span v-show="scope.row.exclude"
-              >{{ scope.row.exclude }}以外的所有</span
+              >All except {{ scope.row.exclude }}</span
             >
-            <span v-show="scope.row.all && !scope.row.exclude">--所有--</span>
+            <span v-show="scope.row.all && !scope.row.exclude">--All--</span>
             <span v-show="scope.row.vmid">{{ scope.row.vmid }}</span>
             <span v-show="scope.row.pool">Pool'{{ scope.row.pool }}'</span>
           </template>
@@ -115,20 +115,20 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化查找
+    // Initialize search
     __init__() {
       this.queryBackUpList().then((res) => {
         //this.handelDefaultSel();
       });
     },
-    //是否展示弹框
+    // Show modal dialog
     showModal(type) {
       this.type = type;
-      this.title = type === "create" ? "创建备份" : "编辑备份";
+      this.title = type === "create" ? "Create Backup" : "Edit Backup";
       if (type !== "create") this.editParam = this.selectedList[0];
       this.visible = true;
     },
-    //按钮是否可点击
+    // Check if button is clickable
     inStatus() {
       return this.db.clusterObj &&
         this.db.clusterObj.totem &&
@@ -154,11 +154,11 @@ export default {
     deleteBackUp() {
       this.delete();
     },
-    //选择
+    // Selection
     handleSelect(rows) {
       this.selectedList = rows;
     },
-    //现在运行
+    // Run now
     runNow() {
       this.run();
     },

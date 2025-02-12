@@ -5,24 +5,24 @@
         type="primary"
         icon="el-icon-plus"
         @on-click="showModal('create')"
-        >创建</m-button
+        >Create</m-button
       >
       <m-button
         type="info"
         @on-click="showModal('edit')"
         icon="el-icon-edit"
         :disabled="selectedList.length !== 1"
-        >编辑</m-button
+        >Edit</m-button
       >
       <m-button
         type="danger"
         v-confirm="{
-          msg: `你确定你要删除已选择项吗?`,
+          msg: `Are you sure you want to delete the selected items?`,
           ok: () => handleDelete(),
         }"
         icon="el-icon-delete"
         :disabled="selectedList.length <= 0"
-        >删除</m-button
+        >Delete</m-button
       >
     </div>
     <div slot="page-content">
@@ -32,9 +32,9 @@
         @selection-change="handleSelect"
       >
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="名称" prop="groupid"></el-table-column>
-        <el-table-column label="备注" prop="comnent"></el-table-column>
-        <el-table-column label="用户" prop="users"></el-table-column>
+        <el-table-column label="Name" prop="groupid"></el-table-column>
+        <el-table-column label="Comment" prop="comnent"></el-table-column>
+        <el-table-column label="Users" prop="users"></el-table-column>
       </el-table>
       <create-access-group-modal
         :title="title"
@@ -68,7 +68,7 @@ export default {
     return {
       type: "create",
       visible: false,
-      title: "创建：复制作业",
+      title: "Create: Copy Job",
       selectedList: [],
       isCreate: true,
       param: {},
@@ -78,23 +78,23 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化查找
+    // Initialize search
     __init__() {
       this.queryGroupsList();
     },
-    //是否展示弹框
+    // Show modal dialog
     showModal(type) {
       this.type = type;
       this.isCreate = type === "create";
-      this.title = type === "create" ? "创建：组" : "编辑：组";
+      this.title = type === "create" ? "Create: Group" : "Edit: Group";
       this.param = type === "create" ? {} : this.selectedList[0];
       this.visible = true;
     },
-    //按钮是否可点击
+    // Check if button is clickable
     inStatus() {
       return this.selectedList.length <= 0;
     },
-    //选择
+    // Selection
     handleSelect(row) {
       this.selectedList = row;
     },

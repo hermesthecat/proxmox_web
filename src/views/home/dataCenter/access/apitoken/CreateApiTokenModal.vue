@@ -11,11 +11,11 @@
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-select
                 prop="userid"
-                label="用户"
+                label="User"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
@@ -24,7 +24,7 @@
                 :readonly="false"
                 @on-change="handleUseridSelect"
                 v-model="userid"
-                placeholder="请选择用户"
+                placeholder="Please select a user"
               >
                 <m-option
                   v-for="(item, index) in db.usersList"
@@ -33,9 +33,9 @@
                   :value="item.userid"
                 >
                   <div v-if="index === 0" class="table-header__tr">
-                    <span class="table-td">用户</span>
-                    <span class="table-td">名称</span>
-                    <span class="table-td">备注</span>
+                    <span class="table-td">User</span>
+                    <span class="table-td">Name</span>
+                    <span class="table-td">Comment</span>
                   </div>
                   <div class="table-tr">
                     <span class="table-td" :title="item.userid">{{
@@ -74,19 +74,19 @@
                 :show-error="rules.tokenid.error"
                 :error-msg="rules.tokenid.message"
                 :disabled="modalType !== 'create'"
-                placeholder="请输入Token ID"
+                placeholder="Please enter Token ID"
               />
               <m-input
                 prop="expire"
                 labelWidth="100px"
-                label="选择日期"
+                label="Select Date"
                 :__conStyle="{ width: '202px' }"
               >
                 <template slot="other">
                   <el-date-picker
                     v-model="expire"
                     type="date"
-                    placeholder="永久有效"
+                    placeholder="Never Expires"
                   >
                   </el-date-picker>
                 </template>
@@ -95,9 +95,9 @@
                 type="textarea"
                 prop="comment"
                 labelWidth="100px"
-                label="备注"
+                label="Comment"
                 v-model="comment"
-                placeholder="请输入备注"
+                placeholder="Please enter a comment"
               />
             </dd>
           </dl>
@@ -195,7 +195,7 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
     },

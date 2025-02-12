@@ -11,13 +11,13 @@
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-input
                 type="text"
                 prop="groupid"
                 labelWidth="100px"
-                label="组"
+                label="Group"
                 v-model="groupid"
                 validateEvent
                 @validate="validate"
@@ -25,15 +25,15 @@
                 :show-error="rules.groupid.error"
                 :error-msg="rules.groupid.message"
                 :disabled="modalType !== 'create'"
-                placeholder="请输入组"
+                placeholder="Please enter group name"
               />
               <m-input
                 type="textarea"
                 prop="comment"
                 labelWidth="100px"
-                label="备注"
+                label="Comment"
                 v-model="comment"
-                placeholder="请输入备注"
+                placeholder="Please enter comment"
               />
             </dd>
           </dl>
@@ -112,7 +112,7 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
     },

@@ -17,14 +17,14 @@
             type="primary"
             style="position: absolute; left: -1px; top: -1px; right: -1px"
             icon="el-icon-plus"
-            >添加</m-button
+            >Add</m-button
           >
         </span>
         <m-dropdown-item icon="fa fa-users" command="ad"
-          >活动目录服务器(AD)</m-dropdown-item
+          >Active Directory Server (AD)</m-dropdown-item
         >
         <m-dropdown-item icon="fa fa-user" command="ldap"
-          >LDAP服务器</m-dropdown-item
+          >LDAP Server</m-dropdown-item
         >
       </m-dropdown>
       <m-button
@@ -32,24 +32,24 @@
         @on-click="showModal('edit')"
         icon="el-icon-edit"
         :disabled="selectedList.length !== 1"
-        >编辑</m-button
+        >Edit</m-button
       >
       <m-button
         type="danger"
         v-confirm="{
-          msg: `你确定你要删除已选择项吗?`,
+          msg: `Are you sure you want to delete the selected items?`,
           ok: () => handleDelete(),
         }"
         icon="el-icon-delete"
         :disabled="selectedList.length <= 0 || inTypes()"
-        >删除</m-button
+        >Delete</m-button
       >
       <m-button
         type="primary"
         icon="el-icon-plus"
         :disabled="selectedList.length <= 0 || inTypes()"
         @on-click="showModal('sync')"
-        >同步</m-button
+        >Sync</m-button
       >
     </div>
     <div slot="page-content">
@@ -59,10 +59,10 @@
         @selection-change="handleSelect"
       >
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="领域" prop="realm"></el-table-column>
-        <el-table-column label="类别" prop="type"></el-table-column>
+        <el-table-column label="Realm" prop="realm"></el-table-column>
+        <el-table-column label="Type" prop="type"></el-table-column>
         <el-table-column label="TFA" prop="tfa"></el-table-column>
-        <el-table-column label="备注" prop="comment"></el-table-column>
+        <el-table-column label="Comment" prop="comment"></el-table-column>
       </el-table>
       <create-access-domain-modal
         :title="title"
@@ -97,7 +97,7 @@ export default {
     return {
       type: "create",
       visible: false,
-      title: "创建：复制作业",
+      title: "Create: Copy Job",
       selectedList: [],
       isCreate: true,
       param: {},
@@ -110,31 +110,31 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化查找
+    // Initialize search
     __init__() {
       this.queryDomain();
     },
-    //是否展示弹框
+    // Show modal dialog
     showModal(type) {
       this.isCreate = type === "create";
       this.modalType = type;
-      this.title = `编辑：${
+      this.title = `Edit: ${
         this.selectedList[0].type === "ad"
-          ? "活动目录服务器（AD）"
+          ? "Active Directory Server (AD)"
           : this.selectedList[0].type === "pam"
           ? "Linux PAM"
           : this.selectedList[0].type === "pve"
           ? "Proxmox VE authentication server"
-          : "LDAP服务器"
+          : "LDAP Server"
       }`;
       this.param = this.selectedList[0];
       this.visible = true;
     },
-    //按钮是否可点击
+    // Check if button is clickable
     inStatus() {
       return this.selectedList.length <= 0;
     },
-    //选择
+    // Selection handler
     handleSelect(row) {
       this.selectedList = row;
     },
@@ -147,7 +147,7 @@ export default {
       this.modalType = "create";
       if (this.isCreate)
         this.title =
-          command === "ad" ? `添加：活动目录服务器（AD）` : `添加：LDAP服务器`;
+          command === "ad" ? `Add: Active Directory Server (AD)` : `Add: LDAP Server`;
       this.visible = true;
     },
     inTypes() {

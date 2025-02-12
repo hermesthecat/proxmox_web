@@ -49,7 +49,7 @@
 </template>
 
 <script>
-//步骤条
+// Step component
 export default {
   name: "ElStep",
 
@@ -69,7 +69,7 @@ export default {
   },
 
   beforeCreate() {
-    //将子组件中的状态添加到父组件的steps中
+    // Add the state of child components to the parent's steps
     this.$parent.steps.push(this);
   },
 
@@ -82,36 +82,36 @@ export default {
   },
 
   computed: {
-    //计算当前step的状态
+    // Calculate the current step status
     currentStatus() {
       return this.status || this.internalStatus;
     },
-    //上一个状态
+    // Previous status
     prevStatus() {
       const prevStep = this.$parent.steps[this.index - 1];
       return prevStep ? prevStep.currentStatus : "wait";
     },
-    //是否居中
+    // Check if centered
     isCenter() {
       return this.$parent.alignCenter;
     },
-    //是否在垂直方向
+    // Check if vertical direction
     isVertical() {
       return this.$parent.direction === "vertical";
     },
     isSimple() {
       return this.$parent.simple;
     },
-    //是否是最后一步
+    // Check if it's the last step
     isLast() {
       const parent = this.$parent;
       return parent.steps[parent.steps.length - 1] === this;
     },
-    //总步骤数
+    // Total number of steps
     stepsCount() {
       return this.$parent.steps.length;
     },
-    //空间
+    // Space
     space() {
       const {
         isSimple,
@@ -152,7 +152,7 @@ export default {
   },
 
   methods: {
-    //更新步骤状态
+    // Update step status
     updateStatus(val) {
       const prevChild = this.$parent.$children[this.index - 1];
 
@@ -166,7 +166,7 @@ export default {
 
       if (prevChild) prevChild.calcProgress(this.internalStatus);
     },
-    //计算进度
+    // Calculate progress
     calcProgress(status) {
       let step = 100;
       const style = {};

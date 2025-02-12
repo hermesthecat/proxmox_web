@@ -1,16 +1,16 @@
 import Vue from 'vue'
 import * as types from '../mutations-types'
 
-//初始化状态
+// Initialize state
 const state = {
   toasts: {}
 }
 
-// getters计算所需要的状态
+// Getters to compute required states
 const getters = {
 }
 
-// actions异步操作触发mutations对toast进行增删改查
+// Actions for asynchronous operations to trigger mutations for CRUD operations on toasts
 const actions = {
   [types.CREATE_TOAST]({ commit, state }, param) {
     commit(types.CREATE_TOAST, param)
@@ -23,7 +23,7 @@ const actions = {
   }
 }
 
-// mutations
+// Mutations
 const mutations = {
   [types.CREATE_TOAST](state, param) {
     Vue.set(state.toasts, param.id, param)

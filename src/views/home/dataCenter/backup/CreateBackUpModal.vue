@@ -12,12 +12,12 @@
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-select
                 type="text"
                 prop="node"
-                label="节点"
+                label="Node"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
@@ -26,7 +26,7 @@
                 :readonly="false"
                 @on-change="handleNodeSelect"
                 v-model="node"
-                placeholder="--所有--"
+                placeholder="--All--"
               >
                 <m-option
                   v-for="item in db.nodeList"
@@ -70,19 +70,19 @@
               <m-input
                 type="text"
                 prop="mailto"
-                label="发送邮箱至"
+                label="Send Email To"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
                 :show-error="rules.mailto.error"
                 :error-msg="rules.mailto.message"
                 v-model="mailto"
-                placeholder="请输入邮箱"
+                placeholder="Please enter email"
               />
               <m-select
                 type="text"
                 prop="storage"
-                label="存储"
+                label="Storage"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
@@ -90,7 +90,7 @@
                 :error-msg="rules.storage.message"
                 @on-change="handleStorageSelect"
                 v-model="storage"
-                placeholder="请输入存储"
+                placeholder="Please enter storage"
               >
                 <m-option
                   v-for="item in db.storageList"
@@ -99,21 +99,21 @@
                   :value="item.storage"
                 >
                   <div class="table-tr">
-                    <span class="table-td" :title="item.storage + `(名称)`"
-                      >{{ item.storage }}(名称)</span
+                    <span class="table-td" :title="item.storage + ` (Name)`"
+                      >{{ item.storage }} (Name)</span
                     >
-                    <span class="table-td" :title="item.type + `(类别)`"
-                      >{{ item.type }}(类别)</span
-                    >
-                    <span
-                      class="table-td"
-                      :title="byteToSize(item.avail) + `(可用)`"
-                      >{{ byteToSize(item.avail) }}(可用)</span
+                    <span class="table-td" :title="item.type + ` (Type)`"
+                      >{{ item.type }} (Type)</span
                     >
                     <span
                       class="table-td"
-                      :title="byteToSize(item.total) + `(总量)`"
-                      >{{ byteToSize(item.total) }}(总量)</span
+                      :title="byteToSize(item.avail) + ` (Available)`"
+                      >{{ byteToSize(item.avail) }} (Available)</span
+                    >
+                    <span
+                      class="table-td"
+                      :title="byteToSize(item.total) + ` (Total)`"
+                      >{{ byteToSize(item.total) }} (Total)</span
                     >
                   </div>
                 </m-option>
@@ -121,11 +121,11 @@
               <m-select
                 type="text"
                 prop="mailnotification"
-                label="Email通知"
+                label="Email Notification"
                 labelWidth="100px"
                 v-model="mailnotification"
                 @on-change="handleNotificationChange"
-                placeholder="请输入访客用户"
+                placeholder="Please enter guest user"
               >
                 <m-option
                   v-for="item in mailnotificationList"
@@ -137,12 +137,12 @@
               <m-select
                 type="multiple"
                 prop="dow"
-                label="星期几"
+                label="Day of Week"
                 labelWidth="100px"
                 validateEvent
                 v-model="dow"
                 @on-change="handleDowSelect"
-                placeholder="请选择星期几"
+                placeholder="Please select day of week"
               >
                 <m-option
                   v-for="item in dowList"
@@ -156,7 +156,7 @@
                 @on-change="handleCompressSelect"
                 prop="compress"
                 v-model="compress"
-                label="压缩"
+                label="Compression"
               >
                 <m-option
                   v-for="item in compressList"
@@ -171,7 +171,7 @@
                 prop="starttime"
                 v-model="starttime"
                 :readonly="false"
-                label="开始时间"
+                label="Start Time"
                 validateEvent
                 @validate="validate"
                 :show-error="rules.starttime.error"
@@ -187,13 +187,13 @@
               <m-select
                 type="number"
                 prop="mode"
-                label="模式"
+                label="Mode"
                 labelWidth="100px"
                 validateEvent
                 min="0"
                 v-model="mode"
                 @on-change="handleModeSelect"
-                placeholder="请选择模式"
+                placeholder="Please select mode"
               >
                 <m-option
                   v-for="item in modeList"
@@ -205,11 +205,11 @@
               <m-select
                 type="text"
                 prop="selMode"
-                label="选择模式"
+                label="Selection Mode"
                 labelWidth="100px"
                 v-model="selMode"
                 @on-change="handleSelMode"
-                placeholder="请选择"
+                placeholder="Please select"
               >
                 <m-option
                   v-for="item in selModeList"
@@ -221,12 +221,12 @@
               <m-select
                 type="text"
                 prop="pool"
-                label="Pool to backUp"
+                label="Pool to Backup"
                 labelWidth="100px"
                 v-model="pool"
                 @on-change="handleSelPool"
                 v-show="selMode === 'pool'"
-                placeholder="请选择"
+                placeholder="Please select"
               >
                 <m-option
                   v-for="item in db.poolList"
@@ -235,24 +235,24 @@
                   :key="item.poolid"
                 >
                   <div class="table-tr">
-                    <span class="table-td" :title="item.poolid + `(名称)`"
-                      >{{ item.poolid }}(名称)</span
+                    <span class="table-td" :title="item.poolid + ` (Name)`"
+                      >{{ item.poolid }} (Name)</span
                     >
-                    <span class="table-td" :title="item.comment + `(备注)`"
-                      >{{ item.comment }}(备注)</span
+                    <span class="table-td" :title="item.comment + ` (Comment)`"
+                      >{{ item.comment }} (Comment)</span
                     >
                   </div>
                 </m-option>
               </m-select>
               <m-checkbox
-                label="启用"
+                label="Enable"
                 v-model="enabled"
                 labelWidth="100px"
               ></m-checkbox>
             </dd>
           </dl>
           <dl>
-            <dt>虚拟机</dt>
+            <dt>Virtual Machines</dt>
             <dd>
               <el-table
                 :data="db.vmList"
@@ -265,12 +265,12 @@
                   :selectable="selectable"
                 ></el-table-column>
                 <el-table-column label="ID" prop="vmid"></el-table-column>
-                <el-table-column label="节点" prop="node"></el-table-column>
-                <el-table-column label="状态" prop="status">
+                <el-table-column label="Node" prop="node"></el-table-column>
+                <el-table-column label="Status" prop="status">
                   <template slot-scope="scope">
                     <table-info-state
                       :content="
-                        scope.row.status === 'running' ? '运行中' : '已停止'
+                        scope.row.status === 'running' ? 'Running' : 'Stopped'
                       "
                       :state="
                         scope.row.status === 'running' ? 'actived' : 'unActived'
@@ -278,8 +278,8 @@
                     ></table-info-state>
                   </template>
                 </el-table-column>
-                <el-table-column label="名称" prop="node"></el-table-column>
-                <el-table-column label="类别" prop="type"></el-table-column>
+                <el-table-column label="Name" prop="node"></el-table-column>
+                <el-table-column label="Type" prop="type"></el-table-column>
               </el-table>
             </dd>
           </dl>
@@ -333,62 +333,62 @@ export default {
       exclude: "",
       vmid: [],
       selModeList: [
-        { value: "include", label: "包括选中的VMs" },
-        { value: "all", label: "所有" },
-        { value: "exclude", label: "不包括选中的虚拟机" },
-        { value: "pool", label: "Pool based" },
+        { value: "include", label: "Include Selected VMs" },
+        { value: "all", label: "All" },
+        { value: "exclude", label: "Exclude Selected VMs" },
+        { value: "pool", label: "Pool Based" },
       ],
       modeList: [
-        { value: "snapshot", label: "快照" },
-        { value: "suspend", label: "挂起" },
-        { value: "stop", label: "停止" },
+        { value: "snapshot", label: "Snapshot" },
+        { value: "suspend", label: "Suspend" },
+        { value: "stop", label: "Stop" },
       ],
       compressList: [
         {
           value: "0",
-          label: "无",
+          label: "None",
         },
-        { value: "lzo", label: "LZO (快速)" },
-        { value: "gzip", label: "GZIP (很好)" },
+        { value: "lzo", label: "LZO (Fast)" },
+        { value: "gzip", label: "GZIP (Good)" },
       ],
       starttimeoptions: [],
       mailnotificationList: [
         {
-          label: "总是",
+          label: "Always",
           value: "always",
         },
         {
-          label: "失败时",
+          label: "On Failure",
           value: "failure",
         },
       ],
       dowList: [
         {
-          label: "星期一",
+          label: "Monday",
           value: "mon",
         },
         {
-          label: "星期二",
+          label: "Tuesday",
           value: "tue",
         },
         {
-          label: "星期三",
+          label: "Wednesday",
           value: "wed",
         },
         {
-          label: "星期四",
+          label: "Thursday",
           value: "thu",
         },
         {
-          label: "星期五",
+          label: "Friday",
           value: "fri",
         },
         {
-          label: "星期六",
+          label: "Saturday",
           value: "sat",
         },
         {
-          label: "星期天",
+          label: "Sunday",
           value: "sun",
         },
       ],
@@ -570,7 +570,7 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value) && ["starttime", "storage"].includes(prop)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
       if (prop === "emailto") {
@@ -580,7 +580,7 @@ export default {
           )
         ) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "邮箱格式不正确!";
+          this.rules[prop].message = "Invalid email format!";
           return;
         }
       }

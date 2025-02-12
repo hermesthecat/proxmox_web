@@ -30,7 +30,7 @@
 </template>
 
 <script>
-//switch开关
+// Switch toggle component
 export default {
   name: "Switch",
   model: {

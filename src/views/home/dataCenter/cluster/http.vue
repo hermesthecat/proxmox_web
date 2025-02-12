@@ -3,7 +3,7 @@ import { parse_task_upid } from "@libs/utils/index";
 export default {
   name: "ClusterHttp",
   methods: {
-    //查询cluster下的节点
+    // Query nodes under cluster
     queryClusterNode() {
       return this.$http.get("json/cluster/config/nodes").then((res) => {
         if (res.data) {
@@ -14,7 +14,7 @@ export default {
         }
       });
     },
-    //查询cluster下的数据
+    // Query data under cluster
     queryClusterList() {
       return this.$http.get("json/cluster/config/join").then((res) => {
         if (res.data) {
@@ -25,7 +25,7 @@ export default {
         }
       });
     },
-    //查询cluster下的网络
+    // Query network under cluster
     queryClusterNetWork() {
       return this.$http.get("json/nodes/localhost/network").then((res) => {
         if (res.data) {
@@ -36,7 +36,7 @@ export default {
         }
       });
     },
-    //创建集群
+    // Create cluster
     createCluster(param) {
       let event = this.createEvent("clusters.action.create", param.clustername);
       return this.$http
@@ -54,7 +54,7 @@ export default {
           return Promise.resolve(error);
         });
     },
-    //加入集群
+    // Join cluster
     clusterJoin(param) {
       let event = this.createEvent("clusters.action.join", param.hostname);
       return this.$http

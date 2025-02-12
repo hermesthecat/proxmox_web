@@ -18,45 +18,45 @@
                 @tab-click="handleTabChange"
                 v-if="!['pve', 'pam'].includes(param.type)"
               >
-                <m-tab-panel label="一般" name="general"></m-tab-panel>
-                <m-tab-panel label="同步选项" name="sync"></m-tab-panel>
+                <m-tab-panel label="General" name="general"></m-tab-panel>
+                <m-tab-panel label="Sync Options" name="sync"></m-tab-panel>
               </m-tab>
             </dd>
           </dl>
           <dl v-if="tab === 'general'">
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-input
                 type="text"
                 prop="realm"
                 labelWidth="100px"
-                label="领域"
+                label="Realm"
                 v-model="realm"
                 validateEvent
                 @validate="validate"
                 :show-error="rules.realm.error"
                 :error-msg="rules.realm.message"
                 :disabled="!isCreate"
-                placeholder="请输入组"
+                placeholder="Please enter group"
               />
               <m-input
                 type="text"
                 prop="server1"
                 labelWidth="100px"
-                label="服务器"
+                label="Server"
                 v-model="server1"
                 validateEvent
                 :disabled="!isCreate"
                 :show-error="rules.server1.error"
                 :error-msg="rules.server1.message"
-                placeholder="请输入服务器"
+                placeholder="Please enter server"
                 v-if="!['pve', 'pam'].includes(param.type)"
               />
               <m-input
                 type="text"
                 prop="domain"
                 labelWidth="100px"
-                label="域名"
+                label="Domain"
                 v-model="domain"
                 validateEvent
                 @validate="validate"
@@ -70,7 +70,7 @@
                 type="text"
                 prop="base_dn"
                 labelWidth="100px"
-                label="基本域名"
+                label="Base DN"
                 v-model="base_dn"
                 validateEvent
                 @validate="validate"
@@ -84,16 +84,16 @@
                 type="text"
                 prop="server2"
                 labelWidth="100px"
-                label="后备服务器"
+                label="Backup Server"
                 v-model="server2"
                 v-if="!['pve', 'pam'].includes(param.type)"
-                placeholder="请输入后备服务器"
+                placeholder="Please enter backup server"
               />
               <m-input
                 type="text"
                 prop="user_attr"
                 labelWidth="100px"
-                label="用户名属性名称"
+                label="Username Attribute"
                 v-model="user_attr"
                 validateEvent
                 @validate="validate"
@@ -106,10 +106,10 @@
                 type="number"
                 prop="port"
                 labelWidth="100px"
-                label="端口"
+                label="Port"
                 v-model="port"
                 v-if="!['pve', 'pam'].includes(param.type)"
-                placeholder="请输入端口"
+                placeholder="Please enter port"
               />
               <m-select
                 prop="roles"
@@ -117,7 +117,7 @@
                 labelWidth="100px"
                 @on-change="handleTfaSelect"
                 v-model="tfa"
-                placeholder="请选择角色"
+                placeholder="Please select role"
               >
                 <m-option
                   v-for="item in tfaOptions"
@@ -134,7 +134,7 @@
                 labelWidth="100px"
               ></m-checkbox>
               <m-checkbox
-                label="默认"
+                label="Default"
                 v-model="default1"
                 labelWidth="100px"
               ></m-checkbox>
@@ -146,7 +146,7 @@
                 v-if="tfa === 'oath'"
                 min="3"
                 v-model="step"
-                placeholder="请输入step"
+                placeholder="Please enter step"
               />
               <m-input
                 type="number"
@@ -157,7 +157,7 @@
                 min="6"
                 max="8"
                 v-model="digits"
-                placeholder="请输入Secret Length"
+                placeholder="Please enter Secret Length"
               />
               <m-input
                 type="text"
@@ -169,7 +169,7 @@
                 @validate="validate"
                 :show-error="rules.id.error"
                 :error-msg="rules.id.message"
-                placeholder="请输入Yubico API Id"
+                placeholder="Please enter Yubico API Id"
               />
               <m-input
                 type="text"
@@ -181,43 +181,43 @@
                 @validate="validate"
                 :show-error="rules.key.error"
                 :error-msg="rules.key.message"
-                placeholder="请输入Yubico API Key"
+                placeholder="Please enter Yubico API Key"
               />
               <m-input
                 type="text"
                 prop="url"
                 v-if="tfa === 'yubico'"
                 labelWidth="100px"
-                label="url"
+                label="URL"
                 v-model="url"
-                placeholder="请输入url"
+                placeholder="Please enter URL"
               />
               <m-input
                 type="textarea"
                 prop="comment"
                 labelWidth="100px"
-                label="备注"
+                label="Comment"
                 v-model="comment"
-                placeholder="请输入备注"
+                placeholder="Please enter comment"
               />
             </dd>
           </dl>
           <dl v-if="tab === 'sync'">
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-input
                 type="text"
                 prop="bind_dn"
                 labelWidth="100px"
-                label="绑定用户"
+                label="Bind User"
                 v-model="bind_dn"
-                placeholder="请输入后备服务器"
+                placeholder="Please enter backup server"
               />
               <m-input
                 type="text"
                 prop="user_classes"
                 labelWidth="100px"
-                label="用户分类"
+                label="User Classes"
                 v-model="user_classes"
                 placeholder="inetorgperson, posixaccount, person, user"
               />
@@ -225,15 +225,15 @@
                 type="text"
                 prop="password"
                 labelWidth="100px"
-                label="绑定密码"
+                label="Bind Password"
                 v-model="password"
-                placeholder="请输入后备服务器"
+                placeholder="Please enter backup server"
               />
               <m-input
                 type="text"
                 prop="group_classes"
                 labelWidth="100px"
-                label="组分类"
+                label="Group Classes"
                 v-model="group_classes"
                 placeholder="groupOfNames, group, univentionGroup, ipausergroup"
               />
@@ -241,9 +241,9 @@
                 type="text"
                 prop="email"
                 labelWidth="100px"
-                label="E-Mail attribute"
+                label="E-Mail Attribute"
                 v-model="email"
-                placeholder="请输入E-Mail attribute"
+                placeholder="Please enter E-Mail attribute"
               />
               <m-input
                 type="text"
@@ -251,15 +251,15 @@
                 labelWidth="100px"
                 label="User Filter"
                 v-model="filter"
-                placeholder="请输入后备服务器"
+                placeholder="Please enter backup server"
               />
               <m-input
                 type="text"
                 prop="group_name_attr"
                 labelWidth="100px"
-                label="组名称属性"
+                label="Group Name Attribute"
                 v-model="group_name_attr"
-                placeholder="请输入组名称属性"
+                placeholder="Please enter group name attribute"
               />
               <m-input
                 type="text"
@@ -267,10 +267,10 @@
                 labelWidth="100px"
                 label="Group Filter"
                 v-model="group_filter"
-                placeholder="请输入Group Filter"
+                placeholder="Please enter Group Filter"
               />
             </dd>
-            <dt>默认同步选项</dt>
+            <dt>Default Sync Options</dt>
             <dd>
               <m-select
                 prop="scope"
@@ -278,7 +278,7 @@
                 labelWidth="100px"
                 @on-change="handleScopeSelect"
                 v-model="scope"
-                placeholder="请选择Scope"
+                placeholder="Please select scope"
               >
                 <m-option
                   v-for="item in scopeOptions"
@@ -290,11 +290,11 @@
               </m-select>
               <m-select
                 prop="enable-new"
-                label="Enable new users"
+                label="Enable New Users"
                 labelWidth="100px"
                 @on-change="handleEnableNewSelect"
                 v-model="enableNew"
-                placeholder="请选择角色"
+                placeholder="Please select role"
               >
                 <m-option
                   v-for="item in enableNewOptions"
@@ -310,7 +310,7 @@
                 labelWidth="100px"
                 @on-change="handleFullSelect"
                 v-model="full"
-                placeholder="请选择角色"
+                placeholder="Please select role"
               >
                 <m-option
                   v-for="item in fullOptions"
@@ -322,11 +322,11 @@
               </m-select>
               <m-select
                 prop="purge"
-                label="清除"
+                label="Purge"
                 labelWidth="100px"
                 @on-change="handlePurgeSelect"
                 v-model="purge"
-                placeholder="请选择角色"
+                placeholder="Please select role"
               >
                 <m-option
                   v-for="item in fullOptions"
@@ -342,7 +342,7 @@
       </div>
       <div class="m-form__content" v-if="modalType === 'sync'">
         <div class="m-form__section">
-          <dt>默认同步选项</dt>
+          <dt>Default Sync Options</dt>
           <dd>
             <m-select
               prop="scope"
@@ -350,7 +350,7 @@
               labelWidth="100px"
               @on-change="handleScopeSelect"
               v-model="scope"
-              placeholder="请选择Scope"
+              placeholder="Please select scope"
             >
               <m-option
                 v-for="item in scopeOptions"
@@ -362,11 +362,11 @@
             </m-select>
             <m-select
               prop="enable-new"
-              label="Enable new users"
+              label="Enable New Users"
               labelWidth="100px"
               @on-change="handleEnableNewSelect"
               v-model="enableNew"
-              placeholder="请选择角色"
+              placeholder="Please select role"
             >
               <m-option
                 v-for="item in enableNewOptions"
@@ -382,7 +382,7 @@
               labelWidth="100px"
               @on-change="handleFullSelect"
               v-model="full"
-              placeholder="请选择角色"
+              placeholder="Please select role"
             >
               <m-option
                 v-for="item in fullOptions"
@@ -394,11 +394,11 @@
             </m-select>
             <m-select
               prop="purge"
-              label="清除"
+              label="Purge"
               labelWidth="100px"
               @on-change="handlePurgeSelect"
               v-model="purge"
-              placeholder="请选择角色"
+              placeholder="Please select role"
             >
               <m-option
                 v-for="item in fullOptions"
@@ -498,20 +498,20 @@ export default {
         },
       ],
       scopeOptions: [
-        { value: "__default__", label: "无" },
-        { value: "users", label: "用戶" },
-        { value: "groups", label: "群組" },
+        { value: "__default__", label: "None" },
+        { value: "users", label: "Users" },
+        { value: "groups", label: "Groups" },
         { value: "both", label: "Users and Groups" },
       ],
       enableNewOptions: [
-        { value: "__default__", label: "是(默认)" },
-        { value: "1", label: "是" },
-        { value: "0", label: "否" },
+        { value: "__default__", label: "Yes (Default)" },
+        { value: "1", label: "Yes" },
+        { value: "0", label: "No" },
       ],
       fullOptions: [
         { value: "__default__", label: "None" },
-        { value: "1", label: "是" },
-        { value: "0", label: "否" },
+        { value: "1", label: "Yes" },
+        { value: "0", label: "No" },
       ],
       rules: {
         realm: {
@@ -574,7 +574,7 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
     },

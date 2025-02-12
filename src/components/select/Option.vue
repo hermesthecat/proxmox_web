@@ -80,13 +80,13 @@ export default {
     this.Select.cachedOptions = getUniqueObj(this.Select.cachedOptions);
   },
   methods: {
-    //点击下拉框时触发的时间
+    // Event triggered when clicking dropdown
     handleClick(e) {
       e.preventDefault();
-      stopEvent(e); //阻止事件冒泡
+      stopEvent(e); // Prevent event bubbling
       if (!this.disabled) {
         this.$nextTick(() => {
-          this.isChecked = !this.isChecked; //切换选中状态
+          this.isChecked = !this.isChecked; // Toggle checked state
           this.Select.handleChange("on-change", this.value, this.isChecked);
         });
       }
@@ -124,7 +124,7 @@ export default {
   padding: 0px 10px;
   position: relative;
   min-height: 30px;
-  //line-height: 30px;
+  // line-height: 30px;
   background: #fff;
   cursor: pointer;
   text-align: left;

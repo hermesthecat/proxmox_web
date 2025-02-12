@@ -5,7 +5,7 @@
         type="primary"
         icon="el-icon-plus"
         @on-click="showModal('create')"
-        >创建</m-button
+        >Create</m-button
       >
       <m-button
         type="info"
@@ -15,17 +15,17 @@
           selectedList.length !== 1 ||
           (selectedList[0] && selectedList[0].special === 1)
         "
-        >编辑</m-button
+        >Edit</m-button
       >
       <m-button
         type="danger"
         v-confirm="{
-          msg: `你确定你要删除已选择项吗?`,
+          msg: `Are you sure you want to delete the selected items?`,
           ok: () => handleDelete(),
         }"
         icon="el-icon-delete"
         :disabled="selectedList.length <= 0 || inSpecial()"
-        >删除</m-button
+        >Delete</m-button
       >
     </div>
     <div slot="page-content">
@@ -40,7 +40,7 @@
         <el-table-column type="expand">
           <template slot-scope="props">
             <div class="form">
-              <label class="form-label">特权</label>
+              <label class="form-label">Privileges</label>
               <span class="form-item">{{
                 props.row && props.row.privs && props.row.privs
               }}</span>
@@ -48,11 +48,11 @@
           </template>
         </el-table-column>
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="内置" prop="special">
+        <el-table-column label="Built-in" prop="special">
           <template slot-scope="scope">
             <table-info-state
               :content="
-                scope.row.special && scope.row.special === 1 ? '是' : '否'
+                scope.row.special && scope.row.special === 1 ? 'Yes' : 'No'
               "
               :state="
                 scope.row.special && scope.row.special === 1
@@ -62,9 +62,9 @@
             ></table-info-state>
           </template>
         </el-table-column>
-        <el-table-column label="名称" prop="roleid"></el-table-column>
+        <el-table-column label="Name" prop="roleid"></el-table-column>
         <el-table-column
-          label="特权"
+          label="Privileges"
           prop="privs"
           show-overflow-tooltip
         ></el-table-column>
@@ -101,7 +101,7 @@ export default {
     return {
       type: "create",
       visible: false,
-      title: "创建：复制作业",
+      title: "Create: Copy Job",
       selectedList: [],
       isCreate: true,
       param: {},
@@ -112,23 +112,23 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化查找
+    // Initialize search
     __init__() {
       this.queryRoleList();
     },
-    //是否展示弹框
+    // Show modal dialog
     showModal(type) {
       this.type = type;
       this.isCreate = type === "create";
-      this.title = type === "create" ? "创建：池" : "编辑：池";
+      this.title = type === "create" ? "Create: Role" : "Edit: Role";
       this.param = type === "create" ? {} : this.selectedList[0];
       this.visible = true;
     },
-    //按钮是否可点击
+    // Check if button is clickable
     inStatus() {
       return this.selectedList.length <= 0;
     },
-    //选择
+    // Selection
     handleSelect(row) {
       this.selectedList = row;
     },

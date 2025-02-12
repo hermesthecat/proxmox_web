@@ -4,14 +4,14 @@ class Directive {
 		this.name = name;
 		scope = this;
 	}
-	//对应vue的upate Hooks
+	// Corresponds to Vue's update Hook
 	update(el, binding, vnode) {
 		scope.handleConfirm(el, binding, vnode);
 	}
 	handleConfirm(el, binding, vNode) {
-		let value = binding.value,//绑定的值
-			name = binding.name,//自定义指令名称
-			vnode = vNode,//虚拟dom树
+		let value = binding.value, // Bound value
+			name = binding.name, // Custom directive name
+			vnode = vNode, // Virtual DOM tree
 			oldValue = binding.oldValue;
 		vm.$nextTick(() => {
 			if (el.className.indexOf('disabled') >= 0) {
@@ -21,12 +21,12 @@ class Directive {
 			if (name === 'confirm' && value && el.className.indexOf('disabled') <= 0) {
 				if (value.msg) {
 					el.onclick = () => {
-						//如果是对象的时候触发
+						// Triggered when it's an object
 						if (value instanceof Object) {
 							vm.$confirm[value.type ? value.type : 'confirm']({
 								msg: value.msg ? value.msg : '',
 								icon: value.icon ? value.icon : 'icon-question',
-								title: value.title ? value.title : '提示'
+								title: value.title ? value.title : 'Tip'
 							})
 								.then(() => {
 									value.ok();
@@ -40,7 +40,7 @@ class Directive {
 			}
 			let val = Object.prototype.toString.call(value)
 			if (val === '[object String]' && el.ariaDisabled) {
-				//如果是String类型的时候触发
+				// Triggered when it's a String type
 				let val = Object.prototype.toString.call(value);
 				if (val === '[object String]') {
 					vm.$confirm.info({
@@ -56,20 +56,20 @@ class Directive {
 			}
 		})
 	}
-	//对应vue的mounted Hooks
+	// Corresponds to Vue's mounted Hook
 	bind(el, binding, vNode) {
 		scope.handleConfirm(el, binding, vNode);
 	}
 
-	//对应vue的created Hooks
+	// Corresponds to Vue's created Hook
 	insert() {
 
 	}
-	//解绑对应destoryed Hooks
+	// Unbind corresponds to destroyed Hook
 	unbind(el, binding, vNode) {
-		let value = binding.value,//绑定的值
-			name = binding.name,//自定义指令名称
-			vnode = vNode;//虚拟dom树
+		let value = binding.value, // Bound value
+			name = binding.name, // Custom directive name
+			vnode = vNode; // Virtual DOM tree
 		if (name === 'confirm') {
 			el.onclick = null;
 		}

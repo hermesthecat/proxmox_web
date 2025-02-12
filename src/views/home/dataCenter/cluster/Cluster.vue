@@ -5,25 +5,25 @@
         type="primary"
         @on-click="showModal('create')"
         :disabled="inStatus()"
-        >创建集群</m-button
+        >Create Cluster</m-button
       >
       <m-button
         type="primary"
         @on-click="showModal('info')"
         :disabled="!inStatus()"
-        >加入信息</m-button
+        >Join Info</m-button
       >
       <m-button
         type="primary"
         @on-click="showModal('join')"
         :disabled="inStatus()"
-        >加入集群</m-button
+        >Join Cluster</m-button
       >
     </div>
     <div slot="page-content">
       <div class="cluster-desc">
         <div class="cluster-desc__item">
-          <span class="cluster-desc__title">集群名称：</span>
+          <span class="cluster-desc__title">Cluster Name:</span>
           <span class="cluster-desc__desc">{{
             db.clusterObj &&
             db.clusterObj.totem &&
@@ -31,7 +31,7 @@
           }}</span>
         </div>
         <div class="cluster-desc__item">
-          <span class="cluster-desc__title">配置版本</span>
+          <span class="cluster-desc__title">Config Version:</span>
           <span class="cluster-desc__desc">{{
             db.clusterObj &&
             db.clusterObj.totem &&
@@ -39,14 +39,14 @@
           }}</span>
         </div>
         <div class="cluster-desc__item">
-          <span class="cluster-desc__title">节点数：</span>
+          <span class="cluster-desc__title">Node Count:</span>
           <span class="cluster-desc__desc">{{ db.nodeList.length }}</span>
         </div>
       </div>
       <el-table :data="db.nodeList">
-        <el-table-column label="节点名称" prop="name"></el-table-column>
+        <el-table-column label="Node Name" prop="name"></el-table-column>
         <el-table-column label="ID" prop="nodeid"></el-table-column>
-        <el-table-column label="表决" prop="quorum_votes"></el-table-column>
+        <el-table-column label="Votes" prop="quorum_votes"></el-table-column>
         <el-table-column label="Link0" prop="ring0_addr"></el-table-column>
         <el-table-column label="Link1" prop="ring1_addr"></el-table-column>
       </el-table>
@@ -85,17 +85,17 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化查找
+    // Initialize search
     __init__() {
       this.queryClusterList();
       this.queryClusterNode();
     },
-    //是否展示弹框
+    // Show modal dialog
     showModal(type) {
       this.type = type;
       this.visible = true;
     },
-    //按钮是否可点击
+    // Check if button is clickable
     inStatus() {
       return this.db.clusterObj &&
         this.db.clusterObj.totem &&

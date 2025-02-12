@@ -11,13 +11,13 @@
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-input
                 type="text"
                 prop="roleid"
                 labelWidth="100px"
-                label="名称"
+                label="Name"
                 v-model="roleid"
                 validateEvent
                 @validate="validate"
@@ -25,17 +25,17 @@
                 :show-error="rules.roleid.error"
                 :error-msg="rules.roleid.message"
                 :disabled="modalType !== 'create'"
-                placeholder="请输入组"
+                placeholder="Please enter role name"
               />
               <m-select
                 prop="privs"
-                label="特权"
+                label="Privileges"
                 labelWidth="100px"
                 type="multiple"
                 :readonly="false"
                 @on-change="handlePrivsSelect"
                 v-model="privs"
-                placeholder="请选择路径"
+                placeholder="Please select privileges"
               >
                 <m-option
                   v-for="item in Object.keys(db.roleObj)"
@@ -123,7 +123,7 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
     },

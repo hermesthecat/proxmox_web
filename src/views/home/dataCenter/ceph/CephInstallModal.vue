@@ -1,7 +1,7 @@
 <template>
   <m-dialog
     :visible="visible"
-    :title="modalType === 'detail' ? '详情' : '配置CEPH'"
+    :title="modalType === 'detail' ? 'Details' : 'Configure CEPH'"
     @close="$emit('close')"
     :_style="{
       height: '500px',
@@ -23,12 +23,12 @@
     </template>
     <template slot="content" v-else>
       <div class="ceph-step">
-        <!--步骤条-->
+        <!--Steps-->
         <m-steps :active="step">
           <m-step title="info"></m-step>
-          <m-step title="安装"></m-step>
-          <m-step title="配置"></m-step>
-          <m-step title="成功"></m-step>
+          <m-step title="Install"></m-step>
+          <m-step title="Configure"></m-step>
+          <m-step title="Success"></m-step>
         </m-steps>
       </div>
       <div v-if="step === 1" class="ceph-text">
@@ -54,7 +54,7 @@
         <m-select
           v-model="network"
           prop="network"
-          label="网络"
+          label="Network"
           labelWidth="100px"
           validateEvent
           @validate="validate"
@@ -73,7 +73,7 @@
         <m-select
           v-model="clusterNetwork"
           prop="clusterNetwork"
-          label="集群网络"
+          label="Cluster Network"
           labelWidth="100px"
           @on-change="(value) => (clusterNetwork = value)"
         >
@@ -90,7 +90,7 @@
         </h1>
         <m-select
           prop="monnode"
-          label="监控节点"
+          label="Monitor Node"
           labelWidth="100px"
           validateEvent
           @validate="validate"
@@ -99,7 +99,7 @@
           :readonly="false"
           @on-change="(value) => (monnode = value)"
           v-model="monnode"
-          placeholder="请选择监控节点"
+          placeholder="Please select monitor node"
         >
           <m-option
             v-for="(item, index) in nodeList"
@@ -108,9 +108,9 @@
             :value="item.node"
           >
             <div v-if="index === 0" class="table-tr">
-              <div class="table-td">节点</div>
-              <div class="table-td">内存使用率</div>
-              <div class="table-td">CPU使用率</div>
+              <div class="table-td">Node</div>
+              <div class="table-td">Memory Usage</div>
+              <div class="table-td">CPU Usage</div>
             </div>
             <div class="table-tr">
               <span class="table-td" :title="item.node">{{ item.node }}</span>
@@ -163,7 +163,7 @@
             :show-error="rules.size.error"
             :error-msg="rules.size.message"
             v-model="size"
-            placeholder="请输入size"
+            placeholder="Please enter size"
           />
           <m-input
             type="number"
@@ -177,7 +177,7 @@
             :show-error="rules.minsize.error"
             :error-msg="rules.minsize.message"
             v-model="minsize"
-            placeholder="请输入最小size"
+            placeholder="Please enter minimum size"
           />
         </div>
         <div v-if="step === 4">
@@ -216,7 +216,7 @@
       <div class="label_box">
         <label>
           <input type="checkbox" v-model="isAdvice" />
-          <div>高级</div>
+          <div>Advanced</div>
         </label>
       </div>
       <m-button
@@ -229,7 +229,7 @@
         "
         @on-click="prev"
         v-if="step === 1"
-        >开始安装</m-button
+        >Start Installation</m-button
       >
       <m-button
         type="primary"
@@ -243,7 +243,7 @@
         :disabled="!configuration"
         v-if="step > 1 && step < 4"
       >
-        下一步
+        Next
       </m-button>
     </template>
     <template slot="footer" v-else>
@@ -316,9 +316,9 @@ export default {
     };
   },
   methods: {
-    gettext, //
+    gettext,
     percentToFixed,
-    dateFormat, //日期格式化
+    dateFormat,
     prev() {
       if (this.step < 4 && this.step !== 3) ++this.step;
       if (this.step === 2) {
@@ -347,7 +347,7 @@ export default {
       }
     },
     /**
-     * 查询ceph安装状态
+     * Query Ceph installation status
      */
     queryInstallStatus() {
       this.$http
@@ -357,7 +357,7 @@ export default {
         })
         .catch((res) => {
           /**
-           * 当存在not installed时未安装成功
+           * When "not installed" exists, installation is not successful
            */
           if (!/(not installed)/i.test(res)) {
             this.installed = true;
@@ -366,13 +366,13 @@ export default {
             this.configuration = false;
             this.installed = false;
           } else if (/(rados_connect failed)/i.test(res)) {
-            //当出现rados_connect failed时网络连接失败
+            // When "rados_connect failed" appears, network connection failed
             this.configuration = true;
           }
         });
     },
     /**
-     * 确定参数
+     * Confirm parameters
      */
     confirmParam() {
       let param = {
@@ -389,7 +389,7 @@ export default {
       }
     },
     /**
-     * 单个校验表单
+     * Single form validation
      */
     validate(prop) {
       let value = String(this[prop]).trim();
@@ -397,19 +397,19 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value) && ["monnode", "network"].includes(prop)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空!";
+        this.rules[prop].message = "Cannot be empty!";
         return;
       }
       if (this.isAdvice) {
         if (this.size < this.minsize) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "size不能小于minsize!";
+          this.rules[prop].message = "Size cannot be less than minimum size!";
           return;
         }
       }
     },
     /**
-     * 整体校验
+     * Overall validation
      */
     validateAll() {
       let prop = ["monnode"];
