@@ -1,45 +1,25 @@
 <template>
-  <transition
-    name="transition"
-    @before-enter="beforeEnter"
-    @enter="enter"
-    @after-enter="afterEnter"
-    @before-leave="beforeLeave"
-    @after-leave="afterLeave"
-  >
+  <transition name="transition" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter"
+    @before-leave="beforeLeave" @after-leave="afterLeave">
     <div class="log" v-show="visible">
       <div class="btn" @click="close">
-        <span class="btn-txt">Hide</span
-        ><i class="el-icon-d-arrow-right btn-icon"></i>
+        <span class="btn-txt">Hide</span><i class="el-icon-d-arrow-right btn-icon"></i>
       </div>
       <div class="m-scroll-wrapper log-scroll-container" v-if="visible">
         <div class="m-scroll-view log-scroll-view" @scroll="onScroll">
-          <m-tab
-            v-model="logType"
-            @tab-click="handleLogTypeChange"
-            class="log-tab"
-          >
+          <m-tab v-model="logType" @tab-click="handleLogTypeChange" class="log-tab">
             <m-tab-panel label="Tasks" name="task"></m-tab-panel>
             <m-tab-panel label="Cluster" name="cluster"></m-tab-panel>
           </m-tab>
           <div v-if="logType === 'task'" class="log-wrapper">
-            <div
-              v-for="item in taksList"
-              :key="item.upid"
-              class="log-item"
-              @click="handleShowTasks(item)"
-              :title="render_upid(item.pid, null, item)"
-            >
-              <base-icon
-                :name="
-                  item.status
-                    ? item.status === 'OK'
-                      ? 'status-ok'
-                      : 'status-error'
-                    : 'loading-mask'
-                "
-                style="width: 25px; height: 25px"
-              ></base-icon>
+            <div v-for="item in taksList" :key="item.upid" class="log-item" @click="handleShowTasks(item)"
+              :title="render_upid(item.pid, null, item)">
+              <base-icon :name="item.status
+                  ? item.status === 'OK'
+                    ? 'status-ok'
+                    : 'status-error'
+                  : 'loading-mask'
+                " style="width: 25px; height: 25px"></base-icon>
               <span>{{ render_upid(item.pid, null, item) }}</span>
               <div class="log-time">
                 Start Time: {{
@@ -57,13 +37,8 @@
             </div>
           </div>
           <div v-if="logType === 'cluster'" class="log-wrapper">
-            <div
-              v-for="item in clusterLogList"
-              :key="item.id"
-              class="log-cluster-item"
-              :class="item.pri ? render_serverity(item.pri) : ''"
-              :title="item.msg"
-            >
+            <div v-for="item in clusterLogList" :key="item.id" class="log-cluster-item"
+              :class="item.pri ? render_serverity(item.pri) : ''" :title="item.msg">
               <div>
                 Time: {{
                   dateFormat(new Date(item.time * 1000), "yyyy-MM-dd hh:mm")
@@ -80,51 +55,29 @@
             </div>
           </div>
         </div>
-        <div
-          class="m-scroll-bar"
-          v-show="showScrollbar"
-          :style="{ top: scrollTop + 'px', height: scrollLength + 'px' }"
-          @mousedown="onScrollBarMouseDown($event)"
-        ></div>
+        <div class="m-scroll-bar" v-show="showScrollbar" :style="{ top: scrollTop + 'px', height: scrollLength + 'px' }"
+          @mousedown="onScrollBarMouseDown($event)"></div>
       </div>
-      <m-dialog
-        :visible="showLog"
-        @close="closeLog"
-        :_style="{
-          width: '800px',
-        }"
-        title="Task Viewer: Task Details"
-      >
+      <m-dialog :visible="showLog" @close="closeLog" :_style="{
+        width: '800px',
+      }" title="Task Viewer: Task Details">
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
             <m-tab-panel label="Output" name="log"></m-tab-panel>
             <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
-          <m-button
-            class="create-btn m-margin-top-10"
-            type="primary"
-            @on-click="stopTask1"
-            :disabled="db.addClusterStatusObj.status !== 'running'"
-            >Stop</m-button
-          >
+          <m-button class="create-btn m-margin-top-10" type="primary" @on-click="stopTask1"
+            :disabled="db.addClusterStatusObj.status !== 'running'">Stop</m-button>
           <el-scrollbar style="height: 100%" id="log-taskModal">
             <div class="taskmodal-content" ref="taskmodal-content">
               <div class="table" v-if="tab === 'log'">
-                <div
-                  class="table-tr"
-                  v-for="item in db.addClusterLogList"
-                  :key="item.n"
-                >
+                <div class="table-tr" v-for="item in db.addClusterLogList" :key="item.n">
                   {{ item.t }}
                 </div>
               </div>
               <div class="table" v-if="tab === 'status'">
                 <template v-for="(item, key) in db.addClusterStatusObj">
-                  <div
-                    class="table-tr"
-                    v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-                    :key="key"
-                  >
+                  <div class="table-tr" v-if="!['exitstatus', 'id', 'pstart'].includes(key)" :key="key">
                     <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
                     <div class="table-td" v-if="key === 'starttime'">
                       {{
@@ -327,10 +280,12 @@ export default {
   overflow: hidden;
   white-space: nowrap;
   transition: width 0.5s ease-in, left 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+
   &-wrapper {
     top: 60px;
     position: relative;
   }
+
   &-item {
     border-bottom: 1px solid #cecccc;
     height: 64px;
@@ -342,6 +297,7 @@ export default {
     overflow: hidden;
     white-space: nowrap;
   }
+
   &-cluster {
     &-item {
       border-bottom: 1px solid #b9b7b7;
@@ -355,11 +311,13 @@ export default {
       white-space: nowrap;
     }
   }
+
   &-time {
     height: 14px;
     line-height: 14px;
     margin-left: 40px;
   }
+
   &-tab {
     position: fixed;
     background: #fff;
@@ -367,6 +325,7 @@ export default {
     width: 100%;
   }
 }
+
 .btn {
   position: absolute;
   top: 50%;
@@ -386,12 +345,14 @@ export default {
   border-bottom-right-radius: 10px;
   transition: all 0.5s ease-out;
   cursor: pointer;
+
   &-icon {
     position: absolute;
     right: 2px;
     top: 13px;
     transform: scale(1, 1.5);
   }
+
   &-txt {
     width: 14px;
     display: inline-block;
@@ -401,10 +362,12 @@ export default {
     font-size: 12px;
   }
 }
+
 .error {
   background: #f3d6d7;
   color: #fff;
 }
+
 .transition-enter,
 transition-leave {
   transition: all 0.5s linear;

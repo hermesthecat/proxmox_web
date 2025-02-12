@@ -144,6 +144,7 @@ a {
   color: #16418a;
   text-decoration: none;
   -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 a:focus {
   outline: none;
@@ -495,6 +496,7 @@ body,
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       -ms-box-sizing: border-box;
+      box-sizing: border-box;
       cursor: pointer;
     }
     &::after {
@@ -963,8 +965,6 @@ body,
   }
 }
 
-element.style {
-}
 .x-treelist-item-icon {
   color: #000;
   margin-left: 2px;

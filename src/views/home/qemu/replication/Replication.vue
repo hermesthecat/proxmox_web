@@ -20,11 +20,11 @@
         <el-table-column label="Status" prop="error" show-overflow-tooltip>
           <template slot-scope="scope">
             <table-info-state :content="scope.row.failCount === 0 || !scope.row.error
-                ? 'OK'
-                : scope.row.error
+              ? 'OK'
+              : scope.row.error
               " :state="scope.row.failCount === 0 || !scope.row.error
-                  ? 'actived'
-                  : 'dead'
+                ? 'actived'
+                : 'dead'
                 "></table-info-state>
           </template>
         </el-table-column>
@@ -32,8 +32,8 @@
           <template slot-scope="scope">
             <table-info-state :content="scope.row.disable && scope.row.disable === 1 ? 'No' : 'Yes'
               " :state="scope.row.disable && scope.row.disable === 1
-                  ? 'unActived'
-                  : 'actived'
+                ? 'unActived'
+                : 'actived'
                 "></table-info-state>
           </template>
         </el-table-column>

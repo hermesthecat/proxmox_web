@@ -6,60 +6,42 @@
           <div slot="title">Health</div>
           <div slot="content" class="card-content">
             <div class="card-item">
-              <line-item
-                title="Status"
-                :isDouble="false"
-                type="cluster"
-                :icon="`${
-                  status &&
+              <line-item title="Status" :isDouble="false" type="cluster" :icon="`${status &&
                   status.cluster &&
                   status.cluster[0] &&
                   status.cluster[0].quorate &&
                   status.cluster[0].quorate == '0'
-                    ? 'fa critical fa-times-circle'
-                    : 'good fa-check-circle'
-                }`"
-                :des="`Cluster${
-                  status &&
-                  status.cluster &&
-                  status.cluster[0] &&
-                  status.cluster[0].name
+                  ? 'fa critical fa-times-circle'
+                  : 'good fa-check-circle'
+                }`" :des="`Cluster${status &&
+                    status.cluster &&
+                    status.cluster[0] &&
+                    status.cluster[0].name
                     ? status.cluster[0].name
                     : ''
-                }, Quorum:${
-                  status &&
-                  status.cluster &&
-                  status.cluster[0] &&
-                  status.cluster[0].quorate
+                  }, Quorum:${status &&
+                    status.cluster &&
+                    status.cluster[0] &&
+                    status.cluster[0].quorate
                     ? status.cluster[0].quorate
                     : 0
-                }`"
-              ></line-item>
+                  }`"></line-item>
             </div>
             <div class="card-item">
-              <line-item
-                title="Node"
-                :isDouble="true"
-                type="node"
-                :data="status && status.node"
-              ></line-item>
+              <line-item title="Node" :isDouble="true" type="node" :data="status && status.node"></line-item>
             </div>
             <div class="card-item" v-if="!uninstallCeph">
               <h1 class="ceph-title">Ceph Status</h1>
-              <router-link
-                to="/datacenter/ceph"
-                class="ceph-icon"
-                :class="{
-                  'fa fa-exclamation-circle warning':
-                    db.cephObj &&
-                    db.cephObj.health &&
-                    db.cephObj.health.status === 'HEALTH_WARN',
-                  'fa fa-check-circle good':
-                    db.cephObj &&
-                    db.cephObj.health &&
-                    db.cephObj.health.status === 'HEALTH_OK',
-                }"
-              ></router-link>
+              <router-link to="/datacenter/ceph" class="ceph-icon" :class="{
+                'fa fa-exclamation-circle warning':
+                  db.cephObj &&
+                  db.cephObj.health &&
+                  db.cephObj.health.status === 'HEALTH_WARN',
+                'fa fa-check-circle good':
+                  db.cephObj &&
+                  db.cephObj.health &&
+                  db.cephObj.health.status === 'HEALTH_OK',
+              }"></router-link>
               <div class="ceph-health">
                 {{
                   db.cephObj && db.cephObj.health && db.cephObj.health.status
@@ -74,20 +56,10 @@
           <div slot="title">Guests</div>
           <div slot="content" class="card-content">
             <div class="card-item">
-              <line-item
-                title="Virtual Machine"
-                :isDouble="true"
-                type="qemu"
-                :data="resources.qemu"
-              ></line-item>
+              <line-item title="Virtual Machine" :isDouble="true" type="qemu" :data="resources.qemu"></line-item>
             </div>
             <div class="card-item">
-              <line-item
-                title="LXC Container"
-                :isDouble="true"
-                type="lxc"
-                :data="resources.lxc"
-              ></line-item>
+              <line-item title="LXC Container" :isDouble="true" type="lxc" :data="resources.lxc"></line-item>
             </div>
           </div>
         </overview-card>
@@ -99,38 +71,23 @@
           <div slot="title">Resources</div>
           <div slot="content" class="card-content">
             <div class="card-item">
-              <mh-circle
-                :value="
-                  resources &&
-                  resources.griditem &&
-                  resources.griditem.cpuusage * 100
-                "
-                title="CPU"
-                :label="setLabel('cpu', resources.griditem)"
-              >
+              <mh-circle :value="resources &&
+                resources.griditem &&
+                resources.griditem.cpuusage * 100
+                " title="CPU" :label="setLabel('cpu', resources.griditem)">
               </mh-circle>
             </div>
             <div class="card-item">
-              <mh-circle
-                :value="
-                  resources &&
-                  resources.griditem &&
-                  resources.griditem.memoryusage * 100
-                "
-                :label="setLabel('mem', resources.griditem)"
-                title="Memory"
-              ></mh-circle>
+              <mh-circle :value="resources &&
+                resources.griditem &&
+                resources.griditem.memoryusage * 100
+                " :label="setLabel('mem', resources.griditem)" title="Memory"></mh-circle>
             </div>
             <div class="card-item">
-              <mh-circle
-                :value="
-                  resources &&
-                  resources.griditem &&
-                  resources.griditem.storageusage * 100
-                "
-                :label="setLabel('storage', resources.griditem)"
-                title="Storage"
-              ></mh-circle>
+              <mh-circle :value="resources &&
+                resources.griditem &&
+                resources.griditem.storageusage * 100
+                " :label="setLabel('storage', resources.griditem)" title="Storage"></mh-circle>
             </div>
           </div>
         </overview-card>
@@ -141,18 +98,12 @@
           <div slot="content">
             <el-table :data="nodes" class="m-margin-top-10">
               <el-table-column label="Node" prop="name"></el-table-column>
-              <el-table-column
-                label="ID"
-                prop="nodeid"
-                width="50px"
-              ></el-table-column>
+              <el-table-column label="ID" prop="nodeid" width="50px"></el-table-column>
               <el-table-column label="Online" prop="online">
                 <template slot-scope="scope">
-                  <i
-                    :class="{
-                      'good fa fa-play-circle': scope.row.status === 'online',
-                    }"
-                  ></i>
+                  <i :class="{
+                    'good fa fa-play-circle': scope.row.status === 'online',
+                  }"></i>
                 </template>
               </el-table-column>
               <el-table-column label="Support" prop="level">
@@ -168,28 +119,22 @@
               </el-table-column>
               <el-table-column label="CPU Usage" prop="cpu">
                 <template slot-scope="scope">
-                  <line-charts
-                    :value="
-                      Number(
-                        (scope && scope.row && scope.row.cpu
-                          ? scope.row.cpu
-                          : 0) * 100
-                      )
-                    "
-                  ></line-charts>
+                  <line-charts :value="Number(
+                    (scope && scope.row && scope.row.cpu
+                      ? scope.row.cpu
+                      : 0) * 100
+                  )
+                    "></line-charts>
                 </template>
               </el-table-column>
               <el-table-column label="Memory Usage" prop="mem">
                 <template slot-scope="scope">
-                  <line-charts
-                    :value="
-                      Number(
-                        (scope && scope.row && scope.row.maxmem && scope.row.mem
-                          ? scope.row.mem / scope.row.maxmem
-                          : 0) * 100
-                      )
-                    "
-                  ></line-charts>
+                  <line-charts :value="Number(
+                    (scope && scope.row && scope.row.maxmem && scope.row.mem
+                      ? scope.row.mem / scope.row.maxmem
+                      : 0) * 100
+                  )
+                    "></line-charts>
                 </template>
               </el-table-column>
               <el-table-column label="Uptime" prop="uptime">
@@ -208,13 +153,8 @@
       <div slot="title">Subscription</div>
       <div slot="content" class="card-content">
         <div class="card-item">
-          <line-item
-            :title="this.subs && this.subs.title"
-            :isDouble="false"
-            type="subscription"
-            :icon="this.subs && this.subs.iconCls"
-            :des="this.subs && this.subs.text"
-          ></line-item>
+          <line-item :title="this.subs && this.subs.title" :isDouble="false" type="subscription"
+            :icon="this.subs && this.subs.iconCls" :des="this.subs && this.subs.text"></line-item>
         </div>
       </div>
     </overview-card>
@@ -485,34 +425,42 @@ export default {
 .content-item {
   height: 100%;
 }
+
 .card-item {
   height: 100%;
 }
+
 .ceph-title {
   margin: 20px 0 20px;
   font-size: 12px;
   text-align: center;
 }
+
 .ceph-icon {
   font-size: 65px;
   width: 100%;
   text-align: center;
 }
+
 .ceph-health {
   text-align: center;
 }
+
 /deep/.el-table td,
 .el-table th {
   padding: 0px;
 }
+
 /deep/.el-table .cell {
   white-space: nowrap;
 }
+
 .overview-content {
   &__top {
     height: 340px;
     display: flex;
     background: #f5f5f5;
+
     &_right {
       flex-grow: 1;
       flex-basis: auto;
@@ -521,6 +469,7 @@ export default {
       display: flex;
       width: 0;
     }
+
     &_left {
       flex-grow: 1;
       flex-basis: auto;
@@ -531,10 +480,12 @@ export default {
       display: flex;
     }
   }
+
   &__center {
     height: 340px;
     display: flex;
     background: #f5f5f5;
+
     &_right {
       flex-grow: 1;
       flex-basis: auto;
@@ -542,6 +493,7 @@ export default {
       flex-wrap: nowrap;
       width: 0;
     }
+
     &_left {
       flex-grow: 1;
       flex-basis: auto;
@@ -552,6 +504,7 @@ export default {
     }
   }
 }
+
 .card {
   height: 320px;
 }

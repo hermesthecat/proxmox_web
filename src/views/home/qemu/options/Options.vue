@@ -1,45 +1,21 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button
-        type="warning"
-        @on-click="handleCommand('', 'edit')"
-        icon="el-icon-edit"
-        :disabled="canDisabled()"
-        >Edit</m-button
-      >
-      <m-button
-        type="primary"
-        @on-click="handleResume()"
-        icon="el-icon-refresh"
-        :disabled="!canResume()"
-        >Restore</m-button
-      >
+      <m-button type="warning" @on-click="handleCommand('', 'edit')" icon="el-icon-edit"
+        :disabled="canDisabled()">Edit</m-button>
+      <m-button type="primary" @on-click="handleResume()" icon="el-icon-refresh"
+        :disabled="!canResume()">Restore</m-button>
     </div>
     <div slot="page-content">
-      <option-edit-modal
-        :visible="visible"
-        v-if="visible"
-        :modal-type="modalType"
-        :param="param"
-        :title="title"
-        @close="
-          visible = false;
-          __init__();
-        "
-      ></option-edit-modal>
+      <option-edit-modal :visible="visible" v-if="visible" :modal-type="modalType" :param="param" :title="title" @close="
+        visible = false;
+      __init__();
+      "></option-edit-modal>
       <template v-if="node.type === 'qemu'">
-        <el-table
-          :data="hardwareList"
-          :show-header="false"
-          highlight-current-row
-          @row-click="handleSingleSelect"
-        >
+        <el-table :data="hardwareList" :show-header="false" highlight-current-row @row-click="handleSingleSelect">
           <el-table-column width="55px">
             <template slot-scope="scope">
-              <el-radio :label="scope.row.type" v-model="current"
-                >&nbsp;</el-radio
-              >
+              <el-radio :label="scope.row.type" v-model="current">&nbsp;</el-radio>
             </template>
           </el-table-column>
           <el-table-column label="Name" prop="name" width="200px">
@@ -62,17 +38,10 @@
         </el-table>
       </template>
       <template v-if="node.type === 'lxc'">
-        <el-table
-          :data="lxcOptionList"
-          :show-header="false"
-          highlight-current-row
-          @row-click="handleSingleSelect"
-        >
+        <el-table :data="lxcOptionList" :show-header="false" highlight-current-row @row-click="handleSingleSelect">
           <el-table-column width="55px">
             <template slot-scope="scope">
-              <el-radio :label="scope.row.type" v-model="current"
-                >&nbsp;</el-radio
-              >
+              <el-radio :label="scope.row.type" v-model="current">&nbsp;</el-radio>
             </template>
           </el-table-column>
           <el-table-column label="Name" prop="name" width="200px">
@@ -203,8 +172,8 @@ export default {
               if (!pending)
                 return _this.format_boolean(
                   _this.store.onboot &&
-                    _this.store.onboot.data &&
-                    _this.store.onboot.data.value
+                  _this.store.onboot.data &&
+                  _this.store.onboot.data.value
                 );
             },
           },
@@ -219,15 +188,15 @@ export default {
                   _this.store.startup.data &&
                   _this.store.startup.data.pending
                   ? _this.render_kvm_startup(
-                      _this.store.startup.data &&
-                        _this.store.startup.data.pending
-                    )
+                    _this.store.startup.data &&
+                    _this.store.startup.data.pending
+                  )
                   : "";
               else
                 return _this.store.startup
                   ? _this.render_kvm_startup(
-                      _this.store.startup.data && _this.store.startup.data.value
-                    )
+                    _this.store.startup.data && _this.store.startup.data.value
+                  )
                   : "order=any";
             },
           },
@@ -271,15 +240,15 @@ export default {
               );
               let order = pending
                 ? (_this.store &&
-                    _this.store.boot &&
-                    _this.store.boot.data &&
-                    _this.store.boot.data.pending) ||
-                  "cdn"
+                  _this.store.boot &&
+                  _this.store.boot.data &&
+                  _this.store.boot.data.pending) ||
+                "cdn"
                 : (_this.store &&
-                    _this.store.boot &&
-                    _this.store.boot.data &&
-                    _this.store.boot.data.value) ||
-                  "cdn";
+                  _this.store.boot &&
+                  _this.store.boot.data &&
+                  _this.store.boot.data.value) ||
+                "cdn";
               if (/^\s*$/.test(order)) {
                 return gettext("(No boot device selected)");
               }
@@ -359,9 +328,9 @@ export default {
               if (pending)
                 return !isEmpty(
                   _this.store &&
-                    _this.store.hotplug &&
-                    _this.store.hotplug.data &&
-                    _this.store.hotplug.data.pending
+                  _this.store.hotplug &&
+                  _this.store.hotplug.data &&
+                  _this.store.hotplug.data.pending
                 )
                   ? render_hotplug_features(_this.store.hotplug.data.pending)
                   : "";
@@ -436,10 +405,10 @@ export default {
               else
                 return _this.format_boolean(
                   _this.store &&
-                    _this.store.freeze &&
-                    _this.store.freeze.data &&
-                    _this.store.freeze.data.value &&
-                    _this.store.freeze.data.value
+                  _this.store.freeze &&
+                  _this.store.freeze.data &&
+                  _this.store.freeze.data.value &&
+                  _this.store.freeze.data.value
                 );
             },
           },
@@ -458,9 +427,9 @@ export default {
               else
                 return _this.format_boolean(
                   _this.store &&
-                    _this.store.localtime &&
-                    _this.store.localtime.data &&
-                    _this.store.localtime.data.value
+                  _this.store.localtime &&
+                  _this.store.localtime.data &&
+                  _this.store.localtime.data.value
                 );
             },
           },
@@ -542,9 +511,9 @@ export default {
               if (!pending)
                 return _this.format_boolean(
                   _this.store &&
-                    _this.store.protection &&
-                    _this.store.protection.data &&
-                    _this.store.protection.data.value
+                  _this.store.protection &&
+                  _this.store.protection.data &&
+                  _this.store.protection.data.value
                 );
             },
           },
@@ -559,15 +528,15 @@ export default {
                   _this.store.spice_enhancements.data &&
                   _this.store.spice_enhancements.data.pending
                   ? render_spice_enhancements(
-                      _this.store.spice_enhancements.data.pending
-                    )
+                    _this.store.spice_enhancements.data.pending
+                  )
                   : "";
               else
                 return render_spice_enhancements(
                   _this.store &&
-                    _this.store.spice_enhancements &&
-                    _this.store.spice_enhancements.data &&
-                    _this.store.spice_enhancements.data.value
+                  _this.store.spice_enhancements &&
+                  _this.store.spice_enhancements.data &&
+                  _this.store.spice_enhancements.data.value
                 );
             },
           },
@@ -598,8 +567,8 @@ export default {
               if (!pending)
                 return _this.format_boolean(
                   _this.store.onboot &&
-                    _this.store.onboot.data &&
-                    _this.store.onboot.data.value
+                  _this.store.onboot.data &&
+                  _this.store.onboot.data.value
                 );
             },
           },
@@ -614,15 +583,15 @@ export default {
                   _this.store.startup.data &&
                   _this.store.startup.data.pending
                   ? _this.render_kvm_startup(
-                      _this.store.startup.data &&
-                        _this.store.startup.data.pending
-                    )
+                    _this.store.startup.data &&
+                    _this.store.startup.data.pending
+                  )
                   : "";
               else
                 return _this.store.startup
                   ? _this.render_kvm_startup(
-                      _this.store.startup.data && _this.store.startup.data.value
-                    )
+                    _this.store.startup.data && _this.store.startup.data.value
+                  )
                   : "order=any";
             },
           },
@@ -723,9 +692,9 @@ export default {
               if (!pending)
                 return _this.format_boolean(
                   _this.store &&
-                    _this.store.protection &&
-                    _this.store.protection.data &&
-                    _this.store.protection.data.value
+                  _this.store.protection &&
+                  _this.store.protection.data &&
+                  _this.store.protection.data.value
                 );
             },
           },
@@ -975,8 +944,8 @@ export default {
             ? String(this.store[this.current].data.pending)
             : undefined
         )
-          ? true
-          : false) ||
+        ? true
+        : false) ||
         (this.store[this.current] &&
           this.store[this.current].data &&
           this.store[this.current].data.delete)
@@ -996,6 +965,7 @@ export default {
 .pending {
   color: #f87c7c;
 }
+
 .hardware-icon {
   width: 16px;
   vertical-align: middle;
@@ -1004,10 +974,12 @@ export default {
   margin-right: 5px;
   background-size: 16px;
 }
+
 /deep/.el-table td,
 .el-table th {
   padding: 0px;
 }
+
 /deep/.base-icon {
   background-size: 16px;
 }

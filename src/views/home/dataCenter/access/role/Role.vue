@@ -1,42 +1,18 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button
-        type="primary"
-        icon="el-icon-plus"
-        @on-click="showModal('create')"
-        >Create</m-button
-      >
-      <m-button
-        type="info"
-        @on-click="showModal('edit')"
-        icon="el-icon-edit"
-        :disabled="
-          selectedList.length !== 1 ||
-          (selectedList[0] && selectedList[0].special === 1)
-        "
-        >Edit</m-button
-      >
-      <m-button
-        type="danger"
-        v-confirm="{
-          msg: `Are you sure you want to delete the selected items?`,
-          ok: () => handleDelete(),
-        }"
-        icon="el-icon-delete"
-        :disabled="selectedList.length <= 0 || inSpecial()"
-        >Delete</m-button
-      >
+      <m-button type="primary" icon="el-icon-plus" @on-click="showModal('create')">Create</m-button>
+      <m-button type="info" @on-click="showModal('edit')" icon="el-icon-edit" :disabled="selectedList.length !== 1 ||
+        (selectedList[0] && selectedList[0].special === 1)
+        ">Edit</m-button>
+      <m-button type="danger" v-confirm="{
+        msg: `Are you sure you want to delete the selected items?`,
+        ok: () => handleDelete(),
+      }" icon="el-icon-delete" :disabled="selectedList.length <= 0 || inSpecial()">Delete</m-button>
     </div>
     <div slot="page-content">
-      <el-table
-        :data="db.rolesList"
-        ref="dataTable"
-        :row-key="setRowKeys"
-        :expand-row-keys="expands"
-        @expand-change="expandChange"
-        @selection-change="handleSelect"
-      >
+      <el-table :data="db.rolesList" ref="dataTable" :row-key="setRowKeys" :expand-row-keys="expands"
+        @expand-change="expandChange" @selection-change="handleSelect">
         <el-table-column type="expand">
           <template slot-scope="props">
             <div class="form">
@@ -50,37 +26,21 @@
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="Built-in" prop="special">
           <template slot-scope="scope">
-            <table-info-state
-              :content="
-                scope.row.special && scope.row.special === 1 ? 'Yes' : 'No'
-              "
-              :state="
-                scope.row.special && scope.row.special === 1
+            <table-info-state :content="scope.row.special && scope.row.special === 1 ? 'Yes' : 'No'
+              " :state="scope.row.special && scope.row.special === 1
                   ? 'actived'
                   : 'unActived'
-              "
-            ></table-info-state>
+                "></table-info-state>
           </template>
         </el-table-column>
         <el-table-column label="Name" prop="roleid"></el-table-column>
-        <el-table-column
-          label="Privileges"
-          prop="privs"
-          show-overflow-tooltip
-        ></el-table-column>
+        <el-table-column label="Privileges" prop="privs" show-overflow-tooltip></el-table-column>
       </el-table>
-      <create-access-role-modal
-        :title="title"
-        :isCreate="isCreate"
-        :param="param"
-        :visible="visible"
-        v-if="visible"
-        :modal-type="type"
-        @close="
+      <create-access-role-modal :title="title" :isCreate="isCreate" :param="param" :visible="visible" v-if="visible"
+        :modal-type="type" @close="
           visible = false;
-          __init__();
-        "
-      ></create-access-role-modal>
+        __init__();
+        "></create-access-role-modal>
     </div>
   </page-template>
 </template>
@@ -169,14 +129,17 @@ export default {
   padding: 10px 0px;
   border-top: 1px solid #c4d6ec;
   border-bottom: 1px solid #c4d6ec;
+
   &__item {
     flex: 1 1 auto;
     display: flex;
   }
+
   &__title {
     flex: 1 1 auto;
     display: inline-flex;
   }
+
   &__desc {
     flex: 1 1 auto;
     display: inline-flex;
@@ -189,11 +152,13 @@ export default {
   align-items: center;
   align-content: center;
   width: 100%;
+
   &-label {
     display: inline-block;
     vertical-align: middle;
     width: 10%;
   }
+
   &-item {
     display: inline-block;
     vertical-align: middle;

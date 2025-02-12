@@ -4,124 +4,39 @@
       <dl>
         <dt>Basic Information</dt>
         <dd>
-          <m-input
-            type="text"
-            prop="storage"
-            label="ID"
-            labelWidth="100px"
-            validateEvent
-            @validate="validate"
-            required
-            :show-error="rules.storage.error"
-            :error-msg="rules.storage.message"
-            v-model="storage"
-            :disabled="!isCreate"
-            placeholder="Please enter ID"
-          />
-          <m-checkbox
-            label="Enable"
-            v-model="disable"
-            labelWidth="100px"
-          ></m-checkbox>
-          <m-input
-            type="text"
-            prop="server"
-            label="Server"
-            labelWidth="100px"
-            validateEvent
-            @validate="validate"
-            required
-            :show-error="rules.server.error"
-            :error-msg="rules.server.message"
-            v-model="server"
-            :disabled="!isCreate"
-            placeholder="Please enter server"
-          />
-          <m-input
-            type="text"
-            prop="server2"
-            label="Second Server"
-            labelWidth="100px"
-            validateEvent
-            @validate="validate"
-            :show-error="rules.server2.error"
-            :error-msg="rules.server2.message"
-            v-model="server2"
-            :disabled="!isCreate"
-            placeholder="Please enter second server"
-          />
-          <m-select
-            labelWidth="100px"
-            @on-change="handleGlusterSelect"
-            validateEvent
-            @validate="validate"
-            prop="volumename"
-            v-model="volumename"
-            :readonly="false"
-            :disabled="!isCreate"
-            required
-            @visible-change="handleGlusterExportReq"
-            :show-error="rules.volumename.error"
-            :error-msg="rules.volumename.message"
-            label="Volume name"
-          >
-            <m-option
-              v-for="item in db.glusterfsList"
-              :key="item.volname"
-              :label="item.volname"
-              :value="item.volname"
-            ></m-option>
+          <m-input type="text" prop="storage" label="ID" labelWidth="100px" validateEvent @validate="validate" required
+            :show-error="rules.storage.error" :error-msg="rules.storage.message" v-model="storage" :disabled="!isCreate"
+            placeholder="Please enter ID" />
+          <m-checkbox label="Enable" v-model="disable" labelWidth="100px"></m-checkbox>
+          <m-input type="text" prop="server" label="Server" labelWidth="100px" validateEvent @validate="validate"
+            required :show-error="rules.server.error" :error-msg="rules.server.message" v-model="server"
+            :disabled="!isCreate" placeholder="Please enter server" />
+          <m-input type="text" prop="server2" label="Second Server" labelWidth="100px" validateEvent
+            @validate="validate" :show-error="rules.server2.error" :error-msg="rules.server2.message" v-model="server2"
+            :disabled="!isCreate" placeholder="Please enter second server" />
+          <m-select labelWidth="100px" @on-change="handleGlusterSelect" validateEvent @validate="validate"
+            prop="volumename" v-model="volumename" :readonly="false" :disabled="!isCreate" required
+            @visible-change="handleGlusterExportReq" :show-error="rules.volumename.error"
+            :error-msg="rules.volumename.message" label="Volume name">
+            <m-option v-for="item in db.glusterfsList" :key="item.volname" :label="item.volname"
+              :value="item.volname"></m-option>
           </m-select>
-          <m-select
-            type="multiple"
-            labelWidth="100px"
-            @on-change="handleSelect"
-            validateEvent
-            @validate="validate"
-            prop="content"
-            v-model="content"
-            required
-            :show-error="rules.content.error"
-            :error-msg="rules.content.message"
-            label="Content"
-          >
-            <m-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></m-option>
+          <m-select type="multiple" labelWidth="100px" @on-change="handleSelect" validateEvent @validate="validate"
+            prop="content" v-model="content" required :show-error="rules.content.error"
+            :error-msg="rules.content.message" label="Content">
+            <m-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></m-option>
           </m-select>
-          <m-input
-            type="number"
-            prop="maxfiles"
-            label="Max Backups"
-            labelWidth="100px"
-            validateEvent
-            @validate="validate"
-            :show-error="rules.maxfiles.error"
-            :error-msg="rules.maxfiles.message"
-            min="0"
-            :disabled="content.indexOf('backup') === -1"
-            v-model="maxfiles"
-            placeholder="Please enter max backups"
-          />
+          <m-input type="number" prop="maxfiles" label="Max Backups" labelWidth="100px" validateEvent
+            @validate="validate" :show-error="rules.maxfiles.error" :error-msg="rules.maxfiles.message" min="0"
+            :disabled="content.indexOf('backup') === -1" v-model="maxfiles" placeholder="Please enter max backups" />
         </dd>
       </dl>
       <dl>
         <dt>Nodes</dt>
         <dd>
-          <el-table
-            :data="db.nodeList"
-            ref="dataTable"
-            @selection-change="handleSelectionChange"
-          >
+          <el-table :data="db.nodeList" ref="dataTable" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55"> </el-table-column>
-            <el-table-column
-              label="Node"
-              prop="node"
-              sortable
-            ></el-table-column>
+            <el-table-column label="Node" prop="node" sortable></el-table-column>
             <el-table-column label="Memory Usage">
               <template slot-scope="scope">
                 {{

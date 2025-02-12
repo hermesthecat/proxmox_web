@@ -1,43 +1,18 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button
-        type="primary"
-        icon="el-icon-plus"
-        @on-click="showModal('create')"
-        >Add</m-button
-      >
-      <m-button
-        type="info"
-        @on-click="showModal('edit')"
-        icon="el-icon-edit"
-        :disabled="selectedList.length !== 1"
-        >Edit</m-button
-      >
-      <m-button
-        type="danger"
-        v-confirm="{
-          msg: `Are you sure you want to delete the selected items?`,
-          ok: () => handleDelete(),
-        }"
-        icon="el-icon-delete"
-        :disabled="selectedList.length <= 0"
-        >Delete</m-button
-      >
-      <m-button
-        type="info"
-        @on-click="showModal('permission')"
-        icon="el-icon-view"
-        :disabled="selectedList.length !== 1"
-        >Show permissions</m-button
-      >
+      <m-button type="primary" icon="el-icon-plus" @on-click="showModal('create')">Add</m-button>
+      <m-button type="info" @on-click="showModal('edit')" icon="el-icon-edit"
+        :disabled="selectedList.length !== 1">Edit</m-button>
+      <m-button type="danger" v-confirm="{
+        msg: `Are you sure you want to delete the selected items?`,
+        ok: () => handleDelete(),
+      }" icon="el-icon-delete" :disabled="selectedList.length <= 0">Delete</m-button>
+      <m-button type="info" @on-click="showModal('permission')" icon="el-icon-view"
+        :disabled="selectedList.length !== 1">Show permissions</m-button>
     </div>
     <div slot="page-content">
-      <el-table
-        :data="records"
-        ref="dataTable"
-        @selection-change="handleSelect"
-      >
+      <el-table :data="records" ref="dataTable" @selection-change="handleSelect">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="Username" prop="userid" sortable>
           <template slot-scope="scope">
@@ -54,9 +29,9 @@
             <span>{{
               scope.row.expire
                 ? dateFormat(
-                    new Date(scope.row.expire * 1000),
-                    "yyyy-MM-dd hh:mm:ss"
-                  )
+                  new Date(scope.row.expire * 1000),
+                  "yyyy-MM-dd hh:mm:ss"
+                )
                 : "Never Expires"
             }}</span>
           </template>
@@ -64,25 +39,16 @@
         <el-table-column label="Comment" prop="comment" sortable></el-table-column>
         <el-table-column label="Privilege Separation">
           <template slot-scope="scope">
-            <table-info-state
-              :content="scope.row.privsep ? 'Yes' : 'No'"
-              :state="scope.row.privsep ? 'actived' : 'unActived'"
-            ></table-info-state>
+            <table-info-state :content="scope.row.privsep ? 'Yes' : 'No'"
+              :state="scope.row.privsep ? 'actived' : 'unActived'"></table-info-state>
           </template>
         </el-table-column>
       </el-table>
-      <create-api-token-modal
-        :title="title"
-        :isCreate="isCreate"
-        :param="param"
-        :visible="visible"
-        v-if="visible"
-        :modal-type="type"
-        @close="
+      <create-api-token-modal :title="title" :isCreate="isCreate" :param="param" :visible="visible" v-if="visible"
+        :modal-type="type" @close="
           visible = false;
-          __init__();
-        "
-      ></create-api-token-modal>
+        __init__();
+        "></create-api-token-modal>
     </div>
   </page-template>
 </template>
@@ -143,12 +109,12 @@ export default {
         type === "create"
           ? "Create: User"
           : type === "edit"
-          ? "Edit: User"
-          : type === "modifyPsw"
-          ? "Modify: Password"
-          : type === "tfa"
-          ? "Two-Factor Authentication"
-          : "Permissions";
+            ? "Edit: User"
+            : type === "modifyPsw"
+              ? "Modify: Password"
+              : type === "tfa"
+                ? "Two-Factor Authentication"
+                : "Permissions";
       this.param = type === "create" ? {} : this.selectedList[0];
       this.visible = true;
     },
@@ -163,7 +129,7 @@ export default {
     handleDelete(type) {
       this.deleteApiToken();
     },
-    handelEditTfa() {},
+    handelEditTfa() { },
   },
 };
 </script>
@@ -175,14 +141,17 @@ export default {
   padding: 10px 0px;
   border-top: 1px solid #c4d6ec;
   border-bottom: 1px solid #c4d6ec;
+
   &__item {
     flex: 1 1 auto;
     display: flex;
   }
+
   &__title {
     flex: 1 1 auto;
     display: inline-flex;
   }
+
   &__desc {
     flex: 1 1 auto;
     display: inline-flex;

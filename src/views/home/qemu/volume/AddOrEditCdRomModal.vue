@@ -129,7 +129,8 @@
       </div>
     </div>
     <template slot="footer">
-      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px" @on-click="confirm()">Confirm</m-button>
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px"
+        @on-click="confirm()">Confirm</m-button>
     </template>
   </m-dialog>
 </template>

@@ -1,24 +1,9 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button
-        type="primary"
-        @on-click="showModal('create')"
-        :disabled="inStatus()"
-        >Create Cluster</m-button
-      >
-      <m-button
-        type="primary"
-        @on-click="showModal('info')"
-        :disabled="!inStatus()"
-        >Join Info</m-button
-      >
-      <m-button
-        type="primary"
-        @on-click="showModal('join')"
-        :disabled="inStatus()"
-        >Join Cluster</m-button
-      >
+      <m-button type="primary" @on-click="showModal('create')" :disabled="inStatus()">Create Cluster</m-button>
+      <m-button type="primary" @on-click="showModal('info')" :disabled="!inStatus()">Join Info</m-button>
+      <m-button type="primary" @on-click="showModal('join')" :disabled="inStatus()">Join Cluster</m-button>
     </div>
     <div slot="page-content">
       <div class="cluster-desc">
@@ -50,15 +35,10 @@
         <el-table-column label="Link0" prop="ring0_addr"></el-table-column>
         <el-table-column label="Link1" prop="ring1_addr"></el-table-column>
       </el-table>
-      <cluster-modal
-        v-if="visible"
-        :visible="visible"
-        :type="type"
-        @close="
-          visible = false;
-          __init__();
-        "
-      ></cluster-modal>
+      <cluster-modal v-if="visible" :visible="visible" :type="type" @close="
+        visible = false;
+      __init__();
+      "></cluster-modal>
     </div>
   </page-template>
 </template>
@@ -114,14 +94,17 @@ export default {
   padding: 10px 0px;
   border-top: 1px solid #c4d6ec;
   border-bottom: 1px solid #c4d6ec;
+
   &__item {
     flex: 1 1 auto;
     display: flex;
   }
+
   &__title {
     flex: 1 1 auto;
     display: inline-flex;
   }
+
   &__desc {
     flex: 1 1 auto;
     display: inline-flex;

@@ -1,15 +1,8 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @close="close()"
-    @cancel="close"
-    @confirm="confirm"
-    :_style="{
-      width: '800px',
-      height: '500px',
-    }"
-    title="Edit Notes"
-  >
+  <Dialog :visible="visible" @close="close()" @cancel="close" @confirm="confirm" :_style="{
+    width: '800px',
+    height: '500px',
+  }" title="Edit Notes">
     <div slot="content" ref="content">
       <ace-editor v-model="f_NewsContent" ref="ace-editor"></ace-editor>
     </div>
@@ -93,19 +86,23 @@ export default {
   display: inline-block;
   vertical-align: -webkit-baseline-middle;
 }
+
 .m-button {
   height: 33px;
   line-height: 28px;
 }
+
 .create-btn {
   width: 100px;
   height: 42px;
   display: inline-block;
   line-height: 43px;
 }
+
 .node-editor {
   width: 100%;
   height: 100%;
+
   &__input {
     position: absolute;
     width: 100%;

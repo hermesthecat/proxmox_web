@@ -1,48 +1,18 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @cancel="close"
-    @confirm="confirm"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" @cancel="close" @confirm="confirm" :title="title" :_style="{ width: '956px' }"
+    @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-input
-                type="text"
-                prop="roleid"
-                labelWidth="100px"
-                label="Name"
-                v-model="roleid"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules.roleid.error"
-                :error-msg="rules.roleid.message"
-                :disabled="modalType !== 'create'"
-                placeholder="Please enter role name"
-              />
-              <m-select
-                prop="privs"
-                label="Privileges"
-                labelWidth="100px"
-                type="multiple"
-                :readonly="false"
-                @on-change="handlePrivsSelect"
-                v-model="privs"
-                placeholder="Please select privileges"
-              >
-                <m-option
-                  v-for="item in Object.keys(db.roleObj)"
-                  :key="item"
-                  :label="item"
-                  :value="item"
-                >
+              <m-input type="text" prop="roleid" labelWidth="100px" label="Name" v-model="roleid" validateEvent
+                @validate="validate" required :show-error="rules.roleid.error" :error-msg="rules.roleid.message"
+                :disabled="modalType !== 'create'" placeholder="Please enter role name" />
+              <m-select prop="privs" label="Privileges" labelWidth="100px" type="multiple" :readonly="false"
+                @on-change="handlePrivsSelect" v-model="privs" placeholder="Please select privileges">
+                <m-option v-for="item in Object.keys(db.roleObj)" :key="item" :label="item" :value="item">
                 </m-option>
               </m-select>
             </dd>
@@ -152,8 +122,8 @@ export default {
                 msg: res,
                 type: "error",
               })
-              .then(() => {})
-              .catch(() => {});
+              .then(() => { })
+              .catch(() => { });
           });
       } else {
         this.updateRole(param)
@@ -166,8 +136,8 @@ export default {
                 msg: res,
                 type: "error",
               })
-              .then(() => {})
-              .catch(() => {});
+              .then(() => { })
+              .catch(() => { });
           });
       }
     },

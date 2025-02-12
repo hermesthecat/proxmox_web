@@ -1,117 +1,59 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button icon="fa fa-refresh" type="primary" @on-click="__init__()"
-        >Reload</m-button
-      >
-      <m-button
-        icon="el-icon-plus"
-        type="primary"
-        @on-click="showModal('create')"
-        >Create</m-button
-      >
-      <m-button
-        icon="el-icon-plus"
-        type="primary"
-        @on-click="visibleFlag = true"
-        >Manage</m-button
-      >
+      <m-button icon="fa fa-refresh" type="primary" @on-click="__init__()">Reload</m-button>
+      <m-button icon="el-icon-plus" type="primary" @on-click="showModal('create')">Create</m-button>
+      <m-button icon="el-icon-plus" type="primary" @on-click="visibleFlag = true">Manage</m-button>
     </div>
     <div slot="toolbar-right" style="text-align: right">
       <ul class="tab-container">
-        <li
-          class="tab-item"
-          :class="{
-            active: isIn,
-            disabled: !current || current.type !== 'osd',
-          }"
-          @click="handleChangeTab('in')"
-        >
+        <li class="tab-item" :class="{
+          active: isIn,
+          disabled: !current || current.type !== 'osd',
+        }" @click="handleChangeTab('in')">
           <span class="circle"></span>in
         </li>
-        <li
-          class="tab-item"
-          :class="{
-            active: isOut,
-            disabled: !current || current.type !== 'osd',
-          }"
-          @click="handleChangeTab('out')"
-        >
+        <li class="tab-item" :class="{
+          active: isOut,
+          disabled: !current || current.type !== 'osd',
+        }" @click="handleChangeTab('out')">
           <span class="circle-out"></span>out
         </li>
       </ul>
-      <m-dropdown
-        trigger="click"
-        icon="fa fa-user"
-        @on-change="handleCommand"
-        style="
+      <m-dropdown trigger="click" icon="fa fa-user" @on-change="handleCommand" style="
           width: 8rem;
           height: 30px;
           line-height: 30px;
           color: #fff !important;
-        "
-      >
+        ">
         <span slot="label">
-          <m-button
-            type="primary"
-            style="position: absolute; left: -1px; top: -1px; right: -1px"
-            icon="el-icon-plus"
-            >More Operations</m-button
-          >
+          <m-button type="primary" style="position: absolute; left: -1px; top: -1px; right: -1px"
+            icon="el-icon-plus">More Operations</m-button>
         </span>
-        <m-dropdown-item command="start" icon="fa fa-play" :disabled="!current"
-          >Start</m-dropdown-item
-        >
-        <m-dropdown-item
-          command="stop"
-          icon="fa fa-stop"
-          :disabled="!current || inStatus('down')"
-          >Stop</m-dropdown-item
-        >
-        <m-dropdown-item
-          command="restart"
-          icon="fa fa-refresh"
-          :disabled="!current || inStatus('down')"
-          >Restart</m-dropdown-item
-        >
-        <m-dropdown-item command="clear" icon="fa fa-refresh"
-          >Scrub</m-dropdown-item
-        >
-        <m-dropdown-item command="deepClear" icon="fa fa-refresh"
-          >Deep Scrub</m-dropdown-item
-        >
-        <m-dropdown-item
-          command="clean"
-          icon="fa fa-refresh"
-          :disabled="inStatus('up')"
-          >Clean</m-dropdown-item
-        >
+        <m-dropdown-item command="start" icon="fa fa-play" :disabled="!current">Start</m-dropdown-item>
+        <m-dropdown-item command="stop" icon="fa fa-stop"
+          :disabled="!current || inStatus('down')">Stop</m-dropdown-item>
+        <m-dropdown-item command="restart" icon="fa fa-refresh"
+          :disabled="!current || inStatus('down')">Restart</m-dropdown-item>
+        <m-dropdown-item command="clear" icon="fa fa-refresh">Scrub</m-dropdown-item>
+        <m-dropdown-item command="deepClear" icon="fa fa-refresh">Deep Scrub</m-dropdown-item>
+        <m-dropdown-item command="clean" icon="fa fa-refresh" :disabled="inStatus('up')">Clean</m-dropdown-item>
       </m-dropdown>
     </div>
     <div slot="page-content">
-      <el-table
-        :data="treeData"
-        row-key="id"
-        default-expand-all
-        highlight-current-row
-        :row-class-name="setRowClassName"
-        :current-row-key="currentRowKey"
-        @row-click="handleSingleSelect"
-        ref="dataTable"
-        :tree-props="{ children: 'children' }"
-      >
+      <el-table :data="treeData" row-key="id" default-expand-all highlight-current-row :row-class-name="setRowClassName"
+        :current-row-key="currentRowKey" @row-click="handleSingleSelect" ref="dataTable"
+        :tree-props="{ children: 'children' }">
         <el-table-column label="Name" prop="name">
           <template slot-scope="scope">
-            <i
-              :class="{
-                'fa x-fa-tree fa-server':
-                  scope.row.type && scope.row.type === 'root',
-                'fa x-fa-tree fa-building':
-                  scope.row.type && scope.row.type === 'host',
-                'fa x-fa-tree fa-hdd-o':
-                  scope.row.type && scope.row.type === 'osd',
-              }"
-            ></i>
+            <i :class="{
+              'fa x-fa-tree fa-server':
+                scope.row.type && scope.row.type === 'root',
+              'fa x-fa-tree fa-building':
+                scope.row.type && scope.row.type === 'host',
+              'fa x-fa-tree fa-hdd-o':
+                scope.row.type && scope.row.type === 'osd',
+            }"></i>
             {{ scope.row.name }}
           </template>
         </el-table-column>
@@ -153,7 +95,7 @@
                 (scope.row &&
                   scope.row.percent_used &&
                   scope.row.percent_used) ||
-                  0,
+                0,
                 2
               )
             }}
@@ -170,45 +112,25 @@
           </template>
         </el-table-column>
       </el-table>
-      <create-osd
-        :visible="visible"
-        v-if="visible"
-        @close="
-          visible = false;
-          __init__();
-        "
-        :title="title"
-      ></create-osd>
-      <add-flags
-        :visible="visibleFlag"
-        v-if="visibleFlag"
-        @close="
-          visibleFlag = false;
-          __init__();
-        "
-      ></add-flags>
-      <m-dialog
-        :visible="visibleClean"
-        v-if="visibleClean"
-        @confirm="confirm"
-        @close="
+      <create-osd :visible="visible" v-if="visible" @close="
+        visible = false;
+      __init__();
+      " :title="title"></create-osd>
+      <add-flags :visible="visibleFlag" v-if="visibleFlag" @close="
+        visibleFlag = false;
+      __init__();
+      "></add-flags>
+      <m-dialog :visible="visibleClean" v-if="visibleClean" @confirm="confirm" @close="
+        visibleClean = false;
+      __init__();
+      " @cancel="
           visibleClean = false;
-          __init__();
-        "
-        @cancel="
-          visibleClean = false;
-          __init__();
-        "
-        :title="`Destroy: Ceph OSD ${current.name}`"
-      >
+        __init__();
+        " :title="`Destroy: Ceph OSD ${current.name}`">
         <template slot="content">
           <div class="m-form__content">
             <div class="m-form__section">
-              <m-checkbox
-                v-model="clean"
-                label="Clean Disk"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-checkbox v-model="clean" label="Clean Disk" labelWidth="100px"></m-checkbox>
             </div>
           </div>
         </template>
@@ -402,18 +324,21 @@ export default {
     background-image: linear-gradient(180deg, #5ca4e6, #aaccf0);
     color: #fff;
     cursor: pointer;
+
     .active {
       background: #21bf4b;
       color: #fff;
       transition: all 0.4s linear;
     }
   }
+
   &-item {
     flex: 1 1 auto;
     height: 30px;
     line-height: 30px;
     padding: 0px 20px;
     text-align: center;
+
     .circle-out {
       width: 14px;
       height: 14px;
@@ -424,6 +349,7 @@ export default {
       display: inline-block;
       vertical-align: middle;
     }
+
     .circle {
       width: 14px;
       height: 14px;
@@ -433,6 +359,7 @@ export default {
       margin-right: 10px;
       display: inline-block;
       vertical-align: middle;
+
       &:after {
         content: "";
         display: inline-block;
@@ -448,23 +375,28 @@ export default {
     }
   }
 }
+
 .snap-table {
   display: table;
   width: 100%;
 }
+
 .snap-table-tr,
 .snap-table-header__tr {
   display: table-row;
   height: 35px;
   line-height: 35px;
 }
+
 .snap-table-td {
   display: table-cell;
 }
-.snap-table-header__tr > .snap-table-td {
+
+.snap-table-header__tr>.snap-table-td {
   border-bottom: 1px solid #f5f5f5;
 }
-/deep/.el-table__body tr.current-row > td {
+
+/deep/.el-table__body tr.current-row>td {
   background-image: linear-gradient(180deg, #0076e2, #095cb5);
   color: #fff;
 }

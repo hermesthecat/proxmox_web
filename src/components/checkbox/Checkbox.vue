@@ -3,21 +3,12 @@
     <span class="m-checkbox__label" :style="{ width: labelWidth }">{{
       label
     }}</span>
-    <label
-      class="m-checkbox__content"
-      :disabled="disabled"
-      :class="{ disabled: disabled }"
-    >
-      <input
-        type="checkbox"
-        :checked="checked"
-        :disabled="disabled"
-        @change="$emit('change', $event.target.checked)"
-      />
+    <label class="m-checkbox__content" :disabled="disabled" :class="{ disabled: disabled }">
+      <input type="checkbox" :checked="checked" :disabled="disabled" @change="$emit('change', $event.target.checked)" />
       <div></div>
-      <span style="display: inline-block; vertical-align: middle"
-        ><slot></slot
-      ></span>
+      <span style="display: inline-block; vertical-align: middle">
+        <slot></slot>
+      </span>
     </label>
   </div>
 </template>
@@ -51,16 +42,20 @@ export default {
   display: inline-block;
   padding: 0 10px 15px;
   position: relative;
+
   &__label {
     display: inline-block;
     vertical-align: middle;
   }
+
   &__content {
     padding-right: 10px;
     padding-bottom: 5px;
+
     input[type="checkbox"] {
       display: none;
     }
+
     div {
       position: relative;
       width: 15px;
@@ -69,7 +64,8 @@ export default {
       display: inline-block;
       vertical-align: middle;
     }
-    input[type="checkbox"] + div::after {
+
+    input[type="checkbox"]+div::after {
       content: "";
       width: 15px;
       height: 15px;
@@ -77,7 +73,8 @@ export default {
       border: 1px solid #c4d6ec;
       display: inline-block;
     }
-    input[type="checkbox"]:checked + div::before {
+
+    input[type="checkbox"]:checked+div::before {
       content: "";
       display: inline-block;
       width: 3px;
@@ -94,7 +91,8 @@ export default {
       outline: 0;
       vertical-align: middle;
     }
-    input[type="checkbox"]:checked + div:after {
+
+    input[type="checkbox"]:checked+div:after {
       content: "";
       display: inline-block;
       width: 15px;

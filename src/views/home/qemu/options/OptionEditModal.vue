@@ -1,14 +1,7 @@
 <template>
-  <m-dialog
-    :title="title"
-    :visible="visible"
-    @confirm="confirm"
-    :_style="{
-      width: '946px',
-    }"
-    @cancel="close"
-    @close="close"
-  >
+  <m-dialog :title="title" :visible="visible" @confirm="confirm" :_style="{
+    width: '946px',
+  }" @cancel="close" @close="close">
     <div slot="content">
       <div class="m-form__section">
         <dl>
@@ -16,91 +9,36 @@
           <dd>
             <!--Name-->
             <template v-if="modalType === 'editname'">
-              <m-input
-                type="text"
-                prop="name"
-                v-model="name"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules['name'].error"
-                :error-msg="rules['name'].message"
-                @on-change="(value) => (name = value)"
-                label="Name"
-              />
+              <m-input type="text" prop="name" v-model="name" labelWidth="100px" validateEvent @validate="validate"
+                required :show-error="rules['name'].error" :error-msg="rules['name'].message"
+                @on-change="(value) => (name = value)" label="Name" />
             </template>
             <!--Auto Start-->
             <template v-if="modalType === 'editboot'">
-              <m-checkbox
-                v-model="onboot"
-                labelWidth="100px"
-                label="Auto Start"
-              >
+              <m-checkbox v-model="onboot" labelWidth="100px" label="Auto Start">
               </m-checkbox>
             </template>
             <!--Start/Shutdown Order-->
             <template v-if="modalType === 'editstartup'">
-              <m-input
-                type="text"
-                prop="order"
-                v-model="order"
-                labelWidth="100px"
-                @on-change="(value) => (order = value)"
-                placeholer="any"
-                label="Start/Shutdown Order"
-              />
+              <m-input type="text" prop="order" v-model="order" labelWidth="100px"
+                @on-change="(value) => (order = value)" placeholer="any" label="Start/Shutdown Order" />
 
-              <m-input
-                type="text"
-                prop="up"
-                v-model="up"
-                labelWidth="100px"
-                @on-change="(value) => (up = value)"
-                placeholder="any"
-                label="Start Delay"
-              />
+              <m-input type="text" prop="up" v-model="up" labelWidth="100px" @on-change="(value) => (up = value)"
+                placeholder="any" label="Start Delay" />
 
-              <m-input
-                type="text"
-                prop="down"
-                labelWidth="100px"
-                v-model="down"
-                @on-change="(value) => (down = value)"
-                label="Shutdown Timeout"
-              />
+              <m-input type="text" prop="down" labelWidth="100px" v-model="down" @on-change="(value) => (down = value)"
+                label="Shutdown Timeout" />
             </template>
             <!--OS Type-->
             <template v-if="modalType === 'editostype'">
-              <m-select
-                prop="ostype"
-                label="Type"
-                labelWidth="100px"
-                @on-change="handleOsTypeChange"
-                v-model="ostype"
-              >
-                <m-option
-                  v-for="item in osTypeItems"
-                  :key="item.key"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-select prop="ostype" label="Type" labelWidth="100px" @on-change="handleOsTypeChange" v-model="ostype">
+                <m-option v-for="item in osTypeItems" :key="item.key" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
 
-              <m-select
-                prop="version"
-                label="Version"
-                labelWidth="100px"
-                @on-change="(value) => (version = value)"
-                v-model="version"
-              >
-                <m-option
-                  v-for="item in versionItems"
-                  :key="item.key"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-select prop="version" label="Version" labelWidth="100px" @on-change="(value) => (version = value)"
+                v-model="version">
+                <m-option v-for="item in versionItems" :key="item.key" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
             </template>
@@ -153,11 +91,7 @@
                   </template>
                 </el-table-column>
                 <el-table-column label="Device" prop="name"></el-table-column>
-                <el-table-column
-                  label="Description"
-                  prop="desc"
-                  show-overflow-tooltip
-                ></el-table-column>
+                <el-table-column label="Description" prop="desc" show-overflow-tooltip></el-table-column>
               </el-table>
             </template>
             <!--Use Tablet Pointer-->
@@ -193,115 +127,45 @@
             </template>
             <!--Freeze CPU at Startup-->
             <template v-if="modalType === 'editfreeze'">
-              <m-checkbox
-                v-model="freeze"
-                label="Freeze CPU at Startup"
-                labelWidth="100px"
-              >
+              <m-checkbox v-model="freeze" label="Freeze CPU at Startup" labelWidth="100px">
               </m-checkbox>
             </template>
             <!--Use Local Time for RTC-->
             <template v-if="modalType === 'editlocaltime'">
-              <m-checkbox
-                v-model="localtime"
-                label="Use Local Time for RTC"
-                labelWidth="100px"
-              >
+              <m-checkbox v-model="localtime" label="Use Local Time for RTC" labelWidth="100px">
               </m-checkbox>
             </template>
             <!--RTC Start Time-->
             <template v-if="modalType === 'editstartdate'">
-              <m-input
-                type="text"
-                prop="startdate"
-                v-model="startdate"
-                validateEvent
-                labelWidth="100px"
-                @validate="validate"
-                :show-error="rules['startdate'].error"
-                :error-msg="rules['startdate'].message"
-                @on-change="(value) => (startdate = value)"
-                placeholder="Value should be 'now' or empty"
-                label="RTC Start Time"
-              />
+              <m-input type="text" prop="startdate" v-model="startdate" validateEvent labelWidth="100px"
+                @validate="validate" :show-error="rules['startdate'].error" :error-msg="rules['startdate'].message"
+                @on-change="(value) => (startdate = value)" placeholder="Value should be 'now' or empty"
+                label="RTC Start Time" />
             </template>
             <!--SMBIOS-->
             <template v-if="modalType === 'editsmbios1'">
-              <m-input
-                type="text"
-                prop="uuid"
-                v-model="uuid"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules['uuid'].error"
-                :error-msg="rules['uuid'].message"
-                @on-change="(value) => (uuid = value)"
-                label="UUID"
-              />
-              <m-input
-                type="text"
-                prop="manufacturer"
-                labelWidth="100px"
-                v-model="manufacturer"
-                @on-change="(value) => (manufacturer = value)"
-                label="Manufacturer"
-              />
-              <m-input
-                type="text"
-                prop="product"
-                labelWidth="100px"
-                v-model="product"
-                @on-change="(value) => (product = value)"
-                label="Product"
-              />
-              <m-input
-                type="text"
-                prop="sversion"
-                labelWidth="100px"
-                v-model="sversion"
-                @on-change="(value) => (sversion = value)"
-                label="Version"
-              />
-              <m-input
-                type="text"
-                prop="serial"
-                labelWidth="100px"
-                v-model="serial"
-                @on-change="(value) => (serial = value)"
-                label="Serial"
-              />
-              <m-input
-                type="text"
-                prop="sku"
-                labelWidth="100px"
-                v-model="sku"
-                @on-change="(value) => (sku = value)"
-                label="SKU"
-              />
-              <m-input
-                type="text"
-                prop="family"
-                labelWidth="100px"
-                v-model="family"
-                @on-change="(value) => (family = value)"
-                label="Family"
-              />
+              <m-input type="text" prop="uuid" v-model="uuid" labelWidth="100px" validateEvent @validate="validate"
+                :show-error="rules['uuid'].error" :error-msg="rules['uuid'].message"
+                @on-change="(value) => (uuid = value)" label="UUID" />
+              <m-input type="text" prop="manufacturer" labelWidth="100px" v-model="manufacturer"
+                @on-change="(value) => (manufacturer = value)" label="Manufacturer" />
+              <m-input type="text" prop="product" labelWidth="100px" v-model="product"
+                @on-change="(value) => (product = value)" label="Product" />
+              <m-input type="text" prop="sversion" labelWidth="100px" v-model="sversion"
+                @on-change="(value) => (sversion = value)" label="Version" />
+              <m-input type="text" prop="serial" labelWidth="100px" v-model="serial"
+                @on-change="(value) => (serial = value)" label="Serial" />
+              <m-input type="text" prop="sku" labelWidth="100px" v-model="sku" @on-change="(value) => (sku = value)"
+                label="SKU" />
+              <m-input type="text" prop="family" labelWidth="100px" v-model="family"
+                @on-change="(value) => (family = value)" label="Family" />
             </template>
             <!--QEMU Agent-->
             <template v-if="modalType === 'editagent'">
-              <m-checkbox
-                v-model="agent"
-                label="Use QEMU Guest Agent"
-                labelWidth="100px"
-              >
+              <m-checkbox v-model="agent" label="Use QEMU Guest Agent" labelWidth="100px">
               </m-checkbox>
-              <m-checkbox
-                v-model="fstrim_cloned_disks"
-                :disabled="!agent"
-                label="Run guest-trim after cloning disks"
-                labelWidth="100px"
-              >
+              <m-checkbox v-model="fstrim_cloned_disks" :disabled="!agent" label="Run guest-trim after cloning disks"
+                labelWidth="100px">
               </m-checkbox>
               <div class="warning" v-show="agent">
                 Make sure QEMU Guest Agent is installed in the VM.
@@ -309,34 +173,16 @@
             </template>
             <!--Protection-->
             <template v-if="modalType === 'editprotection'">
-              <m-checkbox
-                v-model="protection"
-                label="Enabled"
-                labelWidth="100px"
-              >
+              <m-checkbox v-model="protection" label="Enabled" labelWidth="100px">
               </m-checkbox>
             </template>
             <!--Spice Enhancements-->
             <template v-if="modalType === 'editspice_enhancements'">
-              <m-checkbox
-                v-model="foldersharing"
-                label="Folder Sharing"
-                labelWidth="100px"
-              >
+              <m-checkbox v-model="foldersharing" label="Folder Sharing" labelWidth="100px">
               </m-checkbox>
-              <m-select
-                prop="videostreaming"
-                label="Video Streaming"
-                @on-change="(value) => (videostreaming = value)"
-                v-model="videostreaming"
-                labelWidth="100px"
-              >
-                <m-option
-                  v-for="item in videostreamingItems"
-                  :key="item.key"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-select prop="videostreaming" label="Video Streaming" @on-change="(value) => (videostreaming = value)"
+                v-model="videostreaming" labelWidth="100px">
+                <m-option v-for="item in videostreamingItems" :key="item.key" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
               <div class="warning" v-show="foldersharing">
@@ -345,19 +191,10 @@
             </template>
             <!--VM State-->
             <template v-if="modalType === 'editvmstatestorage'">
-              <m-select
-                prop="vmstatestorage"
-                label="Video Streaming"
-                labelWidth="100px"
-                @on-change="(value) => (vmstatestorage = value)"
-                v-model="vmstatestorage"
-              >
-                <m-option
-                  v-for="(item, index) in storageList"
-                  :key="item.storage"
-                  :label="item.storage"
-                  :value="item.storage"
-                >
+              <m-select prop="vmstatestorage" label="Video Streaming" labelWidth="100px"
+                @on-change="(value) => (vmstatestorage = value)" v-model="vmstatestorage">
+                <m-option v-for="(item, index) in storageList" :key="item.storage" :label="item.storage"
+                  :value="item.storage">
                   <div class="table-tr" v-if="index === 0">
                     <div class="table-td">Name</div>
                     <div class="table-td">Type</div>
@@ -383,74 +220,35 @@
             </template>
             <!--Console-->
             <template v-if="modalType === 'editconsole'">
-              <m-checkbox
-                v-model="console"
-                label="/dev/console"
-                labelWidth="100px"
-              >
+              <m-checkbox v-model="console" label="/dev/console" labelWidth="100px">
               </m-checkbox>
             </template>
             <!--TTY-->
             <template v-if="modalType === 'edittty'">
-              <m-input
-                type="number"
-                prop="tty"
-                labelWidth="100px"
-                v-model="tty"
-                @on-change="(value) => (tty = value)"
-                label="TTY"
-              />
+              <m-input type="number" prop="tty" labelWidth="100px" v-model="tty" @on-change="(value) => (tty = value)"
+                label="TTY" />
             </template>
             <!--Console Mode-->
             <template v-if="modalType === 'editcmode'">
-              <m-select
-                prop="cmode"
-                label="Console Mode"
-                labelWidth="100px"
-                @on-change="(value) => (cmode = value)"
-                v-model="cmode"
-              >
-                <m-option
-                  v-for="item in cmodeItems"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-select prop="cmode" label="Console Mode" labelWidth="100px" @on-change="(value) => (cmode = value)"
+                v-model="cmode">
+                <m-option v-for="item in cmodeItems" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
             </template>
             <!--Features-->
             <template v-if="modalType === 'editfeatures'">
-              <m-checkbox
-                v-model="keyctl"
-                label="keyctl"
-                :disabled="!unprivileged"
-                labelWidth="100px"
-              >
+              <m-checkbox v-model="keyctl" label="keyctl" :disabled="!unprivileged" labelWidth="100px">
               </m-checkbox>
               <m-checkbox v-model="nesting" label="Nesting" labelWidth="100px">
               </m-checkbox>
-              <m-checkbox
-                v-model="nfs"
-                label="NFS"
-                :disabled="unprivileged"
-                labelWidth="100px"
-              >
+              <m-checkbox v-model="nfs" label="NFS" :disabled="unprivileged" labelWidth="100px">
               </m-checkbox>
-              <m-checkbox
-                v-model="cifs"
-                label="CIFS"
-                :disabled="unprivileged"
-                labelWidth="100px"
-              >
+              <m-checkbox v-model="cifs" label="CIFS" :disabled="unprivileged" labelWidth="100px">
               </m-checkbox>
               <m-checkbox v-model="fuse" label="FUSE" labelWidth="100px">
               </m-checkbox>
-              <m-checkbox
-                v-model="mknod"
-                label="Create Device Nodes"
-                labelWidth="100px"
-              >
+              <m-checkbox v-model="mknod" label="Create Device Nodes" labelWidth="100px">
                 Experimental
               </m-checkbox>
             </template>
@@ -462,19 +260,8 @@
         <dl>
           <dt>Advanced</dt>
           <dd>
-            <m-select
-              prop="type"
-              label="Type"
-              labelWidth="100px"
-              @on-change="(value) => (type = value)"
-              v-model="type"
-            >
-              <m-option
-                v-for="item in typeItems"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
+            <m-select prop="type" label="Type" labelWidth="100px" @on-change="(value) => (type = value)" v-model="type">
+              <m-option v-for="item in typeItems" :key="item.value" :label="item.label" :value="item.value">
               </m-option>
             </m-select>
           </dd>
@@ -489,12 +276,8 @@
           <div>Advanced</div>
         </label>
       </div>
-      <m-button class="create-btn" @on-click="close()" type="danger"
-        >Cancel</m-button
-      >
-      <m-button class="create-btn" @on-click="confirm()" type="primary"
-        >Confirm</m-button
-      >
+      <m-button class="create-btn" @on-click="close()" type="danger">Cancel</m-button>
+      <m-button class="create-btn" @on-click="confirm()" type="primary">Confirm</m-button>
     </template>
   </m-dialog>
 </template>
@@ -726,8 +509,8 @@ export default {
         case "edittablet":
           _this.tablet =
             _this.db.qemuObj.tablet &&
-            _this.db.qemuObj.tablet &&
-            _this.db.qemuObj.tablet === 1
+              _this.db.qemuObj.tablet &&
+              _this.db.qemuObj.tablet === 1
               ? true
               : false;
           break;
@@ -1184,7 +967,7 @@ export default {
       }
     },
     //Validate all
-    validateAll() {},
+    validateAll() { },
     //Set boot order
     setVMConfig(vmconfig) {
       let _this = this;

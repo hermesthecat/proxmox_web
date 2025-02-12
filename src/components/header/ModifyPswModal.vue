@@ -1,37 +1,13 @@
 <template>
-  <m-dialog
-    :visible="visible"
-    @close="close"
-    @cancel="close"
-    title="Change Password"
-    @confirm="confirm"
-  >
+  <m-dialog :visible="visible" @close="close" @cancel="close" title="Change Password" @confirm="confirm">
     <template slot="content">
       <div class="modify-form">
-        <m-input
-          label="Password"
-          labelWidth="100px"
-          v-model="password"
-          prop="password"
-          type="password"
-          validateEvent
-          @validate="validate"
-          :show-error="rules['password'].error"
-          placeholder="Please enter password"
-          :error-msg="rules['password'].message"
-        />
-        <m-input
-          label="Confirm Password"
-          labelWidth="100px"
-          v-model="confirmPsw"
-          type="password"
-          prop="confirmPsw"
-          validateEvent
-          @validate="validate"
-          placeholder="Please confirm password"
-          :show-error="rules['confirmPsw'].error"
-          :error-msg="rules['confirmPsw'].message"
-        />
+        <m-input label="Password" labelWidth="100px" v-model="password" prop="password" type="password" validateEvent
+          @validate="validate" :show-error="rules['password'].error" placeholder="Please enter password"
+          :error-msg="rules['password'].message" />
+        <m-input label="Confirm Password" labelWidth="100px" v-model="confirmPsw" type="password" prop="confirmPsw"
+          validateEvent @validate="validate" placeholder="Please confirm password"
+          :show-error="rules['confirmPsw'].error" :error-msg="rules['confirmPsw'].message" />
       </div>
     </template>
   </m-dialog>

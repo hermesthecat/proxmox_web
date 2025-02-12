@@ -7,8 +7,8 @@
         <dl>
           <dt>Basic Information</dt>
           <dd>
-            <m-select prop="storage" label="Storage" labelWidth="100px" @on-change="handleStorageSelect" v-model="storage"
-              validateEvent @validate="validate" :readonly="true" placeholder="Please select storage">
+            <m-select prop="storage" label="Storage" labelWidth="100px" @on-change="handleStorageSelect"
+              v-model="storage" validateEvent @validate="validate" :readonly="true" placeholder="Please select storage">
               <div class="table">
                 <m-option v-for="(item, index) in db.storageList" :key="item.storage" :value="item.storage"
                   :label="item.storage">
@@ -48,7 +48,8 @@
       </div>
     </div>
     <template slot="footer">
-      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px" @on-click="confirm()">Confirm</m-button>
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px"
+        @on-click="confirm()">Confirm</m-button>
     </template>
   </m-dialog>
 </template>

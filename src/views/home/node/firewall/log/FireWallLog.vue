@@ -2,11 +2,7 @@
   <page-template>
     <div slot="toolbar-left"></div>
     <div slot="page-content">
-      <ace-editor
-        v-model="logContent"
-        :read-only="true"
-        ref="ace-editor"
-      ></ace-editor>
+      <ace-editor v-model="logContent" :read-only="true" ref="ace-editor"></ace-editor>
     </div>
   </page-template>
 </template>

@@ -4,162 +4,49 @@
       <dl>
         <dt>Basic Information</dt>
         <dd>
-          <m-input
-            type="text"
-            prop="storage"
-            label="ID"
-            labelWidth="100px"
-            validateEvent
-            @validate="validate"
-            :show-error="rules.storage.error"
-            :error-msg="rules.storage.message"
-            v-model="storage"
-            required
-            :disabled="!isCreate"
-            placeholder="Please enter ID"
-          />
-          <m-checkbox
-            label="Enable"
-            v-model="disable"
-            labelWidth="100px"
-          ></m-checkbox>
-          <m-input
-            type="text"
-            prop="portal"
-            label="Portal"
-            labelWidth="100px"
-            validateEvent
-            :disabled="!isCreate"
-            @validate="validate"
-            :show-error="rules.portal.error"
-            :error-msg="rules.portal.message"
-            v-model="portal"
-            required
-            placeholder="Please enter portal"
-          />
-          <m-select
-            labelWidth="100px"
-            @on-change="handleSelect"
-            prop="iscsiprovider"
-            label="iSCSI Provider"
-            :disabled="!isCreate"
-            validateEvent
-            @validate="validate"
-            required
-            :show-error="rules.iscsiprovider.error"
-            :error-msg="rules.iscsiprovider.message"
-            v-model="iscsiprovider"
-            placeholder="Please enter iSCSI provider"
-          >
-            <m-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></m-option>
+          <m-input type="text" prop="storage" label="ID" labelWidth="100px" validateEvent @validate="validate"
+            :show-error="rules.storage.error" :error-msg="rules.storage.message" v-model="storage" required
+            :disabled="!isCreate" placeholder="Please enter ID" />
+          <m-checkbox label="Enable" v-model="disable" labelWidth="100px"></m-checkbox>
+          <m-input type="text" prop="portal" label="Portal" labelWidth="100px" validateEvent :disabled="!isCreate"
+            @validate="validate" :show-error="rules.portal.error" :error-msg="rules.portal.message" v-model="portal"
+            required placeholder="Please enter portal" />
+          <m-select labelWidth="100px" @on-change="handleSelect" prop="iscsiprovider" label="iSCSI Provider"
+            :disabled="!isCreate" validateEvent @validate="validate" required :show-error="rules.iscsiprovider.error"
+            :error-msg="rules.iscsiprovider.message" v-model="iscsiprovider" placeholder="Please enter iSCSI provider">
+            <m-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></m-option>
           </m-select>
-          <m-input
-            type="text"
-            prop="pool"
-            label="Resource Pool"
-            :disabled="!isCreate"
-            labelWidth="100px"
-            validateEvent
-            @validate="validate"
-            required
-            :show-error="rules.pool.error"
-            :error-msg="rules.pool.message"
-            v-model="pool"
-            placeholder="Please enter resource pool"
-          />
-          <m-input
-            type="text"
-            prop="blocksize"
-            label="Block Size"
-            labelWidth="100px"
-            :disabled="!isCreate"
-            validateEvent
-            @validate="validate"
-            required
-            :show-error="rules.blocksize.error"
-            :error-msg="rules.blocksize.message"
-            v-model="blocksize"
-            placeholder="Please enter block size"
-          />
-          <m-input
-            type="text"
-            prop="target"
-            label="Target"
-            labelWidth="100px"
-            validateEvent
-            :disabled="!isCreate"
-            @validate="validate"
-            required
-            :show-error="rules.target.error"
-            :error-msg="rules.target.message"
-            v-model="target"
-            placeholder="Please enter target"
-          />
-          <m-checkbox
-            label="Thin Provisioning"
-            v-model="sparse"
-            :disabled="['LIO', 'IET'].includes(iscsiprovider)"
-            labelWidth="100px"
-          ></m-checkbox>
-          <m-input
-            type="text"
-            prop="comstar_tg"
-            label="Target Group"
-            labelWidth="100px"
-            :disabled="iscsiprovider !== 'Comstar' || !isCreate"
-            v-model="comstar_tg"
-            placeholder="Please enter target group"
-          />
-          <m-checkbox
-            label="Write Cache"
-            v-model="writecache"
-            labelWidth="100px"
-          ></m-checkbox>
-          <m-input
-            type="text"
-            prop="comstar_hg"
-            label="Host Group"
-            labelWidth="100px"
-            validateEvent
-            :disabled="iscsiprovider !== 'Comstar' || !isCreate"
-            v-model="comstar_hg"
-            placeholder="Please enter host group"
-          />
+          <m-input type="text" prop="pool" label="Resource Pool" :disabled="!isCreate" labelWidth="100px" validateEvent
+            @validate="validate" required :show-error="rules.pool.error" :error-msg="rules.pool.message" v-model="pool"
+            placeholder="Please enter resource pool" />
+          <m-input type="text" prop="blocksize" label="Block Size" labelWidth="100px" :disabled="!isCreate"
+            validateEvent @validate="validate" required :show-error="rules.blocksize.error"
+            :error-msg="rules.blocksize.message" v-model="blocksize" placeholder="Please enter block size" />
+          <m-input type="text" prop="target" label="Target" labelWidth="100px" validateEvent :disabled="!isCreate"
+            @validate="validate" required :show-error="rules.target.error" :error-msg="rules.target.message"
+            v-model="target" placeholder="Please enter target" />
+          <m-checkbox label="Thin Provisioning" v-model="sparse" :disabled="['LIO', 'IET'].includes(iscsiprovider)"
+            labelWidth="100px"></m-checkbox>
+          <m-input type="text" prop="comstar_tg" label="Target Group" labelWidth="100px"
+            :disabled="iscsiprovider !== 'Comstar' || !isCreate" v-model="comstar_tg"
+            placeholder="Please enter target group" />
+          <m-checkbox label="Write Cache" v-model="writecache" labelWidth="100px"></m-checkbox>
+          <m-input type="text" prop="comstar_hg" label="Host Group" labelWidth="100px" validateEvent
+            :disabled="iscsiprovider !== 'Comstar' || !isCreate" v-model="comstar_hg"
+            placeholder="Please enter host group" />
 
-          <m-input
-            type="number"
-            prop="lio_tpg"
-            label="Target Portal Group"
-            labelWidth="100px"
-            validateEvent
-            @validate="validate"
-            :show-error="rules.lio_tpg.error"
-            :error-msg="rules.lio_tpg.message"
-            :disabled="iscsiprovider !== 'LIO' || !isCreate"
-            v-model="lio_tpg"
-            placeholder="Please enter target portal group"
-          />
+          <m-input type="number" prop="lio_tpg" label="Target Portal Group" labelWidth="100px" validateEvent
+            @validate="validate" :show-error="rules.lio_tpg.error" :error-msg="rules.lio_tpg.message"
+            :disabled="iscsiprovider !== 'LIO' || !isCreate" v-model="lio_tpg"
+            placeholder="Please enter target portal group" />
         </dd>
       </dl>
       <dl>
         <dt>Nodes</dt>
         <dd>
-          <el-table
-            :data="db.nodeList"
-            ref="dataTable"
-            @selection-change="handleSelectionChange"
-          >
+          <el-table :data="db.nodeList" ref="dataTable" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55"> </el-table-column>
-            <el-table-column
-              label="Node"
-              prop="node"
-              sortable
-            ></el-table-column>
+            <el-table-column label="Node" prop="node" sortable></el-table-column>
             <el-table-column label="Memory Usage">
               <template slot-scope="scope">
                 {{

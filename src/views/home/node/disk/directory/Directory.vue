@@ -1,33 +1,20 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button type="primary" @on-click="refresh" icon="el-icon-refresh"
-        >Reload</m-button
-      >
-      <m-button type="primary" @on-click="showModal()" icon="el-icon-plus"
-        >Create: Directory</m-button
-      >
+      <m-button type="primary" @on-click="refresh" icon="el-icon-refresh">Reload</m-button>
+      <m-button type="primary" @on-click="showModal()" icon="el-icon-plus">Create: Directory</m-button>
     </div>
     <div slot="page-content">
-      <el-table
-        :data="db.nodeDiskDirectoryList"
-        ref="dataTable"
-        v-loading="loading"
-      >
+      <el-table :data="db.nodeDiskDirectoryList" ref="dataTable" v-loading="loading">
         <el-table-column label="Path" prop="path"></el-table-column>
         <el-table-column label="Device" prop="device"></el-table-column>
         <el-table-column label="Type" prop="type"></el-table-column>
         <el-table-column label="Options" prop="options"></el-table-column>
       </el-table>
-      <create-directory-modal
-        :title="title"
-        :visible="visible"
-        v-if="visible"
-        @close="
-          visible = false;
-          __init__();
-        "
-      ></create-directory-modal>
+      <create-directory-modal :title="title" :visible="visible" v-if="visible" @close="
+        visible = false;
+      __init__();
+      "></create-directory-modal>
     </div>
   </page-template>
 </template>
@@ -83,14 +70,17 @@ export default {
   padding: 10px 0px;
   border-top: 1px solid #c4d6ec;
   border-bottom: 1px solid #c4d6ec;
+
   &__item {
     flex: 1 1 auto;
     display: flex;
   }
+
   &__title {
     flex: 1 1 auto;
     display: inline-flex;
   }
+
   &__desc {
     flex: 1 1 auto;
     display: inline-flex;

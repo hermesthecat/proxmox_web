@@ -29,8 +29,8 @@
                 </div>
               </div>
             </m-input>
-            <m-select prop="storage" label="Storage" labelWidth="100px" @on-change="handleStorageSelect" v-model="storage"
-              validateEvent @validate="validate" required :show-error="rules['storage'].error"
+            <m-select prop="storage" label="Storage" labelWidth="100px" @on-change="handleStorageSelect"
+              v-model="storage" validateEvent @validate="validate" required :show-error="rules['storage'].error"
               :error-msg="rules['storage'].message" :readonly="true" placeholder="Please select storage">
               <div class="table">
                 <m-option v-for="(item, index) in db.storageList" :key="item.storage" :value="item.storage"
@@ -68,7 +68,8 @@
       </div>
     </div>
     <template slot="footer">
-      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px" @on-click="confirm()">Confirm</m-button>
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px"
+        @on-click="confirm()">Confirm</m-button>
     </template>
   </m-dialog>
 </template>

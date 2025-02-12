@@ -4,128 +4,42 @@
       <dl>
         <dt>Basic Information</dt>
         <dd>
-          <m-input
-            type="text"
-            prop="storage"
-            label="ID"
-            labelWidth="100px"
-            validateEvent
-            @validate="validate"
-            required
-            :show-error="rules.storage.error"
-            :error-msg="rules.storage.message"
-            v-model="storage"
-            :disabled="!isCreate"
-            placeholder="Please enter ID"
-          />
-          <m-checkbox
-            label="Enable"
-            v-model="disable"
-            labelWidth="100px"
-          ></m-checkbox>
-          <m-input
-            type="text"
-            prop="server"
-            label="Server"
-            labelWidth="100px"
-            validateEvent
-            @validate="validate"
-            :show-error="rules.server.error"
-            :error-msg="rules.server.message"
-            v-model="server"
-            required
-            :disabled="!isCreate"
-            placeholder="Please enter server"
-          />
-          <m-select
-            labelWidth="100px"
-            @on-change="handleExport1Select"
-            validateEvent
-            @validate="validate"
-            prop="export1"
-            v-model="export1"
-            :readonly="false"
-            @visible-change="handleExportReq"
-            :show-error="rules.export1.error"
-            :error-msg="rules.export1.message"
-            :disabled="!isCreate"
-            label="Export"
-          >
-            <m-option
-              v-for="item in db.nfsList"
-              :key="item.path"
-              :label="item.path"
-              :value="item.path"
-            ></m-option>
+          <m-input type="text" prop="storage" label="ID" labelWidth="100px" validateEvent @validate="validate" required
+            :show-error="rules.storage.error" :error-msg="rules.storage.message" v-model="storage" :disabled="!isCreate"
+            placeholder="Please enter ID" />
+          <m-checkbox label="Enable" v-model="disable" labelWidth="100px"></m-checkbox>
+          <m-input type="text" prop="server" label="Server" labelWidth="100px" validateEvent @validate="validate"
+            :show-error="rules.server.error" :error-msg="rules.server.message" v-model="server" required
+            :disabled="!isCreate" placeholder="Please enter server" />
+          <m-select labelWidth="100px" @on-change="handleExport1Select" validateEvent @validate="validate"
+            prop="export1" v-model="export1" :readonly="false" @visible-change="handleExportReq"
+            :show-error="rules.export1.error" :error-msg="rules.export1.message" :disabled="!isCreate" label="Export">
+            <m-option v-for="item in db.nfsList" :key="item.path" :label="item.path" :value="item.path"></m-option>
           </m-select>
-          <m-select
-            type="multiple"
-            labelWidth="100px"
-            @on-change="handleSelect"
-            validateEvent
-            @validate="validate"
-            prop="content"
-            v-model="content"
-            :show-error="rules.content.error"
-            :error-msg="rules.content.message"
-            label="Content"
-          >
-            <m-option
-              v-for="item in contentItems"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></m-option>
+          <m-select type="multiple" labelWidth="100px" @on-change="handleSelect" validateEvent @validate="validate"
+            prop="content" v-model="content" :show-error="rules.content.error" :error-msg="rules.content.message"
+            label="Content">
+            <m-option v-for="item in contentItems" :key="item.value" :label="item.label" :value="item.value"></m-option>
           </m-select>
-          <m-input
-            type="number"
-            prop="maxfiles"
-            label="Max Backups"
-            labelWidth="100px"
-            validateEvent
-            @validate="validate"
-            required
-            :show-error="rules.maxfiles.error"
-            :error-msg="rules.maxfiles.message"
-            min="0"
-            :disabled="content.indexOf('backup') === -1"
-            v-model="maxfiles"
-            placeholder="Please enter max backups"
-          />
+          <m-input type="number" prop="maxfiles" label="Max Backups" labelWidth="100px" validateEvent
+            @validate="validate" required :show-error="rules.maxfiles.error" :error-msg="rules.maxfiles.message" min="0"
+            :disabled="content.indexOf('backup') === -1" v-model="maxfiles" placeholder="Please enter max backups" />
         </dd>
       </dl>
       <dl v-if="isAdvice">
         <dt>Advanced</dt>
         <dd>
-          <m-select
-            v-model="options"
-            :read-only="true"
-            @on-change="(value) => (options = value)"
-            label="Version"
-          >
-            <m-option
-              v-for="item in optionsItems"
-              :value="item.value"
-              :label="item.label"
-              :key="item.value"
-            ></m-option>
+          <m-select v-model="options" :read-only="true" @on-change="(value) => (options = value)" label="Version">
+            <m-option v-for="item in optionsItems" :value="item.value" :label="item.label" :key="item.value"></m-option>
           </m-select>
         </dd>
       </dl>
       <dl>
         <dt>Nodes</dt>
         <dd>
-          <el-table
-            :data="db.nodeList"
-            ref="dataTable"
-            @selection-change="handleSelectionChange"
-          >
+          <el-table :data="db.nodeList" ref="dataTable" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55"> </el-table-column>
-            <el-table-column
-              label="Node"
-              prop="node"
-              sortable
-            ></el-table-column>
+            <el-table-column label="Node" prop="node" sortable></el-table-column>
             <el-table-column label="Memory Usage">
               <template slot-scope="scope">
                 {{

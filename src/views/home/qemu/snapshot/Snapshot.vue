@@ -49,16 +49,16 @@
           <img src="~@images/noata.png" />
         </p>
         <el-pagination class="page-table-pagination" @size-change="(val) => {
-            pageSize = val;
-            currentPage = 1;
+          pageSize = val;
+          currentPage = 1;
+          __init__();
+          current = '';
+        }
+          " @current-change="(val) => {
+            currentPage = val;
             __init__();
             current = '';
           }
-          " @current-change="(val) => {
-              currentPage = val;
-              __init__();
-              current = '';
-            }
             " :current-page="currentPage" :page-sizes="[10, 20, 30, 40, 50]" :page-size="pageSize"
           :total="searchTable.length" small layout="total, sizes, prev, pager, next, jumper">
         </el-pagination>

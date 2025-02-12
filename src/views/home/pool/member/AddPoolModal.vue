@@ -1,21 +1,9 @@
 <template>
-  <m-dialog
-    :title="title"
-    :visible="visible"
-    :_style="{
-      maxHeight: '450px',
-    }"
-    @confirm="confirm"
-    @cancel="close"
-    @close="close"
-  >
+  <m-dialog :title="title" :visible="visible" :_style="{
+    maxHeight: '450px',
+  }" @confirm="confirm" @cancel="close" @close="close">
     <div slot="content">
-      <el-table
-        :data="qemuList"
-        height="300"
-        @selection-change="handleSelect"
-        v-if="modalType === 'qemu'"
-      >
+      <el-table :data="qemuList" height="300" @selection-change="handleSelect" v-if="modalType === 'qemu'">
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column label="ID" prop="vmid"></el-table-column>
         <el-table-column label="Node" prop="node"></el-table-column>
@@ -23,23 +11,11 @@
         <el-table-column label="Name" prop="name"></el-table-column>
         <el-table-column label="Category" prop="type"></el-table-column>
       </el-table>
-      <m-select
-        prop="storage"
-        v-model="storage"
-        @on-change="(value) => (storage = value)"
-        vidateEvent
-        @validate="validate"
-        :show-error="rules['storage'].error"
-        :error-msg="rules['storage'].message"
-        label="Storage"
-        v-else
-        labelWidth="100px"
-      >
+      <m-select prop="storage" v-model="storage" @on-change="(value) => (storage = value)" vidateEvent
+        @validate="validate" :show-error="rules['storage'].error" :error-msg="rules['storage'].message" label="Storage"
+        v-else labelWidth="100px">
         <template v-for="(item, index) in storageList" :key="item.storage">
-          <m-option
-            :label="item.storage"
-            :value="item.storage"
-          >
+          <m-option :label="item.storage" :value="item.storage">
             <div class="table-tr" v-show="index === 0">
               <div class="table-td">Name</div>
               <div class="table-td">Category</div>

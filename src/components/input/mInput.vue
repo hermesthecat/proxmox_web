@@ -1,48 +1,18 @@
 <template>
   <div class="m-input">
-    <label
-      class="m-input__label"
-      :style="{ width: labelWidth }"
-      :class="{ require: required }"
-      >{{ label }}</label
-    >
-    <div
-      class="m-input__container clearfix"
-      :class="{ 'm-input__error': showError }"
-      :style="__conStyle"
-    >
+    <label class="m-input__label" :style="{ width: labelWidth }" :class="{ require: required }">{{ label }}</label>
+    <div class="m-input__container clearfix" :class="{ 'm-input__error': showError }" :style="__conStyle">
       <div class="prefix" v-if="prefixIcon || $slots['prefix']">
         <slot name="prefix"></slot>
       </div>
-      <input
-        :type="showPassword ? 'text' : type"
-        :value="value"
-        @input.stop="handleInput"
-        @change.stop="handleChange"
-        @focus.stop="handleFocus"
-        @blur.stop="handleBlur"
-        v-if="type !== 'textarea' && !$slots['other']"
-        :style="__style"
-        :placeholder="placeholder"
-        :min="min"
-        :max="max"
-        :disabled="disabled"
-        :readonly="readonly === 'readonly' || readonly"
-        class="m-input__inner"
-      />
+      <input :type="showPassword ? 'text' : type" :value="value" @input.stop="handleInput" @change.stop="handleChange"
+        @focus.stop="handleFocus" @blur.stop="handleBlur" v-if="type !== 'textarea' && !$slots['other']"
+        :style="__style" :placeholder="placeholder" :min="min" :max="max" :disabled="disabled"
+        :readonly="readonly === 'readonly' || readonly" class="m-input__inner" />
       <slot v-else-if="$slots['other']" name="other"></slot>
-      <textarea
-        v-else
-        :value="value"
-        @input.stop="handleInput"
-        @change.stop="handleChange"
-        :placeholder="placeholder"
-        :disabled="disabled"
-        :readonly="readonly === 'readonly' || readonly"
-        :style="__style"
-        :rows="rows"
-        class="m-input__textarea"
-      />
+      <textarea v-else :value="value" @input.stop="handleInput" @change.stop="handleChange" :placeholder="placeholder"
+        :disabled="disabled" :readonly="readonly === 'readonly' || readonly" :style="__style" :rows="rows"
+        class="m-input__textarea" />
       <div class="suffix" v-if="suffixIcon">
         <i :class="suffixIcon"></i>
       </div>
@@ -255,6 +225,7 @@ export default {
   display: inline-block;
   padding-bottom: 15px;
   position: relative;
+
   &__label {
     display: inline-block;
     vertical-align: middle;
@@ -262,6 +233,7 @@ export default {
     margin-bottom: 5px;
     font-weight: 400;
   }
+
   &__container {
     position: relative;
     border: 1px solid #adb0b8;
@@ -285,6 +257,7 @@ export default {
     box-sizing: border-box;
     cursor: pointer;
   }
+
   &__inner {
     height: 26px;
     line-height: 26px;
@@ -303,6 +276,7 @@ export default {
     text-decoration: none;
     outline: none;
   }
+
   &__textarea {
     height: calc(100% - 2px);
     margin-top: 1px;
@@ -320,14 +294,17 @@ export default {
     outline: none;
     max-width: 100%;
   }
+
   &__error {
     border: 1px solid #ec4242;
   }
+
   &__clear {
     height: 28px;
     line-height: 28px;
   }
 }
+
 .error-message {
   position: absolute;
   left: 0px;
@@ -338,9 +315,11 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
 input:disabled {
   background: #dde4ed;
 }
+
 .require {
   &::before {
     content: "*";
@@ -348,6 +327,7 @@ input:disabled {
     margin-right: 4px;
   }
 }
+
 .prefix {
   display: inline-block;
   position: absolute;

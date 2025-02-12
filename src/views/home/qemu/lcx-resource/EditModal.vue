@@ -1,135 +1,47 @@
 <template>
-  <m-dialog
-    :visible="visible"
-    @confirm="confirm"
-    :title="title"
-    :_style="{
-      width: '800px',
-    }"
-    @close="close"
-  >
+  <m-dialog :visible="visible" @confirm="confirm" :title="title" :_style="{
+    width: '800px',
+  }" @close="close">
     <template slot="content">
       <div class="m-form__section">
         <dl>
           <dt>Basic Information</dt>
           <dd>
             <template v-if="modalType === 'editMemory'">
-              <m-input
-                type="number"
-                v-model="memory"
-                prop="memory"
-                validateEvent
-                :min="0"
-                required
-                @validate="validate"
-                :show-error="rules['memory'].error"
-                :error-msg="rules['memory'].message"
-                placeholder="Please enter memory"
-                label="Memory (MiB)"
-                labelWidth="100px"
-              />
-              <m-input
-                type="number"
-                v-model="swap"
-                prop="swap"
-                validateEvent
-                @validate="validate"
-                :min="0"
-                required
-                :show-error="rules['swap'].error"
-                :error-msg="rules['swap'].message"
-                placeholder="Please enter swap"
-                label="Swap (MiB)"
-                labelWidth="100px"
-              />
+              <m-input type="number" v-model="memory" prop="memory" validateEvent :min="0" required @validate="validate"
+                :show-error="rules['memory'].error" :error-msg="rules['memory'].message"
+                placeholder="Please enter memory" label="Memory (MiB)" labelWidth="100px" />
+              <m-input type="number" v-model="swap" prop="swap" validateEvent @validate="validate" :min="0" required
+                :show-error="rules['swap'].error" :error-msg="rules['swap'].message" placeholder="Please enter swap"
+                label="Swap (MiB)" labelWidth="100px" />
             </template>
 
             <template v-if="modalType === 'editCores'">
-              <m-input
-                type="number"
-                v-model="cores"
-                prop="cores"
-                :min="0"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules['cores'].error"
-                :error-msg="rules['cores'].message"
-                placeholder="Please enter cores"
-                label="Cores"
-                labelWidth="100px"
-              />
+              <m-input type="number" v-model="cores" prop="cores" :min="0" validateEvent @validate="validate" required
+                :show-error="rules['cores'].error" :error-msg="rules['cores'].message" placeholder="Please enter cores"
+                label="Cores" labelWidth="100px" />
             </template>
 
             <template v-if="modalType === 'editDisk'">
-              <m-input
-                type="text"
-                v-model="disk"
-                prop="disk"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules['disk'].error"
-                :error-msg="rules['disk'].message"
-                placeholder="Please enter disk image"
-                label="Disk Image"
-                :disabled="true"
-                labelWidth="100px"
-              />
-              <m-input
-                type="text"
-                v-model="mp"
-                prop="mp"
-                v-show="!isRoot"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules['mp'].error"
-                :error-msg="rules['mp'].message"
-                placeholder="Please enter path"
-                label="Path"
-                labelWidth="100px"
-              />
-              <m-checkbox
-                v-show="!isRoot"
-                v-model="backup"
-                label="Backup"
-                labelWidth="100px"
-              />
+              <m-input type="text" v-model="disk" prop="disk" validateEvent @validate="validate" required
+                :show-error="rules['disk'].error" :error-msg="rules['disk'].message"
+                placeholder="Please enter disk image" label="Disk Image" :disabled="true" labelWidth="100px" />
+              <m-input type="text" v-model="mp" prop="mp" v-show="!isRoot" validateEvent @validate="validate" required
+                :show-error="rules['mp'].error" :error-msg="rules['mp'].message" placeholder="Please enter path"
+                label="Path" labelWidth="100px" />
+              <m-checkbox v-show="!isRoot" v-model="backup" label="Backup" labelWidth="100px" />
             </template>
 
             <template v-if="modalType === 'migrate'">
-              <m-input
-                type="text"
-                v-model="disk"
-                prop="disk"
-                placeholder="Please enter mount point"
-                label="Mount Point"
-                :disabled="true"
-                labelWidth="100px"
-              />
-              <m-select
-                prop="storage"
-                label="Target Storage"
-                labelWidth="100px"
-                @on-change="handleStorageSelect"
-                v-model="storage"
-                validateEvent
-                v-show="modalType !== 'edit'"
-                @validate="validate"
-                required
-                :error-msg="rules['storage'].message"
-                :show-error="rules['storage'].error"
-                :readonly="false"
-                placeholder="Please select target storage"
-              >
+              <m-input type="text" v-model="disk" prop="disk" placeholder="Please enter mount point" label="Mount Point"
+                :disabled="true" labelWidth="100px" />
+              <m-select prop="storage" label="Target Storage" labelWidth="100px" @on-change="handleStorageSelect"
+                v-model="storage" validateEvent v-show="modalType !== 'edit'" @validate="validate" required
+                :error-msg="rules['storage'].message" :show-error="rules['storage'].error" :readonly="false"
+                placeholder="Please select target storage">
                 <div class="table">
-                  <m-option
-                    v-for="(item, index) in db.storageList"
-                    :key="item.storage"
-                    :value="item.storage"
-                    :label="item.storage"
-                  >
+                  <m-option v-for="(item, index) in db.storageList" :key="item.storage" :value="item.storage"
+                    :label="item.storage">
                     <div v-if="index === 0" class="table-tr">
                       <div class="table-td">Name</div>
                       <div class="table-td">Type</div>
@@ -153,111 +65,40 @@
                   </m-option>
                 </div>
               </m-select>
-              <m-select
-                prop="format"
-                label="Format"
-                labelWidth="100px"
-                @on-change="(value) => (format = value)"
-                v-model="format"
-                :readonly="false"
-                v-show="modalType === 'create'"
-                :disabled="!storageType || storageType !== 'dir'"
-                placeholder="Please select format"
-              >
-                <m-option
-                  v-for="(item, index) in formatList"
-                  :key="index"
-                  :value="item.value"
-                  :label="item.label"
-                >
+              <m-select prop="format" label="Format" labelWidth="100px" @on-change="(value) => (format = value)"
+                v-model="format" :readonly="false" v-show="modalType === 'create'"
+                :disabled="!storageType || storageType !== 'dir'" placeholder="Please select format">
+                <m-option v-for="(item, index) in formatList" :key="index" :value="item.value" :label="item.label">
                 </m-option>
               </m-select>
-              <m-checkbox
-                label="Delete Source"
-                v-model="delete_origin"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-checkbox label="Delete Source" v-model="delete_origin" labelWidth="100px"></m-checkbox>
             </template>
 
             <template v-if="modalType === 'updatedisksize'">
-              <m-input
-                type=""
-                labelWidth="100px"
-                label="Disk"
-                v-model="disk"
-                prop="disk"
-                :disabled="true"
-              >
+              <m-input type="" labelWidth="100px" label="Disk" v-model="disk" prop="disk" :disabled="true">
                 <div style="padding-left: 5px; height: 28px; line-height: 28px">
                   {{ disk }}
                 </div>
               </m-input>
-              <m-input
-                type="number"
-                labelWidth="100px"
-                label="Increment Size"
-                v-model="size"
-                :max="131072"
-                validateEvent
-                @validate="validate"
-                prop="size"
-                :min="1"
-                required
-                :error-msg="rules['size'].message"
-                :show-error="rules['size'].error"
-              />
+              <m-input type="number" labelWidth="100px" label="Increment Size" v-model="size" :max="131072"
+                validateEvent @validate="validate" prop="size" :min="1" required :error-msg="rules['size'].message"
+                :show-error="rules['size'].error" />
             </template>
 
             <template v-if="modalType === 'adddisk'">
-              <m-input
-                type="number"
-                v-model="storageId"
-                prop="storageId"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules['storageId'].error"
-                :error-msg="rules['storageId'].message"
-                placeholder="Please enter mount point ID"
-                label="Mount Point ID"
-                labelWidth="100px"
-              />
-              <m-input
-                type="text"
-                v-model="mp"
-                prop="mp"
-                v-show="!isRoot"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules['mp'].error"
-                :error-msg="rules['mp'].message"
-                placeholder="/some/path"
-                label="Path"
-                labelWidth="100px"
-              />
-              <m-select
-                prop="storage"
-                label="Storage"
-                labelWidth="100px"
-                @on-change="handleStorageSelect"
-                v-model="storage"
-                validateEvent
-                v-show="modalType !== 'edit'"
-                @validate="validate"
-                :error-msg="rules['storage'].message"
-                :show-error="rules['storage'].error"
-                :readonly="false"
-                required
-                placeholder="Please select storage"
-              >
+              <m-input type="number" v-model="storageId" prop="storageId" validateEvent @validate="validate" required
+                :show-error="rules['storageId'].error" :error-msg="rules['storageId'].message"
+                placeholder="Please enter mount point ID" label="Mount Point ID" labelWidth="100px" />
+              <m-input type="text" v-model="mp" prop="mp" v-show="!isRoot" validateEvent @validate="validate" required
+                :show-error="rules['mp'].error" :error-msg="rules['mp'].message" placeholder="/some/path" label="Path"
+                labelWidth="100px" />
+              <m-select prop="storage" label="Storage" labelWidth="100px" @on-change="handleStorageSelect"
+                v-model="storage" validateEvent v-show="modalType !== 'edit'" @validate="validate"
+                :error-msg="rules['storage'].message" :show-error="rules['storage'].error" :readonly="false" required
+                placeholder="Please select storage">
                 <div class="table">
-                  <m-option
-                    v-for="(item, index) in db.storageList"
-                    :key="item.storage"
-                    :value="item.storage"
-                    :label="item.storage"
-                  >
+                  <m-option v-for="(item, index) in db.storageList" :key="item.storage" :value="item.storage"
+                    :label="item.storage">
                     <div v-if="index === 0" class="table-tr">
                       <div class="table-td">Name</div>
                       <div class="table-td">Type</div>
@@ -281,26 +122,10 @@
                   </m-option>
                 </div>
               </m-select>
-              <m-input
-                type="number"
-                labelWidth="100px"
-                label="Disk Size (GiB)"
-                v-model="size"
-                :max="131072"
-                validateEvent
-                @validate="validate"
-                prop="size"
-                :min="1"
-                required
-                :error-msg="rules['size'].message"
-                :show-error="rules['size'].error"
-              />
-              <m-checkbox
-                v-show="!isRoot"
-                v-model="backup"
-                label="Backup"
-                labelWidth="100px"
-              />
+              <m-input type="number" labelWidth="100px" label="Disk Size (GiB)" v-model="size" :max="131072"
+                validateEvent @validate="validate" prop="size" :min="1" required :error-msg="rules['size'].message"
+                :show-error="rules['size'].error" />
+              <m-checkbox v-show="!isRoot" v-model="backup" label="Backup" labelWidth="100px" />
             </template>
           </dd>
         </dl>
@@ -308,85 +133,26 @@
           <dt>Advanced</dt>
           <dd>
             <template v-if="modalType === 'editCores'">
-              <m-input
-                type="number"
-                v-model="cpulimit"
-                prop="cpulimit"
-                :min="0"
-                validateEvent
-                @validate="validate"
-                :show-error="rules['cpulimit'].error"
-                :error-msg="rules['cpulimit'].message"
-                placeholder="Please enter CPU limit"
-                label="CPU Limit"
-                required
-                labelWidth="100px"
-              />
-              <m-input
-                type="number"
-                v-model="cpuunits"
-                prop="cpuunits"
-                :min="8"
-                validateEvent
-                @validate="validate"
-                :show-error="rules['cpuunits'].error"
-                :error-msg="rules['cpuunits'].message"
-                required
-                placeholder="Please enter CPU weight"
-                label="CPU Weight"
-                labelWidth="100px"
-              />
+              <m-input type="number" v-model="cpulimit" prop="cpulimit" :min="0" validateEvent @validate="validate"
+                :show-error="rules['cpulimit'].error" :error-msg="rules['cpulimit'].message"
+                placeholder="Please enter CPU limit" label="CPU Limit" required labelWidth="100px" />
+              <m-input type="number" v-model="cpuunits" prop="cpuunits" :min="8" validateEvent @validate="validate"
+                :show-error="rules['cpuunits'].error" :error-msg="rules['cpuunits'].message" required
+                placeholder="Please enter CPU weight" label="CPU Weight" labelWidth="100px" />
             </template>
-            <template
-              v-if="modalType === 'editDisk' || modalType === 'adddisk'"
-            >
-              <m-checkbox
-                v-model="quota"
-                label="Enable Quota"
-                :disabled="!isQuota()"
-                labelWidth="100px"
-              />
-              <m-select
-                v-model="acl"
-                prop="acl"
-                @on-change="(value) => (acl = value)"
-                placeholder="Please enter disk image"
-                label="ACLs"
-                labelWidth="100px"
-              >
-                <m-option
-                  v-for="item in aclsItems"
-                  :key="item.value"
-                  :value="item.value"
-                  :label="item.label"
-                ></m-option>
+            <template v-if="modalType === 'editDisk' || modalType === 'adddisk'">
+              <m-checkbox v-model="quota" label="Enable Quota" :disabled="!isQuota()" labelWidth="100px" />
+              <m-select v-model="acl" prop="acl" @on-change="(value) => (acl = value)"
+                placeholder="Please enter disk image" label="ACLs" labelWidth="100px">
+                <m-option v-for="item in aclsItems" :key="item.value" :value="item.value"
+                  :label="item.label"></m-option>
               </m-select>
-              <m-checkbox
-                v-model="ro"
-                label="Read Only"
-                v-show="!isRoot"
-                labelWidth="100px"
-              />
-              <m-checkbox
-                v-model="replicate"
-                label="Skip Replication"
-                labelWidth="100px"
-              />
-              <m-select
-                v-model="mountoptions"
-                type="multiple"
-                prop="mountoptions"
-                @on-change="(value) => (mountoptions = value)"
-                placeholder="Select mount options"
-                label="Mount Options"
-                labelWidth="100px"
-              >
-                <m-option
-                  v-for="item in munteoptionsItems"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-checkbox v-model="ro" label="Read Only" v-show="!isRoot" labelWidth="100px" />
+              <m-checkbox v-model="replicate" label="Skip Replication" labelWidth="100px" />
+              <m-select v-model="mountoptions" type="multiple" prop="mountoptions"
+                @on-change="(value) => (mountoptions = value)" placeholder="Select mount options" label="Mount Options"
+                labelWidth="100px">
+                <m-option v-for="item in munteoptionsItems" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
             </template>
@@ -394,44 +160,26 @@
         </dl>
       </div>
 
-      <m-dialog
-        :visible="showLog"
-        @close="closeLog"
-        :_style="{
-          width: '800px',
-        }"
-        title="Task Viewer: Move Disk"
-      >
+      <m-dialog :visible="showLog" @close="closeLog" :_style="{
+        width: '800px',
+      }" title="Task Viewer: Move Disk">
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
             <m-tab-panel label="Output" name="log"></m-tab-panel>
             <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
-          <m-button
-            class="create-btn m-margin-top-10"
-            type="primary"
-            @on-click="stopTask1"
-            :disabled="db.addClusterStatusObj.status !== 'running'"
-            >Stop</m-button
-          >
+          <m-button class="create-btn m-margin-top-10" type="primary" @on-click="stopTask1"
+            :disabled="db.addClusterStatusObj.status !== 'running'">Stop</m-button>
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
               <div class="table" v-if="tab === 'log'">
-                <div
-                  class="table-tr"
-                  v-for="item in db.addClusterLogList"
-                  :key="item.n"
-                >
+                <div class="table-tr" v-for="item in db.addClusterLogList" :key="item.n">
                   {{ item.t }}
                 </div>
               </div>
               <div class="table" v-if="tab === 'status'">
                 <template v-for="(item, key) in db.addClusterStatusObj">
-                  <div
-                    class="table-tr"
-                    v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-                    :key="key"
-                  >
+                  <div class="table-tr" v-if="!['exitstatus', 'id', 'pstart'].includes(key)" :key="key">
                     <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
                     <div class="table-td" v-if="key === 'starttime'">
                       {{
@@ -451,22 +199,17 @@
       </m-dialog>
     </template>
     <template slot="footer">
-      <div
-        class="label_box"
-        v-if="
-          modalType === 'editDisk' ||
-          modalType === 'editCores' ||
-          modalType === 'adddisk'
-        "
-      >
+      <div class="label_box" v-if="
+        modalType === 'editDisk' ||
+        modalType === 'editCores' ||
+        modalType === 'adddisk'
+      ">
         <label>
           <input type="checkbox" v-model="isAdvice" />
           <div>Advanced</div>
         </label>
       </div>
-      <m-button class="create-btn" type="primary" @on-click="confirm"
-        >Create</m-button
-      >
+      <m-button class="create-btn" type="primary" @on-click="confirm">Create</m-button>
     </template>
   </m-dialog>
 </template>

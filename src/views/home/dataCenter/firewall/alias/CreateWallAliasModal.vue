@@ -1,52 +1,20 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @cancel="close"
-    @confirm="confirm"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" @cancel="close" @confirm="confirm" :title="title" :_style="{ width: '956px' }"
+    @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-input
-                type="text"
-                prop="name"
-                label="Alias"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules['name'].error"
-                :error-msg="rules['name'].message"
-                v-model="name"
-                required
-                :placeholder="'Please enter alias'"
-              />
-              <m-input
-                type="text"
-                prop="cidr"
-                label="IP/CIDR"
-                labelWidth="100px"
-                v-model="cidr"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules['cidr'].error"
-                :error-msg="rules['cidr'].message"
-                :placeholder="'Please enter IP/CIDR'"
-              />
-              <m-input
-                type="textarea"
-                prop="comment"
-                label="Comment"
-                labelWidth="100px"
-                v-model="comment"
-                placeholder="Please enter comment"
-              />
+              <m-input type="text" prop="name" label="Alias" labelWidth="100px" validateEvent @validate="validate"
+                :show-error="rules['name'].error" :error-msg="rules['name'].message" v-model="name" required
+                :placeholder="'Please enter alias'" />
+              <m-input type="text" prop="cidr" label="IP/CIDR" labelWidth="100px" v-model="cidr" validateEvent
+                @validate="validate" required :show-error="rules['cidr'].error" :error-msg="rules['cidr'].message"
+                :placeholder="'Please enter IP/CIDR'" />
+              <m-input type="textarea" prop="comment" label="Comment" labelWidth="100px" v-model="comment"
+                placeholder="Please enter comment" />
             </dd>
           </dl>
         </div>

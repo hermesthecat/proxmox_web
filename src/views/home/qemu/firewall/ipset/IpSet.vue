@@ -1,78 +1,30 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button
-        type="primary"
-        @on-click="showModal('create')"
-        icon="el-icon-plus"
-        >Create</m-button
-      >
-      <m-button
-        type="danger"
-        @on-click="handleDelete"
-        icon="el-icon-delete"
-        :disabled="selectedList.length <= 0"
-        >Delete</m-button
-      >
-      <m-button
-        type="info"
-        icon="el-icon-edit"
-        :disabled="selectedList.length !== 1"
-        @on-click="showModal('edit')"
-        >Edit</m-button
-      >
+      <m-button type="primary" @on-click="showModal('create')" icon="el-icon-plus">Create</m-button>
+      <m-button type="danger" @on-click="handleDelete" icon="el-icon-delete"
+        :disabled="selectedList.length <= 0">Delete</m-button>
+      <m-button type="info" icon="el-icon-edit" :disabled="selectedList.length !== 1"
+        @on-click="showModal('edit')">Edit</m-button>
     </div>
     <div slot="page-content">
-      <el-table
-        :data="db.ipSetList"
-        ref="dataTable"
-        :row-key="setRowKeys"
-        :expand-row-keys="expands"
-        @selection-change="handleSelect"
-        @expand-change="expandChange"
-      >
+      <el-table :data="db.ipSetList" ref="dataTable" :row-key="setRowKeys" :expand-row-keys="expands"
+        @selection-change="handleSelect" @expand-change="expandChange">
         <el-table-column type="expand">
           <template slot-scope="parentSlot">
             <page-template>
               <div slot="toolbar-left">
-                <m-button
-                  type="primary"
-                  @on-click="showCidrModal('create')"
-                  icon="el-icon-plus"
-                  >Add</m-button
-                >
-                <m-button
-                  type="danger"
-                  @on-click="handleCidrDelete"
-                  icon="el-icon-delete"
-                  :disabled="selectedCidrList.length <= 0"
-                  >Delete</m-button
-                >
-                <m-button
-                  type="info"
-                  icon="el-icon-edit"
-                  :disabled="selectedCidrList.length !== 1"
-                  @on-click="showCidrModal('edit')"
-                  >Edit</m-button
-                >
+                <m-button type="primary" @on-click="showCidrModal('create')" icon="el-icon-plus">Add</m-button>
+                <m-button type="danger" @on-click="handleCidrDelete" icon="el-icon-delete"
+                  :disabled="selectedCidrList.length <= 0">Delete</m-button>
+                <m-button type="info" icon="el-icon-edit" :disabled="selectedCidrList.length !== 1"
+                  @on-click="showCidrModal('edit')">Edit</m-button>
               </div>
               <div slot="page-content">
-                <el-table
-                  :data="db.ipSetCidrList"
-                  @selection-change="handleCidrSelect"
-                >
-                  <el-table-column
-                    type="selection"
-                    width="55"
-                  ></el-table-column>
-                  <el-table-column
-                    label="IP/CIDR"
-                    prop="cidr"
-                  ></el-table-column>
-                  <el-table-column
-                    label="Comment"
-                    prop="comment"
-                  ></el-table-column>
+                <el-table :data="db.ipSetCidrList" @selection-change="handleCidrSelect">
+                  <el-table-column type="selection" width="55"></el-table-column>
+                  <el-table-column label="IP/CIDR" prop="cidr"></el-table-column>
+                  <el-table-column label="Comment" prop="comment"></el-table-column>
                   <el-table-column label="Error Message">
                     <template slot-scope="scope">
                       <span>{{
@@ -84,18 +36,13 @@
                   </el-table-column>
                   <el-table-column label="Match">
                     <template slot-scope="scope">
-                      <table-info-state
-                        :content="
-                          scope.row.nomatch && scope.row.nomatch === 1
-                            ? 'Yes'
-                            : 'No'
-                        "
-                        :state="
-                          scope.row.nomatch && scope.row.nomatch === 1
+                      <table-info-state :content="scope.row.nomatch && scope.row.nomatch === 1
+                          ? 'Yes'
+                          : 'No'
+                        " :state="scope.row.nomatch && scope.row.nomatch === 1
                             ? 'actived'
                             : 'unActived'
-                        "
-                      ></table-info-state>
+                          "></table-info-state>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -107,31 +54,16 @@
         <el-table-column label="IPSet" prop="name"></el-table-column>
         <el-table-column label="Comment" prop="comment"></el-table-column>
       </el-table>
-      <create-ipset-cidr-modal
-        :title="cidrTitle"
-        :isCreate="isCidrCreate"
-        :param="cidrParam"
-        :visible="cidrVisible"
-        v-if="cidrVisible"
-        :modal-type="cidrType"
-        :name="name"
-        @close="
+      <create-ipset-cidr-modal :title="cidrTitle" :isCreate="isCidrCreate" :param="cidrParam" :visible="cidrVisible"
+        v-if="cidrVisible" :modal-type="cidrType" :name="name" @close="
           cidrVisible = false;
-          queryIpSetCidrList(name);
-        "
-      ></create-ipset-cidr-modal>
-      <create-ipset-modal
-        :title="title"
-        :isCreate="isCreate"
-        :param="param"
-        :visible="visible"
-        v-if="visible"
-        :modal-type="type"
-        @close="
+        queryIpSetCidrList(name);
+        "></create-ipset-cidr-modal>
+      <create-ipset-modal :title="title" :isCreate="isCreate" :param="param" :visible="visible" v-if="visible"
+        :modal-type="type" @close="
           visible = false;
-          queryIpSetList();
-        "
-      ></create-ipset-modal>
+        queryIpSetList();
+        "></create-ipset-modal>
     </div>
   </page-template>
 </template>
@@ -215,7 +147,7 @@ export default {
         .then(() => {
           this.deleteIpsetCidr(this.name);
         })
-        .catch(() => {});
+        .catch(() => { });
     },
     //Ensure only one row can be expanded at a time
     expandChange(row, expandedRows) {
@@ -255,14 +187,17 @@ export default {
   padding: 10px 0px;
   border-top: 1px solid #c4d6ec;
   border-bottom: 1px solid #c4d6ec;
+
   &__item {
     flex: 1 1 auto;
     display: flex;
   }
+
   &__title {
     flex: 1 1 auto;
     display: inline-flex;
   }
+
   &__desc {
     flex: 1 1 auto;
     display: inline-flex;

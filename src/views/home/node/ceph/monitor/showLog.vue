@@ -3,31 +3,16 @@
     <div slot="content">
       <page-template style="overflow-x: hidden">
         <div slot="toolbar-right" style="flex: 2 1 auto">
-          <m-input
-            prop="expire"
-            labelWidth="60px"
-            label="Select Date"
-            style="vertical-align: top"
-            :__conStyle="{ width: '355px' }"
-          >
+          <m-input prop="expire" labelWidth="60px" label="Select Date" style="vertical-align: top"
+            :__conStyle="{ width: '355px' }">
             <template slot="other">
-              <el-date-picker
-                v-model="datetime"
-                type="daterange"
-                format="yyyy-MM-dd hh:mm"
-                value-format="yyyy-MM-dd hh:mm"
-                placeholder="Select Date"
-              >
+              <el-date-picker v-model="datetime" type="daterange" format="yyyy-MM-dd hh:mm"
+                value-format="yyyy-MM-dd hh:mm" placeholder="Select Date">
               </el-date-picker>
             </template>
           </m-input>
-          <m-button
-            type="primary"
-            style="vertical-align: middle"
-            @on-click="__init__()"
-            icon="el-icon-refresh"
-            >Refresh</m-button
-          >
+          <m-button type="primary" style="vertical-align: middle" @on-click="__init__()"
+            icon="el-icon-refresh">Refresh</m-button>
         </div>
         <div slot="page-content">
           <ul class="log-content">
@@ -124,6 +109,7 @@ export default {
   line-height: 20px;
   font-family: "Courier New";
 }
+
 /deep/.tool-bar-right {
   flex-grow: 9 !important;
 }

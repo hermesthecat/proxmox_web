@@ -1,39 +1,17 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @cancel="close"
-    @confirm="confirm"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" @cancel="close" @confirm="confirm" :title="title" :_style="{ width: '956px' }"
+    @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-select
-                prop="groups"
-                label="Group"
-                labelWidth="100px"
-                @on-change="handleGroupSelect"
-                v-model="groups"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.groups.error"
-                :error-msg="rules.groups.message"
-                required
-                v-if="modalType === 'group'"
-                :readonly="false"
-                placeholder="Please select group"
-              >
-                <m-option
-                  v-for="(item, index) in db.groupsList"
-                  :key="item.groupid"
-                  :label="item.groupid"
-                  :value="item.groupid"
-                >
+              <m-select prop="groups" label="Group" labelWidth="100px" @on-change="handleGroupSelect" v-model="groups"
+                validateEvent @validate="validate" :show-error="rules.groups.error" :error-msg="rules.groups.message"
+                required v-if="modalType === 'group'" :readonly="false" placeholder="Please select group">
+                <m-option v-for="(item, index) in db.groupsList" :key="item.groupid" :label="item.groupid"
+                  :value="item.groupid">
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
@@ -56,27 +34,11 @@
                   </div>
                 </m-option>
               </m-select>
-              <m-select
-                prop="users"
-                label="User"
-                labelWidth="100px"
-                @on-change="handleGroupSelect"
-                v-model="users"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.users.error"
-                :error-msg="rules.users.message"
-                required
-                :readonly="false"
-                v-if="modalType === 'user'"
-                placeholder="Please select user"
-              >
-                <m-option
-                  v-for="(item, index) in db.usersList"
-                  :key="item.userid"
-                  :label="item.userid"
-                  :value="item.userid"
-                >
+              <m-select prop="users" label="User" labelWidth="100px" @on-change="handleGroupSelect" v-model="users"
+                validateEvent @validate="validate" :show-error="rules.users.error" :error-msg="rules.users.message"
+                required :readonly="false" v-if="modalType === 'user'" placeholder="Please select user">
+                <m-option v-for="(item, index) in db.usersList" :key="item.userid" :label="item.userid"
+                  :value="item.userid">
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
@@ -89,17 +51,11 @@
                       <span class="table-td" :title="item.userid">{{
                         item.userid
                       }}</span>
-                      <span
-                        class="table-td"
-                        :title="`${item.firstname ? item.firstname : ''} ${
-                          item.lastname ? item.lastname : ''
-                        }`"
-                        >{{
-                          `${item.firstname ? item.firstname : ""} ${
-                            item.lastname ? item.lastname : ""
+                      <span class="table-td" :title="`${item.firstname ? item.firstname : ''} ${item.lastname ? item.lastname : ''
+                        }`">{{
+                          `${item.firstname ? item.firstname : ""} ${item.lastname ? item.lastname : ""
                           }`
-                        }}</span
-                      >
+                        }}</span>
                       <span class="table-td" :title="item.comment">
                         {{ item.comment }}
                       </span>
@@ -107,27 +63,12 @@
                   </div>
                 </m-option>
               </m-select>
-              <m-select
-                prop="tokens"
-                label="API Token"
-                labelWidth="100px"
-                @on-change="handleGroupSelect"
-                v-model="tokens"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.tokens.error"
-                :error-msg="rules.tokens.message"
-                required
-                :readonly="false"
-                v-if="modalType === 'apiToken'"
-                placeholder="Please select API Token"
-              >
-                <m-option
-                  v-for="(item, index) in tokenList"
-                  :key="item.tokenid"
-                  :label="item.tokenid"
-                  :value="item.tokenid"
-                >
+              <m-select prop="tokens" label="API Token" labelWidth="100px" @on-change="handleGroupSelect"
+                v-model="tokens" validateEvent @validate="validate" :show-error="rules.tokens.error"
+                :error-msg="rules.tokens.message" required :readonly="false" v-if="modalType === 'apiToken'"
+                placeholder="Please select API Token">
+                <m-option v-for="(item, index) in tokenList" :key="item.tokenid" :label="item.tokenid"
+                  :value="item.tokenid">
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
@@ -146,20 +87,9 @@
                   </div>
                 </m-option>
               </m-select>
-              <m-select
-                prop="roles"
-                label="Role"
-                labelWidth="100px"
-                @on-change="handleRoleSelect"
-                v-model="roles"
-                placeholder="Please select role"
-              >
-                <m-option
-                  v-for="item in db.rolesList"
-                  :key="item.roleid"
-                  :label="item.roleid"
-                  :value="item.roleid"
-                >
+              <m-select prop="roles" label="Role" labelWidth="100px" @on-change="handleRoleSelect" v-model="roles"
+                placeholder="Please select role">
+                <m-option v-for="item in db.rolesList" :key="item.roleid" :label="item.roleid" :value="item.roleid">
                 </m-option>
               </m-select>
             </dd>

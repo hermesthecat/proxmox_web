@@ -25,9 +25,10 @@
             Use USB Vendor/Device ID
           </dt>
           <dt>
-            <m-select prop="device" label="Select Device" labelWidth="100px" @on-change="handleDeviceSelect" v-model="device"
-              validateEvent @validate="validate" :readonly="true" required :show-error="rules['device'].error"
-              :error-msg="rules['device'].message" :disabled="type !== 'device'" placeholder="Please select device">
+            <m-select prop="device" label="Select Device" labelWidth="100px" @on-change="handleDeviceSelect"
+              v-model="device" validateEvent @validate="validate" :readonly="true" required
+              :show-error="rules['device'].error" :error-msg="rules['device'].message" :disabled="type !== 'device'"
+              placeholder="Please select device">
               <div class="table">
                 <m-option v-for="(item, index) in usbList" :key="item.vendid + ':' + item.prodid"
                   :value="item.vendid + ':' + item.prodid" :label="item.product + '(' + item.vendid + ':' + item.prodid + ')'
@@ -71,7 +72,8 @@
           <dt>
             <m-select prop="port" label="Select Port" labelWidth="100px" @on-change="handlePortSelect" v-model="port"
               validateEvent @validate="validate" required :show-error="rules['port'].error"
-              :error-msg="rules['port'].message" :readonly="true" :disabled="type !== 'port'" placeholder="Please select port">
+              :error-msg="rules['port'].message" :readonly="true" :disabled="type !== 'port'"
+              placeholder="Please select port">
               <div class="table">
                 <m-option v-for="(item, index) in usbList" :key="item.busnum + '-' + item.usbpath"
                   :value="item.busnum + '-' + item.usbpath" :label="item.product + '(' + item.busnum + '-' + item.usbpath + ')'
@@ -105,7 +107,8 @@
       </div>
     </div>
     <template slot="footer">
-      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px" @on-click="confirm()">Confirm</m-button>
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px"
+        @on-click="confirm()">Confirm</m-button>
     </template>
   </m-dialog>
 </template>

@@ -1,23 +1,9 @@
 <template>
-  <div
-    class="dialog"
-    v-if="visible"
-    ref="dialog"
-    :key="key"
-    :class="{ show: visible }"
-  >
+  <div class="dialog" v-if="visible" ref="dialog" :key="key" :class="{ show: visible }">
     <div class="dialog-mask"></div>
     <div class="dialog-wrapper">
-      <div
-        class="dialog-content animate__backInLeft animate__backOutRight"
-        ref="pop-wrapper"
-        :style="contentStyles"
-      >
-        <div
-          class="dialog-header"
-          ref="pop-header"
-          @mousedown.stop="handleMoveStart"
-        >
+      <div class="dialog-content animate__backInLeft animate__backOutRight" ref="pop-wrapper" :style="contentStyles">
+        <div class="dialog-header" ref="pop-header" @mousedown.stop="handleMoveStart">
           <span class="dialog-title">{{ title }}</span>
           <span class="dialog-close" @click="close">&times;</span>
         </div>

@@ -1,50 +1,21 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @cancel="close"
-    @confirm="confirm"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" @cancel="close" @confirm="confirm" :title="title" :_style="{ width: '956px' }"
+    @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-input
-                type="text"
-                prop="name"
-                label="Name"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.name.error"
-                :error-msg="rules.name.message"
-                v-model="name"
-                :disabled="!isCreate"
-                placeholder="Please enter name"
-              />
-              <m-select
-                prop="ovs_bridge"
-                label="OVS Bridge"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.ovs_bridge.error"
-                :error-msg="rules.ovs_bridge.message"
-                v-model="ovs_bridge"
-                @on-change="handleOVSBrigeSelect"
-                v-if="iftype === 'OVSBond' || iftype === 'OVSIntPort'"
-                placeholder="Please select OVS Bridge"
-              >
-                <m-option
-                  v-for="(item, index) in networkList"
-                  :key="item.iface"
-                  :label="item.iface"
-                  :value="item.iface"
-                >
+              <m-input type="text" prop="name" label="Name" labelWidth="100px" validateEvent @validate="validate"
+                :show-error="rules.name.error" :error-msg="rules.name.message" v-model="name" :disabled="!isCreate"
+                placeholder="Please enter name" />
+              <m-select prop="ovs_bridge" label="OVS Bridge" labelWidth="100px" validateEvent @validate="validate"
+                :show-error="rules.ovs_bridge.error" :error-msg="rules.ovs_bridge.message" v-model="ovs_bridge"
+                @on-change="handleOVSBrigeSelect" v-if="iftype === 'OVSBond' || iftype === 'OVSIntPort'"
+                placeholder="Please select OVS Bridge">
+                <m-option v-for="(item, index) in networkList" :key="item.iface" :label="item.iface"
+                  :value="item.iface">
                   <template v-if="index === 0">
                     <div class="table-header__tr">
                       <span class="table-td">Bridge</span>
@@ -56,20 +27,12 @@
                     <span class="table-td" :title="item.iface">{{
                       item.iface
                     }}</span>
-                    <span
-                      class="table-td"
-                      :title="item.active && item.active === 1 ? 'Yes' : 'No'"
-                    >
-                      <table-info-state
-                        :content="
-                          item.active && item.active === 1 ? 'Yes' : 'No'
-                        "
-                        :state="
-                          item.active && item.active === 1
+                    <span class="table-td" :title="item.active && item.active === 1 ? 'Yes' : 'No'">
+                      <table-info-state :content="item.active && item.active === 1 ? 'Yes' : 'No'
+                        " :state="item.active && item.active === 1
                             ? 'actived'
                             : 'unActived'
-                        "
-                      ></table-info-state>
+                          "></table-info-state>
                     </span>
                     <span class="table-td" :title="item.comments">
                       {{ item.comments }}
@@ -77,175 +40,54 @@
                   </div>
                 </m-option>
               </m-select>
-              <m-checkbox
-                label="Auto Start"
-                v-model="autostart"
-                v-if="!['OVSBond', 'OVSIntPort'].includes(iftype)"
-                labelWidth="100px"
-              ></m-checkbox>
-              <m-input
-                type="text"
-                prop="cidr"
-                label="IPV4/CIDR"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.cidr.error"
-                :error-msg="rules.cidr.message"
-                v-model="cidr"
-                v-if="iftype !== 'OVSBond'"
-                placeholder="Please enter IPV4/CIDR"
-              />
-              <m-input
-                type="text"
-                prop="vlanRawDevic"
-                label="Vlan raw device"
-                labelWidth="100px"
-                v-model="vlanRawDevic"
+              <m-checkbox label="Auto Start" v-model="autostart" v-if="!['OVSBond', 'OVSIntPort'].includes(iftype)"
+                labelWidth="100px"></m-checkbox>
+              <m-input type="text" prop="cidr" label="IPV4/CIDR" labelWidth="100px" validateEvent @validate="validate"
+                :show-error="rules.cidr.error" :error-msg="rules.cidr.message" v-model="cidr"
+                v-if="iftype !== 'OVSBond'" placeholder="Please enter IPV4/CIDR" />
+              <m-input type="text" prop="vlanRawDevic" label="Vlan raw device" labelWidth="100px" v-model="vlanRawDevic"
+                :disabled="iftype === 'vlan' && /()(\.\d)/.test(name)" v-if="iftype === 'vlan'"
+                placeholder="Please enter Vlan raw device" />
+              <m-input type="text" prop="id" label="slaves" labelWidth="100px" v-model="slaves" v-if="iftype === 'bond'"
+                placeholder="Please enter Slaves" />
+              <m-checkbox label="VLAN Aware" v-model="bridge_vlan_aware" labelWidth="100px"
+                v-if="iftype === 'bridge'"></m-checkbox>
+              <m-input type="text" prop="gateway" label="Gateway (IPV4)" labelWidth="100px" validateEvent
+                @validate="validate" :show-error="rules.gateway.error" :error-msg="rules.gateway.message"
+                v-model="gateway" v-if="iftype !== 'OVSBond'" placeholder="Please enter gateway (IPV4)" />
+              <m-input type="number" prop="vlan_tag" label="VLAN Tag" labelWidth="100px" v-model="vlan_tag"
                 :disabled="iftype === 'vlan' && /()(\.\d)/.test(name)"
-                v-if="iftype === 'vlan'"
-                placeholder="Please enter Vlan raw device"
-              />
-              <m-input
-                type="text"
-                prop="id"
-                label="slaves"
-                labelWidth="100px"
-                v-model="slaves"
-                v-if="iftype === 'bond'"
-                placeholder="Please enter Slaves"
-              />
-              <m-checkbox
-                label="VLAN Aware"
-                v-model="bridge_vlan_aware"
-                labelWidth="100px"
-                v-if="iftype === 'bridge'"
-              ></m-checkbox>
-              <m-input
-                type="text"
-                prop="gateway"
-                label="Gateway (IPV4)"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.gateway.error"
-                :error-msg="rules.gateway.message"
-                v-model="gateway"
-                v-if="iftype !== 'OVSBond'"
-                placeholder="Please enter gateway (IPV4)"
-              />
-              <m-input
-                type="number"
-                prop="vlan_tag"
-                label="VLAN Tag"
-                labelWidth="100px"
-                v-model="vlan_tag"
-                :disabled="iftype === 'vlan' && /()(\.\d)/.test(name)"
-                v-if="['vlan', 'OVSBond', 'OVSIntPort'].includes(iftype)"
-                placeholder="Please enter VLAN tag"
-              />
-              <m-input
-                type="text"
-                prop="ovs_options"
-                label="OVS Options"
-                labelWidth="100px"
-                v-model="ovs_options"
-                :disabled="!isCreate"
-                v-if="['OVSBridge', 'OVSBond', 'OVSIntPort'].includes(iftype)"
-                placeholder="Please enter OVS options"
-              />
-              <m-select
-                prop="bond_mode"
-                label="Mode"
-                labelWidth="100px"
-                :readonly="false"
-                @on-change="handleBondModeSelect"
-                v-model="bond_mode"
-                v-if="iftype === 'bond' || iftype === 'OVSBond'"
-                placeholder="Please select mode"
-              >
-                <m-option
-                  v-for="item in comboItems"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+                v-if="['vlan', 'OVSBond', 'OVSIntPort'].includes(iftype)" placeholder="Please enter VLAN tag" />
+              <m-input type="text" prop="ovs_options" label="OVS Options" labelWidth="100px" v-model="ovs_options"
+                :disabled="!isCreate" v-if="['OVSBridge', 'OVSBond', 'OVSIntPort'].includes(iftype)"
+                placeholder="Please enter OVS options" />
+              <m-select prop="bond_mode" label="Mode" labelWidth="100px" :readonly="false"
+                @on-change="handleBondModeSelect" v-model="bond_mode" v-if="iftype === 'bond' || iftype === 'OVSBond'"
+                placeholder="Please select mode">
+                <m-option v-for="item in comboItems" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
-              <m-input
-                type="number"
-                prop="bridge_ports"
-                label="Bridge Ports"
-                labelWidth="100px"
-                min="100"
-                v-model="bridge_ports"
-                v-if="iftype === 'OVSBridge' || iftype === 'bridge'"
-                placeholder="Please enter bridge ports"
-              />
-              <m-input
-                type="text"
-                prop="cidr6"
-                label="IPV6/CIDR"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.cidr6.error"
-                :error-msg="rules.cidr6.message"
-                v-model="cidr6"
-                v-if="iftype !== 'OVSBond'"
-                placeholder="Please enter IPV6/CIDR"
-              />
-              <m-select
-                prop="bind_xmit_hash_policy"
-                label="Hash Policy"
-                labelWidth="100px"
-                :readonly="false"
-                v-model="bind_xmit_hash_policy"
-                v-if="iftype === 'bond'"
-                @on-change="handleHashPolicySelect"
-                :disabled="isHashDisabled"
-                placeholder="Please enter hash policy"
-              >
-                <m-option
-                  v-for="item in hash_policy_comboItems"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-input type="number" prop="bridge_ports" label="Bridge Ports" labelWidth="100px" min="100"
+                v-model="bridge_ports" v-if="iftype === 'OVSBridge' || iftype === 'bridge'"
+                placeholder="Please enter bridge ports" />
+              <m-input type="text" prop="cidr6" label="IPV6/CIDR" labelWidth="100px" validateEvent @validate="validate"
+                :show-error="rules.cidr6.error" :error-msg="rules.cidr6.message" v-model="cidr6"
+                v-if="iftype !== 'OVSBond'" placeholder="Please enter IPV6/CIDR" />
+              <m-select prop="bind_xmit_hash_policy" label="Hash Policy" labelWidth="100px" :readonly="false"
+                v-model="bind_xmit_hash_policy" v-if="iftype === 'bond'" @on-change="handleHashPolicySelect"
+                :disabled="isHashDisabled" placeholder="Please enter hash policy">
+                <m-option v-for="item in hash_policy_comboItems" :key="item.value" :label="item.label"
+                  :value="item.value">
                 </m-option>
               </m-select>
-              <m-input
-                type="text"
-                prop="comments"
-                label="Comments"
-                labelWidth="100px"
-                v-model="comments"
-                placeholder="Please enter comments"
-              />
-              <m-input
-                type="text"
-                prop="gateway6"
-                label="Gateway (IPV6)"
-                labelWidth="100px"
-                min="100"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.gateway6.error"
-                :error-msg="rules.gateway6.message"
-                v-model="gateway6"
-                v-if="iftype !== 'OVSBond'"
-                placeholder="Please enter gateway (IPV6)"
-              />
-              <m-input
-                type="text"
-                prop="bond_primary"
-                label="bond-primary"
-                labelWidth="100px"
-                v-model="bond_primary"
-                :disabled="bond_mode !== 'active-backup'"
-                v-if="iftype === 'bond'"
-                placeholder="Please enter bond-primary"
-              />
+              <m-input type="text" prop="comments" label="Comments" labelWidth="100px" v-model="comments"
+                placeholder="Please enter comments" />
+              <m-input type="text" prop="gateway6" label="Gateway (IPV6)" labelWidth="100px" min="100" validateEvent
+                @validate="validate" :show-error="rules.gateway6.error" :error-msg="rules.gateway6.message"
+                v-model="gateway6" v-if="iftype !== 'OVSBond'" placeholder="Please enter gateway (IPV6)" />
+              <m-input type="text" prop="bond_primary" label="bond-primary" labelWidth="100px" v-model="bond_primary"
+                :disabled="bond_mode !== 'active-backup'" v-if="iftype === 'bond'"
+                placeholder="Please enter bond-primary" />
               <div v-if="iftype === 'vlan'" class="m-alert-info">
                 Either add the VLAN number to an existing interface name, or
                 choose your own name and set the VLAN raw device (for the latter
@@ -256,15 +98,8 @@
           <dl v-if="isAdvice && iftype !== 'OVSBridge'">
             <dt>Advanced</dt>
             <dd>
-              <m-input
-                type="number"
-                prop="mtu"
-                label="MTU"
-                labelWidth="100px"
-                v-model="mtu"
-                min="1280"
-                placeholder="1500"
-              />
+              <m-input type="number" prop="mtu" label="MTU" labelWidth="100px" v-model="mtu" min="1280"
+                placeholder="1500" />
             </dd>
           </dl>
         </div>
@@ -278,9 +113,7 @@
             <div>Advanced</div>
           </label>
         </div>
-        <m-button class="create-btn" type="primary" @on-click="create"
-          >Create</m-button
-        >
+        <m-button class="create-btn" type="primary" @on-click="create">Create</m-button>
       </template>
     </template>
   </Dialog>
@@ -612,7 +445,7 @@ export default {
         _this.name =
           "bond" +
           (String(numberBond) === "Infinity" ||
-          String(numberBond) === "-Infinity"
+            String(numberBond) === "-Infinity"
             ? 0
             : numberBond);
       }
@@ -789,27 +622,32 @@ export default {
     border-bottom: 1px solid #ebeef5;
     cursor: pointer;
   }
+
   &-td {
     display: table-cell;
     height: 35px;
     line-height: 35px;
     max-width: 100px;
   }
+
   &-radio {
     width: 50px;
     padding-right: 20px;
   }
 }
+
 .checkbox {
   margin-bottom: 20px;
   margin-right: 10px;
   display: inline-block;
   vertical-align: -webkit-baseline-middle;
 }
+
 .m-button {
   height: 33px;
   line-height: 28px;
 }
+
 .create-btn {
   width: 100px;
   height: 42px;

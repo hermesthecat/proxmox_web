@@ -1,16 +1,7 @@
 <template>
-  <div
-    class="dropdown-item"
-    @mousedown="handleClick"
-    :class="{ disabled: disabled }"
-  >
+  <div class="dropdown-item" @mousedown="handleClick" :class="{ disabled: disabled }">
     <span v-if="icon" :class="['icon', icon]"></span>
-    <base-icon
-      v-if="name"
-      :class="['icon']"
-      :name="name"
-      :_style="{ width: '16px', height: '16px' }"
-    ></base-icon>
+    <base-icon v-if="name" :class="['icon']" :name="name" :_style="{ width: '16px', height: '16px' }"></base-icon>
     <slot></slot>
   </div>
 </template>
@@ -51,19 +42,19 @@ export default {
   background: #fff;
   cursor: pointer;
   text-align: left;
+
   &:hover {
     color: #7fdbff;
   }
 }
+
 .disabled {
   background: #e0eaf3;
-  background-image: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    from(#e9edf2),
-    to(#d9e0e9)
-  );
+  background-image: -webkit-gradient(linear,
+      left top,
+      left bottom,
+      from(#e9edf2),
+      to(#d9e0e9));
   background-image: linear-gradient(180deg, #e9edf2, #d9e0e9);
 }
 </style>

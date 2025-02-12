@@ -1,75 +1,28 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @cancel="close"
-    @confirm="confirm"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" @cancel="close" @confirm="confirm" :title="title" :_style="{ width: '956px' }"
+    @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-input
-                type="text"
-                prop="plugin"
-                labelWidth="100px"
-                label="Plugin ID"
-                v-model="plugin"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.plugin.error"
-                :error-msg="rules.plugin.message"
-                :disabled="!isCreate"
-                placeholder="Please enter name"
-              />
+              <m-input type="text" prop="plugin" labelWidth="100px" label="Plugin ID" v-model="plugin" validateEvent
+                @validate="validate" :show-error="rules.plugin.error" :error-msg="rules.plugin.message"
+                :disabled="!isCreate" placeholder="Please enter name" />
 
-              <m-input
-                type="number"
-                prop="validationDelay"
-                labelWidth="100px"
-                label="Validation Delay"
-                v-model="validationDelay"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules.validationDelay.error"
-                :error-msg="rules.validationDelay.message"
-                placeholder="Please enter Validation Delay"
-              />
-              <m-select
-                prop="api"
-                label="DNS API"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules.api.error"
-                :error-msg="rules.api.message"
-                :readonly="false"
-                @on-change="handleDnsApiSelect"
-                v-model="api"
-                placeholder="Please select DNS API directory"
-              >
-                <m-option
-                  v-for="item in db.dnsApiList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                >
+              <m-input type="number" prop="validationDelay" labelWidth="100px" label="Validation Delay"
+                v-model="validationDelay" validateEvent @validate="validate" required
+                :show-error="rules.validationDelay.error" :error-msg="rules.validationDelay.message"
+                placeholder="Please enter Validation Delay" />
+              <m-select prop="api" label="DNS API" labelWidth="100px" validateEvent @validate="validate" required
+                :show-error="rules.api.error" :error-msg="rules.api.message" :readonly="false"
+                @on-change="handleDnsApiSelect" v-model="api" placeholder="Please select DNS API directory">
+                <m-option v-for="item in db.dnsApiList" :key="item.id" :label="item.name" :value="item.id">
                 </m-option>
               </m-select>
-              <m-input
-                type="textarea"
-                prop="data"
-                labelWidth="100px"
-                label="API Data"
-                v-model="data"
-                placeholder="Please enter API Data"
-              />
+              <m-input type="textarea" prop="data" labelWidth="100px" label="API Data" v-model="data"
+                placeholder="Please enter API Data" />
             </dd>
           </dl>
         </div>
@@ -237,10 +190,12 @@ export default {
 .service-police {
   width: 100%;
   padding: 0px 20px 20px 0px;
+
   &-label {
     width: 100px;
     display: inline-block;
   }
+
   &-content {
     display: inline-block;
   }

@@ -11,16 +11,16 @@
       <div slot="content" class="card-content">
         <div class="card-item">
           <single-line :desc="db.storageObj &&
-              db.storageObj.enabled &&
-              db.storageObj.enabled === 1
-              ? 'Yes'
-              : 'No'
+            db.storageObj.enabled &&
+            db.storageObj.enabled === 1
+            ? 'Yes'
+            : 'No'
             " />
           <single-line title="Active" :desc="db.storageObj &&
-              db.storageObj.active &&
-              db.storageObj.active === 1
-              ? 'Yes'
-              : 'No'
+            db.storageObj.active &&
+            db.storageObj.active === 1
+            ? 'Yes'
+            : 'No'
             " />
           <single-line title="Content" :desc="db.storageObj && db.storageObj.content && db.storageObj.content
             " />

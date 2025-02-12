@@ -1,46 +1,20 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button
-        type="primary"
-        icon="el-icon-plus"
-        @on-click="showModal('create')"
-        >Add</m-button
-      >
-      <m-button
-        type="danger"
-        icon="el-icon-delete"
-        v-confirm="{
-          msg: `Are you sure you want to delete the selected items?`,
-          ok: () => deleteBackUp(),
-        }"
-        :disabled="selectedList.length <= 0"
-        >Delete</m-button
-      >
-      <m-button
-        type="primary"
-        icon="el-icon-edit"
-        @on-click="showModal('edit')"
-        :disabled="selectedList.length !== 1"
-        >Edit</m-button
-      >
-      <m-button
-        type="info"
-        icon="el-icon-video-play"
-        v-confirm="{
-          msg: `Are you sure you want to start the selected backup job?`,
-          ok: () => runNow(),
-        }"
-        :disabled="selectedList.length <= 0"
-        >Run Now</m-button
-      >
+      <m-button type="primary" icon="el-icon-plus" @on-click="showModal('create')">Add</m-button>
+      <m-button type="danger" icon="el-icon-delete" v-confirm="{
+        msg: `Are you sure you want to delete the selected items?`,
+        ok: () => deleteBackUp(),
+      }" :disabled="selectedList.length <= 0">Delete</m-button>
+      <m-button type="primary" icon="el-icon-edit" @on-click="showModal('edit')"
+        :disabled="selectedList.length !== 1">Edit</m-button>
+      <m-button type="info" icon="el-icon-video-play" v-confirm="{
+        msg: `Are you sure you want to start the selected backup job?`,
+        ok: () => runNow(),
+      }" :disabled="selectedList.length <= 0">Run Now</m-button>
     </div>
     <div slot="page-content">
-      <el-table
-        :data="db.backUpList"
-        ref="dataTable"
-        @selection-change="handleSelect"
-      >
+      <el-table :data="db.backUpList" ref="dataTable" @selection-change="handleSelect">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="Node" prop="node"></el-table-column>
         <el-table-column label="Day of Week" prop="dow">
@@ -51,41 +25,27 @@
         <el-table-column label="Start Time" prop="starttime"></el-table-column>
         <el-table-column label="Enabled" prop="enabled">
           <template slot-scope="scope">
-            <table-info-state
-              :content="
-                scope.row.enabled && scope.row.enabled === '1' ? 'Yes' : 'No'
-              "
-              :state="
-                scope.row.enabled && scope.row.enabled === '1'
+            <table-info-state :content="scope.row.enabled && scope.row.enabled === '1' ? 'Yes' : 'No'
+              " :state="scope.row.enabled && scope.row.enabled === '1'
                   ? 'actived'
                   : 'unActived'
-              "
-            ></table-info-state>
+                "></table-info-state>
           </template>
         </el-table-column>
         <el-table-column label="Storage" prop="storage"></el-table-column>
         <el-table-column label="Selection" prop="vmid">
           <template slot-scope="scope">
-            <span v-show="scope.row.exclude"
-              >All except {{ scope.row.exclude }}</span
-            >
+            <span v-show="scope.row.exclude">All except {{ scope.row.exclude }}</span>
             <span v-show="scope.row.all && !scope.row.exclude">--All--</span>
             <span v-show="scope.row.vmid">{{ scope.row.vmid }}</span>
             <span v-show="scope.row.pool">Pool'{{ scope.row.pool }}'</span>
           </template>
         </el-table-column>
       </el-table>
-      <CreateBackUpModal
-        :visible="visible"
-        @close="
-          visible = false;
-          __init__();
-        "
-        :param="editParam"
-        v-if="visible"
-        :type="type"
-        :title="title"
-      ></CreateBackUpModal>
+      <CreateBackUpModal :visible="visible" @close="
+        visible = false;
+      __init__();
+      " :param="editParam" v-if="visible" :type="type" :title="title"></CreateBackUpModal>
     </div>
   </page-template>
 </template>
@@ -173,14 +133,17 @@ export default {
   padding: 10px 0px;
   border-top: 1px solid #c4d6ec;
   border-bottom: 1px solid #c4d6ec;
+
   &__item {
     flex: 1 1 auto;
     display: flex;
   }
+
   &__title {
     flex: 1 1 auto;
     display: inline-flex;
   }
+
   &__desc {
     flex: 1 1 auto;
     display: inline-flex;

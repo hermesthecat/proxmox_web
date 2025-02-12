@@ -1,63 +1,31 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button
-        type="primary"
-        @on-click="handleOperate('start')"
-        icon="el-icon-plus"
-        :disabled="selectedList.length !== 1 || inStatus('running')"
-        >Start</m-button
-      >
-      <m-button
-        type="primary"
-        @on-click="handleOperate('stop')"
-        icon="el-icon-edit"
-        :disabled="selectedList.length !== 1 || inStatus('dead')"
-        >Stop</m-button
-      >
-      <m-button
-        type="warning"
-        @on-click="handleOperate('restart')"
-        icon="el-icon-video-play"
-        :disabled="selectedList.length !== 1 || !inStatus('running')"
-        >Restart</m-button
-      >
-      <m-button
-        type="info"
-        @on-click="handleOperate('systemLog')"
-        icon="el-icon-view"
-        :disabled="selectedList.length !== 1"
-        >System Log</m-button
-      >
+      <m-button type="primary" @on-click="handleOperate('start')" icon="el-icon-plus"
+        :disabled="selectedList.length !== 1 || inStatus('running')">Start</m-button>
+      <m-button type="primary" @on-click="handleOperate('stop')" icon="el-icon-edit"
+        :disabled="selectedList.length !== 1 || inStatus('dead')">Stop</m-button>
+      <m-button type="warning" @on-click="handleOperate('restart')" icon="el-icon-video-play"
+        :disabled="selectedList.length !== 1 || !inStatus('running')">Restart</m-button>
+      <m-button type="info" @on-click="handleOperate('systemLog')" icon="el-icon-view"
+        :disabled="selectedList.length !== 1">System Log</m-button>
     </div>
     <div slot="page-content">
-      <el-table
-        :data="db.nodeSystemList"
-        ref="dataTable"
-        @selection-change="handleSelect"
-        :default-sort="{ prop: 'name', order: 'ascending' }"
-      >
+      <el-table :data="db.nodeSystemList" ref="dataTable" @selection-change="handleSelect"
+        :default-sort="{ prop: 'name', order: 'ascending' }">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="Name" prop="name" sortable></el-table-column>
         <el-table-column label="Status" prop="state">
           <template slot-scope="scope">
-            <table-info-state
-              :content="scope.row.state"
-              :state="scope.row.state"
-            ></table-info-state>
+            <table-info-state :content="scope.row.state" :state="scope.row.state"></table-info-state>
           </template>
         </el-table-column>
         <el-table-column label="Description" prop="desc"></el-table-column>
       </el-table>
-      <Dialog
-        :visible="showLog"
-        @close="closeLog"
-        :_style="{
-          width: '900px',
-          maxHeight: '520px',
-        }"
-        title="Task Viewer: Task Progress"
-      >
+      <Dialog :visible="showLog" @close="closeLog" :_style="{
+        width: '900px',
+        maxHeight: '520px',
+      }" title="Task Viewer: Task Progress">
         <template slot="content">
           <template v-if="modalType === 'progress'">
             <div class="progress" v-if="!done">
@@ -70,30 +38,15 @@
           <template v-else>
             <page-template>
               <template slot="toolbar-right">
-                <m-input
-                  prop="expire"
-                  labelWidth="100px"
-                  label="Select Date"
-                  :__conStyle="{ width: 'auto' }"
-                >
+                <m-input prop="expire" labelWidth="100px" label="Select Date" :__conStyle="{ width: 'auto' }">
                   <template slot="other">
-                    <el-date-picker
-                      v-model="datetime"
-                      type="daterange"
-                      format="yyyy-MM-dd hh:mm"
-                      value-format="yyyy-MM-dd hh:mm"
-                      placeholder="Permanently Valid"
-                    >
+                    <el-date-picker v-model="datetime" type="daterange" format="yyyy-MM-dd hh:mm"
+                      value-format="yyyy-MM-dd hh:mm" placeholder="Permanently Valid">
                     </el-date-picker>
                   </template>
                 </m-input>
-                <m-button
-                  type="primary"
-                  @on-click="upateSystemLog()"
-                  icon="el-icon-refresh"
-                  :class="{ refresh: beginRefresh }"
-                  >Update</m-button
-                >
+                <m-button type="primary" @on-click="upateSystemLog()" icon="el-icon-refresh"
+                  :class="{ refresh: beginRefresh }">Update</m-button>
               </template>
               <div slot="page-content">
                 <div class="content">
@@ -236,19 +189,23 @@ export default {
   padding: 10px 0px;
   border-top: 1px solid #c4d6ec;
   border-bottom: 1px solid #c4d6ec;
+
   &__item {
     flex: 1 1 auto;
     display: flex;
   }
+
   &__title {
     flex: 1 1 auto;
     display: inline-flex;
   }
+
   &__desc {
     flex: 1 1 auto;
     display: inline-flex;
   }
 }
+
 .progress {
   width: 90%;
   position: relative;
@@ -258,6 +215,7 @@ export default {
   padding: 0px 10px;
   margin: 90px 0px;
   text-align: center;
+
   &-inner {
     position: absolute;
     height: 30px;
@@ -266,6 +224,7 @@ export default {
     background: #369;
   }
 }
+
 .content {
   background: #000;
   color: #fff;
@@ -275,50 +234,64 @@ export default {
   overflow-y: auto;
   letter-spacing: 0vw;
 }
+
 @keyframes progress {
   0% {
     width: 0%;
   }
+
   25% {
     width: 25%;
   }
+
   50% {
     width: 50%;
   }
+
   75% {
     width: 75%;
   }
+
   100% {
     width: 100%;
   }
 }
+
 .refresh {
   animation: refresh-animation 0.5s infinite;
 }
+
 @keyframes refresh-animation {
   0% {
     rotate: (0deg);
   }
+
   25% {
     rotate: (90deg);
   }
+
   50% {
     rotate: (180deg);
   }
+
   75% {
     rotate: (270deg);
   }
+
   100% {
     rotate: (360deg);
   }
 }
+
 /deep/.tool-bar-right {
   flex: 3;
   text-align: right !important;
 }
+
 /deep/.page-template__content {
   height: auto !important;
 }
+
 /deep/.page-template {
   padding: 0px !important;
 }

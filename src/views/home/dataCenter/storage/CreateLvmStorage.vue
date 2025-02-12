@@ -4,112 +4,41 @@
       <dl>
         <dt>Basic Information</dt>
         <dd>
-          <m-input
-            type="text"
-            prop="storage"
-            label="ID"
-            labelWidth="100px"
-            validateEvent
-            @validate="validate"
-            required
-            :show-error="rules.storage.error"
-            :error-msg="rules.storage.message"
-            v-model="storage"
-            :disabled="!isCreate"
-            placeholder="Please enter ID"
-          />
-          <m-checkbox
-            label="Shared"
-            v-model="shared"
-            labelWidth="100px"
-          ></m-checkbox>
-          <m-select
-            labelWidth="100px"
-            @on-change="handleBaseselSelect"
-            validateEvent
-            @validate="validate"
-            prop="basesel"
-            v-model="basesel"
-            required
-            :show-error="rules.basesel.error"
-            :error-msg="rules.basesel.message"
-            v-show="isCreate"
-            label="Base Storage"
-          >
+          <m-input type="text" prop="storage" label="ID" labelWidth="100px" validateEvent @validate="validate" required
+            :show-error="rules.storage.error" :error-msg="rules.storage.message" v-model="storage" :disabled="!isCreate"
+            placeholder="Please enter ID" />
+          <m-checkbox label="Shared" v-model="shared" labelWidth="100px"></m-checkbox>
+          <m-select labelWidth="100px" @on-change="handleBaseselSelect" validateEvent @validate="validate"
+            prop="basesel" v-model="basesel" required :show-error="rules.basesel.error"
+            :error-msg="rules.basesel.message" v-show="isCreate" label="Base Storage">
             <template v-if="db.iscsiList && db.iscsiList.length > 0">
-              <m-option
-                v-for="item in db.iscsiList"
-                :key="item.storage"
-                :label="item.storage + ' (iSCSI)'"
-                :value="item.storage"
-              ></m-option>
+              <m-option v-for="item in db.iscsiList" :key="item.storage" :label="item.storage + ' (iSCSI)'"
+                :value="item.storage"></m-option>
             </template>
             <template v-else>
               <m-option key="local" label="Existing Volume Group" value="local"></m-option>
             </template>
           </m-select>
-          <m-select
-            labelWidth="100px"
-            @on-change="handleVgNameSelect"
-            validateEvent
-            @validate="validate"
-            prop="vgname"
-            v-model="vgname"
-            :disabled="!isCreate"
-            required
-            :show-error="rules.vgname.error"
-            :error-msg="rules.vgname.message"
-            label="Volume Group"
-          >
-            <m-option
-              v-for="item in db.vgList"
-              :key="item.vg"
-              :label="item.vg"
-              :value="item.vg"
-              >{{ item.vg }}</m-option
-            >
+          <m-select labelWidth="100px" @on-change="handleVgNameSelect" validateEvent @validate="validate" prop="vgname"
+            v-model="vgname" :disabled="!isCreate" required :show-error="rules.vgname.error"
+            :error-msg="rules.vgname.message" label="Volume Group">
+            <m-option v-for="item in db.vgList" :key="item.vg" :label="item.vg" :value="item.vg">{{ item.vg
+              }}</m-option>
           </m-select>
-          <m-select
-            type="multiple"
-            labelWidth="100px"
-            @on-change="handleSelect"
-            validateEvent
-            @validate="validate"
-            prop="content"
-            v-model="content"
-            required
-            :show-error="rules.content.error"
-            :error-msg="rules.content.message"
-            label="Content"
-          >
-            <m-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></m-option>
+          <m-select type="multiple" labelWidth="100px" @on-change="handleSelect" validateEvent @validate="validate"
+            prop="content" v-model="content" required :show-error="rules.content.error"
+            :error-msg="rules.content.message" label="Content">
+            <m-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></m-option>
           </m-select>
-          <m-checkbox
-            label="Enable"
-            v-model="disable"
-            labelWidth="100px"
-          ></m-checkbox>
+          <m-checkbox label="Enable" v-model="disable" labelWidth="100px"></m-checkbox>
         </dd>
       </dl>
       <dl>
         <dt>Nodes</dt>
         <dd>
-          <el-table
-            :data="db.nodeList"
-            ref="dataTable"
-            @selection-change="handleSelectionChange"
-          >
+          <el-table :data="db.nodeList" ref="dataTable" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55"> </el-table-column>
-            <el-table-column
-              label="Node"
-              prop="node"
-              sortable
-            ></el-table-column>
+            <el-table-column label="Node" prop="node" sortable></el-table-column>
             <el-table-column label="Memory Usage">
               <template slot-scope="scope">
                 {{

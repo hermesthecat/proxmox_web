@@ -1,12 +1,7 @@
 <template>
   <ul class="context-menu" @click="$emit('on-click')">
-    <li
-      v-for="(menu, index) in menuData"
-      :key="index"
-      :id="menu.operate"
-      class="context-menu-item"
-      :class="{ disabled: menu.disabled }"
-    >
+    <li v-for="(menu, index) in menuData" :key="index" :id="menu.operate" class="context-menu-item"
+      :class="{ disabled: menu.disabled }">
       <span :class="[menu.cls, menu.icon]"></span>
       <span>{{ menu.text }}</span>
     </li>
@@ -67,14 +62,17 @@ export default {
   color: #222;
   z-index: 999;
   cursor: pointer;
+
   &-item {
     padding: 0px 20px;
     height: 30px;
     line-height: 30px;
+
     &:hover {
       background-image: linear-gradient(180deg, #409eff, #007dff);
       color: #fff;
     }
+
     &:first-child {
       margin: 10px 10px 10px;
       background-image: none;

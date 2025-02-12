@@ -1,103 +1,38 @@
 <template>
-  <m-dialog
-    :visible="visible"
-    @cancel="close"
-    @confirm="confirm"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <m-dialog :visible="visible" @cancel="close" @confirm="confirm" :title="title" :_style="{ width: '956px' }"
+    @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
       <div class="m-form__content" v-if="modalType === 'create'">
         <div class="m-form__section">
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-input
-                type="text"
-                prop="name"
-                label="Name"
-                labelWidth="100px"
-                v-model="name"
-                validateEvent
-                @validate="validate"
-                required
-                :error-msg="rules['name'].message"
-                :show-error="rules['name'].error"
-                :placeholder="'Please enter name'"
-              />
-              <m-select
-                prop="raidlevel"
-                label="RAID Level"
-                labelWidth="100px"
-                @on-change="handleDestSelect"
-                v-model="raidlevel"
-                validateEvent
-                @validate="validate"
-                required
-                :error-msg="rules['raidlevel'].message"
-                :show-error="rules['raidlevel'].error"
-                :readonly="true"
-                placeholder="Please select disk"
-              >
-                <m-option
-                  v-for="item in comboItems"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-input type="text" prop="name" label="Name" labelWidth="100px" v-model="name" validateEvent
+                @validate="validate" required :error-msg="rules['name'].message" :show-error="rules['name'].error"
+                :placeholder="'Please enter name'" />
+              <m-select prop="raidlevel" label="RAID Level" labelWidth="100px" @on-change="handleDestSelect"
+                v-model="raidlevel" validateEvent @validate="validate" required :error-msg="rules['raidlevel'].message"
+                :show-error="rules['raidlevel'].error" :readonly="true" placeholder="Please select disk">
+                <m-option v-for="item in comboItems" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
-              <m-select
-                prop="compression"
-                label="Compression"
-                labelWidth="100px"
-                @on-change="handleCompressSelect"
-                v-model="compression"
-                validateEvent
-                @validate="validate"
-                required
-                :error-msg="rules['compression'].message"
-                :show-error="rules['compression'].error"
-                placeholder="Please select disk"
-              >
-                <m-option
-                  v-for="item in compressionItems"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-select prop="compression" label="Compression" labelWidth="100px" @on-change="handleCompressSelect"
+                v-model="compression" validateEvent @validate="validate" required
+                :error-msg="rules['compression'].message" :show-error="rules['compression'].error"
+                placeholder="Please select disk">
+                <m-option v-for="item in compressionItems" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
-              <m-checkbox
-                label="Add Storage"
-                v-model="add_storage"
-                labelWidth="100px"
-              ></m-checkbox>
-              <m-input
-                type="number"
-                prop="ashift"
-                label="ashift"
-                labelWidth="100px"
-                v-model="ashift"
-                :min="12"
-                :placeholder="'Please enter ashift'"
-              />
+              <m-checkbox label="Add Storage" v-model="add_storage" labelWidth="100px"></m-checkbox>
+              <m-input type="number" prop="ashift" label="ashift" labelWidth="100px" v-model="ashift" :min="12"
+                :placeholder="'Please enter ashift'" />
             </dd>
           </dl>
           <dl>
             <dt>Devices</dt>
             <dd>
-              <el-table
-                :data="db.nodeDiskList"
-                ref="dataTable"
-                @selection-change="handleSelect"
-              >
-                <el-table-column
-                  type="selection"
-                  width="55"
-                  prop="pos"
-                ></el-table-column>
+              <el-table :data="db.nodeDiskList" ref="dataTable" @selection-change="handleSelect">
+                <el-table-column type="selection" width="55" prop="pos"></el-table-column>
                 <el-table-column width="55" prop="pos"></el-table-column>
                 <el-table-column label="Device" prop="devpath"></el-table-column>
                 <el-table-column label="Size" prop="size">
@@ -116,45 +51,29 @@
       </div>
       <div v-if="modalType === 'detail'">
         <div slot="toolbar-left">
-          <m-button type="primary" @on-click="__init__()" icon="el-icon-refresh"
-            >Reload</m-button
-          >
+          <m-button type="primary" @on-click="__init__()" icon="el-icon-refresh">Reload</m-button>
         </div>
         <div slot="page-content">
-          <single-line
-            title="Scan"
-            :desc="`${
-              (db.nodeDiskSdaObj &&
-                db.nodeDiskSdaObj.scan &&
-                db.nodeDiskSdaObj.scan) ||
-              ''
-            }`"
-          />
-          <single-line
-            title="Errors"
-            :desc="`${
-              (db.nodeDiskSdaObj &&
-                db.nodeDiskSdaObj.errors &&
-                db.nodeDiskSdaObj.errors) ||
-              ''
-            }`"
-          />
+          <single-line title="Scan" :desc="`${(db.nodeDiskSdaObj &&
+              db.nodeDiskSdaObj.scan &&
+              db.nodeDiskSdaObj.scan) ||
+            ''
+            }`" />
+          <single-line title="Errors" :desc="`${(db.nodeDiskSdaObj &&
+              db.nodeDiskSdaObj.errors &&
+              db.nodeDiskSdaObj.errors) ||
+            ''
+            }`" />
           <overview-card style="width: 100%">
             <div slot="title">Devices</div>
             <template slot="content">
-              <el-table
-                :data="[db.nodeDiskSdaObj]"
-                :row-key="setRowKeys"
-                :expand-row-keys="expands"
-                :tree-props="{ children: 'children' }"
-                >>
+              <el-table :data="[db.nodeDiskSdaObj]" :row-key="setRowKeys" :expand-row-keys="expands"
+                :tree-props="{ children: 'children' }">>
                 <el-table-column label="Name" prop="name"></el-table-column>
                 <el-table-column label="Health" prop="state">
                   <template slot-scope="scope">
-                    <table-info-state
-                      :content="scope.row.state"
-                      :state="scope.row.state && scope.row.state.toLowerCase()"
-                    ></table-info-state>
+                    <table-info-state :content="scope.row.state"
+                      :state="scope.row.state && scope.row.state.toLowerCase()"></table-info-state>
                   </template>
                 </el-table-column>
                 <el-table-column label="READ" prop="read"></el-table-column>
@@ -168,13 +87,7 @@
       </div>
     </div>
     <template slot="footer">
-      <m-button
-        class="create-btn"
-        type="primary"
-        @on-click="confirm"
-        v-if="modalType === 'create'"
-        >Create</m-button
-      >
+      <m-button class="create-btn" type="primary" @on-click="confirm" v-if="modalType === 'create'">Create</m-button>
       <div v-else></div>
     </template>
   </m-dialog>

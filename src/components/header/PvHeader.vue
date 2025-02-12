@@ -5,53 +5,32 @@
       <div class="pve-search">
         <label class="inline-block">Virtual Environment 6.0-4</label>
         <span class="inline-block">
-          <m-input
-            placeholder="Search"
-            v-model="searchModel"
-            ref="search-input"
-            @blur="handleBlur"
-            @focus="searchModelFocus"
-          />
-          <div
-            class="pve-search-resource-table"
-            tabindex="-1"
-            v-show="showSearchTable"
-            ref="searchRef"
-          >
-            <el-table
-              :data="searchTable"
-              highlight-current-row
-              @row-click="handelRowClick"
-            >
+          <m-input placeholder="Search" v-model="searchModel" ref="search-input" @blur="handleBlur"
+            @focus="searchModelFocus" />
+          <div class="pve-search-resource-table" tabindex="-1" v-show="showSearchTable" ref="searchRef">
+            <el-table :data="searchTable" highlight-current-row @row-click="handelRowClick">
               <el-table-column prop="type" label="Category" width="120">
                 <template slot-scope="scope">
                   <span>
-                    <i
-                      class="fa"
-                      style="width: 15px"
-                      :class="{
-                        'fa-tags': scope.row.type === 'pool',
-                        'fa-desktop':
-                          scope.row.type === 'qemu' &&
-                          !isTemplate(scope.row.template),
-                        'fa-file-o qemu':
-                          scope.row.type === 'qemu' &&
-                          isTemplate(scope.row.template),
-                        'fa-database': scope.row.type === 'storage',
-                        'fa-building': scope.row.type === 'node',
-                        'fa-cube':
-                          scope.row.type === 'lxc' &&
-                          !isTemplate(scope.row.template),
-                        'fa-file-o lxc':
-                          scope.row.type === 'lxc' &&
-                          isTemplate(scope.row.template),
-                      }"
-                    ></i>
-                    <span
-                      class="m-icon-custom fa"
-                      style="left: -10px; top: -1px"
-                      :class="setStautsCls(scope.row, scope.row.type)"
-                    ></span>
+                    <i class="fa" style="width: 15px" :class="{
+                      'fa-tags': scope.row.type === 'pool',
+                      'fa-desktop':
+                        scope.row.type === 'qemu' &&
+                        !isTemplate(scope.row.template),
+                      'fa-file-o qemu':
+                        scope.row.type === 'qemu' &&
+                        isTemplate(scope.row.template),
+                      'fa-database': scope.row.type === 'storage',
+                      'fa-building': scope.row.type === 'node',
+                      'fa-cube':
+                        scope.row.type === 'lxc' &&
+                        !isTemplate(scope.row.template),
+                      'fa-file-o lxc':
+                        scope.row.type === 'lxc' &&
+                        isTemplate(scope.row.template),
+                    }"></i>
+                    <span class="m-icon-custom fa" style="left: -10px; top: -1px"
+                      :class="setStautsCls(scope.row, scope.row.type)"></span>
                     <span>{{ scope.row.type }}</span>
                   </span>
                 </template>
@@ -59,13 +38,10 @@
               <el-table-column label="Description" width="120">
                 <template slot-scope="scope">
                   <span v-if="scope.row.type === 'pool'">pools</span>
-                  <span
-                    v-if="scope.row.type === 'qemu' || scope.row.type === 'lxc'"
-                    >{{
-                      scope.row.vmid +
-                      `${scope.row.name ? "(" + scope.row.name + ")" : ""}`
-                    }}</span
-                  >
+                  <span v-if="scope.row.type === 'qemu' || scope.row.type === 'lxc'">{{
+                    scope.row.vmid +
+                    `${scope.row.name ? "(" + scope.row.name + ")" : ""}`
+                  }}</span>
                   <span v-if="scope.row.type === 'storage'">{{
                     scope.row.storage
                   }}</span>
@@ -84,86 +60,39 @@
       </div>
     </div>
     <template v-show="showCreateVm">
-      <CreateQemuModal
-        :showCreateVm="showCreateVm"
-        v-if="showCreateVm"
-        @close="showCreateVm = false"
-      ></CreateQemuModal>
+      <CreateQemuModal :showCreateVm="showCreateVm" v-if="showCreateVm" @close="showCreateVm = false"></CreateQemuModal>
     </template>
     <template v-show="visibleLxc">
-      <CreateLxcModal
-        :visible="visibleLxc"
-        v-if="visibleLxc"
-        @close="visibleLxc = false"
-      ></CreateLxcModal>
+      <CreateLxcModal :visible="visibleLxc" v-if="visibleLxc" @close="visibleLxc = false"></CreateLxcModal>
     </template>
     <div class="header-container-right">
       <ul class="header-container-content">
-        <a
-          class="header-container-content-item"
-          target="_blank"
-          href="/pve-docs/index.html"
-          ><i class="fa fa-book"></i>Documentation</a
-        >
+        <a class="header-container-content-item" target="_blank" href="/pve-docs/index.html"><i
+            class="fa fa-book"></i>Documentation</a>
         <li class="header-container-content-item" @click="showCreateVm = true">
           <i class="fa fa-desktop"></i>Create VM
         </li>
-        <li
-          class="header-container-content-item"
-          @click="() => (visibleLxc = true)"
-        >
+        <li class="header-container-content-item" @click="() => (visibleLxc = true)">
           <i class="fa fa-cube"></i>Create CT
         </li>
-        <li
-          class="header-container-content-item"
-          style="padding: 0 10px"
-          @click="() => (visible = true)"
-        >
+        <li class="header-container-content-item" style="padding: 0 10px" @click="() => (visible = true)">
           <i class="fa fa-list"></i><span>Logs</span>
         </li>
-        <li
-          class="header-container-content-item"
-          style="background: #409eff; color: #fff"
-        >
-          <Dropdown
-            trigger="click"
-            icon="fa fa-user"
-            @on-change="handleCommand"
-            style="padding: 0px 10px; border: none"
-          >
+        <li class="header-container-content-item" style="background: #409eff; color: #fff">
+          <Dropdown trigger="click" icon="fa fa-user" @on-change="handleCommand"
+            style="padding: 0px 10px; border: none">
             <span slot="label">{{ userid }}</span>
-            <DropdownItem icon="fa fa-fw fa-key" command="psw"
-              >Password</DropdownItem
-            >
-            <DropdownItem icon="fa fa-fw fa-lock" command="TFA"
-              >TFA</DropdownItem
-            >
-            <DropdownItem icon="fa fa-fw fa-sign-out" command="layout"
-              >Logout</DropdownItem
-            >
+            <DropdownItem icon="fa fa-fw fa-key" command="psw">Password</DropdownItem>
+            <DropdownItem icon="fa fa-fw fa-lock" command="TFA">TFA</DropdownItem>
+            <DropdownItem icon="fa fa-fw fa-sign-out" command="layout">Logout</DropdownItem>
           </Dropdown>
         </li>
       </ul>
     </div>
-    <log-list
-      :visible="visible"
-      v-if="visible"
-      @close="visible = false"
-    ></log-list>
-    <modify-psw-modal
-      :visible="visiblePsw"
-      v-if="visiblePsw"
-      @close="visiblePsw = false"
-    ></modify-psw-modal>
-    <create-user-modal
-      :title="title"
-      :isCreate="isCreate"
-      :param="param"
-      :visible="visibleTfa"
-      v-if="visibleTfa"
-      :modal-type="type"
-      @close="visibleTfa = false"
-    ></create-user-modal>
+    <log-list :visible="visible" v-if="visible" @close="visible = false"></log-list>
+    <modify-psw-modal :visible="visiblePsw" v-if="visiblePsw" @close="visiblePsw = false"></modify-psw-modal>
+    <create-user-modal :title="title" :isCreate="isCreate" :param="param" :visible="visibleTfa" v-if="visibleTfa"
+      :modal-type="type" @close="visibleTfa = false"></create-user-modal>
   </div>
 </template>
 
@@ -327,6 +256,7 @@ export default {
 
 <style scoped lang="less">
 @import "./pv-header.less";
+
 /deep/.prefix-icon::after {
   color: #fff;
 }

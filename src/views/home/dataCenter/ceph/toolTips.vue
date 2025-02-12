@@ -111,7 +111,7 @@ export default {
       }
       return element;
     },
-    doDestroy() {},
+    doDestroy() { },
     // Set expected state
     setExpectedState(expectedState) {
       if (expectedState === false) {

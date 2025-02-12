@@ -1,140 +1,55 @@
 <template>
-  <m-dialog
-    :visible="visible"
-    :title="title"
-    @cancel="close"
-    @close="close"
-    @confirm="confirm"
-  >
+  <m-dialog :visible="visible" :title="title" @cancel="close" @close="close" @confirm="confirm">
     <template slot="content">
       <div class="m-form__content">
         <div class="m-form__section" v-if="modalType === 'editUser'">
-          <m-input
-            label="User"
-            prop="ciuser"
-            v-model="ciuser"
-            labelWidth="110px"
-          />
+          <m-input label="User" prop="ciuser" v-model="ciuser" labelWidth="110px" />
         </div>
         <div class="m-form__section" v-if="modalType === 'editPassword'">
-          <m-input
-            label="Password"
-            prop="cipassword"
-            type="password"
-            v-model="cipassword"
-            labelWidth="110px"
-          />
+          <m-input label="Password" prop="cipassword" type="password" v-model="cipassword" labelWidth="110px" />
         </div>
-        <div
-          class="m-form__section"
-          v-if="modalType === 'editDnsDomain' || modalType === 'editDnsServer'"
-        >
-          <m-input
-            label="DNS Domain"
-            prop="searchdomain"
-            v-model="searchdomain"
-            labelWidth="110px"
-          />
-          <m-input
-            label="DNS Server"
-            prop="nameserver"
-            v-model="nameserver"
-            labelWidth="110px"
-          />
+        <div class="m-form__section" v-if="modalType === 'editDnsDomain' || modalType === 'editDnsServer'">
+          <m-input label="DNS Domain" prop="searchdomain" v-model="searchdomain" labelWidth="110px" />
+          <m-input label="DNS Server" prop="nameserver" v-model="nameserver" labelWidth="110px" />
         </div>
         <div class="m-form__section" v-if="modalType === 'editSsh'">
-          <m-input
-            style="width: 100%"
-            v-model="sshkeys"
-            type="textarea"
-            prop="sshkeys"
-            label="SSH Public Key"
-            :rows="10"
-            labelWidth="100px"
-            validateEvent
-            required
-            :show-error="rules['sshkeys'].error"
-            :error-msg="rules['sshkeys'].message"
-            @validate="validate"
-            :__conStyle="{ width: '300px' }"
-            placeholder="Please enter SSH public key"
-          />
+          <m-input style="width: 100%" v-model="sshkeys" type="textarea" prop="sshkeys" label="SSH Public Key"
+            :rows="10" labelWidth="100px" validateEvent required :show-error="rules['sshkeys'].error"
+            :error-msg="rules['sshkeys'].message" @validate="validate" :__conStyle="{ width: '300px' }"
+            placeholder="Please enter SSH public key" />
           <m-button type="primary" style="position: relative">
-            <input
-              type="file"
-              ref="uploadFile"
-              @change="uploadSsh"
-              class="upload-input"
-            />
+            <input type="file" ref="uploadFile" @change="uploadSsh" class="upload-input" />
             Load SSH Key File
           </m-button>
         </div>
         <div class="m-form__section" v-if="modalType === 'editDriveId'">
-          <m-input
-            style="width: 100%"
-            v-model="ipconfig"
-            label="Network Device"
-            labelWidth="100px"
-            :disabled="true"
-          />
+          <m-input style="width: 100%" v-model="ipconfig" label="Network Device" labelWidth="100px" :disabled="true" />
           <dl>
             <dt>IPV4</dt>
             <dd>
               <div>
                 <label class="m-input__radio">
-                  <input
-                    type="radio"
-                    value="static"
-                    name="ipv4"
-                    v-model="ip4type"
-                  />
+                  <input type="radio" value="static" name="ipv4" v-model="ip4type" />
                   <div></div>
                   <span>Static</span>
                 </label>
                 <label class="m-input__radio">
-                  <input
-                    type="radio"
-                    value="dhcp"
-                    name="ipv4"
-                    v-model="ip4type"
-                    @change="
-                      () => {
-                        ip = '';
-                        gw = '';
-                      }
-                    "
-                  />
+                  <input type="radio" value="dhcp" name="ipv4" v-model="ip4type" @change="() => {
+                      ip = '';
+                      gw = '';
+                    }
+                    " />
                   <div></div>
                   <span>DHCP</span>
                 </label>
               </div>
-              <m-input
-                v-model="ip"
-                prop="ip"
-                label="IPv4/CIDR"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules['ip'].error"
-                :error-msg="rules['ip'].message"
-                :disabled="ip4type !== 'static'"
-                placeholder="None"
-              />
+              <m-input v-model="ip" prop="ip" label="IPv4/CIDR" labelWidth="100px" validateEvent @validate="validate"
+                required :show-error="rules['ip'].error" :error-msg="rules['ip'].message"
+                :disabled="ip4type !== 'static'" placeholder="None" />
 
-              <m-input
-                v-model="gw"
-                prop="gw"
-                label="Gateway (IPv4)"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                required
-                placeholder="Example: 10.10.10.0"
-                :show-error="rules['gw'].error"
-                :disabled="ip4type !== 'static'"
-                :error-msg="rules['gw'].message"
-              />
+              <m-input v-model="gw" prop="gw" label="Gateway (IPv4)" labelWidth="100px" validateEvent
+                @validate="validate" required placeholder="Example: 10.10.10.0" :show-error="rules['gw'].error"
+                :disabled="ip4type !== 'static'" :error-msg="rules['gw'].message" />
             </dd>
           </dl>
 
@@ -143,59 +58,27 @@
             <dd>
               <div>
                 <label class="m-input__radio">
-                  <input
-                    type="radio"
-                    value="static"
-                    name="ipv6"
-                    v-model="ip6type"
-                  />
+                  <input type="radio" value="static" name="ipv6" v-model="ip6type" />
                   <div></div>
                   <span>Static</span>
                 </label>
                 <label class="m-input__radio">
-                  <input
-                    type="radio"
-                    value="dhcp"
-                    name="ipv6"
-                    v-model="ip6type"
-                    @change="
-                      () => {
-                        ip6 = '';
-                        gw6 = '';
-                      }
-                    "
-                  />
+                  <input type="radio" value="dhcp" name="ipv6" v-model="ip6type" @change="() => {
+                      ip6 = '';
+                      gw6 = '';
+                    }
+                    " />
                   <div></div>
                   <span>DHCP</span>
                 </label>
               </div>
-              <m-input
-                v-model="ip6"
-                prop="ip6"
-                label="IPv6/CIDR"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules['ip6'].error"
-                :error-msg="rules['ip6'].message"
-                :disabled="ip6type !== 'static'"
-                placeholder="None"
-              />
+              <m-input v-model="ip6" prop="ip6" label="IPv6/CIDR" labelWidth="100px" validateEvent @validate="validate"
+                required :show-error="rules['ip6'].error" :error-msg="rules['ip6'].message"
+                :disabled="ip6type !== 'static'" placeholder="None" />
 
-              <m-input
-                v-model="gw6"
-                prop="gw6"
-                label="Gateway (IPv6)"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules['gw6'].error"
-                placeholder="Example: 2001:DB8::42"
-                :disabled="ip6type !== 'static'"
-                :error-msg="rules['gw6'].message"
-              />
+              <m-input v-model="gw6" prop="gw6" label="Gateway (IPv6)" labelWidth="100px" validateEvent
+                @validate="validate" required :show-error="rules['gw6'].error" placeholder="Example: 2001:DB8::42"
+                :disabled="ip6type !== 'static'" :error-msg="rules['gw6'].message" />
             </dd>
           </dl>
         </div>

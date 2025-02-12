@@ -1,6 +1,6 @@
 <template>
-  <m-dialog :title="modalType !== 'edit' ? 'Add: Disk Size' : 'Edit: Memory'" :visible="visible" v-if="visible" @confirm="confirm"
-    @cancel="close" :_style="{
+  <m-dialog :title="modalType !== 'edit' ? 'Add: Disk Size' : 'Edit: Memory'" :visible="visible" v-if="visible"
+    @confirm="confirm" @cancel="close" :_style="{
       width: '946px',
     }" @close="close">
     <div slot="content" style="max-height: 400px; overflow: auto">
@@ -21,7 +21,8 @@
       </div>
     </div>
     <template slot="footer">
-      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px" @on-click="confirm()">Confirm</m-button>
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px"
+        @on-click="confirm()">Confirm</m-button>
     </template>
   </m-dialog>
 </template>

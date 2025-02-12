@@ -1,28 +1,14 @@
 <template>
   <div class="switch" @change="handleChange">
-    <label
-      class="switch-off m-input__radio"
-      :class="{ checked: value === 'off' }"
-    >
+    <label class="switch-off m-input__radio" :class="{ checked: value === 'off' }">
       <input type="radio" :name="name" value="off" :checked="value === 'off'" />
       <div></div>
     </label>
-    <label
-      class="switch-default m-input__radio"
-      :class="{ checked: value === 'default' }"
-    >
-      <input
-        type="radio"
-        :name="name"
-        value="default"
-        :checked="value === 'default'"
-      />
+    <label class="switch-default m-input__radio" :class="{ checked: value === 'default' }">
+      <input type="radio" :name="name" value="default" :checked="value === 'default'" />
       <div></div>
     </label>
-    <label
-      class="switch-on m-input__radio"
-      :class="{ checked: value === 'on' }"
-    >
+    <label class="switch-on m-input__radio" :class="{ checked: value === 'on' }">
       <input type="radio" :name="name" value="on" :checked="value === 'on'" />
       <div></div>
     </label>
@@ -63,6 +49,7 @@ export default {
   height: 25px;
   line-height: 25px;
   vertical-align: middle;
+
   &-off,
   &-on,
   &-default {
@@ -70,6 +57,7 @@ export default {
     height: 25px;
     line-height: 25px;
     flex: 1 1 auto;
+
     input,
     div {
       height: 25px;

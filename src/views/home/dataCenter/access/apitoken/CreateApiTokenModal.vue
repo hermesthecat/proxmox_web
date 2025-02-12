@@ -1,37 +1,17 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @cancel="close"
-    @confirm="confirm"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" @cancel="close" @confirm="confirm" :title="title" :_style="{ width: '956px' }"
+    @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-select
-                prop="userid"
-                label="User"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.userid.error"
-                :error-msg="rules.userid.message"
-                :readonly="false"
-                @on-change="handleUseridSelect"
-                v-model="userid"
-                placeholder="Please select a user"
-              >
-                <m-option
-                  v-for="(item, index) in db.usersList"
-                  :key="item.userid"
-                  :label="item.userid"
-                  :value="item.userid"
-                >
+              <m-select prop="userid" label="User" labelWidth="100px" validateEvent @validate="validate"
+                :show-error="rules.userid.error" :error-msg="rules.userid.message" :readonly="false"
+                @on-change="handleUseridSelect" v-model="userid" placeholder="Please select a user">
+                <m-option v-for="(item, index) in db.usersList" :key="item.userid" :label="item.userid"
+                  :value="item.userid">
                   <div v-if="index === 0" class="table-header__tr">
                     <span class="table-td">User</span>
                     <span class="table-td">Name</span>
@@ -41,64 +21,29 @@
                     <span class="table-td" :title="item.userid">{{
                       item.userid
                     }}</span>
-                    <span
-                      class="table-td"
-                      :title="`${item.firstname ? item.firstname : ''} ${
-                        item.lastname ? item.lastname : ''
-                      }`"
-                      >{{
-                        `${item.firstname ? item.firstname : ""} ${
-                          item.lastname ? item.lastname : ""
+                    <span class="table-td" :title="`${item.firstname ? item.firstname : ''} ${item.lastname ? item.lastname : ''
+                      }`">{{
+                        `${item.firstname ? item.firstname : ""} ${item.lastname ? item.lastname : ""
                         }`
-                      }}</span
-                    >
+                      }}</span>
                     <span class="table-td" :title="item.comment">{{
                       item.comment
                     }}</span>
                   </div>
                 </m-option>
               </m-select>
-              <m-checkbox
-                label="Privilege Separation"
-                v-model="privsep"
-                labelWidth="100px"
-              ></m-checkbox>
-              <m-input
-                type="text"
-                prop="tokenid"
-                labelWidth="100px"
-                label="Token ID"
-                v-model="tokenid"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.tokenid.error"
-                :error-msg="rules.tokenid.message"
-                :disabled="modalType !== 'create'"
-                placeholder="Please enter Token ID"
-              />
-              <m-input
-                prop="expire"
-                labelWidth="100px"
-                label="Select Date"
-                :__conStyle="{ width: '202px' }"
-              >
+              <m-checkbox label="Privilege Separation" v-model="privsep" labelWidth="100px"></m-checkbox>
+              <m-input type="text" prop="tokenid" labelWidth="100px" label="Token ID" v-model="tokenid" validateEvent
+                @validate="validate" :show-error="rules.tokenid.error" :error-msg="rules.tokenid.message"
+                :disabled="modalType !== 'create'" placeholder="Please enter Token ID" />
+              <m-input prop="expire" labelWidth="100px" label="Select Date" :__conStyle="{ width: '202px' }">
                 <template slot="other">
-                  <el-date-picker
-                    v-model="expire"
-                    type="date"
-                    placeholder="Never Expires"
-                  >
+                  <el-date-picker v-model="expire" type="date" placeholder="Never Expires">
                   </el-date-picker>
                 </template>
               </m-input>
-              <m-input
-                type="textarea"
-                prop="comment"
-                labelWidth="100px"
-                label="Comment"
-                v-model="comment"
-                placeholder="Please enter a comment"
-              />
+              <m-input type="textarea" prop="comment" labelWidth="100px" label="Comment" v-model="comment"
+                placeholder="Please enter a comment" />
             </dd>
           </dl>
         </div>
@@ -224,8 +169,8 @@ export default {
                 msg: res,
                 type: "error",
               })
-              .then(() => {})
-              .catch(() => {});
+              .then(() => { })
+              .catch(() => { });
           });
       } else {
         this.updateTokenApi(param)
@@ -238,8 +183,8 @@ export default {
                 msg: res,
                 type: "error",
               })
-              .then(() => {})
-              .catch(() => {});
+              .then(() => { })
+              .catch(() => { });
           });
       }
     },

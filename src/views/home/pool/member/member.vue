@@ -1,50 +1,27 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-dropdown
-        trigger="click"
-        icon="fa fa-user"
-        @on-change="handleCommand"
-        style="
+      <m-dropdown trigger="click" icon="fa fa-user" @on-change="handleCommand" style="
           width: 8rem;
           height: 30px;
           line-height: 30px;
           color: #fff !important;
-        "
-      >
+        ">
         <span slot="label">
-          <m-button
-            type="primary"
-            style="position: absolute; left: -1px; top: -1px; right: -1px"
-            icon="el-icon-plus"
-            >Add</m-button
-          >
+          <m-button type="primary" style="position: absolute; left: -1px; top: -1px; right: -1px"
+            icon="el-icon-plus">Add</m-button>
         </span>
-        <m-dropdown-item command="qemu" icon="fa fa-desktop"
-          >Virtual Machine</m-dropdown-item
-        >
-        <m-dropdown-item command="storage" icon="fa fa-database"
-          >Storage</m-dropdown-item
-        >
+        <m-dropdown-item command="qemu" icon="fa fa-desktop">Virtual Machine</m-dropdown-item>
+        <m-dropdown-item command="storage" icon="fa fa-database">Storage</m-dropdown-item>
       </m-dropdown>
-      <m-button
-        type="danger"
-        icon="el-icon-delete"
-        :disabled="selectedList.length <= 0"
-        v-confirm="{
-          msg: 'Are you sure you want to delete selected items?',
-          icon: 'icon-warning',
-          ok: deleteResourceToPool,
-        }"
-        >Delete</m-button
-      >
+      <m-button type="danger" icon="el-icon-delete" :disabled="selectedList.length <= 0" v-confirm="{
+        msg: 'Are you sure you want to delete selected items?',
+        icon: 'icon-warning',
+        ok: deleteResourceToPool,
+      }">Delete</m-button>
     </div>
     <div slot="page-content">
-      <el-table
-        :data="members"
-        @selection-change="handleSelect"
-        @sort-change="handleSort"
-      >
+      <el-table :data="members" @selection-change="handleSelect" @sort-change="handleSort">
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column label="Category" sortable prop="type">
           <template slot-scope="scope">
@@ -63,40 +40,31 @@
         </el-table-column>
         <el-table-column label="Disk Usage">
           <template slot-scope="scope">
-            <line-charts
-              :value="
-                Number(
-                  (scope && scope.row && scope.row.maxdisk && scope.row.disk
-                    ? scope.row.disk / scope.row.maxdisk
-                    : 0) * 100
-                )
-              "
-            ></line-charts>
+            <line-charts :value="Number(
+              (scope && scope.row && scope.row.maxdisk && scope.row.disk
+                ? scope.row.disk / scope.row.maxdisk
+                : 0) * 100
+            )
+              "></line-charts>
           </template>
         </el-table-column>
         <el-table-column label="Memory Usage">
           <template slot-scope="scope">
-            <line-charts
-              :value="
-                Number(
-                  (scope && scope.row && scope.row.maxmem && scope.row.mem
-                    ? scope.row.mem / scope.row.maxmem
-                    : 0) * 100
-                )
-              "
-            ></line-charts>
+            <line-charts :value="Number(
+              (scope && scope.row && scope.row.maxmem && scope.row.mem
+                ? scope.row.mem / scope.row.maxmem
+                : 0) * 100
+            )
+              "></line-charts>
           </template>
         </el-table-column>
         <el-table-column label="CPU Usage">
           <template slot-scope="scope">
-            <line-charts
-              :value="
-                Number(
-                  (scope && scope.row && scope.row.cpu ? scope.row.cpu : 0) *
-                    100
-                )
-              "
-            ></line-charts>
+            <line-charts :value="Number(
+              (scope && scope.row && scope.row.cpu ? scope.row.cpu : 0) *
+              100
+            )
+              "></line-charts>
           </template>
         </el-table-column>
         <el-table-column label="Uptime">
@@ -107,16 +75,10 @@
           </template>
         </el-table-column>
       </el-table>
-      <add-pool-modal
-        v-if="visible"
-        :visible="visible"
-        :title="title"
-        @close="
-          visible = false;
-          __init__();
-        "
-        :modalType="modalType"
-      ></add-pool-modal>
+      <add-pool-modal v-if="visible" :visible="visible" :title="title" @close="
+        visible = false;
+      __init__();
+      " :modalType="modalType"></add-pool-modal>
     </div>
   </page-template>
 </template>

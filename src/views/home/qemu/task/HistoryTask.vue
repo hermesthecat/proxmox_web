@@ -18,10 +18,10 @@
         <el-table-column type="expand">
           <template slot-scope="props">
             <table-info-state :content="props.row.status && props.row.status" :state="props.row.status &&
-                props.row.status &&
-                props.row.status === 'OK'
-                ? 'actived'
-                : 'dead'
+              props.row.status &&
+              props.row.status === 'OK'
+              ? 'actived'
+              : 'dead'
               "></table-info-state>
           </template>
         </el-table-column>
@@ -56,22 +56,22 @@
         <el-table-column label="Status" prop="disable" show-overflow-tooltip>
           <template slot-scope="scope">
             <table-info-state :content="scope.row.status && scope.row.status" :state="scope.row.status &&
-                scope.row.status &&
-                scope.row.status === 'OK'
-                ? 'actived'
-                : 'dead'
+              scope.row.status &&
+              scope.row.status === 'OK'
+              ? 'actived'
+              : 'dead'
               "></table-info-state>
           </template>
         </el-table-column>
       </el-table>
       <el-pagination class="page-table-pagination" @size-change="(val) => {
-          pageSize = val;
+        pageSize = val;
+        chunks();
+      }
+        " @current-change="(val) => {
+          currentPage = val;
           chunks();
         }
-        " @current-change="(val) => {
-            currentPage = val;
-            chunks();
-          }
           " :current-page="currentPage" :page-sizes="[10, 20, 30, 40, 50]" :page-size="pageSize"
         :total="qemuTaskList.length" layout="total, sizes, prev, pager, next, jumper">
       </el-pagination>

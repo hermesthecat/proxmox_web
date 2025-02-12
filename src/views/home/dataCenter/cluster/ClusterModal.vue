@@ -1,18 +1,13 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @close="close()"
-    :_style="{
-      width: '100%',
-      height: 'calc(100%)',
-      position: 'absolute',
-      top: '0',
-      left: '0',
-      right: '0',
-      bottom: '0',
-    }"
-    title="Cluster Join Information"
-  >
+  <Dialog :visible="visible" @close="close()" :_style="{
+    width: '100%',
+    height: 'calc(100%)',
+    position: 'absolute',
+    top: '0',
+    left: '0',
+    right: '0',
+    bottom: '0',
+  }" title="Cluster Join Information">
     <template slot="content" v-if="type === 'info'">
       <h1>Copy the join information here and use it on the node you want to add.</h1>
       <div class="m-form__content">
@@ -20,45 +15,23 @@
           <dl>
             <dt>IP Address</dt>
             <dd>
-              <m-input
-                type="text"
-                prop="ipAddress"
-                v-model="ipAddress"
-                readonly
-                :_style="{ width: '650px' }"
-                :__conStyle="{ width: 'auto' }"
-                placeholder="Please enter IP address"
-              />
+              <m-input type="text" prop="ipAddress" v-model="ipAddress" readonly :_style="{ width: '650px' }"
+                :__conStyle="{ width: 'auto' }" placeholder="Please enter IP address" />
             </dd>
           </dl>
           <dl>
             <dt>Fingerprint</dt>
             <dd>
-              <m-input
-                type="text"
-                prop="fingerprint"
-                v-model="fingerprint"
-                readonly
-                :_style="{ width: '650px' }"
-                :__conStyle="{ width: 'auto' }"
-                placeholder="Please enter fingerprint"
-              />
+              <m-input type="text" prop="fingerprint" v-model="fingerprint" readonly :_style="{ width: '650px' }"
+                :__conStyle="{ width: 'auto' }" placeholder="Please enter fingerprint" />
             </dd>
           </dl>
           <dl>
             <dt>Join Information</dt>
             <dd>
-              <m-input
-                ref="info"
-                type="textarea"
-                prop="information"
-                v-model="information"
-                :rows="10"
-                :_style="{ width: '650px' }"
-                readonly
-                :__conStyle="{ width: 'auto' }"
-                placeholder="Please enter information"
-              />
+              <m-input ref="info" type="textarea" prop="information" v-model="information" :rows="10"
+                :_style="{ width: '650px' }" readonly :__conStyle="{ width: 'auto' }"
+                placeholder="Please enter information" />
             </dd>
           </dl>
         </div>
@@ -70,17 +43,9 @@
           <dl>
             <dt>Cluster Name</dt>
             <dd>
-              <m-input
-                type="text"
-                prop="clusterName"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules.clusterName.error"
-                :error-msg="rules.clusterName.message"
-                v-model="clusterName"
-                placeholder="Please enter cluster name"
-              />
+              <m-input type="text" prop="clusterName" validateEvent @validate="validate" required
+                :show-error="rules.clusterName.error" :error-msg="rules.clusterName.message" v-model="clusterName"
+                placeholder="Please enter cluster name" />
             </dd>
           </dl>
         </div>
@@ -88,27 +53,11 @@
           <dl>
             <dt>Network</dt>
             <dd>
-              <m-select
-                type="text"
-                prop="link0"
-                label="link0"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules.link0.error"
-                :error-msg="rules.link0.message"
-                :readonly="false"
-                @on-change="(value) => (link0 = value)"
-                v-model="link0"
-                placeholder="Please select"
-              >
-                <m-option
-                  v-for="(item, index) in netWorkList"
-                  :key="item.address"
-                  :label="item.address"
-                  :value="item.address"
-                >
+              <m-select type="text" prop="link0" label="link0" labelWidth="100px" validateEvent @validate="validate"
+                required :show-error="rules.link0.error" :error-msg="rules.link0.message" :readonly="false"
+                @on-change="(value) => (link0 = value)" v-model="link0" placeholder="Please select">
+                <m-option v-for="(item, index) in netWorkList" :key="item.address" :label="item.address"
+                  :value="item.address">
                   <template v-show="index === 0">
                     <div class="table-header__tr">
                       <span class="table-td">CIDR</span>
@@ -125,10 +74,8 @@
                       item.iface
                     }}</span>
                     <span class="table-td" :title="item.active">
-                      <table-info-state
-                        :content="item.active === 1 ? 'Yes' : 'No'"
-                        :state="item.active === 1 ? 'actived' : 'unactived'"
-                      ></table-info-state>
+                      <table-info-state :content="item.active === 1 ? 'Yes' : 'No'"
+                        :state="item.active === 1 ? 'actived' : 'unactived'"></table-info-state>
                     </span>
                     <span class="table-td" :title="item.comment">
                       {{ item.comment }}
@@ -137,22 +84,10 @@
                 </m-option>
               </m-select>
               <template v-for="(item, num) in networkNum" :key="num">
-                <m-select
-                  type="text"
-                  :prop="`link${item}`"
-                  :label="`link${item}`"
-                  labelWidth="100px"
-                  validateEvent
-                  v-model="link[item]"
-                  @on-change="(value) => ($data.link[item] = value)"
-                  placeholder="Please select"
-                >
-                  <m-option
-                    v-for="(item, index) in netWorkList"
-                    :key="item.address"
-                    :label="item.address"
-                    :value="item.address"
-                  >
+                <m-select type="text" :prop="`link${item}`" :label="`link${item}`" labelWidth="100px" validateEvent
+                  v-model="link[item]" @on-change="(value) => ($data.link[item] = value)" placeholder="Please select">
+                  <m-option v-for="(item, index) in netWorkList" :key="item.address" :label="item.address"
+                    :value="item.address">
                     <template v-show="index === 0">
                       <div class="table-header__tr">
                         <span class="table-td">CIDR</span>
@@ -169,10 +104,8 @@
                         item.iface
                       }}</span>
                       <span class="table-td" :title="item.active">
-                        <table-info-state
-                          :content="item.active === 1 ? 'Yes' : 'No'"
-                          :state="item.active === 1 ? 'actived' : 'unactived'"
-                        ></table-info-state>
+                        <table-info-state :content="item.active === 1 ? 'Yes' : 'No'"
+                          :state="item.active === 1 ? 'actived' : 'unactived'"></table-info-state>
                       </span>
                       <span class="table-td" :title="item.comment">
                         {{ item.comment }}
@@ -180,19 +113,9 @@
                     </div>
                   </m-option>
                 </m-select>
-                <m-button
-                  type="danger"
-                  icon="el-icon-delete"
-                  @on-click="handleLinkDelete(item, num)"
-                  >Delete</m-button
-                >
+                <m-button type="danger" icon="el-icon-delete" @on-click="handleLinkDelete(item, num)">Delete</m-button>
               </template>
-              <m-button
-                type="primary"
-                icon="el-icon-plus"
-                @on-click="handleLinkChange"
-                >Add</m-button
-              >
+              <m-button type="primary" icon="el-icon-plus" @on-click="handleLinkChange">Add</m-button>
             </dd>
           </dl>
         </div>
@@ -213,90 +136,34 @@
           <dl v-if="isCreate">
             <dt>Information</dt>
             <dd>
-              <m-input
-                type="textarea"
-                prop="serializedinfo"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules.serializedinfo.error"
-                :error-msg="rules.serializedinfo.message"
-                v-model="serializedinfo"
-                @change="searialChange"
-                placeholder="Please enter cluster name"
-              />
+              <m-input type="textarea" prop="serializedinfo" validateEvent @validate="validate" required
+                :show-error="rules.serializedinfo.error" :error-msg="rules.serializedinfo.message"
+                v-model="serializedinfo" @change="searialChange" placeholder="Please enter cluster name" />
             </dd>
           </dl>
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-input
-                type="text"
-                prop="hostname"
-                label="Remote Address"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules.hostname.error"
-                :error-msg="rules.hostname.message"
-                v-model="hostname"
-                :readonly="isCreate"
-                :placeholder="!isCreate ? 'Please enter remote address' : ''"
-              />
-              <m-input
-                type="password"
-                prop="password"
-                label="Password"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules.password.error"
-                :error-msg="rules.password.message"
-                v-model="password"
-                placeholder="Please enter password"
-              />
-              <m-input
-                type="text"
-                prop="fingerprint"
-                label="Fingerprint"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                required
-                :readonly="isCreate"
-                :show-error="rules.fingerprint.error"
-                :error-msg="rules.fingerprint.message"
-                v-model="fingerprint"
-                :placeholder="!isCreate ? 'Please enter fingerprint' : ''"
-              />
+              <m-input type="text" prop="hostname" label="Remote Address" labelWidth="100px" validateEvent
+                @validate="validate" required :show-error="rules.hostname.error" :error-msg="rules.hostname.message"
+                v-model="hostname" :readonly="isCreate" :placeholder="!isCreate ? 'Please enter remote address' : ''" />
+              <m-input type="password" prop="password" label="Password" labelWidth="100px" validateEvent
+                @validate="validate" required :show-error="rules.password.error" :error-msg="rules.password.message"
+                v-model="password" placeholder="Please enter password" />
+              <m-input type="text" prop="fingerprint" label="Fingerprint" labelWidth="100px" validateEvent
+                @validate="validate" required :readonly="isCreate" :show-error="rules.fingerprint.error"
+                :error-msg="rules.fingerprint.message" v-model="fingerprint"
+                :placeholder="!isCreate ? 'Please enter fingerprint' : ''" />
             </dd>
           </dl>
           <dl>
             <dt>Network</dt>
             <dd>
-              <m-select
-                type="text"
-                prop="link0"
-                label="link0"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules.link0.error"
-                :error-msg="rules.link0.message"
-                :readonly="false"
-                @on-change="(value) => (link0 = value)"
-                v-model="link0"
-                placeholder="Please select"
-              >
-                <m-option
-                  v-for="(item, index) in netWorkList"
-                  :key="item.address"
-                  :label="item.address"
-                  :value="item.address"
-                >
+              <m-select type="text" prop="link0" label="link0" labelWidth="100px" validateEvent @validate="validate"
+                required :show-error="rules.link0.error" :error-msg="rules.link0.message" :readonly="false"
+                @on-change="(value) => (link0 = value)" v-model="link0" placeholder="Please select">
+                <m-option v-for="(item, index) in netWorkList" :key="item.address" :label="item.address"
+                  :value="item.address">
                   <template v-if="index === 0">
                     <div class="table-header__tr">
                       <span class="table-td">CIDR</span>
@@ -313,10 +180,8 @@
                       item.iface
                     }}</span>
                     <span class="table-td">
-                      <table-info-state
-                        :content="item.active === 1 ? 'Yes' : 'No'"
-                        :state="item.active === 1 ? 'actived' : 'unactived'"
-                      ></table-info-state>
+                      <table-info-state :content="item.active === 1 ? 'Yes' : 'No'"
+                        :state="item.active === 1 ? 'actived' : 'unactived'"></table-info-state>
                     </span>
                     <span class="table-td" :title="item.comment">
                       {{ item.comment }}
@@ -326,22 +191,10 @@
               </m-select>
               <template v-if="!isCreate">
                 <template v-for="(item, num) in networkNum" :key="num">
-                  <m-select
-                    type="text"
-                    :prop="`link${item}`"
-                    :label="`link${item}`"
-                    labelWidth="100px"
-                    validateEvent
-                    v-model="link[item]"
-                    @on-change="(value) => ($data.link[item] = value)"
-                    placeholder="Please select"
-                  >
-                    <m-option
-                      v-for="(item, index) in netWorkList"
-                      :key="item.address"
-                      :label="item.address"
-                      :value="item.address"
-                    >
+                  <m-select type="text" :prop="`link${item}`" :label="`link${item}`" labelWidth="100px" validateEvent
+                    v-model="link[item]" @on-change="(value) => ($data.link[item] = value)" placeholder="Please select">
+                    <m-option v-for="(item, index) in netWorkList" :key="item.address" :label="item.address"
+                      :value="item.address">
                       <template v-show="index === 0">
                         <div class="table-header__tr">
                           <span class="table-td">CIDR</span>
@@ -358,10 +211,8 @@
                           item.iface
                         }}</span>
                         <span class="table-td">
-                          <table-info-state
-                            :content="item.active === 1 ? 'Yes' : 'No'"
-                            :state="item.active === 1 ? 'actived' : 'unactived'"
-                          ></table-info-state>
+                          <table-info-state :content="item.active === 1 ? 'Yes' : 'No'"
+                            :state="item.active === 1 ? 'actived' : 'unactived'"></table-info-state>
                         </span>
                         <span class="table-td" :title="item.comment">
                           {{ item.comment }}
@@ -369,22 +220,14 @@
                       </div>
                     </m-option>
                   </m-select>
-                  <m-button
-                    type="danger"
-                    icon="el-icon-delete"
-                    @on-click="handleLinkDelete(item, num)"
-                    >Delete</m-button
-                  >
+                  <m-button type="danger" icon="el-icon-delete"
+                    @on-click="handleLinkDelete(item, num)">Delete</m-button>
                 </template>
               </template>
               <div>
-                <m-button
-                  type="primary"
-                  icon="el-icon-plus"
-                  @on-click="handleLinkChange"
-                  v-if="!isCreate"
-                  >Add</m-button
-                >Multiple links are used as failover, lower numbers have higher
+                <m-button type="primary" icon="el-icon-plus" @on-click="handleLinkChange"
+                  v-if="!isCreate">Add</m-button>Multiple
+                links are used as failover, lower numbers have higher
                 priority.
               </div>
             </dd>
@@ -393,44 +236,26 @@
       </div>
     </template>
     <template slot="footer">
-      <Dialog
-        :visible="showLog"
-        @close="closeLog"
-        :_style="{
-          width: '800px',
-        }"
-        title="Task Viewer: Join Cluster"
-      >
+      <Dialog :visible="showLog" @close="closeLog" :_style="{
+        width: '800px',
+      }" title="Task Viewer: Join Cluster">
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
             <m-tab-panel label="Output" name="log"></m-tab-panel>
             <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
-          <m-button
-            class="create-btn"
-            type="primary"
-            @on-click="stopTask1"
-            :disabled="db.addClusterStatusObj.status !== 'running'"
-            >Stop</m-button
-          >
+          <m-button class="create-btn" type="primary" @on-click="stopTask1"
+            :disabled="db.addClusterStatusObj.status !== 'running'">Stop</m-button>
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
               <div class="table" v-if="tab === 'log'">
-                <div
-                  class="table-tr"
-                  v-for="item in db.addClusterLogList"
-                  :key="item.n"
-                >
+                <div class="table-tr" v-for="item in db.addClusterLogList" :key="item.n">
                   {{ item.t }}
                 </div>
               </div>
               <div class="table" v-if="tab === 'status'">
                 <template v-for="(item, key) in db.addClusterStatusObj">
-                  <div
-                    class="table-tr"
-                    v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-                    :key="key"
-                  >
+                  <div class="table-tr" v-if="!['exitstatus', 'id', 'pstart'].includes(key)" :key="key">
                     <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
                     <div class="table-td" v-if="key === 'starttime'">
                       {{
@@ -456,14 +281,10 @@
             <div>Advanced</div>
           </label>
         </div>
-        <m-button class="create-btn" type="primary" @on-click="create"
-          >Create</m-button
-        >
+        <m-button class="create-btn" type="primary" @on-click="create">Create</m-button>
       </template>
       <template v-if="type === 'join'">
-        <m-button class="create-btn" type="primary" @on-click="joinCluster"
-          >Join</m-button
-        >
+        <m-button class="create-btn" type="primary" @on-click="joinCluster">Join</m-button>
       </template>
     </template>
   </Dialog>
@@ -715,8 +536,8 @@ export default {
               msg: res,
               type: "error",
             })
-            .then(() => {})
-            .catch(() => {});
+            .then(() => { })
+            .catch(() => { });
         });
     },
     handleTabChange(value) {
@@ -771,10 +592,12 @@ export default {
   display: inline-block;
   vertical-align: -webkit-baseline-middle;
 }
+
 .m-button {
   height: 33px;
   line-height: 28px;
 }
+
 .create-btn {
   width: 100px;
   height: 42px;

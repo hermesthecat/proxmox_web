@@ -1,55 +1,27 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button
-        type="primary"
-        @on-click="showModal()"
-        icon="el-icon-plus"
-        :disabled="selectedList.length !== 1"
-        >View</m-button
-      >
+      <m-button type="primary" @on-click="showModal()" icon="el-icon-plus"
+        :disabled="selectedList.length !== 1">View</m-button>
     </div>
     <div slot="toolbar-right" style="text-align: right">
-      <m-input
-        type="text"
-        prop="user"
-        labelWidth="80px"
-        label="Username"
-        v-model="user"
-        @change="filter('user')"
-        placeholder="Please enter username"
-      >
+      <m-input type="text" prop="user" labelWidth="80px" label="Username" v-model="user" @change="filter('user')"
+        placeholder="Please enter username">
         <i slot="prefix" class="el-icon-search"></i>
       </m-input>
-      <m-checkbox
-        label="Errors Only"
-        v-model="error"
-        labelWidth="100px"
-        @change="filter('error')"
-      ></m-checkbox>
+      <m-checkbox label="Errors Only" v-model="error" labelWidth="100px" @change="filter('error')"></m-checkbox>
     </div>
     <div slot="page-content">
-      <el-table
-        :data="chunkDataList"
-        ref="dataTable"
-        :row-key="setRowKeys"
-        :expand-row-keys="expands"
-        @expand-change="expandChange"
-        :row-class-name="setRoleCalssName"
-        @selection-change="handleSelect"
-      >
+      <el-table :data="chunkDataList" ref="dataTable" :row-key="setRowKeys" :expand-row-keys="expands"
+        @expand-change="expandChange" :row-class-name="setRoleCalssName" @selection-change="handleSelect">
         <el-table-column type="expand">
           <template slot-scope="props">
-            <table-info-state
-              :content="props.row.status && props.row.status"
-              :state="
-                props.row.status &&
+            <table-info-state :content="props.row.status && props.row.status" :state="props.row.status &&
                 props.row.status &&
                 props.row.status === 'OK'
-                  ? 'actived'
-                  : 'dead'
-              "
-            ></table-info-state>
+                ? 'actived'
+                : 'dead'
+              "></table-info-state>
           </template>
         </el-table-column>
         <el-table-column type="selection" width="55"></el-table-column>
@@ -82,78 +54,46 @@
         </el-table-column>
         <el-table-column label="Status" prop="disable" show-overflow-tooltip>
           <template slot-scope="scope">
-            <table-info-state
-              :content="scope.row.status && scope.row.status"
-              :state="
-                scope.row.status &&
+            <table-info-state :content="scope.row.status && scope.row.status" :state="scope.row.status &&
                 scope.row.status &&
                 scope.row.status === 'OK'
-                  ? 'actived'
-                  : 'dead'
-              "
-            ></table-info-state>
+                ? 'actived'
+                : 'dead'
+              "></table-info-state>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        class="page-table-pagination"
-        @size-change="
-          (val) => {
-            pageSize = val;
-            chunks();
-          }
-        "
-        @current-change="
-          (val) => {
+      <el-pagination class="page-table-pagination" @size-change="(val) => {
+          pageSize = val;
+          chunks();
+        }
+        " @current-change="(val) => {
             currentPage = val;
             chunks();
           }
-        "
-        :current-page="currentPage"
-        :page-sizes="[10, 20, 30, 40, 50]"
-        :page-size="pageSize"
-        :total="nodeTaskList.length"
-        layout="total, sizes, prev, pager, next, jumper"
-      >
+          " :current-page="currentPage" :page-sizes="[10, 20, 30, 40, 50]" :page-size="pageSize"
+        :total="nodeTaskList.length" layout="total, sizes, prev, pager, next, jumper">
       </el-pagination>
-      <Dialog
-        :visible="showLog"
-        @close="closeLog"
-        :_style="{
-          width: '800px',
-        }"
-        :title="title"
-      >
+      <Dialog :visible="showLog" @close="closeLog" :_style="{
+        width: '800px',
+      }" :title="title">
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
             <m-tab-panel label="Output" name="log"></m-tab-panel>
             <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
-          <m-button
-            class="create-btn m-margin-top-10"
-            type="primary"
-            @on-click="stopTask1"
-            :disabled="db.addClusterStatusObj.status !== 'running'"
-            >Stop</m-button
-          >
+          <m-button class="create-btn m-margin-top-10" type="primary" @on-click="stopTask1"
+            :disabled="db.addClusterStatusObj.status !== 'running'">Stop</m-button>
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
               <div class="table" v-if="tab === 'log'">
-                <div
-                  class="table-tr"
-                  v-for="item in db.addClusterLogList"
-                  :key="item.n"
-                >
+                <div class="table-tr" v-for="item in db.addClusterLogList" :key="item.n">
                   {{ item.t }}
                 </div>
               </div>
               <div class="table" v-if="tab === 'status'">
                 <template v-for="(item, key) in db.addClusterStatusObj">
-                  <div
-                    class="table-tr"
-                    v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-                    :key="item.pid"
-                  >
+                  <div class="table-tr" v-if="!['exitstatus', 'id', 'pstart'].includes(key)" :key="item.pid">
                     <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
                     <div class="table-td" v-if="key === 'starttime'">
                       {{
@@ -279,7 +219,7 @@ export default {
         .then(() => {
           this.delete(type);
         })
-        .catch(() => {});
+        .catch(() => { });
     },
     expandChange(row, expandedRows) {
       var that = this;
@@ -338,26 +278,32 @@ export default {
   padding: 10px 0px;
   border-top: 1px solid #c4d6ec;
   border-bottom: 1px solid #c4d6ec;
+
   &__item {
     flex: 1 1 auto;
     display: flex;
   }
+
   &__title {
     flex: 1 1 auto;
     display: inline-flex;
   }
+
   &__desc {
     flex: 1 1 auto;
     display: inline-flex;
   }
 }
+
 /deep/.run-error {
   background: #f3d6d7 !important;
   color: #fff !important;
+
   &:hover {
     color: #606266 !important;
   }
 }
+
 /deep/.tool-bar-right {
   flex: 2;
 }

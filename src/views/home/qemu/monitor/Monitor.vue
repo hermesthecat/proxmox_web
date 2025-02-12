@@ -5,11 +5,7 @@
       </ace-editor>
     </div>
     <div class="monitor_textarea">
-      <input
-        @keyup.enter="updateCotnent"
-        v-model="command"
-        placeholder="Enter command"
-      />
+      <input @keyup.enter="updateCotnent" v-model="command" placeholder="Enter command" />
     </div>
   </div>
 </template>
@@ -74,12 +70,14 @@ export default {
   &_edit {
     padding: 20px 20px 0px;
   }
+
   &_textarea {
     height: 50px;
     line-height: 50px;
     position: absolute;
     bottom: 0px;
     width: 100%;
+
     input {
       width: calc(100% - 40px);
       height: 100%;
@@ -88,6 +86,7 @@ export default {
       border-right: none;
       border-top-width: 0.5px;
       margin: 0px 20px;
+
       &:focus {
         border-top: 1px solid #409eff;
       }

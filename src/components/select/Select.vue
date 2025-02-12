@@ -1,75 +1,32 @@
 <template>
   <ul class="m-select">
-    <label
-      class="select__label"
-      :style="{ width: labelWidth }"
-      :class="{ required: required }"
-      >{{ label }}</label
-    >
+    <label class="select__label" :style="{ width: labelWidth }" :class="{ required: required }">{{ label }}</label>
     <span class="m-select__input">
-      <span
-        class="select prefix-icon"
-        tabindex="0"
-        :class="{
-          show: trigger === 'hover' && isOpen,
-          'is-click': isOpen,
-          disabled: disabled,
-          'm-select__error': showError,
-        }"
-        @click.stop="handleClick"
-        ref="select"
-      >
+      <span class="select prefix-icon" tabindex="0" :class="{
+        show: trigger === 'hover' && isOpen,
+        'is-click': isOpen,
+        disabled: disabled,
+        'm-select__error': showError,
+      }" @click.stop="handleClick" ref="select">
         <span :class="['icon', icon]"></span>
         <template v-if="type === 'multiple'">
-          <span
-            v-for="(item, index) in selected"
-            :key="index"
-            class="m-select__item"
-          >
+          <span v-for="(item, index) in selected" :key="index" class="m-select__item">
             <span>{{ item.label }}</span>
-            <span
-              class="el-icon-close"
-              @click.stop="handleChange('', item.value, false)"
-            >
+            <span class="el-icon-close" @click.stop="handleChange('', item.value, false)">
             </span>
           </span>
-          <input
-            :placeholder="placeholder"
-            v-show="selected.length <= 0"
-            :class="{ disabled: disabled }"
-            readonly
-            :disabled="disabled"
-            class="m-select__input__inner"
-          />
+          <input :placeholder="placeholder" v-show="selected.length <= 0" :class="{ disabled: disabled }" readonly
+            :disabled="disabled" class="m-select__input__inner" />
         </template>
         <template v-else>
-          <span
-            class="m-select__item__input"
-            v-for="(item, index) in selected"
-            :key="index"
-          >
-            <input
-              class="m-select__input__inner"
-              :value="item.label"
-              :class="{ disabled: disabled }"
-              @blur.stop="handleOptionBlur"
-              @input="(e) => $emit('on-change', e.target.value)"
-              :placeholder="placeholder"
-              :readonly="readonly"
-              :disabled="disabled"
-            />
+          <span class="m-select__item__input" v-for="(item, index) in selected" :key="index">
+            <input class="m-select__input__inner" :value="item.label" :class="{ disabled: disabled }"
+              @blur.stop="handleOptionBlur" @input="(e) => $emit('on-change', e.target.value)"
+              :placeholder="placeholder" :readonly="readonly" :disabled="disabled" />
           </span>
-          <input
-            v-show="selected.length <= 0"
-            :class="{ disabled: disabled }"
-            class="m-select__input__inner"
-            :placeholder="placeholder"
-            @blur.stop="handleOptionBlur"
-            :value="value"
-            @input="(e) => !disabled && $emit('on-change', e.target.value)"
-            :readonly="readonly"
-            :disabled="disabled"
-          />
+          <input v-show="selected.length <= 0" :class="{ disabled: disabled }" class="m-select__input__inner"
+            :placeholder="placeholder" @blur.stop="handleOptionBlur" :value="value"
+            @input="(e) => !disabled && $emit('on-change', e.target.value)" :readonly="readonly" :disabled="disabled" />
         </template>
       </span>
       <div class="error-message" v-show="showError">{{ errorMsg }}</div>
@@ -77,29 +34,18 @@
     <transition>
       <div class="m-select-menu" v-show="renderDropMenu" ref="select-menu">
         <div x-arrow="" class="popper__arrow"></div>
-        <div
-          style="overflow-y: auto; max-height: 200px"
-          ref="select-option"
-          tabindex="0"
-          v-if="!isEmpty"
-          @mouseleave.stop="isOpen = false"
-        >
+        <div style="overflow-y: auto; max-height: 200px" ref="select-option" tabindex="0" v-if="!isEmpty"
+          @mouseleave.stop="isOpen = false">
           <slot></slot>
         </div>
-        <div
-          style="
+        <div style="
             overflow-y: auto;
             max-height: 200px;
             height: 28px;
             line-height: 28px;
             text-align: center;
             padding: 0px 10px;
-          "
-          ref="select-option"
-          tabindex="0"
-          v-else
-          @mouseleave.stop="isOpen = false"
-        >
+          " ref="select-option" tabindex="0" v-else @mouseleave.stop="isOpen = false">
           No Data
         </div>
       </div>
@@ -128,13 +74,11 @@ export default {
           this.$refs &&
           this.$refs["select"] &&
           this.$refs["select"].getBoundingClientRect();
-        this.$refs["select-menu"].style.top = `${
-          top + this.$refs["select"].clientHeight + 10
-        }px`;
+        this.$refs["select-menu"].style.top = `${top + this.$refs["select"].clientHeight + 10
+          }px`;
         this.$refs["select-menu"].style.left = `${el + left}px`;
-        this.$refs["select-menu"].style.minWidth = `${
-          1.2 * this.$refs["select"].clientWidth
-        }px`;
+        this.$refs["select-menu"].style.minWidth = `${1.2 * this.$refs["select"].clientWidth
+          }px`;
         this.$refs["select-menu"].style.transition = `all 0.5s ease-in`;
         document.body.appendChild(this.$refs["select-menu"]);
         setTimeout(() => {
@@ -325,6 +269,7 @@ export default {
   cursor: pointer;
   display: inline-block;
   vertical-align: middle;
+
   &::after {
     position: absolute;
     right: 10px;
@@ -342,6 +287,7 @@ export default {
   display: inline-block;
   padding: 0 10px 15px;
   position: relative;
+
   &-menu {
     position: absolute;
     top: 100%;
@@ -354,6 +300,7 @@ export default {
     max-height: 200px;
     transform-origin: center top 0px;
   }
+
   &__item {
     display: inline-block;
     vertical-align: middle;
@@ -362,15 +309,18 @@ export default {
     background: #fef0f0;
     margin: 5px 5px;
     padding: 0px 5px;
+
     &__input {
       height: 30px;
       line-height: 30px;
     }
   }
+
   &__input {
     display: inline-block;
     vertical-align: middle;
     position: relative;
+
     &__inner {
       height: 28px;
       border: none;
@@ -378,29 +328,35 @@ export default {
       padding-left: 5px;
     }
   }
+
   &__error {
     border: 1px solid #ec4242;
   }
 }
+
 .select.is-click {
   .select-item {
     display: block;
     z-index: 999;
   }
+
   .select-menu {
     border: 1px solid #3973ff;
   }
 }
+
 .select.show {
   &:hover {
     .select-item {
       display: block;
     }
+
     .select-menu {
       border: 1px solid #3973ff;
     }
   }
 }
+
 .popper__arrow {
   top: -6px;
   left: 50%;
@@ -408,6 +364,7 @@ export default {
   border-top-width: 0;
   border-bottom-color: #ebeef5;
   border-width: 6px;
+
   // /filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.03));
   &:after {
     content: "";
@@ -432,14 +389,17 @@ export default {
   display: inline-block;
   vertical-align: middle;
 }
+
 .m-form__checkbox {
   vertical-align: middle;
   margin-top: 10px;
   display: inline-block;
-  input:disabled + div::after {
+
+  input:disabled+div::after {
     background: #dde4ed;
   }
 }
+
 .error-message {
   position: absolute;
   left: 0px;

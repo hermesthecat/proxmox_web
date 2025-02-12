@@ -23,8 +23,8 @@
           <template slot-scope="scope">
             <table-info-state :content="scope.row.enable && scope.row.enable === 1 ? 'Yes' : 'No'
               " :state="scope.row.enable && scope.row.enable === 1
-                  ? 'actived'
-                  : 'unActived'
+                ? 'actived'
+                : 'unActived'
                 "></table-info-state>
           </template>
         </el-table-column>
@@ -42,8 +42,8 @@
         <el-table-column>
           <template slot-scope="scope">
             <m-button type="info" :icon="scope.row.enable === 0
-                ? 'el-icon-video-play'
-                : 'el-icon-video-pause'
+              ? 'el-icon-video-play'
+              : 'el-icon-video-pause'
               " @on-click="handleEnable(scope.row)">{{ scope.row.enable === 0 ? "Enable" : "Disable" }}</m-button>
           </template>
         </el-table-column>

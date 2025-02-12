@@ -1,86 +1,38 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button
-        type="primary"
-        @on-click="showModal('backup')"
-        icon="fa fa-save"
-        v-if="!showOperate"
-        >Backup Now</m-button
-      >
-      <m-button
-        type="primary"
-        @on-click="showModal('restore')"
-        icon="fa fa-retweet"
-        v-if="!showOperate"
-        :disabled="selectedList.length !== 1"
-        >Restore</m-button
-      >
-      <m-button
-        type="danger"
-        @on-click="handleDelete()"
-        icon="el-icon-delete"
-        v-if="!showOperate"
-        :disabled="selectedList.length !== 1"
-        >Delete</m-button
-      >
-      <m-button
-        type="info"
-        @on-click="showModal('config')"
-        icon="el-icon-view"
-        v-if="!showOperate"
-        :disabled="selectedList.length !== 1"
-        >Show Configuration</m-button
-      >
-      <m-dropdown
-        trigger="click"
-        v-if="showOperate"
-        @on-change="showModal"
-        style="
+      <m-button type="primary" @on-click="showModal('backup')" icon="fa fa-save" v-if="!showOperate">Backup
+        Now</m-button>
+      <m-button type="primary" @on-click="showModal('restore')" icon="fa fa-retweet" v-if="!showOperate"
+        :disabled="selectedList.length !== 1">Restore</m-button>
+      <m-button type="danger" @on-click="handleDelete()" icon="el-icon-delete" v-if="!showOperate"
+        :disabled="selectedList.length !== 1">Delete</m-button>
+      <m-button type="info" @on-click="showModal('config')" icon="el-icon-view" v-if="!showOperate"
+        :disabled="selectedList.length !== 1">Show Configuration</m-button>
+      <m-dropdown trigger="click" v-if="showOperate" @on-change="showModal" style="
           width: 8rem;
           height: 30px;
           line-height: 30px;
           color: #fff !important;
-        "
-      >
+        ">
         <span slot="label">
-          <m-button
-            type="primary"
-            style="position: absolute; left: -1px; top: -1px; right: -1px"
-            icon="el-icon-plus"
-            >Operations</m-button
-          >
+          <m-button type="primary" style="position: absolute; left: -1px; top: -1px; right: -1px"
+            icon="el-icon-plus">Operations</m-button>
         </span>
         <template v-for="item in operateItems" :key="item.value">
-          <m-dropdown-item
-            :command="item.value"
-            :icon="item.icon"
-            :disabled="
-              item.value === 'backup' ? false : selectedList.length !== 1
-            "
-            >{{ item.label }}</m-dropdown-item
-          >
+          <m-dropdown-item :command="item.value" :icon="item.icon" :disabled="item.value === 'backup' ? false : selectedList.length !== 1
+            ">{{ item.label }}</m-dropdown-item>
         </template>
       </m-dropdown>
     </div>
     <div slot="toolbar-right" style="text-align: right">
-      <m-select
-        v-model="storage"
-        label="Storage"
-        prop="storage"
-        @on-change="
-          (value) => {
-            storage = value;
-            handleChangeStorage();
-          }
-        "
-      >
-        <m-option
-          v-for="(item, index) in qemuStorageList"
-          :label="item.storage"
-          :key="item.storage"
-          :value="item.storage"
-        >
+      <m-select v-model="storage" label="Storage" prop="storage" @on-change="(value) => {
+          storage = value;
+          handleChangeStorage();
+        }
+        ">
+        <m-option v-for="(item, index) in qemuStorageList" :label="item.storage" :key="item.storage"
+          :value="item.storage">
           <div class="table-tr" v-if="index === 0">
             <div class="table-td">Name</div>
             <div class="table-td">Category</div>
@@ -90,40 +42,22 @@
           <div class="table-tr">
             <div class="table-td" :title="item.storage">{{ item.storage }}</div>
             <div class="table-td" :title="item.type">{{ item.type }}</div>
-            <div
-              class="table-td"
-              :title="item.avail ? byteToSize(item.avail) : '0'"
-            >
+            <div class="table-td" :title="item.avail ? byteToSize(item.avail) : '0'">
               {{ item.avail ? byteToSize(item.avail) : "0" }}
             </div>
-            <div
-              class="table-td"
-              :title="item.total ? byteToSize(item.total) : '0'"
-            >
+            <div class="table-td" :title="item.total ? byteToSize(item.total) : '0'">
               {{ item.total ? byteToSize(item.total) : "0" }}
             </div>
           </div>
         </m-option>
       </m-select>
-      <m-input
-        type="text"
-        prop="search"
-        labelWidth="53px"
-        label="Search Name"
-        v-model="search"
-        @input="throttle(filter('volid'), 1000)"
-        placeholder="Please enter name"
-      >
+      <m-input type="text" prop="search" labelWidth="53px" label="Search Name" v-model="search"
+        @input="throttle(filter('volid'), 1000)" placeholder="Please enter name">
         <i slot="prefix" class="el-icon-search"></i>
       </m-input>
     </div>
     <div slot="page-content">
-      <el-table
-        :data="qemuBackUpList"
-        ref="dataTable"
-        @selection-change="handleSelect"
-        @sort-change="handleSort"
-      >
+      <el-table :data="qemuBackUpList" ref="dataTable" @selection-change="handleSelect" @sort-change="handleSort">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="Name" prop="volid" sortable width="400px">
           <template slot-scope="scope">
@@ -149,17 +83,11 @@
           </template>
         </el-table-column>
       </el-table>
-      <back-up-operate-modal
-        :visible="visible"
-        v-if="visible"
-        :title="title"
-        :param="param"
-        :modalType="modalType"
+      <back-up-operate-modal :visible="visible" v-if="visible" :title="title" :param="param" :modalType="modalType"
         @close="
           visible = false;
-          __init__();
-        "
-      ></back-up-operate-modal>
+        __init__();
+        "></back-up-operate-modal>
     </div>
   </page-template>
 </template>
@@ -299,7 +227,7 @@ export default {
               });
             });
         })
-        .catch(() => {});
+        .catch(() => { });
     },
     /**
      * Search
@@ -370,26 +298,32 @@ export default {
   padding: 10px 0px;
   border-top: 1px solid #c4d6ec;
   border-bottom: 1px solid #c4d6ec;
+
   &__item {
     flex: 1 1 auto;
     display: flex;
   }
+
   &__title {
     flex: 1 1 auto;
     display: inline-flex;
   }
+
   &__desc {
     flex: 1 1 auto;
     display: inline-flex;
   }
 }
+
 /deep/.run-error {
   background: #f3d6d7 !important;
   color: #fff !important;
+
   &:hover {
     color: #606266 !important;
   }
 }
+
 /deep/.tool-bar-right {
   flex: 2;
 }

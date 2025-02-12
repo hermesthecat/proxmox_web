@@ -2,21 +2,13 @@
   <div class="line-wrapper">
     <div class="line-desc">
       <div class="line-title">
-        <i
-          v-if="icon"
-          :class="icon"
-          style="
+        <i v-if="icon" :class="icon" style="
             font-size: 16px;
             margin-right: 10px;
             display: inline-block;
             width: 16px;
-          "
-        ></i>
-        <base-icon
-          v-if="name"
-          :name="name"
-          :_style="{ width: '16px', height: '16px' }"
-        />
+          "></i>
+        <base-icon v-if="name" :name="name" :_style="{ width: '16px', height: '16px' }" />
         <span>{{ title }}</span>
       </div>
       <div class="line-desc-content" :style="__style">{{ desc }}</div>
@@ -63,18 +55,21 @@ export default {
   &-wrapper {
     width: 100%;
   }
+
   &-desc {
     display: flex;
     justify-content: space-between;
     padding-bottom: 5px;
     font-size: 1em;
     flex-wrap: wrap;
+
     &-content {
       flex: 1 1 auto;
       width: 0;
       text-align: right;
     }
   }
+
   &-title {
     flex: 1 1 auto;
     width: 0;

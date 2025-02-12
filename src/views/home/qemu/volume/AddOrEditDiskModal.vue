@@ -37,17 +37,19 @@
                 LSI 53C895A
               </div>
             </m-input>
-            <m-input type="number" labelWidth="100px" label="Disk Size" v-model="disksize" validateEvent @validate="validate"
-              prop="disksize" required v-show="modalType === 'create'" :error-msg="rules['disksize'].message"
-              :show-error="rules['disksize'].error" />
+            <m-input type="number" labelWidth="100px" label="Disk Size" v-model="disksize" validateEvent
+              @validate="validate" prop="disksize" required v-show="modalType === 'create'"
+              :error-msg="rules['disksize'].message" :show-error="rules['disksize'].error" />
             <m-input type="slot" v-show="modalType === 'edit'" labelWidth="100px" label="Disk Image" :disabled="true">
               <div slot="other" style="height: 28px; line-height: 28px; padding-left: 5px" class="disabled">
                 {{ editStorage }}
               </div>
             </m-input>
-            <m-checkbox label="Discard" v-model="discard" labelWidth="100px" :disabled="device === 'virtio'"></m-checkbox>
-            <m-select prop="storage" label="Storage" labelWidth="100px" @on-change="handleStorageSelect" v-model="storage"
-              validateEvent v-show="modalType !== 'edit'" @validate="validate" :readonly="true" placeholder="Please select storage">
+            <m-checkbox label="Discard" v-model="discard" labelWidth="100px"
+              :disabled="device === 'virtio'"></m-checkbox>
+            <m-select prop="storage" label="Storage" labelWidth="100px" @on-change="handleStorageSelect"
+              v-model="storage" validateEvent v-show="modalType !== 'edit'" @validate="validate" :readonly="true"
+              placeholder="Please select storage">
               <div class="table">
                 <m-option v-for="(item, index) in db.storageList" :key="item.storage" :value="item.storage"
                   :label="item.storage">
@@ -101,16 +103,16 @@
           <m-input label="Write Limit (ops/s)" labelWidth="110px" placeholder="Unlimited" type="number" prop="iops_wr"
             class="m-margin-top-10" @validate="validate" validateEvent :show-error="rules['iops_wr'].error"
             :error-msg="rules['iops_wr'].message" v-model="iops_wr" />
-          <m-input label="Read Max Burst (MB)" labelWidth="110px" placeholder="Default" type="number" v-model="mbps_rd_max"
-            class="m-margin-top-10" />
-          <m-input label="Write Max Burst (MB)" labelWidth="110px" placeholder="Default" type="number" v-model="mbps_wr_max"
-            class="m-margin-top-10" />
-          <m-input label="Read Max Burst (ops)" labelWidth="110px" placeholder="Default" type="number" prop="iops_rd_max"
-            @validate="validate" class="m-margin-top-10" validateEvent :show-error="rules['iops_rd_max'].error"
-            :error-msg="rules['iops_rd_max'].message" v-model="iops_rd_max" />
-          <m-input label="Write Max Burst (ops)" labelWidth="110px" placeholder="Default" type="number" prop="iops_wr_max"
-            @validate="validate" class="m-margin-top-10" validateEvent required :show-error="rules['iops_wr_max'].error"
-            :error-msg="rules['iops_wr_max'].message" v-model="iops_wr_max" />
+          <m-input label="Read Max Burst (MB)" labelWidth="110px" placeholder="Default" type="number"
+            v-model="mbps_rd_max" class="m-margin-top-10" />
+          <m-input label="Write Max Burst (MB)" labelWidth="110px" placeholder="Default" type="number"
+            v-model="mbps_wr_max" class="m-margin-top-10" />
+          <m-input label="Read Max Burst (ops)" labelWidth="110px" placeholder="Default" type="number"
+            prop="iops_rd_max" @validate="validate" class="m-margin-top-10" validateEvent
+            :show-error="rules['iops_rd_max'].error" :error-msg="rules['iops_rd_max'].message" v-model="iops_rd_max" />
+          <m-input label="Write Max Burst (ops)" labelWidth="110px" placeholder="Default" type="number"
+            prop="iops_wr_max" @validate="validate" class="m-margin-top-10" validateEvent required
+            :show-error="rules['iops_wr_max'].error" :error-msg="rules['iops_wr_max'].message" v-model="iops_wr_max" />
         </dd>
       </div>
     </div>
@@ -121,7 +123,8 @@
           <div>Advanced</div>
         </label>
       </div>
-      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px" @on-click="confirm()">Confirm</m-button>
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px"
+        @on-click="confirm()">Confirm</m-button>
     </template>
   </m-dialog>
 </template>

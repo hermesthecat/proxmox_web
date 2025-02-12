@@ -17,9 +17,8 @@ export default {
     let _this = this,
       last = window.localStorage.getItem("lastsel") || "[]";
     _this.node = (JSON.parse(last) && JSON.parse(last)) || "";
-    _this.src = `/shell/?console=${
-      _this.node.type === "qemu" ? "kvm" : "lxc"
-    }&vmid=${_this.node.vmid}&node=${_this.node.node}&resize=scale&novnc=1`;
+    _this.src = `/shell/?console=${_this.node.type === "qemu" ? "kvm" : "lxc"
+      }&vmid=${_this.node.vmid}&node=${_this.node.node}&resize=scale&novnc=1`;
     _this.$refs.shell.style.height =
       _this.$refs["m-shell"].parentNode.clientHeight + "px";
     window.addEventListener("resize", _this.setShellHeight, false);

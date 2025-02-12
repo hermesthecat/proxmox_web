@@ -1,85 +1,44 @@
 <template>
   <page-template v-loading="loading" :element-loading-text="loadingText">
     <div slot="toolbar-left">
-      <m-button
-        type="primary"
-        @on-click="showModal('create')"
-        icon="el-icon-plus"
-        >Add</m-button
-      >
-      <m-button
-        type="primary"
-        @on-click="showModal('edit')"
-        icon="el-icon-edit"
-        :disabled="selectedList.length !== 1"
-        >Edit</m-button
-      >
-      <m-button
-        type="danger"
-        v-confirm="{
-          msg: 'Are you sure you want to delete selected items?',
-          icon: 'icon-question',
-          ok: () => handleDelete('keep'),
-        }"
-        icon="el-icon-delete"
-        :disabled="inStatus()"
-        >Delete</m-button
-      >
-      <m-button
-        type="info"
-        @on-click="showModal('log')"
-        icon="el-icon-date"
-        :disabled="inStatus()"
-        >Log</m-button
-      >
-      <m-button
-        type="primary"
-        @on-click="handleImmidiateSchedule()"
-        icon="el-icon-video-play"
-        :disabled="inStatus()"
-        >Schedule Now</m-button
-      >
+      <m-button type="primary" @on-click="showModal('create')" icon="el-icon-plus">Add</m-button>
+      <m-button type="primary" @on-click="showModal('edit')" icon="el-icon-edit"
+        :disabled="selectedList.length !== 1">Edit</m-button>
+      <m-button type="danger" v-confirm="{
+        msg: 'Are you sure you want to delete selected items?',
+        icon: 'icon-question',
+        ok: () => handleDelete('keep'),
+      }" icon="el-icon-delete" :disabled="inStatus()">Delete</m-button>
+      <m-button type="info" @on-click="showModal('log')" icon="el-icon-date" :disabled="inStatus()">Log</m-button>
+      <m-button type="primary" @on-click="handleImmidiateSchedule()" icon="el-icon-video-play"
+        :disabled="inStatus()">Schedule Now</m-button>
     </div>
     <div slot="page-content">
-      <el-table
-        :data="nodeReplicationList"
-        ref="dataTable"
-        @selection-change="handleSelect"
-      >
+      <el-table :data="nodeReplicationList" ref="dataTable" @selection-change="handleSelect">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="Guest" prop="guest"></el-table-column>
         <el-table-column label="Job" prop="jobnum"></el-table-column>
         <el-table-column label="Target" prop="target"></el-table-column>
         <el-table-column label="Status" prop="error">
           <template slot-scope="scope">
-            <table-info-state
-              :content="
-                scope.row.failCount === 0 || !scope.row.error
-                  ? 'OK'
-                  : scope.row.remove_job
+            <table-info-state :content="scope.row.failCount === 0 || !scope.row.error
+                ? 'OK'
+                : scope.row.remove_job
                   ? 'Remove Scheduled' + scope.row.error
                   : scope.row.error
-              "
-              :state="
-                scope.row.failCount === 0 || !scope.row.error
+              " :state="scope.row.failCount === 0 || !scope.row.error
                   ? 'actived'
                   : 'dead'
-              "
-            ></table-info-state>
+                "></table-info-state>
           </template>
         </el-table-column>
         <el-table-column label="Enabled" prop="disable">
           <template slot-scope="scope">
-            <table-info-state
-              :content="
-                scope.row.disable && scope.row.disable === 1 ? 'No' : 'Yes'
-              "
-              :state="
-                scope.row.disable && scope.row.disable === 1
+            <table-info-state :content="scope.row.disable && scope.row.disable === 1 ? 'No' : 'Yes'
+              " :state="scope.row.disable && scope.row.disable === 1
                   ? 'unActived'
                   : 'actived'
-              "
-            ></table-info-state>
+                "></table-info-state>
           </template>
         </el-table-column>
         <el-table-column label="Schedule" prop="schedule">
@@ -89,18 +48,11 @@
         </el-table-column>
         <el-table-column label="Comment" prop="comment"></el-table-column>
       </el-table>
-      <create-node-replication-modal
-        :title="title"
-        :isCreate="isCreate"
-        :param="param"
-        v-if="visible"
-        :visible="visible"
-        :modal-type="type"
-        @close="
+      <create-node-replication-modal :title="title" :isCreate="isCreate" :param="param" v-if="visible"
+        :visible="visible" :modal-type="type" @close="
           visible = false;
-          __init__();
-        "
-      ></create-node-replication-modal>
+        __init__();
+        "></create-node-replication-modal>
     </div>
   </page-template>
 </template>
@@ -197,8 +149,8 @@ export default {
         type === "create"
           ? "Create: Replication Job"
           : type === "edit"
-          ? "Edit: Replication Job"
-          : "Log";
+            ? "Edit: Replication Job"
+            : "Log";
       this.param = type === "create" ? {} : this.selectedList[0];
       this.visible = true;
     },
@@ -235,19 +187,23 @@ export default {
   padding: 10px 0px;
   border-top: 1px solid #c4d6ec;
   border-bottom: 1px solid #c4d6ec;
+
   &__item {
     flex: 1 1 auto;
     display: flex;
   }
+
   &__title {
     flex: 1 1 auto;
     display: inline-flex;
   }
+
   &__desc {
     flex: 1 1 auto;
     display: inline-flex;
   }
 }
+
 .toolbar-left {
   flex: 2;
 }

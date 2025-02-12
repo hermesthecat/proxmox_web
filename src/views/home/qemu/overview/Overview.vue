@@ -2,118 +2,63 @@
   <div class="overview chart-content">
     <div class="overview-select">
       <m-select @on-change="handleIntervalChange" v-model="timeframe">
-        <m-option
-          v-for="item of intervalList"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
+        <m-option v-for="item of intervalList" :key="item.value" :label="item.label" :value="item.value">
         </m-option>
       </m-select>
     </div>
     <div class="overview-content__top">
-      <div
-        class="overview-content__top_left"
-        :style="{
-          'padding-right': isTempalte ? '0px' : '20px',
-          'margin-bottom': isTempalte ? '0px' : '20px',
-        }"
-      >
+      <div class="overview-content__top_left" :style="{
+        'padding-right': isTempalte ? '0px' : '20px',
+        'margin-bottom': isTempalte ? '0px' : '20px',
+      }">
         <overview-card>
           <div slot="title">Status</div>
-          <div
-            slot="content"
-            class="card-content"
-            v-loading="loading"
-            :element-loading-text="loadingText"
-          >
+          <div slot="content" class="card-content" v-loading="loading" :element-loading-text="loadingText">
             <div class="card-item">
-              <single-line
-                title="Status"
-                icon="fa fa-info"
-                :desc="db.qemuObj && db.qemuObj.status && db.qemuObj.status"
-              />
-              <single-line
-                icon="fa fa-heartbeat"
-                title="HA Status"
-                :desc="
-                  db.qemuObj && db.qemuObj.ha && db.qemuObj.ha.status
-                    ? db.qemuObj.ha.status
-                    : 'None'
-                "
-              />
-              <single-line
-                icon="fa fa-building"
-                title="Node"
-                :desc="node && node.parent && node.parent"
-              />
-              <line-percent-chart
-                name="icon-ram"
-                :desc="`${Number(
-                  (db.qemuObj.cpu && db.qemuObj.cpu && db.qemuObj.cpus
-                    ? db.qemuObj.cpu / db.qemuObj.cpus
-                    : 0) * 100
-                ).toFixed(1)}%
-                               of ${
-                                 (db.qemuObj.cpus && db.qemuObj.cpus) || 0
-                               } CPU(s)`"
-                :value="
-                  (db.qemuObj.cpu && db.qemuObj.cpu && db.qemuObj.cpus
-                    ? db.qemuObj.cpu / db.qemuObj.cpus
-                    : 0) * 100
-                "
-                title="CPU Usage"
-              />
-              <line-percent-chart
-                name="icon-ram"
-                :desc="`${Number(
-                  (db.qemuObj.mem && db.qemuObj.mem && db.qemuObj.maxmem
-                    ? db.qemuObj.mem / db.qemuObj.maxmem
-                    : 0) * 100
-                ).toFixed(1)}%
+              <single-line title="Status" icon="fa fa-info"
+                :desc="db.qemuObj && db.qemuObj.status && db.qemuObj.status" />
+              <single-line icon="fa fa-heartbeat" title="HA Status" :desc="db.qemuObj && db.qemuObj.ha && db.qemuObj.ha.status
+                  ? db.qemuObj.ha.status
+                  : 'None'
+                " />
+              <single-line icon="fa fa-building" title="Node" :desc="node && node.parent && node.parent" />
+              <line-percent-chart name="icon-ram" :desc="`${Number(
+                (db.qemuObj.cpu && db.qemuObj.cpu && db.qemuObj.cpus
+                  ? db.qemuObj.cpu / db.qemuObj.cpus
+                  : 0) * 100
+              ).toFixed(1)}%
+                               of ${(db.qemuObj.cpus && db.qemuObj.cpus) || 0
+                } CPU(s)`" :value="(db.qemuObj.cpu && db.qemuObj.cpu && db.qemuObj.cpus
+                                  ? db.qemuObj.cpu / db.qemuObj.cpus
+                                  : 0) * 100
+                                " title="CPU Usage" />
+              <line-percent-chart name="icon-ram" :desc="`${Number(
+                (db.qemuObj.mem && db.qemuObj.mem && db.qemuObj.maxmem
+                  ? db.qemuObj.mem / db.qemuObj.maxmem
+                  : 0) * 100
+              ).toFixed(1)}%
                               (${byteToSize(
-                                (db.qemuObj.mem && db.qemuObj.mem) || 0
-                              )} of ${byteToSize(
-                  (db.qemuObj.maxmem && db.qemuObj.maxmem) || 0
-                )})`"
-                :value="
-                  (db.qemuObj.mem && db.qemuObj.mem && db.qemuObj.maxmem
+                (db.qemuObj.mem && db.qemuObj.mem) || 0
+              )} of ${byteToSize(
+                (db.qemuObj.maxmem && db.qemuObj.maxmem) || 0
+              )})`" :value="(db.qemuObj.mem && db.qemuObj.mem && db.qemuObj.maxmem
                     ? db.qemuObj.mem / db.qemuObj.maxmem
                     : 0) * 100
-                "
-                title="Memory Usage"
-              />
-              <single-line
-                icon="fa fa-hdd-o"
-                title="Node"
-                :desc="
-                  db.qemuObj &&
-                  db.qemuObj.maxdisk &&
-                  byteToSize(db.qemuObj.maxdisk)
-                "
-              />
-              <single-line
-                icon="fa fa-exchange"
-                title="IPs"
-                :desc="'Guest Agent'"
-              />
+                  " title="Memory Usage" />
+              <single-line icon="fa fa-hdd-o" title="Node" :desc="db.qemuObj &&
+                db.qemuObj.maxdisk &&
+                byteToSize(db.qemuObj.maxdisk)
+                " />
+              <single-line icon="fa fa-exchange" title="IPs" :desc="'Guest Agent'" />
             </div>
           </div>
         </overview-card>
         <overview-card>
           <div slot="title">Notes</div>
-          <div
-            slot="operate"
-            class="m-tool-img"
-            @click.stop="handleComment"
-          ></div>
+          <div slot="operate" class="m-tool-img" @click.stop="handleComment"></div>
           <div slot="content" class="card-content" ref="comment-content">
-            <ace-editor
-              v-model="comment"
-              :read-only="true"
-              style="width: 100%; height: 250px"
-              ref="ace-comment"
-            ></ace-editor>
+            <ace-editor v-model="comment" :read-only="true" style="width: 100%; height: 250px"
+              ref="ace-comment"></ace-editor>
           </div>
         </overview-card>
       </div>
@@ -150,17 +95,10 @@
         <line-graph :param="disk" v-loading="rrdLoading"></line-graph>
       </template>
     </overview-card>
-    <Dialog
-      :visible="showComment"
-      @close="showComment = false"
-      @confirm="confirm"
-      @cancel="cancel"
-      cancelText="Reset"
+    <Dialog :visible="showComment" @close="showComment = false" @confirm="confirm" @cancel="cancel" cancelText="Reset"
       :_style="{
         width: '800px',
-      }"
-      title="Notes"
-    >
+      }" title="Notes">
       <div slot="content" ref="content">
         <ace-editor v-model="comment" ref="ace-editor"></ace-editor>
       </div>
@@ -208,7 +146,7 @@ export default {
           value: "hour(MAX)",
         },
         {
-          label: "Day (Average)", 
+          label: "Day (Average)",
           value: "day(AVERAGE)",
         },
         {
@@ -318,8 +256,8 @@ export default {
       this.queryResource().then((res) => {
         this.isTempalte =
           this.db.qemuObj &&
-          this.db.qemuObj.template &&
-          this.db.qemuObj.template === 1
+            this.db.qemuObj.template &&
+            this.db.qemuObj.template === 1
             ? true
             : false;
       });
@@ -396,6 +334,7 @@ export default {
     text-align: right;
   }
 }
+
 .m-tool-img {
   background-image: url("~@images/tool-sprites.png");
   overflow: hidden;
@@ -415,11 +354,13 @@ export default {
   border-color: #e0eaf3;
   padding-left: 5px;
 }
+
 .overview-content {
   &__top {
     height: 340px;
     display: flex;
     background: #f5f5f5;
+
     &_right {
       flex-grow: 1;
       flex-basis: auto;
@@ -428,6 +369,7 @@ export default {
       display: flex;
       width: 0;
     }
+
     &_left {
       flex-grow: 1;
       flex-basis: auto;
@@ -438,10 +380,12 @@ export default {
       display: flex;
     }
   }
+
   &__center {
     height: 340px;
     display: flex;
     background: #f5f5f5;
+
     &_right {
       flex-grow: 1;
       flex-basis: auto;
@@ -449,6 +393,7 @@ export default {
       flex-wrap: nowrap;
       width: 0;
     }
+
     &_left {
       flex-grow: 1;
       flex-basis: auto;
@@ -459,6 +404,7 @@ export default {
     }
   }
 }
+
 .card {
   height: 320px;
 }

@@ -43,11 +43,11 @@
                   <el-table-column label="Match">
                     <template slot-scope="scope">
                       <table-info-state :content="scope.row.nomatch && scope.row.nomatch === 1
-                          ? 'Yes'
-                          : 'No'
+                        ? 'Yes'
+                        : 'No'
                         " :state="scope.row.nomatch && scope.row.nomatch === 1
-                            ? 'actived'
-                            : 'unActived'
+                          ? 'actived'
+                          : 'unActived'
                           "></table-info-state>
                     </template>
                   </el-table-column>

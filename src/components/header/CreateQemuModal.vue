@@ -1,22 +1,14 @@
 <template>
-  <Dialog
-    :visible="showCreateVm"
-    @close="close()"
-    @confirm="confirm"
-    @cancel="cancel"
-    cancelText="Reset"
-    :_style="{
-      width: '100%',
-      height: 'calc(100%)',
-      position: 'absolute',
-      top: '0',
-      left: '0',
-      right: '0',
-      bottom: '0',
-      'overflow-y': 'clip',
-    }"
-    title="Create Virtual Machine"
-  >
+  <Dialog :visible="showCreateVm" @close="close()" @confirm="confirm" @cancel="cancel" cancelText="Reset" :_style="{
+    width: '100%',
+    height: 'calc(100%)',
+    position: 'absolute',
+    top: '0',
+    left: '0',
+    right: '0',
+    bottom: '0',
+    'overflow-y': 'clip',
+  }" title="Create Virtual Machine">
     <template slot="content">
       <div>
         <!--Step indicator-->
@@ -38,33 +30,16 @@
             <dt>Name</dt>
             <dd>
               <!--Input component validateEvent indicates validation is required, show-error indicates whether validation passed; error-msg shows validation failure message; validate for validation; v-modal for input value-->
-              <m-input
-                v-model="name"
-                prop="name"
-                validateEvent
-                required
-                :show-error="rules['name'].error"
-                :error-msg="rules['name'].message"
-                @validate="validate"
-                placeholder="Please enter name"
-              />
+              <m-input v-model="name" prop="name" validateEvent required :show-error="rules['name'].error"
+                :error-msg="rules['name'].message" @validate="validate" placeholder="Please enter name" />
             </dd>
           </dl>
           <dl>
             <dt>VM ID</dt>
             <dd>
-              <m-input
-                type="number"
-                @validate="validate"
-                validateEvent
-                prop="vmid"
-                required
-                :show-error="rules['vmid'].error"
-                :error-msg="rules['vmid'].message"
-                v-model="vmid"
-                :min="100"
-                placeholder="Please enter VM ID"
-              />
+              <m-input type="number" @validate="validate" validateEvent prop="vmid" required
+                :show-error="rules['vmid'].error" :error-msg="rules['vmid'].message" v-model="vmid" :min="100"
+                placeholder="Please enter VM ID" />
             </dd>
           </dl>
         </div>
@@ -73,23 +48,13 @@
           <dl>
             <dt>Node</dt>
             <dd>
-              <el-table
-                :data="nodeList"
-                @current-change="handleCurrentChange"
-                highlight-current-row
-              >
+              <el-table :data="nodeList" @current-change="handleCurrentChange" highlight-current-row>
                 <el-table-column width="50">
                   <template slot-scope="scope">
-                    <el-radio :label="scope.row.id" v-model="templateRadio"
-                      >&nbsp;</el-radio
-                    >
+                    <el-radio :label="scope.row.id" v-model="templateRadio">&nbsp;</el-radio>
                   </template>
                 </el-table-column>
-                <el-table-column
-                  prop="node"
-                  label="Node"
-                  width="180"
-                ></el-table-column>
+                <el-table-column prop="node" label="Node" width="180"></el-table-column>
                 <el-table-column label="Memory Usage Rate" width="180">
                   <template slot-scope="scope">
                     <span>{{
@@ -115,28 +80,14 @@
           <dl>
             <dt>Resource Pool</dt>
             <dd>
-              <el-table
-                @current-change="handleCurrentPoolChange"
-                highlight-current-row
-                :data="poolList"
-              >
+              <el-table @current-change="handleCurrentPoolChange" highlight-current-row :data="poolList">
                 <el-table-column width="50">
                   <template slot-scope="scope">
-                    <el-radio :label="scope.row.poolid" v-model="poolRadio"
-                      >&nbsp;</el-radio
-                    >
+                    <el-radio :label="scope.row.poolid" v-model="poolRadio">&nbsp;</el-radio>
                   </template>
                 </el-table-column>
-                <el-table-column
-                  prop="poolid"
-                  label="Resource Pool"
-                  width="180"
-                ></el-table-column>
-                <el-table-column
-                  prop="description"
-                  label="Note"
-                  width="180"
-                ></el-table-column>
+                <el-table-column prop="poolid" label="Resource Pool" width="180"></el-table-column>
+                <el-table-column prop="description" label="Note" width="180"></el-table-column>
               </el-table>
             </dd>
           </dl>
@@ -155,11 +106,7 @@
           <dl>
             <dt>Startup/Shutdown Order</dt>
             <dd>
-              <m-input
-                type="text"
-                v-model="order"
-                placeholder="Please enter startup/shutdown order"
-              />
+              <m-input type="text" v-model="order" placeholder="Please enter startup/shutdown order" />
             </dd>
           </dl>
           <dl>
@@ -171,11 +118,7 @@
           <dl>
             <dt>Shutdown Delay</dt>
             <dd>
-              <m-input
-                type="text"
-                v-model="down"
-                placeholder="Please enter shutdown delay"
-              />
+              <m-input type="text" v-model="down" placeholder="Please enter shutdown delay" />
             </dd>
           </dl>
         </div>
@@ -186,12 +129,7 @@
           <dl>
             <dt style="width: 100%">
               <label class="m-input__radio">
-                <input
-                  type="radio"
-                  value="iso"
-                  name="mediaType"
-                  v-model="mediaType"
-                />
+                <input type="radio" value="iso" name="mediaType" v-model="mediaType" />
                 <div></div>
               </label>
               Use CD/DVD Disk File (ISO)
@@ -200,29 +138,14 @@
               <dl>
                 <dt>Storage</dt>
                 <dd>
-                  <el-table
-                    :data="storageList"
-                    current-row-key
-                    @current-change="handleStorageSingleList"
-                  >
+                  <el-table :data="storageList" current-row-key @current-change="handleStorageSingleList">
                     <el-table-column width="50">
                       <template slot-scope="scope">
-                        <el-radio
-                          :label="scope.row.storage"
-                          v-model="storageRadio"
-                          >&nbsp;</el-radio
-                        >
+                        <el-radio :label="scope.row.storage" v-model="storageRadio">&nbsp;</el-radio>
                       </template>
                     </el-table-column>
-                    <el-table-column
-                      prop="storage"
-                      label="Name"
-                    ></el-table-column>
-                    <el-table-column
-                      prop="type"
-                      label="Category"
-                      width="180"
-                    ></el-table-column>
+                    <el-table-column prop="storage" label="Name"></el-table-column>
+                    <el-table-column prop="type" label="Category" width="180"></el-table-column>
                     <el-table-column label="Available" width="180">
                       <template slot-scope="scope">
                         <span>{{ byteToSize(scope.row.avail) }}</span>
@@ -237,26 +160,14 @@
                 </dd>
                 <dt>Image</dt>
                 <dd>
-                  <el-table
-                    :data="isoList"
-                    :class="{ 'm-input__error': rules['isoRadio'].error }"
-                  >
+                  <el-table :data="isoList" :class="{ 'm-input__error': rules['isoRadio'].error }">
                     <el-table-column width="50">
                       <template slot-scope="scope">
-                        <el-radio :label="scope.row.volid" v-model="isoRadio"
-                          >&nbsp;</el-radio
-                        >
+                        <el-radio :label="scope.row.volid" v-model="isoRadio">&nbsp;</el-radio>
                       </template>
                     </el-table-column>
-                    <el-table-column
-                      prop="volid"
-                      label="Name"
-                    ></el-table-column>
-                    <el-table-column
-                      prop="format"
-                      label="Format"
-                      width="180"
-                    ></el-table-column>
+                    <el-table-column prop="volid" label="Name"></el-table-column>
+                    <el-table-column prop="format" label="Format" width="180"></el-table-column>
                     <el-table-column label="Size">
                       <template slot-scope="scope">
                         <span>{{ byteToSize(scope.row.size) }}</span>
@@ -272,12 +183,7 @@
           <dl>
             <dt style="width: 100%">
               <label class="m-input__radio">
-                <input
-                  type="radio"
-                  value="cdrom"
-                  name="mediaType"
-                  v-model="mediaType"
-                />
+                <input type="radio" value="cdrom" name="mediaType" v-model="mediaType" />
                 <div></div>
               </label>
               Use Physical CD/DVD Drive
@@ -288,12 +194,7 @@
           <dl>
             <dt style="width: 100%">
               <label class="m-input__radio">
-                <input
-                  type="radio"
-                  value="none"
-                  name="mediaType"
-                  v-model="mediaType"
-                />
+                <input type="radio" value="none" name="mediaType" v-model="mediaType" />
                 <div></div>
               </label>
               Do Not Use Any Medium
@@ -306,17 +207,8 @@
             <dd>
               <div class="m-form__select" style="width: 250px">
                 <label>Category</label>
-                <select
-                  class="m-form__select_inner"
-                  v-model="osType"
-                  @change="handleOsTypeChange"
-                >
-                  <option
-                    v-for="item of osTypeList"
-                    icon="fa fa-gear"
-                    :key="item.value"
-                    :value="item.value"
-                  >
+                <select class="m-form__select_inner" v-model="osType" @change="handleOsTypeChange">
+                  <option v-for="item of osTypeList" icon="fa fa-gear" :key="item.value" :value="item.value">
                     {{ item.label }}
                   </option>
                 </select>
@@ -324,11 +216,7 @@
               <div class="m-margin-top-10 m-form__select" style="width: 250px">
                 <label>Version</label>
                 <select class="m-form__select_inner" v-model="version">
-                  <option
-                    v-for="item of versionList"
-                    :key="item.value"
-                    :value="item.value"
-                  >
+                  <option v-for="item of versionList" :key="item.value" :value="item.value">
                     {{ item.label }}
                   </option>
                 </select>
@@ -345,11 +233,7 @@
             <dd>
               <div class="m-margin-top-10 m-form__select" style="width: 215px">
                 <select class="m-form__select_inner" v-model="vga">
-                  <option
-                    v-for="(item, index) of vgaList"
-                    :key="index"
-                    :value="item.value"
-                  >
+                  <option v-for="(item, index) of vgaList" :key="index" :value="item.value">
                     {{ item.label }}
                   </option>
                 </select>
@@ -359,11 +243,7 @@
             <dd>
               <div class="m-margin-top-10 m-form__select" style="width: 215px">
                 <select class="m-form__select_inner" v-model="scsihw">
-                  <option
-                    v-for="(item, index) of scsiHWList"
-                    :key="index"
-                    :value="item.value"
-                  >
+                  <option v-for="(item, index) of scsiHWList" :key="index" :value="item.value">
                     {{ item.label }}
                   </option>
                 </select>
@@ -384,11 +264,7 @@
             <dd>
               <div class="m-margin-top-10 m-form__select" style="width: 215px">
                 <select class="m-form__select_inner" v-model="bios">
-                  <option
-                    v-for="(item, index) of biosList"
-                    :key="index"
-                    :value="item.value"
-                  >
+                  <option v-for="(item, index) of biosList" :key="index" :value="item.value">
                     {{ item.label }}
                   </option>
                 </select>
@@ -398,11 +274,7 @@
             <dd>
               <div class="m-margin-top-10 m-form__select" style="width: 215px">
                 <select class="m-form__select_inner" v-model="machine">
-                  <option
-                    v-for="(item, index) of machineList"
-                    :key="index"
-                    :value="item.value"
-                  >
+                  <option v-for="(item, index) of machineList" :key="index" :value="item.value">
                     {{ item.label }}
                   </option>
                 </select>
@@ -419,22 +291,11 @@
               <div class="m-margin-top-10" v-if="efi">
                 <dt>Storage</dt>
                 <dd>
-                  <m-select
-                    prop="storage"
-                    label="Storage"
-                    labelWidth="100px"
-                    @on-change="handleImageStorageChange"
-                    v-model="imageStorageRadio"
-                    :readonly="false"
-                    placeholder="Please select storage"
-                  >
+                  <m-select prop="storage" label="Storage" labelWidth="100px" @on-change="handleImageStorageChange"
+                    v-model="imageStorageRadio" :readonly="false" placeholder="Please select storage">
                     <div class="table">
-                      <m-option
-                        v-for="(item, index) in imageStorageList"
-                        :key="item.storage"
-                        :value="item.storage"
-                        :label="item.storage"
-                      >
+                      <m-option v-for="(item, index) in imageStorageList" :key="item.storage" :value="item.storage"
+                        :label="item.storage">
                         <div v-if="index === 0" class="table-tr">
                           <div class="table-td">Name</div>
                           <div class="table-td">Category</div>
@@ -458,22 +319,10 @@
                       </m-option>
                     </div>
                   </m-select>
-                  <m-select
-                    prop="format"
-                    label="Format"
-                    labelWidth="100px"
-                    @on-change="(value) => (format = value)"
-                    v-model="format"
-                    :readonly="false"
-                    :disabled="!storageType || storageType !== 'dir'"
-                    placeholder="Please select format"
-                  >
-                    <m-option
-                      v-for="(item, index) in formatList"
-                      :key="index"
-                      :value="item.value"
-                      :label="item.label"
-                    >
+                  <m-select prop="format" label="Format" labelWidth="100px" @on-change="(value) => (format = value)"
+                    v-model="format" :readonly="false" :disabled="!storageType || storageType !== 'dir'"
+                    placeholder="Please select format">
+                    <m-option v-for="(item, index) in formatList" :key="index" :value="item.value" :label="item.label">
                     </m-option>
                   </m-select>
                 </dd>
@@ -488,43 +337,19 @@
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-input
-                type="number"
-                label="Bus"
-                v-model="deviceIndex"
-                labelWidth="110px"
-                min="0"
-                prop="deviceIndex"
-                :_style="{ paddingLeft: '115px' }"
-                @validate="validate"
-                required
-                :error-msg="rules['deviceIndex'].message"
-                :show-error="rules['deviceIndex'].error"
-              >
-                <div
-                  slot="prefix"
-                  style="
+              <m-input type="number" label="Bus" v-model="deviceIndex" labelWidth="110px" min="0" prop="deviceIndex"
+                :_style="{ paddingLeft: '115px' }" @validate="validate" required
+                :error-msg="rules['deviceIndex'].message" :show-error="rules['deviceIndex'].error">
+                <div slot="prefix" style="
                     display: inline-block;
                     position: absolute;
                     top: -16px;
                     left: -6px;
                     height: 100%;
-                  "
-                >
-                  <div
-                    class="m-margin-top-10 m-form__select"
-                    style="width: 115px"
-                  >
-                    <select
-                      class="m-form__select_inner"
-                      v-model="device"
-                      style="width: 110px"
-                    >
-                      <option
-                        v-for="item of deviceList"
-                        :key="item.value"
-                        :value="item.value"
-                      >
+                  ">
+                  <div class="m-margin-top-10 m-form__select" style="width: 115px">
+                    <select class="m-form__select_inner" v-model="device" style="width: 110px">
+                      <option v-for="item of deviceList" :key="item.value" :value="item.value">
                         {{ item.label }}
                       </option>
                     </select>
@@ -532,97 +357,56 @@
                 </div>
               </m-input>
               <div style="margin-bottom: 20px">
-                <label
-                  class="m-margin-top-10"
-                  style="
+                <label class="m-margin-top-10" style="
                     padding-left: 10px;
                     height: 28px;
                     width: 120px;
                     line-height: 28px;
                     display: inline-block;
                     vertical-align: middle;
-                  "
-                  >Cache</label
-                >
-                <div
-                  class="m-margin-top-10 m-form__select"
-                  style="width: 215px; display: inline-block"
-                >
+                  ">Cache</label>
+                <div class="m-margin-top-10 m-form__select" style="width: 215px; display: inline-block">
                   <select class="m-form__select_inner" v-model="cache">
-                    <option
-                      v-for="(item, index) of cacheList"
-                      :key="index"
-                      :value="item.value"
-                    >
+                    <option v-for="(item, index) of cacheList" :key="index" :value="item.value">
                       {{ item.label }}
                     </option>
                   </select>
                 </div>
               </div>
               <div style="margin-bottom: 20px" v-if="device === 'scsi'">
-                <label
-                  style="
+                <label style="
                     padding-left: 10px;
                     height: 28px;
                     width: 120px;
                     line-height: 28px;
                     display: inline-block;
                     vertical-align: middle;
-                  "
-                  >SCSI Controller</label
-                >
+                  ">SCSI Controller</label>
                 VIRTIO SCSI
               </div>
               <div style="margin-bottom: 20px">
-                <label
-                  style="
+                <label style="
                     padding-left: 10px;
                     height: 28px;
                     width: 120px;
                     line-height: 28px;
                     display: inline-block;
                     vertical-align: middle;
-                  "
-                  >Discard</label
-                >
+                  ">Discard</label>
                 <label class="m-form__checkbox">
-                  <input
-                    type="checkbox"
-                    v-model="discard"
-                    :disabled="device === 'virtio'"
-                  />
+                  <input type="checkbox" v-model="discard" :disabled="device === 'virtio'" />
                   <div></div>
                 </label>
               </div>
-              <m-input
-                type="number"
-                labelWidth="110px"
-                label="Disk Size"
-                v-model="disksize"
-                validateEvent
-                @validate="validate"
-                prop="disksize"
-                required
-                :error-msg="rules['disksize'].message"
-                :show-error="rules['disksize'].error"
-              />
+              <m-input type="number" labelWidth="110px" label="Disk Size" v-model="disksize" validateEvent
+                @validate="validate" prop="disksize" required :error-msg="rules['disksize'].message"
+                :show-error="rules['disksize'].error" />
 
-              <m-select
-                prop="storage"
-                label="Storage"
-                labelWidth="100px"
-                @on-change="handleImageStorageChange"
-                v-model="imageStorageRadio"
-                :readonly="false"
-                placeholder="Please select storage"
-              >
+              <m-select prop="storage" label="Storage" labelWidth="100px" @on-change="handleImageStorageChange"
+                v-model="imageStorageRadio" :readonly="false" placeholder="Please select storage">
                 <div class="table">
-                  <m-option
-                    v-for="(item, index) in imageStorageList"
-                    :key="item.storage"
-                    :value="item.storage"
-                    :label="item.storage"
-                  >
+                  <m-option v-for="(item, index) in imageStorageList" :key="item.storage" :value="item.storage"
+                    :label="item.storage">
                     <div v-if="index === 0" class="table-tr">
                       <div class="table-td">Name</div>
                       <div class="table-td">Category</div>
@@ -646,22 +430,10 @@
                   </m-option>
                 </div>
               </m-select>
-              <m-select
-                prop="format"
-                label="Format"
-                labelWidth="100px"
-                @on-change="(value) => (format = value)"
-                v-model="format"
-                :readonly="false"
-                :disabled="!storageType || storageType !== 'dir'"
-                placeholder="Please select format"
-              >
-                <m-option
-                  v-for="(item, index) in formatList"
-                  :key="index"
-                  :value="item.value"
-                  :label="item.label"
-                >
+              <m-select prop="format" label="Format" labelWidth="100px" @on-change="(value) => (format = value)"
+                v-model="format" :readonly="false" :disabled="!storageType || storageType !== 'dir'"
+                placeholder="Please select format">
+                <m-option v-for="(item, index) in formatList" :key="index" :value="item.value" :label="item.label">
                 </m-option>
               </m-select>
             </dd>
@@ -671,169 +443,83 @@
           <dt>Advanced</dt>
           <dd>
             <div style="margin-bottom: 20px">
-              <label
-                style="
+              <label style="
                   padding-left: 10px;
                   height: 28px;
                   width: 120px;
                   line-height: 28px;
                   display: inline-block;
                   vertical-align: middle;
-                "
-                >SSD Emulation</label
-              >
+                ">SSD Emulation</label>
               <label class="m-form__checkbox">
-                <input
-                  type="checkbox"
-                  v-model="ssd"
-                  :disabled="device === 'virtio'"
-                />
+                <input type="checkbox" v-model="ssd" :disabled="device === 'virtio'" />
                 <div></div>
               </label>
             </div>
             <div style="margin-bottom: 20px">
-              <label
-                style="
+              <label style="
                   padding-left: 10px;
                   height: 28px;
                   width: 120px;
                   line-height: 28px;
                   display: inline-block;
                   vertical-align: middle;
-                "
-                >No Backup</label
-              >
+                ">No Backup</label>
               <label class="m-form__checkbox">
                 <input type="checkbox" v-model="backup" />
                 <div></div>
               </label>
             </div>
             <div style="margin-bottom: 20px">
-              <label
-                style="
+              <label style="
                   padding-left: 10px;
                   height: 28px;
                   width: 120px;
                   line-height: 28px;
                   display: inline-block;
                   vertical-align: middle;
-                "
-                >IO Thread</label
-              >
+                ">IO Thread</label>
               <label class="m-form__checkbox">
-                <input
-                  type="checkbox"
-                  v-model="iothread"
-                  :disabled="!(device === 'scsi' || device === 'virtio')"
-                />
+                <input type="checkbox" v-model="iothread" :disabled="!(device === 'scsi' || device === 'virtio')" />
                 <div></div>
               </label>
             </div>
             <div style="margin-bottom: 20px">
-              <label
-                style="
+              <label style="
                   padding-left: 10px;
                   height: 28px;
                   width: 120px;
                   line-height: 28px;
                   display: inline-block;
                   vertical-align: middle;
-                "
-                >Skip Copy</label
-              >
+                ">Skip Copy</label>
               <label class="m-form__checkbox">
                 <input type="checkbox" v-model="replicate" />
                 <div></div>
               </label>
             </div>
-            <m-input
-              label="Read Limit (MB/s)"
-              labelWidth="110px"
-              placeholder="Unlimited"
-              type="number"
-              v-model="mbps_rd"
-              class="m-margin-top-10"
-            />
-            <m-input
-              label="Write Limit (MB/s)"
-              labelWidth="110px"
-              placeholder="Unlimited"
-              type="number"
-              v-model="mbps_wr"
-              class="m-margin-top-10"
-            />
-            <m-input
-              label="Read Limit (ops/s)"
-              labelWidth="110px"
-              placeholder="Unlimited"
-              type="number"
-              prop="iops_rd"
-              @validate="validate"
-              validateEvent
-              class="m-margin-top-10"
-              required
-              :show-error="rules['iops_rd'].error"
-              :error-msg="rules['iops_rd'].message"
-              v-model="iops_rd"
-            />
-            <m-input
-              label="Write Limit (ops/s)"
-              labelWidth="110px"
-              placeholder="Unlimited"
-              type="number"
-              prop="iops_wr"
-              class="m-margin-top-10"
-              @validate="validate"
-              validateEvent
-              required
-              :show-error="rules['iops_wr'].error"
-              :error-msg="rules['iops_wr'].message"
-              v-model="iops_wr"
-            />
-            <m-input
-              label="Read Maximum Burst (MB)"
-              labelWidth="110px"
-              placeholder="Default"
-              type="number"
-              v-model="mbps_rd_max"
-              class="m-margin-top-10"
-            />
-            <m-input
-              label="Write Maximum Burst (MB)"
-              labelWidth="110px"
-              placeholder="Default"
-              type="number"
-              v-model="mbps_wr_max"
-              class="m-margin-top-10"
-            />
-            <m-input
-              label="Read Maximum Burst (ops)"
-              labelWidth="110px"
-              placeholder="Default"
-              type="number"
-              prop="iops_rd_max"
-              @validate="validate"
-              class="m-margin-top-10"
-              validateEvent
-              required
-              :show-error="rules['iops_rd_max'].error"
-              :error-msg="rules['iops_rd_max'].message"
-              v-model="iops_rd_max"
-            />
-            <m-input
-              label="Write Maximum Burst (ops)"
-              labelWidth="110px"
-              placeholder="Default"
-              type="number"
-              prop="iops_wr_max"
-              @validate="validate"
-              class="m-margin-top-10"
-              validateEvent
-              required
-              :show-error="rules['iops_wr_max'].error"
-              :error-msg="rules['iops_wr_max'].message"
-              v-model="iops_wr_max"
-            />
+            <m-input label="Read Limit (MB/s)" labelWidth="110px" placeholder="Unlimited" type="number"
+              v-model="mbps_rd" class="m-margin-top-10" />
+            <m-input label="Write Limit (MB/s)" labelWidth="110px" placeholder="Unlimited" type="number"
+              v-model="mbps_wr" class="m-margin-top-10" />
+            <m-input label="Read Limit (ops/s)" labelWidth="110px" placeholder="Unlimited" type="number" prop="iops_rd"
+              @validate="validate" validateEvent class="m-margin-top-10" required :show-error="rules['iops_rd'].error"
+              :error-msg="rules['iops_rd'].message" v-model="iops_rd" />
+            <m-input label="Write Limit (ops/s)" labelWidth="110px" placeholder="Unlimited" type="number" prop="iops_wr"
+              class="m-margin-top-10" @validate="validate" validateEvent required :show-error="rules['iops_wr'].error"
+              :error-msg="rules['iops_wr'].message" v-model="iops_wr" />
+            <m-input label="Read Maximum Burst (MB)" labelWidth="110px" placeholder="Default" type="number"
+              v-model="mbps_rd_max" class="m-margin-top-10" />
+            <m-input label="Write Maximum Burst (MB)" labelWidth="110px" placeholder="Default" type="number"
+              v-model="mbps_wr_max" class="m-margin-top-10" />
+            <m-input label="Read Maximum Burst (ops)" labelWidth="110px" placeholder="Default" type="number"
+              prop="iops_rd_max" @validate="validate" class="m-margin-top-10" validateEvent required
+              :show-error="rules['iops_rd_max'].error" :error-msg="rules['iops_rd_max'].message"
+              v-model="iops_rd_max" />
+            <m-input label="Write Maximum Burst (ops)" labelWidth="110px" placeholder="Default" type="number"
+              prop="iops_wr_max" @validate="validate" class="m-margin-top-10" validateEvent required
+              :show-error="rules['iops_wr_max'].error" :error-msg="rules['iops_wr_max'].message"
+              v-model="iops_wr_max" />
           </dd>
         </div>
       </div>
@@ -843,71 +529,38 @@
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-input
-                type="number"
-                labelWidth="110px"
-                label="Sockets"
-                prop="sockets"
-                @validate="validate"
-                validateEvent
-                required
-                :show-error="rules['sockets'].error"
-                :error-msg="rules['sockets'].message"
-                class="m-margin-top-10"
-                v-model="sockets"
-              />
+              <m-input type="number" labelWidth="110px" label="Sockets" prop="sockets" @validate="validate"
+                validateEvent required :show-error="rules['sockets'].error" :error-msg="rules['sockets'].message"
+                class="m-margin-top-10" v-model="sockets" />
               <div style="margin-bottom: 20px">
-                <label
-                  class="m-margin-top-10"
-                  style="
+                <label class="m-margin-top-10" style="
                     padding-left: 10px;
                     height: 28px;
                     width: 120px;
                     line-height: 28px;
                     display: inline-block;
                     vertical-align: middle;
-                  "
-                  >Category</label
-                >
-                <div
-                  class="m-margin-top-10 m-form__select"
-                  style="width: 215px; display: inline-block"
-                >
+                  ">Category</label>
+                <div class="m-margin-top-10 m-form__select" style="width: 215px; display: inline-block">
                   <select class="m-form__select_inner" v-model="cpu">
-                    <option
-                      v-for="(item, index) of cpuList"
-                      :key="index"
-                      :value="item.value"
-                    >
+                    <option v-for="(item, index) of cpuList" :key="index" :value="item.value">
                       {{ item.label }}
                     </option>
                   </select>
                 </div>
               </div>
-              <m-input
-                type="number"
-                prop="cores"
-                @validate="validate"
-                validateEvent
-                required
-                :show-error="rules['cores'].error"
-                :error-msg="rules['cores'].message"
-                v-model="cores"
-                labelWidth="110px"
-                label="Core"
-              />
+              <m-input type="number" prop="cores" @validate="validate" validateEvent required
+                :show-error="rules['cores'].error" :error-msg="rules['cores'].message" v-model="cores"
+                labelWidth="110px" label="Core" />
               <div style="margin-bottom: 20px">
-                <label
-                  style="
+                <label style="
                     padding-left: 10px;
                     height: 28px;
                     width: 120px;
                     line-height: 28px;
                     display: inline-block;
                     vertical-align: middle;
-                  "
-                  >Total Cores</label
-                >
+                  ">Total Cores</label>
                 {{ cores }}
               </div>
             </dd>
@@ -917,51 +570,22 @@
           <dl>
             <dt>Advanced</dt>
             <dd>
-              <m-input
-                type="number"
-                labelWidth="110px"
-                class="m-margin-top-10"
-                prop="vcpus"
-                @validate="validate"
-                validateEvent
-                required
-                :show-error="rules['vcpus'].error"
-                :error-msg="rules['vcpus'].message"
-                v-model="vcpus"
-                label="VCPUs"
-              />
-              <m-input
-                type="number"
-                labelWidth="110px"
-                class="m-margin-top-10"
-                v-model="cpulimit"
-                label="CPU Limit"
-              />
-              <m-input
-                type="number"
-                labelWidth="110px"
-                prop="cpuunits"
-                @validate="validate"
-                validateEvent
-                class="m-margin-top-10"
-                required
-                :show-error="rules['cpuunits'].error"
-                :error-msg="rules['cpuunits'].message"
-                v-model="cpuunits"
-                label="CPU Weight"
-              />
+              <m-input type="number" labelWidth="110px" class="m-margin-top-10" prop="vcpus" @validate="validate"
+                validateEvent required :show-error="rules['vcpus'].error" :error-msg="rules['vcpus'].message"
+                v-model="vcpus" label="VCPUs" />
+              <m-input type="number" labelWidth="110px" class="m-margin-top-10" v-model="cpulimit" label="CPU Limit" />
+              <m-input type="number" labelWidth="110px" prop="cpuunits" @validate="validate" validateEvent
+                class="m-margin-top-10" required :show-error="rules['cpuunits'].error"
+                :error-msg="rules['cpuunits'].message" v-model="cpuunits" label="CPU Weight" />
               <div style="margin-bottom: 20px">
-                <label
-                  style="
+                <label style="
                     padding-left: 10px;
                     height: 28px;
                     width: 120px;
                     line-height: 28px;
                     display: inline-block;
                     vertical-align: middle;
-                  "
-                  >Enable NUMA</label
-                >
+                  ">Enable NUMA</label>
                 <label class="m-form__checkbox">
                   <input type="checkbox" v-model="numa" />
                   <div></div>
@@ -973,19 +597,10 @@
                     <div slot-scope="scope" class="cpu-check">
                       <label class="cpu-label">{{
                         flags[scope.row.flag]
-                      }}</label
-                      >-<m-switch
-                        :name="scope.row.flag"
-                        v-model="flags[scope.row.flag]"
-                      ></m-switch
-                      >+
+                      }}</label>-<m-switch :name="scope.row.flag" v-model="flags[scope.row.flag]"></m-switch>+
                     </div>
                   </el-table-column>
-                  <el-table-column
-                    label="flag"
-                    prop="flag"
-                    width="80px"
-                  ></el-table-column>
+                  <el-table-column label="flag" prop="flag" width="80px"></el-table-column>
                   <el-table-column label="Description" prop="desc"></el-table-column>
                 </el-table>
               </div>
@@ -999,19 +614,9 @@
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-input
-                type="number"
-                labelWidth="110px"
-                label="Memory"
-                prop="memory"
-                validateEvent
-                class="m-margin-top-10"
-                @validate="validate"
-                required
-                :show-error="rules['memory'].error"
-                :error-msg="rules['memory'].message"
-                v-model="memory"
-              />
+              <m-input type="number" labelWidth="110px" label="Memory" prop="memory" validateEvent
+                class="m-margin-top-10" @validate="validate" required :show-error="rules['memory'].error"
+                :error-msg="rules['memory'].message" v-model="memory" />
             </dd>
           </dl>
         </div>
@@ -1019,39 +624,20 @@
           <dl>
             <dt>Advanced</dt>
             <dd>
-              <m-input
-                type="number"
-                labelWidth="110px"
-                label="Minimum Memory"
-                prop="ballon"
-                validateEvent
-                class="m-margin-top-10"
-                @validate="validate"
-                required
-                :show-error="rules['ballon'].error"
-                :error-msg="rules['ballon'].message"
-                :disable="!balloncheck"
-                v-model="ballon"
-              />
-              <m-input
-                type="number"
-                labelWidth="110px"
-                label="Shared"
-                v-model="shares"
-                :disabled="!balloncheck || ballon === memory"
-              />
+              <m-input type="number" labelWidth="110px" label="Minimum Memory" prop="ballon" validateEvent
+                class="m-margin-top-10" @validate="validate" required :show-error="rules['ballon'].error"
+                :error-msg="rules['ballon'].message" :disable="!balloncheck" v-model="ballon" />
+              <m-input type="number" labelWidth="110px" label="Shared" v-model="shares"
+                :disabled="!balloncheck || ballon === memory" />
               <div style="margin-bottom: 20px">
-                <label
-                  style="
+                <label style="
                     padding-left: 10px;
                     height: 28px;
                     width: 120px;
                     line-height: 28px;
                     display: inline-block;
                     vertical-align: middle;
-                  "
-                  >Balloning Device</label
-                >
+                  ">Balloning Device</label>
                 <label class="m-form__checkbox">
                   <input type="checkbox" v-model="balloncheck" />
                   <div></div>
@@ -1067,87 +653,50 @@
           <dt>Basic Information</dt>
           <dd>
             <div style="margin-bottom: 20px">
-              <label
-                style="
+              <label style="
                   padding-left: 10px;
                   height: 28px;
                   width: 120px;
                   line-height: 28px;
                   display: inline-block;
                   vertical-align: middle;
-                "
-                >No Network Device</label
-              >
+                ">No Network Device</label>
               <label class="m-form__checkbox">
                 <input type="checkbox" v-model="hasnetwork" />
                 <div></div>
               </label>
             </div>
-            <m-input
-              type="number"
-              labelWidth="110px"
-              class="m-margin-top-10"
-              label="VLAN Tag"
-              v-model="tag"
-              :disabled="hasnetwork"
-            />
-            <m-input
-              type="number"
-              labelWidth="110px"
-              label="MAC Address"
-              class="m-margin-top-10"
-              v-model="mac"
-              :disabled="hasnetwork"
-            />
+            <m-input type="number" labelWidth="110px" class="m-margin-top-10" label="VLAN Tag" v-model="tag"
+              :disabled="hasnetwork" />
+            <m-input type="number" labelWidth="110px" label="MAC Address" class="m-margin-top-10" v-model="mac"
+              :disabled="hasnetwork" />
             <div style="margin-bottom: 20px">
-              <label
-                class="m-margin-top-10"
-                style="
+              <label class="m-margin-top-10" style="
                   padding-left: 10px;
                   height: 28px;
                   width: 120px;
                   line-height: 28px;
                   display: inline-block;
                   vertical-align: middle;
-                "
-                >Model</label
-              >
-              <div
-                class="m-margin-top-10 m-form__select"
-                style="width: 215px; display: inline-block"
-              >
-                <select
-                  class="m-form__select_inner"
-                  v-model="model"
-                  :disabled="hasnetwork"
-                >
-                  <option
-                    v-for="(item, index) of modelList"
-                    :key="index"
-                    :value="item.value"
-                  >
+                ">Model</label>
+              <div class="m-margin-top-10 m-form__select" style="width: 215px; display: inline-block">
+                <select class="m-form__select_inner" v-model="model" :disabled="hasnetwork">
+                  <option v-for="(item, index) of modelList" :key="index" :value="item.value">
                     {{ item.label }}
                   </option>
                 </select>
               </div>
               <div style="margin-bottom: 20px">
-                <label
-                  style="
+                <label style="
                     padding-left: 10px;
                     height: 28px;
                     width: 120px;
                     line-height: 28px;
                     display: inline-block;
                     vertical-align: middle;
-                  "
-                  >Firewall</label
-                >
+                  ">Firewall</label>
                 <label class="m-form__checkbox">
-                  <input
-                    type="checkbox"
-                    v-model="firewall"
-                    :disabled="hasnetwork"
-                  />
+                  <input type="checkbox" v-model="firewall" :disabled="hasnetwork" />
                   <div></div>
                 </label>
               </div>
@@ -1160,9 +709,7 @@
             <el-table :data="networkList">
               <el-table-column width="50">
                 <template slot-scope="scope">
-                  <el-radio :label="scope.row.iface" v-model="networkRadio"
-                    >&nbsp;</el-radio
-                  >
+                  <el-radio :label="scope.row.iface" v-model="networkRadio">&nbsp;</el-radio>
                 </template>
               </el-table-column>
               <el-table-column label="Adjust" prop="iface"></el-table-column>
@@ -1184,40 +731,21 @@
             <dt>Advanced</dt>
             <dd>
               <div style="margin-bottom: 20px">
-                <label
-                  style="
+                <label style="
                     padding-left: 10px;
                     height: 28px;
                     width: 120px;
                     line-height: 28px;
                     display: inline-block;
                     vertical-align: middle;
-                  "
-                  >Disconnect</label
-                >
+                  ">Disconnect</label>
                 <label class="m-form__checkbox">
-                  <input
-                    type="checkbox"
-                    v-model="link_down"
-                    :disabled="hasnetwork"
-                  />
+                  <input type="checkbox" v-model="link_down" :disabled="hasnetwork" />
                   <div></div>
                 </label>
               </div>
-              <m-input
-                type="number"
-                labelWidth="110px"
-                label="Rate Limit"
-                v-model="rate"
-                :disabled="hasnetwork"
-              />
-              <m-input
-                type="number"
-                labelWidth="110px"
-                label="Multiqueue"
-                v-model="queues"
-                :disabled="hasnetwork"
-              />
+              <m-input type="number" labelWidth="110px" label="Rate Limit" v-model="rate" :disabled="hasnetwork" />
+              <m-input type="number" labelWidth="110px" label="Multiqueue" v-model="queues" :disabled="hasnetwork" />
             </dd>
           </dl>
         </div>
@@ -1263,26 +791,12 @@
           <div>Advanced</div>
         </label>
       </div>
-      <m-button
-        type="primary"
-        style="height: 40px; line-height: 40px; width: 100px"
-        @on-click="prev()"
-        >Previous</m-button
-      >
-      <m-button
-        type="primary"
-        style="height: 40px; line-height: 40px; width: 100px"
-        @on-click="next()"
-        v-show="step < 8"
-        >Next</m-button
-      >
-      <m-button
-        type="primary"
-        style="height: 40px; line-height: 40px; width: 100px"
-        @on-click="confirm()"
-        v-show="step === 8"
-        >Confirm</m-button
-      >
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px"
+        @on-click="prev()">Previous</m-button>
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px" @on-click="next()"
+        v-show="step < 8">Next</m-button>
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px" @on-click="confirm()"
+        v-show="step === 8">Confirm</m-button>
     </template>
   </Dialog>
 </template>
@@ -1531,7 +1045,7 @@ export default {
       this.commitUpdateChangeTree(true);
       this.close();
     },
-    cancel() {},
+    cancel() { },
     // Next button operations
     async next() {
       // Overall form validation for each step
@@ -1601,9 +1115,8 @@ export default {
           agent: this.agent ? 1 : "",
           cores: this.cores,
           cpulimit: this.cpulimit,
-          ide2: `${
-            this.mediaType === "iso" ? `${this.isoRadio}` : this.mediaType
-          },media=cdrom`,
+          ide2: `${this.mediaType === "iso" ? `${this.isoRadio}` : this.mediaType
+            },media=cdrom`,
           ostype: this.version,
           vga: this.vga,
           scsihw: this.scsihw,
@@ -1677,7 +1190,7 @@ export default {
         this.params = baseParams;
       }
     },
-    handleStepChange() {},
+    handleStepChange() { },
     // Previous step
     prev() {
       // Step down until 1
@@ -1700,13 +1213,13 @@ export default {
       if (this.step === 4) {
         this.isAdvice
           ? (props = [
-              "deviceIndex",
-              "disksize",
-              "iops_rd",
-              "iops_wr",
-              "iops_rd_max",
-              "iops_wr_max",
-            ])
+            "deviceIndex",
+            "disksize",
+            "iops_rd",
+            "iops_wr",
+            "iops_rd_max",
+            "iops_wr_max",
+          ])
           : (props = ["deviceIndex", "disksize"]);
       }
       if (this.step === 5) {
@@ -1897,10 +1410,12 @@ export default {
     font-size: 12px;
   }
 }
+
 .cpu-check {
   width: 100%;
   white-space: nowrap;
 }
+
 .cpu-label {
   width: 55px;
   display: inline-block;

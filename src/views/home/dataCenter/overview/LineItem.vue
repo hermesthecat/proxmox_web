@@ -72,35 +72,44 @@ export default {
   padding: 20px 0px;
   width: 100%;
   height: 100%;
+
   &-title {
     text-align: center;
     padding: 0px 0px 20px 0px;
   }
+
   &-content {
     display: flex;
     flex-grow: 1;
+
     &-item {
       flex: 1 1 auto;
       padding: 5px 20px;
+
       &:nth-child(2) {
         text-align: right;
       }
     }
   }
 }
+
 .fail {
   color: #cfcfcf;
 }
+
 .single.line-content-item {
   display: block;
   text-align: center;
 }
+
 .single.line-content {
   display: block;
 }
+
 .fa-5x {
   font-size: 50px;
 }
+
 .critical {
   color: #ff6c59;
 }

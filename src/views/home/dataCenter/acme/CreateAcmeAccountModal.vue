@@ -1,67 +1,24 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @cancel="close"
-    @confirm="confirm"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" @cancel="close" @confirm="confirm" :title="title" :_style="{ width: '956px' }"
+    @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
       <div class="m-form__content" v-if="isCreate">
         <div class="m-form__section">
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-input
-                type="text"
-                prop="name"
-                labelWidth="100px"
-                label="Name"
-                v-model="name"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules['name'].error"
-                :error-msg="rules['name'].message"
-                v-if="modalType === 'create'"
-                placeholder="Please enter name"
-              />
-              <m-input
-                type="text"
-                prop="domains"
-                labelWidth="100px"
-                label="Name"
-                v-model="domains"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules.domains.error"
-                :error-msg="rules.domains.message"
-                v-if="modalType !== 'create'"
-                placeholder="Please enter name"
-              />
-              <m-select
-                prop="directory"
-                label="ACME Directory"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.directory.error"
-                :error-msg="rules.directory.message"
-                :readonly="false"
-                required
-                @on-change="handleDirectorySelect"
-                v-model="directory"
-                :disabled="!isCreate"
-                placeholder="Please select ACME directory"
-              >
-                <m-option
-                  v-for="(item, index) in db.directoriesList"
-                  :key="item.url"
-                  :label="item.name"
-                  :value="item.url"
-                >
+              <m-input type="text" prop="name" labelWidth="100px" label="Name" v-model="name" validateEvent
+                @validate="validate" required :show-error="rules['name'].error" :error-msg="rules['name'].message"
+                v-if="modalType === 'create'" placeholder="Please enter name" />
+              <m-input type="text" prop="domains" labelWidth="100px" label="Name" v-model="domains" validateEvent
+                @validate="validate" required :show-error="rules.domains.error" :error-msg="rules.domains.message"
+                v-if="modalType !== 'create'" placeholder="Please enter name" />
+              <m-select prop="directory" label="ACME Directory" labelWidth="100px" validateEvent @validate="validate"
+                :show-error="rules.directory.error" :error-msg="rules.directory.message" :readonly="false" required
+                @on-change="handleDirectorySelect" v-model="directory" :disabled="!isCreate"
+                placeholder="Please select ACME directory">
+                <m-option v-for="(item, index) in db.directoriesList" :key="item.url" :label="item.name"
+                  :value="item.url">
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
@@ -86,25 +43,11 @@
                   {{ this.tos_url ? this.tos_url : "Loading" }}
                 </div>
               </div>
-              <m-checkbox
-                label="Accept ToS"
-                v-model="tos_url__checked"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-checkbox label="Accept ToS" v-model="tos_url__checked" labelWidth="100px"></m-checkbox>
 
-              <m-input
-                type="text"
-                prop="contact"
-                labelWidth="100px"
-                label="E-mail"
-                v-model="contact"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules.contact.error"
-                :error-msg="rules.contact.message"
-                placeholder="Please enter E-mail"
-              />
+              <m-input type="text" prop="contact" labelWidth="100px" label="E-mail" v-model="contact" validateEvent
+                @validate="validate" required :show-error="rules.contact.error" :error-msg="rules.contact.message"
+                placeholder="Please enter E-mail" />
             </dd>
           </dl>
         </div>
@@ -141,67 +84,41 @@
           <div class="service-police">
             <div class="service-police-label">Directory</div>
             <div class="service-police-content">
-              <a
-                :href="
+              <a :href="db.acmeAccountObj.directory && db.acmeAccountObj.directory
+                " target="_blank">{{
                   db.acmeAccountObj.directory && db.acmeAccountObj.directory
-                "
-                target="_blank"
-                >{{
-                  db.acmeAccountObj.directory && db.acmeAccountObj.directory
-                }}</a
-              >
+                }}</a>
             </div>
           </div>
           <div class="service-police">
             <div class="service-police-label">Terms of Service</div>
             <div class="service-police-content">
-              <a
-                :href="db.acmeAccountObj.tos && db.acmeAccountObj.tos"
-                target="_blank"
-                >{{ db.acmeAccountObj.tos && db.acmeAccountObj.tos }}</a
-              >
+              <a :href="db.acmeAccountObj.tos && db.acmeAccountObj.tos" target="_blank">{{ db.acmeAccountObj.tos &&
+                db.acmeAccountObj.tos }}</a>
             </div>
           </div>
         </div>
       </div>
-      <Dialog
-        :visible="showLog"
-        @close="closeLog"
-        :_style="{
-          width: '800px',
-        }"
-        title="Task Viewer: Task Progress"
-      >
+      <Dialog :visible="showLog" @close="closeLog" :_style="{
+        width: '800px',
+      }" title="Task Viewer: Task Progress">
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
             <m-tab-panel label="Output" name="log"></m-tab-panel>
             <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
-          <m-button
-            class="create-btn m-margin-top-10"
-            type="primary"
-            @on-click="stopTask1"
-            :disabled="db.addClusterStatusObj.status !== 'running'"
-            >Stop</m-button
-          >
+          <m-button class="create-btn m-margin-top-10" type="primary" @on-click="stopTask1"
+            :disabled="db.addClusterStatusObj.status !== 'running'">Stop</m-button>
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
               <div class="table" v-if="tab === 'log'">
-                <div
-                  class="table-tr"
-                  v-for="item in db.addClusterLogList"
-                  :key="item.n"
-                >
+                <div class="table-tr" v-for="item in db.addClusterLogList" :key="item.n">
                   {{ item.t }}
                 </div>
               </div>
               <div class="table" v-if="tab === 'status'">
                 <template v-for="(item, key) in db.addClusterStatusObj">
-                  <div
-                    class="table-tr"
-                    v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-                    :key="key"
-                  >
+                  <div class="table-tr" v-if="!['exitstatus', 'id', 'pstart'].includes(key)" :key="key">
                     <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
                     <div class="table-td" v-if="key === 'starttime'">
                       {{
@@ -426,10 +343,12 @@ export default {
 .service-police {
   width: 100%;
   padding: 0px 20px 20px 0px;
+
   &-label {
     width: 100px;
     display: inline-block;
   }
+
   &-content {
     display: inline-block;
   }

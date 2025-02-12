@@ -1,14 +1,10 @@
 <template>
-  <div
-    class="m-step"
-    :style="style"
-    :class="[
-      !isSimple && `is-${$parent.direction}`,
-      isSimple && 'is-simple',
-      isLast && !space && !isCenter && 'is-flex',
-      isCenter && !isVertical && !isSimple && 'is-center',
-    ]"
-  >
+  <div class="m-step" :style="style" :class="[
+    !isSimple && `is-${$parent.direction}`,
+    isSimple && 'is-simple',
+    isLast && !space && !isCenter && 'is-flex',
+    isCenter && !isVertical && !isSimple && 'is-center',
+  ]">
     <!-- icon & line -->
     <div class="m-step__head" :class="`is-${currentStatus}`">
       <div class="m-step__line" :style="__lineStyle">
@@ -16,22 +12,15 @@
       </div>
 
       <div class="m-step__icon" :class="`is-${icon ? 'icon' : 'text'}`">
-        <slot
-          v-if="currentStatus !== 'success' && currentStatus !== 'error'"
-          name="icon"
-        >
+        <slot v-if="currentStatus !== 'success' && currentStatus !== 'error'" name="icon">
           <i v-if="icon" class="m-step__icon-inner" :class="[icon]"></i>
           <div class="m-step__icon-inner" v-if="!icon && !isSimple">
             {{ index + 1 }}
           </div>
         </slot>
-        <i
-          v-else
-          :class="[
-            'el-icon-' + (currentStatus === 'success' ? 'check' : 'close'),
-          ]"
-          class="m-step__icon-inner is-status"
-        >
+        <i v-else :class="[
+          'el-icon-' + (currentStatus === 'success' ? 'check' : 'close'),
+        ]" class="m-step__icon-inner is-status">
         </i>
       </div>
       <div class="m-step__title" ref="title" :class="['is-' + currentStatus]">
@@ -128,8 +117,8 @@ export default {
         typeof this.space === "number"
           ? this.space + "px"
           : this.space
-          ? this.space
-          : 100 / (len - (this.isCenter ? 0 : 1)) + "%";
+            ? this.space
+            : 100 / (len - (this.isCenter ? 0 : 1)) + "%";
       style.flexBasis = space;
       if (this.isVertical) return style;
       if (this.isLast) {

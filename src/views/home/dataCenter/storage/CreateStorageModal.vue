@@ -1,21 +1,8 @@
 <template>
-  <Dialog
-    :visible="visible"
-    v-if="visible"
-    :_style="{ width: '956px' }"
-    @confirm="confirm()"
-    @cancel="cancel()"
-    :title="title"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" v-if="visible" :_style="{ width: '956px' }" @confirm="confirm()" @cancel="cancel()"
+    :title="title" @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
-      <component
-        :is="type"
-        :ref="type"
-        :isCreate="isCreate"
-        :param="param"
-        :isAdvice="isAdvice"
-      ></component>
+      <component :is="type" :ref="type" :isCreate="isCreate" :param="param" :isAdvice="isAdvice"></component>
     </div>
     <template slot="footer" v-if="type === 'nfs' || type === 'cifs'">
       <div class="label_box">
@@ -24,9 +11,7 @@
           <div>Advanced</div>
         </label>
       </div>
-      <m-button class="create-btn" type="primary" @on-click="confirm"
-        >Create</m-button
-      >
+      <m-button class="create-btn" type="primary" @on-click="confirm">Create</m-button>
     </template>
   </Dialog>
 </template>

@@ -1,17 +1,8 @@
 <template>
   <aside class="aside" ref="aside">
     <div class="aside-select">
-      <select
-        class="pv-form-input"
-        v-model="view"
-        @change="setViewFilter"
-        style="padding: 4px 10px"
-      >
-        <option
-          v-for="(item, key) of viewTypeList"
-          :key="key"
-          :value="item.value"
-        >
+      <select class="pv-form-input" v-model="view" @change="setViewFilter" style="padding: 4px 10px">
+        <option v-for="(item, key) of viewTypeList" :key="key" :value="item.value">
           {{ item.label }}
         </option>
       </select>
@@ -80,9 +71,8 @@ export default {
       rootnode: {
         id: "root",
         data: {
-          text: `Data Center ${
-            tic.clustername ? "(" + tic.clustername + ")" : ""
-          }`,
+          text: `Data Center ${tic.clustername ? "(" + tic.clustername + ")" : ""
+            }`,
           root: true,
           index: 0,
           parentId: null,
@@ -158,20 +148,20 @@ export default {
     updateTree() {
       // Construct root node
       let rootnode = {
+        id: "root",
+        data: {
+          text: "Data Center (test)",
+          root: true,
+          index: 0,
+          parentId: null,
+          expanded: true,
           id: "root",
-          data: {
-            text: "Data Center (test)",
-            root: true,
-            index: 0,
-            parentId: null,
-            expanded: true,
-            id: "root",
-            iconCls: "fa fa-server",
-            type: "",
-            vmid: 0,
-          },
-          childNodes: [],
+          iconCls: "fa fa-server",
+          type: "",
+          vmid: 0,
         },
+        childNodes: [],
+      },
         lastsel = JSON.parse(window.localStorage.getItem("lastsel")) || {}, // Last selected node
         defaultKeys = window.localStorage.getItem("defaultExpandKeys")
           ? JSON.parse(window.localStorage.getItem("defaultExpandKeys"))
@@ -187,17 +177,17 @@ export default {
             item.type === "node"
               ? (item.text = item.node)
               : item.type === "qemu"
-              ? (item.text =
+                ? (item.text =
                   item.vmid + `${item.name ? "(" + item.name + ")" : ""}`)
-              : item.type === "pool"
-              ? (item.text = item.pool)
-              : item.type === "storage"
-              ? (item.text =
-                  item.storage + `${item.node ? "(" + item.node + ")" : ""}`)
-              : item.type === "lxc"
-              ? (item.text =
-                  item.vmid + `${item.name ? "(" + item.name + ")" : ""}`)
-              : "";
+                : item.type === "pool"
+                  ? (item.text = item.pool)
+                  : item.type === "storage"
+                    ? (item.text =
+                      item.storage + `${item.node ? "(" + item.node + ")" : ""}`)
+                    : item.type === "lxc"
+                      ? (item.text =
+                        item.vmid + `${item.name ? "(" + item.name + ")" : ""}`)
+                      : "";
             return {
               id: item.id,
               data: item,
@@ -306,10 +296,10 @@ export default {
           return;
         }
         let info = Object.assign(
-            {},
-            { leaf: true, selected: false, expanded: false },
-            item.data
-          ),
+          {},
+          { leaf: true, selected: false, expanded: false },
+          item.data
+        ),
           child = this.groupChild(rootnode, info, groups, 0);
         if (child) {
           index[item.data.id] = child;
@@ -358,20 +348,20 @@ export default {
     },
     refresh() {
       let rootnode = {
+        id: "root",
+        data: {
+          text: "Data Center (test)",
+          root: true,
+          index: 0,
+          parentId: null,
+          expanded: true,
           id: "root",
-          data: {
-            text: "Data Center (test)",
-            root: true,
-            index: 0,
-            parentId: null,
-            expanded: true,
-            id: "root",
-            iconCls: "fa fa-server",
-            type: "",
-            vmid: 0,
-          },
-          childNodes: [],
+          iconCls: "fa fa-server",
+          type: "",
+          vmid: 0,
         },
+        childNodes: [],
+      },
         index = this.treeData.dataIndex,
         groups = this.viewTypeList[this.view].groups || [];
       for (let key in this.treeData.dataIndex) {
@@ -628,6 +618,7 @@ export default {
   background: #2e3d50;
   border-right: 1px solid #f5f5f5;
   color: #fff !important;
+
   &-select {
     margin: 5px 10px;
     position: relative;
@@ -645,6 +636,7 @@ export default {
       font-size: 11px;
     }
   }
+
   &_col-resize {
     height: 100%;
     border-right: 3px solid #ded0d0;

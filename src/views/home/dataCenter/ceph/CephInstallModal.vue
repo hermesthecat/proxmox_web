@@ -1,22 +1,14 @@
 <template>
-  <m-dialog
-    :visible="visible"
-    :title="modalType === 'detail' ? 'Details' : 'Configure CEPH'"
-    @close="$emit('close')"
+  <m-dialog :visible="visible" :title="modalType === 'detail' ? 'Details' : 'Configure CEPH'" @close="$emit('close')"
     :_style="{
       height: '500px',
-    }"
-  >
+    }">
     <template slot="content" v-if="modalType === 'detail'">
       <div class="table">
         <div class="table-tr">
           {{ param.message }}
         </div>
-        <div
-          class="table-tr"
-          v-for="(item, index) of param.detail"
-          :key="index"
-        >
+        <div class="table-tr" v-for="(item, index) of param.detail" :key="index">
           {{ item.message }}
         </div>
       </div>
@@ -44,69 +36,28 @@
         ceph.com.
       </div>
       <div v-if="step === 2" class="ceph-install">
-        <iframe
-          ref="ifra"
-          src="/shell/?console=cmd&node=localhost&cmd=ceph_install&resize=scale&xtermjs=1"
-          width="100%"
-        ></iframe>
+        <iframe ref="ifra" src="/shell/?console=cmd&node=localhost&cmd=ceph_install&resize=scale&xtermjs=1"
+          width="100%"></iframe>
       </div>
       <div v-if="step === 3" class="ceph-config">
-        <m-select
-          v-model="network"
-          prop="network"
-          label="Network"
-          labelWidth="100px"
-          validateEvent
-          @validate="validate"
-          :show-error="rules['network'].error"
-          :error-msg="rules['network'].message"
-          @on-change="(value) => (network = value)"
-        >
-          <m-option
-            v-for="item in networkList"
-            :key="item.cidr"
-            :label="item.cidr"
-            :value="item.cidr"
-          >
+        <m-select v-model="network" prop="network" label="Network" labelWidth="100px" validateEvent @validate="validate"
+          :show-error="rules['network'].error" :error-msg="rules['network'].message"
+          @on-change="(value) => (network = value)">
+          <m-option v-for="item in networkList" :key="item.cidr" :label="item.cidr" :value="item.cidr">
           </m-option>
         </m-select>
-        <m-select
-          v-model="clusterNetwork"
-          prop="clusterNetwork"
-          label="Cluster Network"
-          labelWidth="100px"
-          @on-change="(value) => (clusterNetwork = value)"
-        >
-          <m-option
-            v-for="item in networkList"
-            :key="item.cidr"
-            :label="item.cidr"
-            :value="item.cidr"
-          >
+        <m-select v-model="clusterNetwork" prop="clusterNetwork" label="Cluster Network" labelWidth="100px"
+          @on-change="(value) => (clusterNetwork = value)">
+          <m-option v-for="item in networkList" :key="item.cidr" :label="item.cidr" :value="item.cidr">
           </m-option>
         </m-select>
         <h1 style="margin-bottom: 10px; margin-left: 5px">
           {{ gettext("First Ceph monitor") + ": " }}
         </h1>
-        <m-select
-          prop="monnode"
-          label="Monitor Node"
-          labelWidth="100px"
-          validateEvent
-          @validate="validate"
-          :show-error="rules.monnode.error"
-          :error-msg="rules.monnode.message"
-          :readonly="false"
-          @on-change="(value) => (monnode = value)"
-          v-model="monnode"
-          placeholder="Please select monitor node"
-        >
-          <m-option
-            v-for="(item, index) in nodeList"
-            :key="item.node"
-            :label="item.node"
-            :value="item.node"
-          >
+        <m-select prop="monnode" label="Monitor Node" labelWidth="100px" validateEvent @validate="validate"
+          :show-error="rules.monnode.error" :error-msg="rules.monnode.message" :readonly="false"
+          @on-change="(value) => (monnode = value)" v-model="monnode" placeholder="Please select monitor node">
+          <m-option v-for="(item, index) in nodeList" :key="item.node" :label="item.node" :value="item.node">
             <div v-if="index === 0" class="table-tr">
               <div class="table-td">Node</div>
               <div class="table-td">Memory Usage</div>
@@ -114,32 +65,22 @@
             </div>
             <div class="table-tr">
               <span class="table-td" :title="item.node">{{ item.node }}</span>
-              <span
-                class="table-td"
-                :title="
+              <span class="table-td" :title="item.mem &&
+                item.maxmem &&
+                percentToFixed(item.mem / item.maxmem, 3)
+                ">{{
                   item.mem &&
                   item.maxmem &&
                   percentToFixed(item.mem / item.maxmem, 3)
-                "
-                >{{
-                  item.mem &&
-                  item.maxmem &&
-                  percentToFixed(item.mem / item.maxmem, 3)
-                }}</span
-              >
-              <span
-                class="table-td"
-                :title="
+                }}</span>
+              <span class="table-td" :title="item.cpu &&
+                item.maxcpu &&
+                `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
+                ">{{
                   item.cpu &&
                   item.maxcpu &&
                   `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
-                "
-                >{{
-                  item.cpu &&
-                  item.maxcpu &&
-                  `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
-                }}</span
-              >
+                }}</span>
             </div>
           </m-option>
         </m-select>
@@ -151,42 +92,16 @@
           }}
         </div>
         <div class="m-margin-top-10" v-if="isAdvice">
-          <m-input
-            type="number"
-            prop="size"
-            label="size"
-            labelWidth="100px"
-            min="2"
-            max="7"
-            validateEvent
-            @validate="validate"
-            :show-error="rules.size.error"
-            :error-msg="rules.size.message"
-            v-model="size"
-            placeholder="Please enter size"
-          />
-          <m-input
-            type="number"
-            prop="minsize"
-            label="min size"
-            labelWidth="100px"
-            min="2"
-            max="3"
-            validateEvent
-            @validate="validate"
-            :show-error="rules.minsize.error"
-            :error-msg="rules.minsize.message"
-            v-model="minsize"
-            placeholder="Please enter minimum size"
-          />
+          <m-input type="number" prop="size" label="size" labelWidth="100px" min="2" max="7" validateEvent
+            @validate="validate" :show-error="rules.size.error" :error-msg="rules.size.message" v-model="size"
+            placeholder="Please enter size" />
+          <m-input type="number" prop="minsize" label="min size" labelWidth="100px" min="2" max="3" validateEvent
+            @validate="validate" :show-error="rules.minsize.error" :error-msg="rules.minsize.message" v-model="minsize"
+            placeholder="Please enter minimum size" />
         </div>
         <div v-if="step === 4">
           <template v-for="(item, key) in db.addClusterStatusObj">
-            <div
-              class="table-tr"
-              v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-              :key="item.pid"
-            >
+            <div class="table-tr" v-if="!['exitstatus', 'id', 'pstart'].includes(key)" :key="item.pid">
               <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
               <div class="table-td" v-if="key === 'starttime'">
                 {{ dateFormat(new Date(item * 1000), "yyyy-MM-dd hh:mm") }}
@@ -198,11 +113,7 @@
       </div>
       <div v-if="step === 4">
         <template v-for="(item, key) in db.addClusterStatusObj">
-          <div
-            class="table-tr"
-            v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-            :key="key"
-          >
+          <div class="table-tr" v-if="!['exitstatus', 'id', 'pstart'].includes(key)" :key="key">
             <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
             <div class="table-td" v-if="key === 'starttime'">
               {{ dateFormat(new Date(item * 1000), "yyyy-MM-dd hh:mm") }}
@@ -219,30 +130,18 @@
           <div>Advanced</div>
         </label>
       </div>
-      <m-button
-        type="primary"
-        style="
+      <m-button type="primary" style="
           height: 40px;
           line-height: 40px;
           width: 100px;
           vertical-align: top;
-        "
-        @on-click="prev"
-        v-if="step === 1"
-        >Start Installation</m-button
-      >
-      <m-button
-        type="primary"
-        style="
+        " @on-click="prev" v-if="step === 1">Start Installation</m-button>
+      <m-button type="primary" style="
           height: 40px;
           line-height: 40px;
           width: 100px;
           vertical-align: top;
-        "
-        @on-click="prev"
-        :disabled="!configuration"
-        v-if="step > 1 && step < 4"
-      >
+        " @on-click="prev" :disabled="!configuration" v-if="step > 1 && step < 4">
         Next
       </m-button>
     </template>
@@ -442,6 +341,7 @@ export default {
     overflow: hidden;
     margin: 10px 0px;
   }
+
   &-text {
     white-space: pre-wrap;
   }

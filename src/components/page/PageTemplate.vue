@@ -47,6 +47,7 @@ export default {
   padding: 19px;
   position: relative;
 }
+
 .tool-bar {
   display: flex;
   flex-grow: 1;
@@ -58,13 +59,16 @@ export default {
   height: 50px;
   line-height: 50px;
   margin-top: -20px;
+
   &-left {
     flex: 1 1 auto;
   }
+
   &-right {
     flex: 1 1 auto;
   }
 }
+
 .page-template {
   &__content {
     height: 100%;

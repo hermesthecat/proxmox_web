@@ -1,53 +1,24 @@
 <template>
-  <page-template
-    v-loading="!isCi"
-    element-loading-text="Cloud Init drive not found"
-  >
+  <page-template v-loading="!isCi" element-loading-text="Cloud Init drive not found">
     <div slot="toolbar-left">
-      <m-button
-        type="warning"
-        @on-click="handleCommand"
-        icon="el-icon-video-play"
-        :disabled="!current"
-        >Edit</m-button
-      >
-      <m-button
-        type="danger"
-        @on-click="handleDelete()"
-        icon="el-icon-delete"
-        :disabled="
-          !current ||
-          (currentObj.type !== 'cipassword' &&
-            !/ciDriveId/.test(currentObj.type))
-        "
-        >{{ "Delete" }}</m-button
-      >
-      <m-button type="info" @on-click="getCdRom" icon="el-icon-edit-outline"
-        >Regenerate Image</m-button
-      >
+      <m-button type="warning" @on-click="handleCommand" icon="el-icon-video-play" :disabled="!current">Edit</m-button>
+      <m-button type="danger" @on-click="handleDelete()" icon="el-icon-delete" :disabled="!current ||
+        (currentObj.type !== 'cipassword' &&
+          !/ciDriveId/.test(currentObj.type))
+        ">{{ "Delete" }}</m-button>
+      <m-button type="info" @on-click="getCdRom" icon="el-icon-edit-outline">Regenerate Image</m-button>
     </div>
     <div slot="page-content">
-      <el-table
-        :data="hardwareList"
-        :show-header="false"
-        highlight-current-row
-        @row-click="handleSingleSelect"
-      >
+      <el-table :data="hardwareList" :show-header="false" highlight-current-row @row-click="handleSingleSelect">
         <el-table-column width="55px">
           <template slot-scope="scope">
-            <el-radio :label="scope.row.type" v-model="current"
-              >&nbsp;</el-radio
-            >
+            <el-radio :label="scope.row.type" v-model="current">&nbsp;</el-radio>
           </template>
         </el-table-column>
         <el-table-column label="Name" prop="name" width="200px">
           <template slot-scope="scope">
             <div>
-              <base-icon
-                class="hardware-icon"
-                :name="scope.row.icon"
-                v-if="!/^[fa]/.test(scope.row.icon)"
-              ></base-icon>
+              <base-icon class="hardware-icon" :name="scope.row.icon" v-if="!/^[fa]/.test(scope.row.icon)"></base-icon>
               <i v-else :class="scope.row.icon" class="fa"></i>
               <span>{{ scope.row.name }}</span>
             </div>
@@ -58,26 +29,16 @@
             <div>
               {{ scope.row && scope.row.render && scope.row.render(false) }}
             </div>
-            <div
-              class="pending"
-              v-if="scope.row && scope.row.render && scope.row.render(true)"
-            >
+            <div class="pending" v-if="scope.row && scope.row.render && scope.row.render(true)">
               {{ scope.row && scope.row.render && scope.row.render(true) }}
             </div>
           </template>
         </el-table-column>
       </el-table>
-      <edit-modal
-        v-if="visible"
-        :visible="visible"
-        :title="title"
-        :param="param"
-        :modal-type="modalType"
-        @close="
-          visible = false;
-          __init__();
-        "
-      ></edit-modal>
+      <edit-modal v-if="visible" :visible="visible" :title="title" :param="param" :modal-type="modalType" @close="
+        visible = false;
+      __init__();
+      "></edit-modal>
     </div>
   </page-template>
 </template>
@@ -493,6 +454,7 @@ export default {
 .pending {
   color: #f87c7c;
 }
+
 .hardware-icon {
   width: 16px;
   vertical-align: middle;
@@ -501,13 +463,16 @@ export default {
   margin-right: 5px;
   background-size: 16px;
 }
+
 /deep/.el-table td,
 .el-table th {
   padding: 0px;
 }
+
 /deep/.base-icon {
   background-size: 16px;
 }
+
 /deep/.tool-bar-left {
   flex: 2;
 }

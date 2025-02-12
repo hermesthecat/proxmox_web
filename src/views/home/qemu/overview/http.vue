@@ -12,8 +12,7 @@ export default {
       this.rrdLoading = true;
       this.$http
         .get(
-          `/json/nodes/${this.node.node}/${
-            this.node.id
+          `/json/nodes/${this.node.node}/${this.node.id
           }/rrddata?timeframe=${encodeURIComponent(
             timeframe
           )}&cf=${encodeURIComponent(cf)}`
@@ -60,8 +59,7 @@ export default {
     queryConfig() {
       return this.$http
         .get(
-          `/json/nodes/${this.node.node}/${
-            this.node.id
+          `/json/nodes/${this.node.node}/${this.node.id
           }/config?_dc=${new Date().getTime()}`
         )
         .then((res) => {

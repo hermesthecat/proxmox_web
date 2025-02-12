@@ -1,139 +1,71 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-dropdown
-        trigger="click"
-        @on-change="handleCommand"
-        style="
+      <m-dropdown trigger="click" @on-change="handleCommand" style="
           width: 8rem;
           height: 30px;
           line-height: 30px;
           color: #fff !important;
-        "
-      >
+        ">
         <span slot="label">
-          <m-button
-            type="primary"
-            style="position: absolute; left: -1px; top: -1px; right: -1px"
-            icon="el-icon-plus"
-            >Create</m-button
-          >
+          <m-button type="primary" style="position: absolute; left: -1px; top: -1px; right: -1px"
+            icon="el-icon-plus">Create</m-button>
         </span>
-        <m-dropdown-item
-          v-for="item in menu_items"
-          :key="item.iftype"
-          :command="item.iftype"
-          >{{ item.text }}</m-dropdown-item
-        >
+        <m-dropdown-item v-for="item in menu_items" :key="item.iftype" :command="item.iftype">{{ item.text
+          }}</m-dropdown-item>
       </m-dropdown>
-      <m-button
-        type="primary"
-        @on-click="handleResume()"
-        icon="el-icon-edit"
-        :disabled="!changes"
-        >Reset</m-button
-      >
-      <m-button
-        type="warning"
-        @on-click="handleCommand('edit')"
-        icon="el-icon-video-play"
-        :disabled="selectedList.length !== 1"
-        >Edit</m-button
-      >
-      <m-button
-        type="info"
-        @on-click="handleDelete()"
-        icon="el-icon-view"
-        :disabled="selectedList.length !== 1"
-        >Delete</m-button
-      >
-      <m-button
-        type="info"
-        @on-click="handleConfig()"
-        icon="el-icon-edit-outline"
-        >Apply Configuration</m-button
-      >
+      <m-button type="primary" @on-click="handleResume()" icon="el-icon-edit" :disabled="!changes">Reset</m-button>
+      <m-button type="warning" @on-click="handleCommand('edit')" icon="el-icon-video-play"
+        :disabled="selectedList.length !== 1">Edit</m-button>
+      <m-button type="info" @on-click="handleDelete()" icon="el-icon-view"
+        :disabled="selectedList.length !== 1">Delete</m-button>
+      <m-button type="info" @on-click="handleConfig()" icon="el-icon-edit-outline">Apply Configuration</m-button>
     </div>
     <div slot="page-content">
-      <el-table
-        :data="db.nodeNetWorkList"
-        ref="dataTable"
-        @selection-change="handleSelect"
-        :default-sort="{ prop: 'iface', order: 'ascending' }"
-      >
+      <el-table :data="db.nodeNetWorkList" ref="dataTable" @selection-change="handleSelect"
+        :default-sort="{ prop: 'iface', order: 'ascending' }">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="Name" prop="iface" sortable></el-table-column>
         <el-table-column label="Category" prop="type" sortable></el-table-column>
         <el-table-column label="Active" prop="active">
           <template slot-scope="scope">
-            <table-info-state
-              :content="
-                scope.row.active && scope.row.active === 1 ? 'Yes' : 'No'
-              "
-              :state="
-                scope.row.active && scope.row.active === 1
+            <table-info-state :content="scope.row.active && scope.row.active === 1 ? 'Yes' : 'No'
+              " :state="scope.row.active && scope.row.active === 1
                   ? 'actived'
                   : 'unActived'
-              "
-            ></table-info-state>
+                "></table-info-state>
           </template>
         </el-table-column>
         <el-table-column label="Auto Start" prop="autostart">
           <template slot-scope="scope">
-            <table-info-state
-              :content="
-                scope.row.autostart && scope.row.autostart === 1 ? 'Yes' : 'No'
-              "
-              :state="
-                scope.row.autostart && scope.row.autostart === 1
+            <table-info-state :content="scope.row.autostart && scope.row.autostart === 1 ? 'Yes' : 'No'
+              " :state="scope.row.autostart && scope.row.autostart === 1
                   ? 'actived'
                   : 'unActived'
-              "
-            ></table-info-state>
+                "></table-info-state>
           </template>
         </el-table-column>
         <el-table-column label="VLAN Aware" prop="bridge_vlan_aware">
           <template slot-scope="scope">
-            <table-info-state
-              :content="
-                scope.row.bridge_vlan_aware && scope.row.bridge_vlan_aware === 1
-                  ? 'Yes'
-                  : 'No'
-              "
-              :state="
-                scope.row.bridge_vlan_aware && scope.row.bridge_vlan_aware === 1
+            <table-info-state :content="scope.row.bridge_vlan_aware && scope.row.bridge_vlan_aware === 1
+                ? 'Yes'
+                : 'No'
+              " :state="scope.row.bridge_vlan_aware && scope.row.bridge_vlan_aware === 1
                   ? 'actived'
                   : 'unActived'
-              "
-            ></table-info-state>
+                "></table-info-state>
           </template>
         </el-table-column>
-        <el-table-column
-          label="Ports/Slaves"
-          prop="bridge_ports"
-          sortable
-        ></el-table-column>
-        <el-table-column
-          label="Bond Mode"
-          prop="bond_mode"
-          sortable
-        ></el-table-column>
+        <el-table-column label="Ports/Slaves" prop="bridge_ports" sortable></el-table-column>
+        <el-table-column label="Bond Mode" prop="bond_mode" sortable></el-table-column>
         <el-table-column label="CIDR" prop="cidr" sortable></el-table-column>
         <el-table-column label="Gateway" prop="gateway" sortable></el-table-column>
         <el-table-column label="Comments" prop="comments"></el-table-column>
       </el-table>
-      <create-network-modal
-        :visible="visible"
-        :isCreate="isCreate"
-        :title="title"
-        :param="param"
-        @close="
-          visible = false;
-          queryNetWorkList();
-        "
-        v-if="visible"
-        :iftype="iftype"
-      ></create-network-modal>
+      <create-network-modal :visible="visible" :isCreate="isCreate" :title="title" :param="param" @close="
+        visible = false;
+      queryNetWorkList();
+      " v-if="visible" :iftype="iftype"></create-network-modal>
       <overview-card class="m-margin-top-10" v-if="changes" style="width: 100%">
         <div slot="title">
           Pending Changes (Activate by rebooting or using "Apply Configuration" (requires ifupdown2))
@@ -378,19 +310,23 @@ export default {
   padding: 10px 0px;
   border-top: 1px solid #c4d6ec;
   border-bottom: 1px solid #c4d6ec;
+
   &__item {
     flex: 1 1 auto;
     display: flex;
   }
+
   &__title {
     flex: 1 1 auto;
     display: inline-flex;
   }
+
   &__desc {
     flex: 1 1 auto;
     display: inline-flex;
   }
 }
+
 .progress {
   width: 90%;
   position: relative;
@@ -400,6 +336,7 @@ export default {
   padding: 0px 10px;
   margin: 90px 0px;
   text-align: center;
+
   &-inner {
     position: absolute;
     height: 30px;
@@ -408,6 +345,7 @@ export default {
     background: #369;
   }
 }
+
 .content {
   background: #000;
   color: #fff;
@@ -417,39 +355,50 @@ export default {
   overflow: auto;
   letter-spacing: 0vw;
 }
+
 @keyframes progress {
   0% {
     width: 0%;
   }
+
   25% {
     width: 25%;
   }
+
   50% {
     width: 50%;
   }
+
   75% {
     width: 75%;
   }
+
   100% {
     width: 100%;
   }
 }
+
 .refresh {
   animation: refresh-animation 0.5s infinite;
 }
+
 @keyframes refresh-animation {
   0% {
     rotate: (0deg);
   }
+
   25% {
     rotate: (90deg);
   }
+
   50% {
     rotate: (180deg);
   }
+
   75% {
     rotate: (270deg);
   }
+
   100% {
     rotate: (360deg);
   }

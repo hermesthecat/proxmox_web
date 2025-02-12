@@ -1,47 +1,25 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button type="primary" @on-click="showModal('create')" icon="fa fa-save"
-        >Add</m-button
-      >
-      <m-button
-        type="primary"
-        @on-click="showModal('edit')"
-        icon="el-icon-edit"
-        :disabled="selectedList.length !== 1"
-        >Edit</m-button
-      >
-      <m-button
-        type="danger"
-        @on-click="handleDelete()"
-        icon="el-icon-delete"
-        :disabled="selectedList.length <= 0"
-        >Delete</m-button
-      >
+      <m-button type="primary" @on-click="showModal('create')" icon="fa fa-save">Add</m-button>
+      <m-button type="primary" @on-click="showModal('edit')" icon="el-icon-edit"
+        :disabled="selectedList.length !== 1">Edit</m-button>
+      <m-button type="danger" @on-click="handleDelete()" icon="el-icon-delete"
+        :disabled="selectedList.length <= 0">Delete</m-button>
     </div>
     <div slot="page-content">
-      <el-table
-        :data="netWorkList"
-        ref="dataTable"
-        @selection-change="handleSelect"
-        @sort-change="handleSort"
-      >
+      <el-table :data="netWorkList" ref="dataTable" @selection-change="handleSelect" @sort-change="handleSort">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="ID" prop="id" sortable></el-table-column>
         <el-table-column label="Name" prop="name" sortable></el-table-column>
         <el-table-column label="Bridge" prop="bridge" sortable></el-table-column>
         <el-table-column label="Firewall" prop="firewall">
           <template slot-scope="scope">
-            <table-info-state
-              :content="
-                scope.row.disable && scope.row.disable === 1 ? 'No' : 'Yes'
-              "
-              :state="
-                scope.row.disable && scope.row.disable === 1
+            <table-info-state :content="scope.row.disable && scope.row.disable === 1 ? 'No' : 'Yes'
+              " :state="scope.row.disable && scope.row.disable === 1
                   ? 'unActived'
                   : 'actived'
-              "
-            ></table-info-state>
+                "></table-info-state>
           </template>
         </el-table-column>
         <el-table-column label="VLAN" prop="tag" sortable></el-table-column>
@@ -67,18 +45,11 @@
           </template>
         </el-table-column>
       </el-table>
-      <add-or-edit-net-work-modal
-        :visible="visible"
-        v-if="visible"
-        :title="title"
-        :param="param"
-        :isCreate="isCreate"
-        :modalType="modalType"
-        @close="
+      <add-or-edit-net-work-modal :visible="visible" v-if="visible" :title="title" :param="param" :isCreate="isCreate"
+        :modalType="modalType" @close="
           visible = false;
-          __init__();
-        "
-      ></add-or-edit-net-work-modal>
+        __init__();
+        "></add-or-edit-net-work-modal>
     </div>
   </page-template>
 </template>
@@ -207,7 +178,7 @@ export default {
               });
             });
         })
-        .catch(() => {});
+        .catch(() => { });
     },
     //Sort
     handleSort({ colume, prop, order }) {
@@ -253,22 +224,27 @@ export default {
   padding: 10px 0px;
   border-top: 1px solid #c4d6ec;
   border-bottom: 1px solid #c4d6ec;
+
   &__item {
     flex: 1 1 auto;
     display: flex;
   }
+
   &__title {
     flex: 1 1 auto;
     display: inline-flex;
   }
+
   &__desc {
     flex: 1 1 auto;
     display: inline-flex;
   }
 }
+
 /deep/.run-error {
   background: #f3d6d7 !important;
   color: #fff !important;
+
   &:hover {
     color: #606266 !important;
   }

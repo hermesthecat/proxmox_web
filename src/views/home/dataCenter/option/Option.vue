@@ -1,55 +1,28 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button
-        type="primary"
-        :disabled="option === ''"
-        @on-click="showModal(option)"
-        >Edit</m-button
-      >
+      <m-button type="primary" :disabled="option === ''" @on-click="showModal(option)">Edit</m-button>
     </div>
     <div slot="page-content">
       <div class="table">
-        <div
-          class="table-tr"
-          @click="handleClick"
-          id="keyboard"
-          :class="{ 'single-selected': option === 'keyboard' }"
-        >
+        <div class="table-tr" @click="handleClick" id="keyboard" :class="{ 'single-selected': option === 'keyboard' }">
           <div class="table-td table-radio">
             <label class="m-input__radio">
-              <input
-                type="radio"
-                value="keyboard"
-                name="option"
-                v-model="option"
-              />
+              <input type="radio" value="keyboard" name="option" v-model="option" />
               <div></div>
             </label>
           </div>
           <div class="table-td">Keyboard Layout</div>
           <div class="table-td">
             {{ db.optionObj && render_kvm_language(db.optionObj.keyboard) }}
-            <i
-              class="el-icon-edit edit-icon"
-              @click="showModal('keyboard')"
-            ></i>
+            <i class="el-icon-edit edit-icon" @click="showModal('keyboard')"></i>
           </div>
         </div>
-        <div
-          class="table-tr"
-          @click="handleClick"
-          id="http_proxy"
-          :class="{ 'single-selected': option === 'http_proxy' }"
-        >
+        <div class="table-tr" @click="handleClick" id="http_proxy"
+          :class="{ 'single-selected': option === 'http_proxy' }">
           <div class="table-td table-radio">
             <label class="m-input__radio">
-              <input
-                type="radio"
-                value="http_proxy"
-                name="option"
-                v-model="option"
-              />
+              <input type="radio" value="http_proxy" name="option" v-model="option" />
               <div></div>
             </label>
           </div>
@@ -60,26 +33,13 @@
                 ? db.optionObj.http_proxy
                 : "None"
             }}
-            <i
-              class="el-icon-edit edit-icon"
-              @click="showModal('http_proxy')"
-            ></i>
+            <i class="el-icon-edit edit-icon" @click="showModal('http_proxy')"></i>
           </div>
         </div>
-        <div
-          class="table-tr"
-          @click="handleClick"
-          id="console"
-          :class="{ 'single-selected': option === 'console' }"
-        >
+        <div class="table-tr" @click="handleClick" id="console" :class="{ 'single-selected': option === 'console' }">
           <div class="table-td table-radio">
             <label class="m-input__radio">
-              <input
-                type="radio"
-                value="console"
-                name="option"
-                v-model="option"
-              />
+              <input type="radio" value="console" name="option" v-model="option" />
               <div></div>
             </label>
           </div>
@@ -89,20 +49,11 @@
             <i class="el-icon-edit edit-icon" @click="showModal('console')"></i>
           </div>
         </div>
-        <div
-          class="table-tr"
-          @click="handleClick"
-          id="email_from"
-          :class="{ 'single-selected': option === 'email_from' }"
-        >
+        <div class="table-tr" @click="handleClick" id="email_from"
+          :class="{ 'single-selected': option === 'email_from' }">
           <div class="table-td table-radio">
             <label class="m-input__radio">
-              <input
-                type="radio"
-                value="email_from"
-                name="option"
-                v-model="option"
-              />
+              <input type="radio" value="email_from" name="option" v-model="option" />
               <div></div>
             </label>
           </div>
@@ -113,26 +64,14 @@
                 ? db.optionObj.email_from
                 : "root@$hostname"
             }}
-            <i
-              class="el-icon-edit edit-icon"
-              @click="showModal('email_from')"
-            ></i>
+            <i class="el-icon-edit edit-icon" @click="showModal('email_from')"></i>
           </div>
         </div>
-        <div
-          class="table-tr"
-          @click="handleClick"
-          id="mac_prefix"
-          :class="{ 'single-selected': option === 'mac_prefix' }"
-        >
+        <div class="table-tr" @click="handleClick" id="mac_prefix"
+          :class="{ 'single-selected': option === 'mac_prefix' }">
           <div class="table-td table-radio">
             <label class="m-input__radio">
-              <input
-                type="radio"
-                value="mac_prefix"
-                name="option"
-                v-model="option"
-              />
+              <input type="radio" value="mac_prefix" name="option" v-model="option" />
               <div></div>
             </label>
           </div>
@@ -143,26 +82,14 @@
                 ? db.optionObj.mac_prefix
                 : "None"
             }}
-            <i
-              class="el-icon-edit edit-icon"
-              @click="showModal('mac_prefix')"
-            ></i>
+            <i class="el-icon-edit edit-icon" @click="showModal('mac_prefix')"></i>
           </div>
         </div>
-        <div
-          class="table-tr"
-          @click="handleClick"
-          id="migration"
-          :class="{ 'single-selected': option === 'migration' }"
-        >
+        <div class="table-tr" @click="handleClick" id="migration"
+          :class="{ 'single-selected': option === 'migration' }">
           <div class="table-td table-radio">
             <label class="m-input__radio">
-              <input
-                type="radio"
-                value="migration"
-                name="option"
-                v-model="option"
-              />
+              <input type="radio" value="migration" name="option" v-model="option" />
               <div></div>
             </label>
           </div>
@@ -171,18 +98,10 @@
             {{
               db.optionObj && render_as_property_string(db.optionObj.migration)
             }}
-            <i
-              class="el-icon-edit edit-icon"
-              @click="showModal('migration')"
-            ></i>
+            <i class="el-icon-edit edit-icon" @click="showModal('migration')"></i>
           </div>
         </div>
-        <div
-          class="table-tr"
-          @click="handleClick"
-          id="ha"
-          :class="{ 'single-selected': option === 'ha' }"
-        >
+        <div class="table-tr" @click="handleClick" id="ha" :class="{ 'single-selected': option === 'ha' }">
           <div class="table-td table-radio">
             <label class="m-input__radio">
               <input type="radio" value="ha" name="option" v-model="option" />
@@ -196,16 +115,10 @@
           </div>
         </div>
       </div>
-      <OptionModal
-        :visible="visible"
-        v-if="visible"
-        :title="title"
-        @close="
-          visible = false;
-          __init__();
-        "
-        :type="type"
-      ></OptionModal>
+      <OptionModal :visible="visible" v-if="visible" :title="title" @close="
+        visible = false;
+      __init__();
+      " :type="type"></OptionModal>
     </div>
   </page-template>
 </template>
@@ -317,19 +230,23 @@ export default {
   padding: 10px 0px;
   border-top: 1px solid #c4d6ec;
   border-bottom: 1px solid #c4d6ec;
+
   &__item {
     flex: 1 1 auto;
     display: flex;
   }
+
   &__title {
     flex: 1 1 auto;
     display: inline-flex;
   }
+
   &__desc {
     flex: 1 1 auto;
     display: inline-flex;
   }
 }
+
 .table {
   &-tr {
     height: 35px;
@@ -337,11 +254,13 @@ export default {
     width: 100%;
     cursor: pointer;
   }
+
   &-td {
     height: 35px;
     line-height: 35px;
     width: 50%;
   }
+
   &-radio {
     width: 50px;
     padding-right: 20px;

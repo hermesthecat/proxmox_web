@@ -1,50 +1,26 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @cancel="close"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" @cancel="close" :title="title" :_style="{ width: '956px' }" @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
-      <Dialog
-        :visible="showLog"
-        @close="closeLog"
-        :_style="{
-          width: '800px',
-        }"
-        title="Task Viewer: Join Cluster"
-      >
+      <Dialog :visible="showLog" @close="closeLog" :_style="{
+        width: '800px',
+      }" title="Task Viewer: Join Cluster">
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
             <m-tab-panel label="Output" name="log"></m-tab-panel>
             <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
-          <m-button
-            type="primary"
-            @on-click="stopTask1"
-            class="stop-task"
-            :disabled="db.addClusterStatusObj.status !== 'running'"
-            >Stop</m-button
-          >
+          <m-button type="primary" @on-click="stopTask1" class="stop-task"
+            :disabled="db.addClusterStatusObj.status !== 'running'">Stop</m-button>
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
               <div class="table" v-if="tab === 'log'">
-                <div
-                  class="table-tr"
-                  v-for="item in db.addClusterLogList"
-                  :key="item.n"
-                >
+                <div class="table-tr" v-for="item in db.addClusterLogList" :key="item.n">
                   {{ item.t }}
                 </div>
               </div>
               <div class="table" v-if="tab === 'status'">
                 <template v-for="(item, key) in db.addClusterStatusObj">
-                  <div
-                    class="table-tr"
-                    v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-                    :key="key"
-                  >
+                  <div class="table-tr" v-if="!['exitstatus', 'id', 'pstart'].includes(key)" :key="key">
                     <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
                     <div class="table-td" v-if="key === 'starttime'">
                       {{
@@ -67,83 +43,32 @@
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-select
-                prop="ovs_bridge"
-                label="Challenge type"
-                labelWidth="100px"
-                v-model="type"
-                @on-change="handleTypeSelect"
-                placeholder="Please select Challenge type"
-                v-if="modalType === 'domains'"
-              >
+              <m-select prop="ovs_bridge" label="Challenge type" labelWidth="100px" v-model="type"
+                @on-change="handleTypeSelect" placeholder="Please select Challenge type" v-if="modalType === 'domains'">
                 <m-option label="HTTP" value="http">HTTP</m-option>
                 <m-option label="DNS" value="dns">DNS</m-option>
               </m-select>
-              <m-input
-                type="text"
-                prop="domains"
-                label="Domain"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.domains.error"
-                :error-msg="rules.domains.message"
-                v-model="domains"
-                v-if="modalType === 'domains'"
-                placeholder="Please enter domain"
-              />
-              <m-select
-                prop="plugin"
-                label="Plugin"
-                labelWidth="100px"
-                v-model="plugin"
-                @on-change="handlePluginSelect"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.plugin.error"
-                :error-msg="rules.plugin.message"
-                placeholder="Please select Plugin"
-                v-if="modalType === 'domains' && type === 'dns'"
-              >
+              <m-input type="text" prop="domains" label="Domain" labelWidth="100px" validateEvent @validate="validate"
+                :show-error="rules.domains.error" :error-msg="rules.domains.message" v-model="domains"
+                v-if="modalType === 'domains'" placeholder="Please enter domain" />
+              <m-select prop="plugin" label="Plugin" labelWidth="100px" v-model="plugin" @on-change="handlePluginSelect"
+                validateEvent @validate="validate" :show-error="rules.plugin.error" :error-msg="rules.plugin.message"
+                placeholder="Please select Plugin" v-if="modalType === 'domains' && type === 'dns'">
                 <template v-for="item in db.acmePluginList">
-                  <m-option
-                    v-if="item.type !== 'standalone'"
-                    :label="item.plugin"
-                    :value="item.plugin"
-                    :key="item.plugin"
-                  >
+                  <m-option v-if="item.type !== 'standalone'" :label="item.plugin" :value="item.plugin"
+                    :key="item.plugin">
                     {{ item.plugin }}
                   </m-option>
                 </template>
               </m-select>
-              <m-input
-                type="text"
-                prop="name"
-                label="Name"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.name.error"
-                :error-msg="rules.name.message"
-                v-model="name"
-                v-if="modalType === 'account'"
-                placeholder="Please enter name"
-              />
-              <m-select
-                prop="directory"
-                label="ACME Directory"
-                labelWidth="100px"
-                v-model="directory"
-                @on-change="handleDirectorySelect"
-                placeholder="Please select ACME directory"
-                v-if="modalType === 'account'"
-              >
-                <m-option
-                  v-for="(item, index) in db.directoriesList"
-                  :label="item.name"
-                  :key="item.url"
-                  :value="item.url"
-                >
+              <m-input type="text" prop="name" label="Name" labelWidth="100px" validateEvent @validate="validate"
+                :show-error="rules.name.error" :error-msg="rules.name.message" v-model="name"
+                v-if="modalType === 'account'" placeholder="Please enter name" />
+              <m-select prop="directory" label="ACME Directory" labelWidth="100px" v-model="directory"
+                @on-change="handleDirectorySelect" placeholder="Please select ACME directory"
+                v-if="modalType === 'account'">
+                <m-option v-for="(item, index) in db.directoriesList" :label="item.name" :key="item.url"
+                  :value="item.url">
                   <template v-if="index === 0">
                     <div class="table-tr">
                       <div class="table-td">Name</div>
@@ -158,41 +83,18 @@
                   </div>
                 </m-option>
               </m-select>
-              <m-input
-                type="slot"
-                prop="tos_url"
-                label="Terms of Service"
-                labelWidth="100px"
-                v-model="tos_url"
-                placeholder="Please enter name"
-                :__conStyle="{
+              <m-input type="slot" prop="tos_url" label="Terms of Service" labelWidth="100px" v-model="tos_url"
+                placeholder="Please enter name" :__conStyle="{
                   border: 'none',
                   width: 'calc(100% - 105px)',
-                }"
-                v-if="modalType === 'account'"
-              >
+                }" v-if="modalType === 'account'">
                 <a slot="other" @click="openTos">{{ tos_url }}</a>
               </m-input>
-              <m-input
-                type="text"
-                prop="contact"
-                label="Email"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                v-if="modalType === 'account'"
-                :show-error="rules.contact.error"
-                :error-msg="rules.contact.message"
-                v-model="contact"
-                placeholder="Please enter email"
-              />
-              <m-checkbox
-                label="Accept TOS"
-                v-model="reacived"
-                labelWidth="100px"
-                v-if="modalType === 'account'"
-                :disabled="true"
-              ></m-checkbox>
+              <m-input type="text" prop="contact" label="Email" labelWidth="100px" validateEvent @validate="validate"
+                v-if="modalType === 'account'" :show-error="rules.contact.error" :error-msg="rules.contact.message"
+                v-model="contact" placeholder="Please enter email" />
+              <m-checkbox label="Accept TOS" v-model="reacived" labelWidth="100px" v-if="modalType === 'account'"
+                :disabled="true"></m-checkbox>
             </dd>
           </dl>
         </div>
@@ -200,9 +102,7 @@
     </div>
     <template slot="footer">
       <template>
-        <m-button class="create-btn" type="primary" @on-click="create"
-          >Create</m-button
-        >
+        <m-button class="create-btn" type="primary" @on-click="create">Create</m-button>
       </template>
     </template>
   </Dialog>
@@ -455,27 +355,33 @@ export default {
   display: inline-block;
   vertical-align: -webkit-baseline-middle;
 }
+
 .m-button {
   height: 33px;
   line-height: 28px;
 }
+
 .create-btn {
   width: 100px;
   height: 42px;
   display: inline-block;
   line-height: 43px;
 }
+
 .service-police {
   width: 100%;
   padding: 0px 20px 20px 0px;
+
   &-label {
     width: 100px;
     display: inline-block;
   }
+
   &-content {
     display: inline-block;
   }
 }
+
 .stop-task {
   margin-top: 10px;
 }

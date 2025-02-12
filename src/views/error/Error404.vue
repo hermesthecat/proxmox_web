@@ -32,6 +32,7 @@ export default {
   flex-grow: 1;
   justify-content: center;
   align-items: center;
+
   &-link {
     position: relative;
     top: 88px;
@@ -39,6 +40,7 @@ export default {
     margin-right: 20px;
     cursor: pointer;
   }
+
   &-main {
     &__text {
       width: 57px;
@@ -52,6 +54,7 @@ export default {
       -webkit-text-fill-color: transparent;
       animation: text-animation 3s linear infinite;
     }
+
     &__zero {
       width: 32px;
       height: 52px;
@@ -62,6 +65,7 @@ export default {
       vertical-align: middle;
       position: relative;
       top: 13px;
+
       &::before {
         display: inline-block;
         width: 20px;
@@ -77,18 +81,22 @@ export default {
     }
   }
 }
+
 .text {
   animation: text-animation 3s linear infinite;
 }
+
 @keyframes zero-animation {
   35% {
     transform: rotateY(25deg);
     background: linear-gradient(to top, #369, #ff0000);
   }
+
   75% {
     transform: rotateY(-25deg);
     background: linear-gradient(to left, rgb(99, 51, 153), #ff0000);
   }
+
   100% {
     transform: rotateY(0deg);
     background: linear-gradient(to right, rgb(153, 105, 51), #ff0000);
@@ -100,10 +108,12 @@ export default {
     transform: rotateY(25deg);
     background-image: linear-gradient(to left, rgb(99, 51, 153), #ff0000);
   }
+
   75% {
     transform: rotateY(-25deg);
     background-image: linear-gradient(to left, rgb(99, 51, 153), #ff0000);
   }
+
   100% {
     transform: rotateY(0deg);
     background-image: linear-gradient(to right, rgb(153, 105, 51), #ff0000);

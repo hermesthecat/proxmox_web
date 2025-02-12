@@ -4,69 +4,37 @@
       <div class="m-operate">
         <div class="m-operate-left">Node test</div>
         <div class="m-operate-right">
-          <m-button
-            icon="fa fa-undo"
-            v-confirm="{
-              msg: `Restart node '${node}'?`,
-              ok: () => handleReset(),
-            }"
-            >Restart</m-button
-          >
-          <m-button
-            icon="fa fa-power-off"
-            v-confirm="{
-              msg: `Shutdown node '${node}'?`,
-              ok: () => handleClose(),
-            }"
-            >Shutdown</m-button
-          >
-          <dropdown
-            style="
+          <m-button icon="fa fa-undo" v-confirm="{
+            msg: `Restart node '${node}'?`,
+            ok: () => handleReset(),
+          }">Restart</m-button>
+          <m-button icon="fa fa-power-off" v-confirm="{
+            msg: `Shutdown node '${node}'?`,
+            ok: () => handleClose(),
+          }">Shutdown</m-button>
+          <dropdown style="
               width: auto;
               border: 1px solid #adb0b8;
               display: inline-block;
-            "
-            @on-change="handleConsole"
-          >
-            <m-button
-              icon="fa fa-terminal"
-              slot="label"
-              style="border: none; height: 28px"
-            >
+            " @on-change="handleConsole">
+            <m-button icon="fa fa-terminal" slot="label" style="border: none; height: 28px">
               shell
             </m-button>
             <dropdown-item command="novnc" name="novnc">NoVNC</dropdown-item>
-            <dropdown-item command="spice" name="virt-viewer"
-              >SPICE</dropdown-item
-            >
-            <dropdown-item command="xtermjs" name="xtermjs"
-              >xtermjs</dropdown-item
-            >
+            <dropdown-item command="spice" name="virt-viewer">SPICE</dropdown-item>
+            <dropdown-item command="xtermjs" name="xtermjs">xtermjs</dropdown-item>
           </dropdown>
-          <dropdown
-            style="
+          <dropdown style="
               width: auto;
               border: 1px solid #adb0b8;
               display: inline-block;
-            "
-            @on-change="handleMoreOpration"
-          >
-            <m-button
-              icon="fa fa-fw fa-ellipsis-v"
-              slot="label"
-              style="border: none; height: 28px"
-            >
+            " @on-change="handleMoreOpration">
+            <m-button icon="fa fa-fw fa-ellipsis-v" slot="label" style="border: none; height: 28px">
               Batch Operations
             </m-button>
-            <dropdown-item command="startall" icon="fa el-icon-video-play"
-              >Batch Start</dropdown-item
-            >
-            <dropdown-item command="stopall" icon="fa el-icon-video-pause"
-              >Batch Stop</dropdown-item
-            >
-            <dropdown-item command="migrateall" icon="fa fa-paper-plane-o"
-              >Batch Migrate</dropdown-item
-            >
+            <dropdown-item command="startall" icon="fa el-icon-video-play">Batch Start</dropdown-item>
+            <dropdown-item command="stopall" icon="fa el-icon-video-pause">Batch Stop</dropdown-item>
+            <dropdown-item command="migrateall" icon="fa fa-paper-plane-o">Batch Migrate</dropdown-item>
           </dropdown>
         </div>
       </div>
@@ -77,21 +45,11 @@
             <router-view />
           </div>
         </div>
-        <div
-          class="m-scroll-bar"
-          v-show="showScrollbar"
-          :style="{ top: scrollTop + 'px', height: scrollLength + 'px' }"
-          @mousedown="onScrollBarMouseDown($event)"
-        ></div>
+        <div class="m-scroll-bar" v-show="showScrollbar" :style="{ top: scrollTop + 'px', height: scrollLength + 'px' }"
+          @mousedown="onScrollBarMouseDown($event)"></div>
       </div>
-      <node-select-modal
-        :visible="visible"
-        v-if="visible"
-        :param="nodeModalParam"
-        :modalType="type"
-        :title="title"
-        @close="visible = false"
-      ></node-select-modal>
+      <node-select-modal :visible="visible" v-if="visible" :param="nodeModalParam" :modalType="type" :title="title"
+        @close="visible = false"></node-select-modal>
     </div>
   </transition>
 </template>
@@ -219,8 +177,8 @@ export default {
         operate === "stopall"
           ? "Batch Stop"
           : operate === "startall"
-          ? "Batch Start"
-          : "Batch Migrate";
+            ? "Batch Start"
+            : "Batch Migrate";
       this.type = operate;
       this.visible = true;
       //this.beatchOperate(operate);
@@ -239,6 +197,7 @@ export default {
 .transition-enter {
   transition: all 0.5s ease-in;
 }
+
 .content {
   height: 100%;
 }

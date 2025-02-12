@@ -1,33 +1,15 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @cancel="close"
-    @confirm="confirm"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" @cancel="close" @confirm="confirm" :title="title" :_style="{ width: '956px' }"
+    @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-select
-                prop="timeZone"
-                label="Time Zone"
-                labelWidth="100px"
-                :readonly="false"
-                v-model="timezone"
-                @on-change="handleTimeZoneSelect"
-                placeholder="Please select time zone"
-              >
-                <m-option
-                  v-for="item in timeZoneOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-select prop="timeZone" label="Time Zone" labelWidth="100px" :readonly="false" v-model="timezone"
+                @on-change="handleTimeZoneSelect" placeholder="Please select time zone">
+                <m-option v-for="item in timeZoneOptions" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
             </dd>
@@ -147,17 +129,20 @@ export default {
     border-bottom: 1px solid #ebeef5;
     cursor: pointer;
   }
+
   &-td {
     display: table-cell;
     height: 35px;
     line-height: 35px;
     max-width: 100px;
   }
+
   &-radio {
     width: 50px;
     padding-right: 20px;
   }
 }
+
 .create-btn {
   width: 100px;
   height: 42px;

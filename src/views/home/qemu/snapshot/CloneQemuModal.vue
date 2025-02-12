@@ -6,9 +6,9 @@
         <dd>
           <m-select prop="nodename" label="Target Node" labelWidth="100px" validateEvent @validate="validate"
             :show-error="rules.nodename.error" :error-msg="rules.nodename.message" required @on-change="(value) => {
-                nodename = value;
-                queryTargetStorage();
-              }
+              nodename = value;
+              queryTargetStorage();
+            }
               " v-model="nodename" placeholder="Please select node">
             <m-option v-for="(item, index) in nodeList" :key="item.node" :label="item.node" :value="item.node">
               <div v-if="index === 0" class="table-tr">
@@ -28,22 +28,23 @@
           </m-select>
 
           <m-select prop="clonemode" label="Clone Mode" labelWidth="100px" :readonly="true" @on-change="(value) => {
-              clonemode = value;
-              storage = '';
-            }
+            clonemode = value;
+            storage = '';
+          }
             " v-model="clonemode" placeholder="Please select clone mode">
             <m-option v-for="item in modeList" :key="item.value" :label="item.label" :value="item.value">
             </m-option>
           </m-select>
 
-          <m-input prop="snapshotname" label="Snapshot" labelWidth="100px" :readonly="true" v-model="snapshotname" disabled
-            placeholder="Please enter snapshot name"></m-input>
+          <m-input prop="snapshotname" label="Snapshot" labelWidth="100px" :readonly="true" v-model="snapshotname"
+            disabled placeholder="Please enter snapshot name"></m-input>
 
           <m-input label="VM ID" labelWidth="100px" prop="vmid" v-model="vmid" validateEvent @validate="validate"
             :show-error="rules['vmid'].error" :error-msg="rules['vmid'].message" />
 
-          <m-select prop="storage" label="Target Storage" labelWidth="100px" :readonly="true" @on-change="handleTargetStorageSel"
-            v-model="storage" placeholder="Same as source" :disabled="clonemode && clonemode === 'clone' && !isTemplate">
+          <m-select prop="storage" label="Target Storage" labelWidth="100px" :readonly="true"
+            @on-change="handleTargetStorageSel" v-model="storage" placeholder="Same as source"
+            :disabled="clonemode && clonemode === 'clone' && !isTemplate">
             <m-option v-for="(item, index) in storageList" :key="index" :label="item.storage" :value="item.storage">
               <div v-if="index === 0" class="table-tr">
                 <div class="table-td">Name</div>
@@ -69,8 +70,8 @@
           <m-input label="Name" labelWidth="100px" prop="name" validateEvent @validate="validate"
             :show-error="rules['name'].error" :error-msg="rules['name'].message" v-model="name" />
 
-          <m-select prop="pool" label="Resource Pool" labelWidth="100px" :readonly="true" @on-change="(value) => (pool = value)"
-            v-model="pool" placeholder="Please select resource pool">
+          <m-select prop="pool" label="Resource Pool" labelWidth="100px" :readonly="true"
+            @on-change="(value) => (pool = value)" v-model="pool" placeholder="Please select resource pool">
             <m-option v-for="(item, index) in poolList" :key="item.poolid" :label="item.poolid" :value="item.poolid">
               <div v-if="index === 0" class="table-tr">
                 <div class="table-td">Resource Pool</div>
@@ -88,7 +89,8 @@
           </m-select>
 
           <m-select prop="format" label="Format" labelWidth="100px" @on-change="(value) => (format = value)"
-            v-model="format" :readonly="false" :disabled="!storageType || storageType !== 'dir'" placeholder="Please select format">
+            v-model="format" :readonly="false" :disabled="!storageType || storageType !== 'dir'"
+            placeholder="Please select format">
             <m-option v-for="(item, index) in formatList" :key="index" :value="item.value" :label="item.label">
             </m-option>
           </m-select>

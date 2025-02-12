@@ -1,281 +1,110 @@
 <template>
-  <Dialog
-    :visible="visible"
-    v-if="visible"
-    @cancel="close"
-    @confirm="confirm"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" v-if="visible" @cancel="close" @confirm="confirm" :title="title"
+    :_style="{ width: '956px' }" @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-select
-                type="text"
-                prop="node"
-                label="Node"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.node.error"
-                :error-msg="rules.node.message"
-                :readonly="false"
-                @on-change="handleNodeSelect"
-                v-model="node"
-                placeholder="--All--"
-              >
-                <m-option
-                  v-for="item in db.nodeList"
-                  :key="item.node"
-                  :label="item.node"
-                  :value="item.node"
-                >
+              <m-select type="text" prop="node" label="Node" labelWidth="100px" validateEvent @validate="validate"
+                :show-error="rules.node.error" :error-msg="rules.node.message" :readonly="false"
+                @on-change="handleNodeSelect" v-model="node" placeholder="--All--">
+                <m-option v-for="item in db.nodeList" :key="item.node" :label="item.node" :value="item.node">
                   <div class="table-tr">
                     <span class="table-td" :title="item.node">{{
                       item.node
                     }}</span>
-                    <span
-                      class="table-td"
-                      :title="
+                    <span class="table-td" :title="item.mem &&
+                      item.maxmem &&
+                      percentToFixed(item.mem / item.maxmem, 3)
+                      ">{{
                         item.mem &&
                         item.maxmem &&
                         percentToFixed(item.mem / item.maxmem, 3)
-                      "
-                      >{{
-                        item.mem &&
-                        item.maxmem &&
-                        percentToFixed(item.mem / item.maxmem, 3)
-                      }}</span
-                    >
-                    <span
-                      class="table-td"
-                      :title="
+                      }}</span>
+                    <span class="table-td" :title="item.cpu &&
+                      item.maxcpu &&
+                      `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
+                      ">{{
                         item.cpu &&
                         item.maxcpu &&
                         `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
-                      "
-                      >{{
-                        item.cpu &&
-                        item.maxcpu &&
-                        `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
-                      }}</span
-                    >
+                      }}</span>
                   </div>
                 </m-option>
               </m-select>
-              <m-input
-                type="text"
-                prop="mailto"
-                label="Send Email To"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.mailto.error"
-                :error-msg="rules.mailto.message"
-                v-model="mailto"
-                placeholder="Please enter email"
-              />
-              <m-select
-                type="text"
-                prop="storage"
-                label="Storage"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.storage.error"
-                :error-msg="rules.storage.message"
-                @on-change="handleStorageSelect"
-                v-model="storage"
-                placeholder="Please enter storage"
-              >
-                <m-option
-                  v-for="item in db.storageList"
-                  :key="item.storage"
-                  :label="item.storage"
-                  :value="item.storage"
-                >
+              <m-input type="text" prop="mailto" label="Send Email To" labelWidth="100px" validateEvent
+                @validate="validate" :show-error="rules.mailto.error" :error-msg="rules.mailto.message" v-model="mailto"
+                placeholder="Please enter email" />
+              <m-select type="text" prop="storage" label="Storage" labelWidth="100px" validateEvent @validate="validate"
+                :show-error="rules.storage.error" :error-msg="rules.storage.message" @on-change="handleStorageSelect"
+                v-model="storage" placeholder="Please enter storage">
+                <m-option v-for="item in db.storageList" :key="item.storage" :label="item.storage"
+                  :value="item.storage">
                   <div class="table-tr">
-                    <span class="table-td" :title="item.storage + ` (Name)`"
-                      >{{ item.storage }} (Name)</span
-                    >
-                    <span class="table-td" :title="item.type + ` (Type)`"
-                      >{{ item.type }} (Type)</span
-                    >
-                    <span
-                      class="table-td"
-                      :title="byteToSize(item.avail) + ` (Available)`"
-                      >{{ byteToSize(item.avail) }} (Available)</span
-                    >
-                    <span
-                      class="table-td"
-                      :title="byteToSize(item.total) + ` (Total)`"
-                      >{{ byteToSize(item.total) }} (Total)</span
-                    >
+                    <span class="table-td" :title="item.storage + ` (Name)`">{{ item.storage }} (Name)</span>
+                    <span class="table-td" :title="item.type + ` (Type)`">{{ item.type }} (Type)</span>
+                    <span class="table-td" :title="byteToSize(item.avail) + ` (Available)`">{{ byteToSize(item.avail) }}
+                      (Available)</span>
+                    <span class="table-td" :title="byteToSize(item.total) + ` (Total)`">{{ byteToSize(item.total) }}
+                      (Total)</span>
                   </div>
                 </m-option>
               </m-select>
-              <m-select
-                type="text"
-                prop="mailnotification"
-                label="Email Notification"
-                labelWidth="100px"
-                v-model="mailnotification"
-                @on-change="handleNotificationChange"
-                placeholder="Please enter guest user"
-              >
-                <m-option
-                  v-for="item in mailnotificationList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></m-option>
+              <m-select type="text" prop="mailnotification" label="Email Notification" labelWidth="100px"
+                v-model="mailnotification" @on-change="handleNotificationChange" placeholder="Please enter guest user">
+                <m-option v-for="item in mailnotificationList" :key="item.value" :label="item.label"
+                  :value="item.value"></m-option>
               </m-select>
-              <m-select
-                type="multiple"
-                prop="dow"
-                label="Day of Week"
-                labelWidth="100px"
-                validateEvent
-                v-model="dow"
-                @on-change="handleDowSelect"
-                placeholder="Please select day of week"
-              >
-                <m-option
-                  v-for="item in dowList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></m-option>
+              <m-select type="multiple" prop="dow" label="Day of Week" labelWidth="100px" validateEvent v-model="dow"
+                @on-change="handleDowSelect" placeholder="Please select day of week">
+                <m-option v-for="item in dowList" :key="item.value" :label="item.label" :value="item.value"></m-option>
               </m-select>
-              <m-select
-                labelWidth="100px"
-                @on-change="handleCompressSelect"
-                prop="compress"
-                v-model="compress"
-                label="Compression"
-              >
-                <m-option
-                  v-for="item in compressList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></m-option>
+              <m-select labelWidth="100px" @on-change="handleCompressSelect" prop="compress" v-model="compress"
+                label="Compression">
+                <m-option v-for="item in compressList" :key="item.value" :label="item.label"
+                  :value="item.value"></m-option>
               </m-select>
-              <m-select
-                labelWidth="100px"
-                @on-change="handleStartTimeSelect"
-                prop="starttime"
-                v-model="starttime"
-                :readonly="false"
-                label="Start Time"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.starttime.error"
-                :error-msg="rules.starttime.message"
-              >
-                <m-option
-                  v-for="item in starttimeoptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></m-option>
+              <m-select labelWidth="100px" @on-change="handleStartTimeSelect" prop="starttime" v-model="starttime"
+                :readonly="false" label="Start Time" validateEvent @validate="validate"
+                :show-error="rules.starttime.error" :error-msg="rules.starttime.message">
+                <m-option v-for="item in starttimeoptions" :key="item.value" :label="item.label"
+                  :value="item.value"></m-option>
               </m-select>
-              <m-select
-                type="number"
-                prop="mode"
-                label="Mode"
-                labelWidth="100px"
-                validateEvent
-                min="0"
-                v-model="mode"
-                @on-change="handleModeSelect"
-                placeholder="Please select mode"
-              >
-                <m-option
-                  v-for="item in modeList"
-                  :label="item.label"
-                  :value="item.value"
-                  :key="item.value"
-                ></m-option>
+              <m-select type="number" prop="mode" label="Mode" labelWidth="100px" validateEvent min="0" v-model="mode"
+                @on-change="handleModeSelect" placeholder="Please select mode">
+                <m-option v-for="item in modeList" :label="item.label" :value="item.value" :key="item.value"></m-option>
               </m-select>
-              <m-select
-                type="text"
-                prop="selMode"
-                label="Selection Mode"
-                labelWidth="100px"
-                v-model="selMode"
-                @on-change="handleSelMode"
-                placeholder="Please select"
-              >
-                <m-option
-                  v-for="item in selModeList"
-                  :label="item.label"
-                  :value="item.value"
-                  :key="item.value"
-                ></m-option>
+              <m-select type="text" prop="selMode" label="Selection Mode" labelWidth="100px" v-model="selMode"
+                @on-change="handleSelMode" placeholder="Please select">
+                <m-option v-for="item in selModeList" :label="item.label" :value="item.value"
+                  :key="item.value"></m-option>
               </m-select>
-              <m-select
-                type="text"
-                prop="pool"
-                label="Pool to Backup"
-                labelWidth="100px"
-                v-model="pool"
-                @on-change="handleSelPool"
-                v-show="selMode === 'pool'"
-                placeholder="Please select"
-              >
-                <m-option
-                  v-for="item in db.poolList"
-                  :label="item.poolid"
-                  :value="item.poolid"
-                  :key="item.poolid"
-                >
+              <m-select type="text" prop="pool" label="Pool to Backup" labelWidth="100px" v-model="pool"
+                @on-change="handleSelPool" v-show="selMode === 'pool'" placeholder="Please select">
+                <m-option v-for="item in db.poolList" :label="item.poolid" :value="item.poolid" :key="item.poolid">
                   <div class="table-tr">
-                    <span class="table-td" :title="item.poolid + ` (Name)`"
-                      >{{ item.poolid }} (Name)</span
-                    >
-                    <span class="table-td" :title="item.comment + ` (Comment)`"
-                      >{{ item.comment }} (Comment)</span
-                    >
+                    <span class="table-td" :title="item.poolid + ` (Name)`">{{ item.poolid }} (Name)</span>
+                    <span class="table-td" :title="item.comment + ` (Comment)`">{{ item.comment }} (Comment)</span>
                   </div>
                 </m-option>
               </m-select>
-              <m-checkbox
-                label="Enable"
-                v-model="enabled"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-checkbox label="Enable" v-model="enabled" labelWidth="100px"></m-checkbox>
             </dd>
           </dl>
           <dl>
             <dt>Virtual Machines</dt>
             <dd>
-              <el-table
-                :data="db.vmList"
-                ref="dataTable"
-                @selection-change="handleSelectChange"
-              >
-                <el-table-column
-                  type="selection"
-                  width="55px"
-                  :selectable="selectable"
-                ></el-table-column>
+              <el-table :data="db.vmList" ref="dataTable" @selection-change="handleSelectChange">
+                <el-table-column type="selection" width="55px" :selectable="selectable"></el-table-column>
                 <el-table-column label="ID" prop="vmid"></el-table-column>
                 <el-table-column label="Node" prop="node"></el-table-column>
                 <el-table-column label="Status" prop="status">
                   <template slot-scope="scope">
-                    <table-info-state
-                      :content="
-                        scope.row.status === 'running' ? 'Running' : 'Stopped'
-                      "
-                      :state="
-                        scope.row.status === 'running' ? 'actived' : 'unActived'
-                      "
-                    ></table-info-state>
+                    <table-info-state :content="scope.row.status === 'running' ? 'Running' : 'Stopped'
+                      " :state="scope.row.status === 'running' ? 'actived' : 'unActived'
+                        "></table-info-state>
                   </template>
                 </el-table-column>
                 <el-table-column label="Name" prop="node"></el-table-column>
@@ -515,7 +344,7 @@ export default {
     handleDowSelect(value) {
       this.dow = value;
     },
-    validate() {},
+    validate() { },
     handleNodeSelect(value) {
       this.node = value;
       this.queryStorageList(value);
@@ -642,12 +471,14 @@ export default {
     border-bottom: 1px solid #ebeef5;
     cursor: pointer;
   }
+
   &-td {
     display: table-cell;
     height: 35px;
     line-height: 35px;
     max-width: 100px;
   }
+
   &-radio {
     width: 50px;
     padding-right: 20px;

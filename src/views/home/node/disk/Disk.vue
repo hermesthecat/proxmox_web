@@ -1,36 +1,15 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button type="primary" @on-click="refresh" icon="el-icon-refresh"
-        >Reload</m-button
-      >
-      <m-button
-        type="warning"
-        @on-click="showModal()"
-        icon="el-icon-view"
-        :disabled="selectedList.length !== 1"
-        >Show S.M.A.R.T. Values</m-button
-      >
-      <m-button
-        type="primary"
-        @on-click="updateGpt"
-        icon="el-icon-refresh-left"
-        :disabled="inStatus()"
-        >Initialize Disk with GPT</m-button
-      >
+      <m-button type="primary" @on-click="refresh" icon="el-icon-refresh">Reload</m-button>
+      <m-button type="warning" @on-click="showModal()" icon="el-icon-view" :disabled="selectedList.length !== 1">Show
+        S.M.A.R.T. Values</m-button>
+      <m-button type="primary" @on-click="updateGpt" icon="el-icon-refresh-left" :disabled="inStatus()">Initialize Disk
+        with GPT</m-button>
     </div>
     <div slot="page-content">
-      <el-table
-        :data="db.nodeDiskList"
-        ref="dataTable"
-        @selection-change="handleSelect"
-        v-loading="loading"
-      >
-        <el-table-column
-          type="selection"
-          width="55"
-          prop="pos"
-        ></el-table-column>
+      <el-table :data="db.nodeDiskList" ref="dataTable" @selection-change="handleSelect" v-loading="loading">
+        <el-table-column type="selection" width="55" prop="pos"></el-table-column>
         <el-table-column width="55" prop="pos"></el-table-column>
         <el-table-column label="Device" prop="devpath"></el-table-column>
         <el-table-column label="Type" prop="type">
@@ -50,12 +29,8 @@
         </el-table-column>
         <el-table-column label="GPT" prop="gpt">
           <template slot-scope="scope">
-            <table-info-state
-              :content="scope.row.gpt && scope.row.gpt === 1 ? 'Yes' : 'No'"
-              :state="
-                scope.row.gpt && scope.row.gpt === 1 ? 'actived' : 'unActived'
-              "
-            ></table-info-state>
+            <table-info-state :content="scope.row.gpt && scope.row.gpt === 1 ? 'Yes' : 'No'" :state="scope.row.gpt && scope.row.gpt === 1 ? 'actived' : 'unActived'
+              "></table-info-state>
           </template>
         </el-table-column>
         <el-table-column label="Model" prop="model"></el-table-column>
@@ -71,57 +46,31 @@
           </template>
         </el-table-column>
       </el-table>
-      <display-modal
-        :title="title"
-        :isCreate="isCreate"
-        :param="param"
-        :visible="visible"
-        v-if="visible"
-        :modal-type="type"
-        :isGroup="isGroup"
-        @close="
+      <display-modal :title="title" :isCreate="isCreate" :param="param" :visible="visible" v-if="visible"
+        :modal-type="type" :isGroup="isGroup" @close="
           visible = false;
-          __init__();
-        "
-      ></display-modal>
-      <Dialog
-        :visible="showLog"
-        @close="closeLog"
-        :_style="{
-          width: '800px',
-        }"
-        title="Task Viewer: Initialize GPT"
-      >
+        __init__();
+        "></display-modal>
+      <Dialog :visible="showLog" @close="closeLog" :_style="{
+        width: '800px',
+      }" title="Task Viewer: Initialize GPT">
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
             <m-tab-panel label="Output" name="log"></m-tab-panel>
             <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
-          <m-button
-            class="create-btn m-margin-top-10"
-            type="primary"
-            @on-click="stopTask1"
-            :disabled="db.addClusterStatusObj.status !== 'running'"
-            >Stop</m-button
-          >
+          <m-button class="create-btn m-margin-top-10" type="primary" @on-click="stopTask1"
+            :disabled="db.addClusterStatusObj.status !== 'running'">Stop</m-button>
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
               <div class="table">
-                <div
-                  class="table-tr"
-                  v-for="item in db.addClusterLogList"
-                  :key="item.n"
-                >
+                <div class="table-tr" v-for="item in db.addClusterLogList" :key="item.n">
                   {{ item.t }}
                 </div>
               </div>
               <div class="table" v-if="tab === 'status'">
                 <template v-for="(item, key) in db.addClusterStatusObj">
-                  <div
-                    class="table-tr"
-                    v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-                    :key="key"
-                  >
+                  <div class="table-tr" v-if="!['exitstatus', 'id', 'pstart'].includes(key)" :key="key">
                     <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
                     <div class="table-td" v-if="key === 'starttime'">
                       {{
@@ -290,14 +239,17 @@ export default {
   padding: 10px 0px;
   border-top: 1px solid #c4d6ec;
   border-bottom: 1px solid #c4d6ec;
+
   &__item {
     flex: 1 1 auto;
     display: flex;
   }
+
   &__title {
     flex: 1 1 auto;
     display: inline-flex;
   }
+
   &__desc {
     flex: 1 1 auto;
     display: inline-flex;

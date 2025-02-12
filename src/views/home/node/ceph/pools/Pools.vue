@@ -1,22 +1,12 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button type="primary" icon="el-icon-plus" @on-click="visible = true"
-        >Create</m-button
-      >
-      <m-button
-        type="danger"
-        icon="el-icon-delete"
-        @on-click="showDelete = true"
-        :disabled="selectedList.length <= 0"
-        >Destroy</m-button
-      >
+      <m-button type="primary" icon="el-icon-plus" @on-click="visible = true">Create</m-button>
+      <m-button type="danger" icon="el-icon-delete" @on-click="showDelete = true"
+        :disabled="selectedList.length <= 0">Destroy</m-button>
     </div>
     <div slot="page-content">
-      <el-table
-        :data="poolList"
-        @selection-change="(row) => (selectedList = row)"
-      >
+      <el-table :data="poolList" @selection-change="(row) => (selectedList = row)">
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column label="Name" prop="pool_name"></el-table-column>
         <el-table-column label="Size/Min" prop="pool_name">
@@ -24,16 +14,10 @@
             {{ scope.row.min_size + "/" + scope.row.size }}
           </template>
         </el-table-column>
-        <el-table-column
-          label="Placement Groups"
-          prop="pg_num"
-        ></el-table-column>
+        <el-table-column label="Placement Groups" prop="pg_num"></el-table-column>
         <el-table-column label="CRUSH Rule">
           <el-table-column label="ID" prop="crush_rule"></el-table-column>
-          <el-table-column
-            label="Name"
-            prop="crush_rule_name"
-          ></el-table-column>
+          <el-table-column label="Name" prop="crush_rule_name"></el-table-column>
         </el-table-column>
         <el-table-column label="Used">
           <el-table-column label="%" prop="percent_used">
@@ -43,7 +27,7 @@
                   (scope.row &&
                     scope.row.percent_used &&
                     scope.row.percent_used) ||
-                    0,
+                  0,
                   2
                 )
               }}
@@ -54,26 +38,16 @@
               {{
                 byteToSize(
                   (scope.row && scope.row.bytes_used && scope.row.bytes_used) ||
-                    0
+                  0
                 )
               }}
             </template>
           </el-table-column>
         </el-table-column>
       </el-table>
-      <create-pools
-        v-if="visible"
-        :visible="visible"
-        @close="visible = false"
-      ></create-pools>
-      <m-dialog
-        :visible="showDelete"
-        v-if="showDelete"
-        @confirm="confirm"
-        @cancel="showDelete = false"
-        @close="showDelete = false"
-        title="Destroy: Ceph Pool"
-      >
+      <create-pools v-if="visible" :visible="visible" @close="visible = false"></create-pools>
+      <m-dialog :visible="showDelete" v-if="showDelete" @confirm="confirm" @cancel="showDelete = false"
+        @close="showDelete = false" title="Destroy: Ceph Pool">
         <div slot="content">
           <div class="m-input__section">
             <base-icon name="icon-warning" />
@@ -82,57 +56,32 @@
                 <li>Ceph Pool {{ selectedList[0].pool_name }} - Destroy</li>
                 <li>Please enter ID to confirm ({{ selectedList[0].pool_name }})</li>
               </ul>
-              <m-input
-                v-model="pool_id"
-                prop="pool_id"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules['pool_id'].error"
-                :error-msg="rules['pool_id'].message"
-              />
+              <m-input v-model="pool_id" prop="pool_id" validateEvent @validate="validate" required
+                :show-error="rules['pool_id'].error" :error-msg="rules['pool_id'].message" />
             </div>
           </div>
         </div>
       </m-dialog>
-      <m-dialog
-        :visible="showLog"
-        @close="closeLog"
-        :_style="{
-          width: '800px',
-        }"
-        title="Task Viewer: Task Progress"
-      >
+      <m-dialog :visible="showLog" @close="closeLog" :_style="{
+        width: '800px',
+      }" title="Task Viewer: Task Progress">
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
             <m-tab-panel label="Output" name="log"></m-tab-panel>
             <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
-          <m-button
-            class="create-btn m-margin-top-10"
-            type="primary"
-            @on-click="stopTask1"
-            :disabled="db.addClusterStatusObj.status !== 'running'"
-            >Stop</m-button
-          >
+          <m-button class="create-btn m-margin-top-10" type="primary" @on-click="stopTask1"
+            :disabled="db.addClusterStatusObj.status !== 'running'">Stop</m-button>
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
               <div class="table" v-if="tab === 'log'">
-                <div
-                  class="table-tr"
-                  v-for="item in db.addClusterLogList"
-                  :key="item.n"
-                >
+                <div class="table-tr" v-for="item in db.addClusterLogList" :key="item.n">
                   {{ item.t }}
                 </div>
               </div>
               <div class="table" v-if="tab === 'status'">
                 <template v-for="(item, key) in db.addClusterStatusObj">
-                  <div
-                    class="table-tr"
-                    v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-                    :key="key"
-                  >
+                  <div class="table-tr" v-if="!['exitstatus', 'id', 'pstart'].includes(key)" :key="key">
                     <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
                     <div class="table-td" v-if="key === 'starttime'">
                       {{

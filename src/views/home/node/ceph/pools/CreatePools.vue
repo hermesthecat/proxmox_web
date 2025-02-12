@@ -1,82 +1,23 @@
 <template>
-  <m-dialog
-    :visible="visible"
-    title="Create Ceph Pools"
-    @close="close"
-    @cancel="close"
-    @confirm="confirm"
-  >
+  <m-dialog :visible="visible" title="Create Ceph Pools" @close="close" @cancel="close" @confirm="confirm">
     <template slot="content">
       <div class="m-form__content">
         <div class="m-form__section">
-          <m-input
-            label="Name"
-            prop="name"
-            labelWidth="100px"
-            v-model="name"
-            validateEvent
-            @validate="validate"
-            required
-            :show-error="rules['name'].error"
-            :error-msg="rules['name'].message"
-          />
-          <m-input
-            label="Size"
-            prop="size"
-            labelWidth="100px"
-            v-model="size"
-            validateEvent
-            @validate="validate"
-            required
-            :show-error="rules['size'].error"
-            :error-msg="rules['size'].message"
-          />
-          <m-input
-            label="Minimum Size"
-            prop="min_size"
-            labelWidth="100px"
-            v-model="min_size"
-            validateEvent
-            @validate="validate"
-            required
-            :show-error="rules['min_size'].error"
-            :error-msg="rules['min_size'].message"
-          />
-          <m-select
-            label="Crush Rule"
-            labelWidth="100px"
-            validateEvent
-            @validate="validate"
-            prop="crush_rule"
-            required
-            :show-error="rules['crush_rule'].error"
-            :error-msg="rules['crush_rule'].message"
-            @on-change="(val) => (crush_rule = val)"
-            v-model="crush_rule"
-          >
-            <m-option
-              v-for="item in rulesList"
-              :label="item.name"
-              :value="item.name"
-              :key="item.name"
-            ></m-option>
+          <m-input label="Name" prop="name" labelWidth="100px" v-model="name" validateEvent @validate="validate"
+            required :show-error="rules['name'].error" :error-msg="rules['name'].message" />
+          <m-input label="Size" prop="size" labelWidth="100px" v-model="size" validateEvent @validate="validate"
+            required :show-error="rules['size'].error" :error-msg="rules['size'].message" />
+          <m-input label="Minimum Size" prop="min_size" labelWidth="100px" v-model="min_size" validateEvent
+            @validate="validate" required :show-error="rules['min_size'].error"
+            :error-msg="rules['min_size'].message" />
+          <m-select label="Crush Rule" labelWidth="100px" validateEvent @validate="validate" prop="crush_rule" required
+            :show-error="rules['crush_rule'].error" :error-msg="rules['crush_rule'].message"
+            @on-change="(val) => (crush_rule = val)" v-model="crush_rule">
+            <m-option v-for="item in rulesList" :label="item.name" :value="item.name" :key="item.name"></m-option>
           </m-select>
-          <m-input
-            label="pg_num"
-            prop="pg_num"
-            labelWidth="100px"
-            v-model="pg_num"
-            validateEvent
-            @validate="validate"
-            required
-            :show-error="rules['pg_num'].error"
-            :error-msg="rules['pg_num'].message"
-          />
-          <m-checkbox
-            label="Add Storage"
-            labelWidth="100px"
-            v-model="add_storages"
-          >
+          <m-input label="pg_num" prop="pg_num" labelWidth="100px" v-model="pg_num" validateEvent @validate="validate"
+            required :show-error="rules['pg_num'].error" :error-msg="rules['pg_num'].message" />
+          <m-checkbox label="Add Storage" labelWidth="100px" v-model="add_storages">
           </m-checkbox>
         </div>
       </div>

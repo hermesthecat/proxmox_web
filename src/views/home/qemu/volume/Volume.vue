@@ -18,7 +18,8 @@
             :disabled="item.disabled">{{ item.text }}</m-dropdown-item>
         </template>
       </m-dropdown>
-      <m-button type="primary" @on-click="handleResume()" icon="el-icon-edit" :disabled="!canResume()">Restore</m-button>
+      <m-button type="primary" @on-click="handleResume()" icon="el-icon-edit"
+        :disabled="!canResume()">Restore</m-button>
       <m-button type="warning" @on-click="handleCommand('', 'edit')" icon="el-icon-video-play"
         :disabled="!inType('serial', 'efidisk') || !current">Edit</m-button>
       <m-button type="danger" @on-click="handleDelete()" icon="el-icon-delete" :disabled="inType(

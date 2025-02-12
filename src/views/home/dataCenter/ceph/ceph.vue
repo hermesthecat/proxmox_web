@@ -6,19 +6,16 @@
           <div class="ceph-top__title">Health</div>
           <div class="ceph-top__health">
             <h1 class="ceph-title">Status</h1>
-            <div
-              class="ceph-top__health_icon"
-              :class="{
-                'fa fa-exclamation-circle warning':
-                  db.cephObj &&
-                  db.cephObj.health &&
-                  db.cephObj.health.status === 'HEALTH_WARN',
-                'fa fa-check-circle good':
-                  db.cephObj &&
-                  db.cephObj.health &&
-                  db.cephObj.health.status === 'HEALTH_OK',
-              }"
-            ></div>
+            <div class="ceph-top__health_icon" :class="{
+              'fa fa-exclamation-circle warning':
+                db.cephObj &&
+                db.cephObj.health &&
+                db.cephObj.health.status === 'HEALTH_WARN',
+              'fa fa-check-circle good':
+                db.cephObj &&
+                db.cephObj.health &&
+                db.cephObj.health.status === 'HEALTH_OK',
+            }"></div>
             <div>
               {{ db.cephObj && db.cephObj.health && db.cephObj.health.status }}
             </div>
@@ -32,28 +29,16 @@
                 <div class="ceph-table-td"></div>
               </div>
               <el-scrollbar :no-resize="false" style="height: 100%">
-                <div
-                  v-for="(heal, index) in healthList"
-                  :key="index"
-                  class="ceph-table-tr"
-                  label="Summary"
-                  prop="message"
-                >
+                <div v-for="(heal, index) in healthList" :key="index" class="ceph-table-tr" label="Summary"
+                  prop="message">
                   <div class="ceph-table-td ceph-table-severity">
-                    <div
-                      :class="clsMap[heal.severity]"
-                      class="fa fa-fw warning fa-exclamation"
-                    ></div>
+                    <div :class="clsMap[heal.severity]" class="fa fa-fw warning fa-exclamation"></div>
                   </div>
                   <div class="ceph-table-td ceph-table-msg">
                     {{ heal.message }}
                   </div>
                   <div class="ceph-table-td ceph-table-detail">
-                    <i
-                      class="fa fa-info-circle"
-                      style="cursor: pointer"
-                      @click="showDetail(heal)"
-                    ></i>
+                    <i class="fa fa-info-circle" style="cursor: pointer" @click="showDetail(heal)"></i>
                   </div>
                 </div>
               </el-scrollbar>
@@ -113,16 +98,9 @@
                 <div class="ceph-table">
                   <el-scrollbar :no-resize="false" style="height: 100%">
                     <template v-for="state in statecategories">
-                      <div
-                        class="ceph-table-tr"
-                        v-for="(item, index) in state.states"
-                        :key="index"
-                      >
+                      <div class="ceph-table-tr" v-for="(item, index) in state.states" :key="index">
                         <div class="ceph-table-td">
-                          <span
-                            :style="{ background: colorsMap[item.cls] }"
-                            class="ceph-top__pgs_label__label"
-                          ></span>
+                          <span :style="{ background: colorsMap[item.cls] }" class="ceph-top__pgs_label__label"></span>
                           <span :title="item.state_name">{{
                             item.state_name
                           }}</span>
@@ -148,26 +126,20 @@
                   </div>
                   <div class="ceph-top__mon_item">
                     <i class="fa fa-building"></i>{{ mo.name }}
-                    <i
-                      :class="{
-                        'fa fa-fw good fa-check': mo.health === 5,
-                        'fa fa-fw critical fa-times': mo.health === 1,
-                        'fa fa-fw fa-info-circle': mo.health === 2,
-                        'fa fa-fw fa-question': mo.health === 0,
-                        'fa fa-fw fa-refresh': mo.health === 3,
-                        'fa fa-fw fa-bold': mo.health === 4,
-                      }"
-                    ></i>
+                    <i :class="{
+                      'fa fa-fw good fa-check': mo.health === 5,
+                      'fa fa-fw critical fa-times': mo.health === 1,
+                      'fa fa-fw fa-info-circle': mo.health === 2,
+                      'fa fa-fw fa-question': mo.health === 0,
+                      'fa fa-fw fa-refresh': mo.health === 3,
+                      'fa fa-fw fa-bold': mo.health === 4,
+                    }"></i>
                   </div>
                 </tool-tips>
               </div>
               <div class="ceph-top__mgr">
                 <div class="ceph-title">Manager HA</div>
-                <tool-tips
-                  class="ceph-top__mon_item"
-                  v-for="mo of mgr"
-                  :key="mo.name"
-                >
+                <tool-tips class="ceph-top__mon_item" v-for="mo of mgr" :key="mo.name">
                   <div slot="content">
                     <li>Host: {{ mo.name }}</li>
                     <li>Address: {{ mo.addrs }}</li>
@@ -176,26 +148,20 @@
                   </div>
                   <div class="ceph-top__mon_item">
                     <i class="fa fa-building"></i>{{ mo.name }}
-                    <i
-                      :class="{
-                        'fa fa-fw good fa-check': mo.health === 5,
-                        'fa fa-fw critical fa-times': mo.health === 1,
-                        'fa fa-fw fa-info-circle': mo.health === 2,
-                        'fa fa-fw fa-question': mo.health === 0,
-                        'fa fa-fw fa-refresh': mo.health === 3,
-                        'fa fa-fw fa-bold': mo.health === 4,
-                      }"
-                    ></i>
+                    <i :class="{
+                      'fa fa-fw good fa-check': mo.health === 5,
+                      'fa fa-fw critical fa-times': mo.health === 1,
+                      'fa fa-fw fa-info-circle': mo.health === 2,
+                      'fa fa-fw fa-question': mo.health === 0,
+                      'fa fa-fw fa-refresh': mo.health === 3,
+                      'fa fa-fw fa-bold': mo.health === 4,
+                    }"></i>
                   </div>
                 </tool-tips>
               </div>
               <div class="ceph-top__mds">
                 <div class="ceph-title">Meta Data Service</div>
-                <tool-tips
-                  class="ceph-top__mon_item"
-                  v-for="mo of mds"
-                  :key="mo.name"
-                >
+                <tool-tips class="ceph-top__mon_item" v-for="mo of mds" :key="mo.name">
                   <div slot="content">
                     <li>Host: {{ mo.name }}</li>
                     <li>Address: {{ mo.addr }}</li>
@@ -204,16 +170,14 @@
                   </div>
                   <div class="ceph-top__mon_item">
                     <i class="fa fa-building"></i>{{ mo.name }}
-                    <i
-                      :class="{
-                        'fa fa-fw good fa-check': mo.health === 5,
-                        'fa fa-fw critical fa-times': mo.health === 1,
-                        'fa fa-fw fa-info-circle': mo.health === 2,
-                        'fa fa-fw fa-question': mo.health === 0,
-                        'fa fa-fw fa-refresh': mo.health === 3,
-                        'fa fa-fw fa-bold': mo.health === 4,
-                      }"
-                    ></i>
+                    <i :class="{
+                      'fa fa-fw good fa-check': mo.health === 5,
+                      'fa fa-fw critical fa-times': mo.health === 1,
+                      'fa fa-fw fa-info-circle': mo.health === 2,
+                      'fa fa-fw fa-question': mo.health === 0,
+                      'fa fa-fw fa-refresh': mo.health === 3,
+                      'fa fa-fw fa-bold': mo.health === 4,
+                    }"></i>
                   </div>
                 </tool-tips>
               </div>
@@ -226,11 +190,7 @@
         <div class="ceph-bottom__content">
           <div class="ceph-bottom__used">
             <div class="card-item">
-              <mh-circle
-                title="Usage"
-                :value="usage.used && usage.used * 100"
-                :label="usage.text"
-              >
+              <mh-circle title="Usage" :value="usage.used && usage.used * 100" :label="usage.text">
               </mh-circle>
             </div>
           </div>
@@ -255,16 +215,10 @@
         </div>
       </div>
     </div>
-    <ceph-install-modal
-      :visible="visible"
-      :param="param"
-      @close="
-        visible = false;
-        __init__();
-      "
-      :modal-type="modalType"
-      v-if="visible"
-    >
+    <ceph-install-modal :visible="visible" :param="param" @close="
+      visible = false;
+    __init__();
+    " :modal-type="modalType" v-if="visible">
     </ceph-install-modal>
   </div>
 </template>
@@ -435,7 +389,7 @@ export default {
   created() {
     this.__init__();
   },
-  mounted() {},
+  mounted() { },
   methods: {
     /***
      * 初始化请求，操作
@@ -461,7 +415,7 @@ export default {
             _this.db.cephMetaDataObj &&
             _this.db.cephMetaDataObj.version &&
             _this.db.cephMetaDataObj.version[
-              Object.keys(_this.db.cephMetaDataObj.version)[0]
+            Object.keys(_this.db.cephMetaDataObj.version)[0]
             ];
           //过滤出ceph状态表格数据
           if (
@@ -562,7 +516,7 @@ export default {
             );
             _this.usage.used =
               _this.db.cephObj.pgmap.bytes_used /
-                _this.db.cephObj.pgmap.bytes_total || 0;
+              _this.db.cephObj.pgmap.bytes_total || 0;
             _this.usage.text = text;
           }
           if (_this.db.cephObj && _this.db.cephObj.pgmap) {
@@ -615,13 +569,13 @@ export default {
       let _this = this;
       _this.queryCephMetaData().then((res) => {
         let healthstates = {
-            HEALTH_UNKNOWN: 0,
-            HEALTH_ERR: 1,
-            HEALTH_WARN: 2,
-            HEALTH_UPGRADE: 3,
-            HEALTH_OLD: 4,
-            HEALTH_OK: 5,
-          },
+          HEALTH_UNKNOWN: 0,
+          HEALTH_ERR: 1,
+          HEALTH_WARN: 2,
+          HEALTH_UPGRADE: 3,
+          HEALTH_OLD: 4,
+          HEALTH_OK: 5,
+        },
           healthmap = [
             "HEALTH_UNKNOWN",
             "HEALTH_ERR",
@@ -764,17 +718,20 @@ export default {
     flex-grow: 1;
     justify-content: space-between;
     height: 500px;
+
     &__service {
       display: flex;
       flex-grow: 1;
       padding: 20px;
     }
+
     &__mon,
     &__mgr,
     &__mds {
       flex-basis: auto;
       flex-shrink: 1;
       flex-grow: 1;
+
       &_item {
         padding: 5px 10px 5px 10px;
         margin-right: 5px;
@@ -783,11 +740,13 @@ export default {
         text-align: center;
         border-radius: 2px;
         cursor: pointer;
+
         &:hover {
           transform: scale(1.02);
         }
       }
     }
+
     &__pgs {
       display: inline-block;
       vertical-align: top;
@@ -796,12 +755,14 @@ export default {
       width: 55%;
       font-size: 0;
       height: calc(100% - 46px);
+
       &_pie {
         height: calc(100% - 50px);
         width: 40%;
         display: inline-block;
         font-size: 14px;
       }
+
       &_label {
         display: inline-block;
         vertical-align: top;
@@ -809,6 +770,7 @@ export default {
         font-size: 14px;
         overflow: hidden;
         height: 100%;
+
         &__label {
           width: 12px;
           height: 12px;
@@ -819,6 +781,7 @@ export default {
         }
       }
     }
+
     &__status {
       width: 45%;
       padding-top: 20px;
@@ -826,12 +789,14 @@ export default {
       display: inline-block;
       font-size: 14px;
     }
+
     &__title {
       width: 100%;
       font-size: 16px;
       padding: 5px 20px;
       background: #dde4ed;
     }
+
     &__health {
       width: 30%;
       height: 100%;
@@ -840,9 +805,11 @@ export default {
       font-size: 14px;
       text-align: center;
       margin-top: 20px;
+
       &_icon {
         font-size: 65px;
       }
+
       &_info {
         width: 70%;
         height: 100%;
@@ -851,6 +818,7 @@ export default {
         font-size: 14px;
       }
     }
+
     &__left {
       margin-right: 20px;
       background: #062635;
@@ -859,11 +827,13 @@ export default {
       width: 0;
       font-size: 0px;
     }
+
     &__right {
       background: #062635;
       height: 500px;
       flex: 1 1 auto;
       width: 0;
+
       &_content {
         font-size: 0;
         height: 50%;
@@ -877,12 +847,14 @@ export default {
     padding: 20px;
     height: calc(100% - 30px);
     overflow: hidden;
+
     &-tr {
       display: flex;
       height: 28px;
       line-height: 28px;
       flex-grow: 1;
     }
+
     &-td {
       flex: 2 1 auto;
       border-bottom: 1px solid #fff;
@@ -893,6 +865,7 @@ export default {
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+
     &-msg {
       overflow: hidden;
       text-overflow: ellipsis;
@@ -900,10 +873,12 @@ export default {
       flex: 7 1 auto;
       justify-content: left;
     }
+
     &-detail {
       flex: 1 1 auto;
       text-align: right;
     }
+
     &-serverity {
       flex: 1 1 auto;
       justify-content: left;
@@ -913,6 +888,7 @@ export default {
   &-bottom {
     position: relative;
     margin-top: 20px;
+
     &__content {
       display: flex;
       flex-grow: 1;
@@ -920,6 +896,7 @@ export default {
       padding-top: 10px;
       background: #062635;
     }
+
     &__used,
     &__file {
       flex-grow: 1;
@@ -929,14 +906,17 @@ export default {
       height: 100%;
       background: #062635;
     }
+
     &__used {
       margin-right: 20px;
     }
   }
 }
+
 .warning {
   color: #fc0;
 }
+
 .good {
   color: #21bf4b;
 }
@@ -948,6 +928,7 @@ export default {
   border-radius: 50%;
   position: relative;
   vertical-align: middle;
+
   &::after {
     content: "";
     display: inline-block;
@@ -960,13 +941,16 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
   }
+
   &-warning {
     background: #fc0;
   }
+
   &-heal {
     background: #21bf4b;
   }
 }
+
 /deep/ .card {
   height: 160px !important;
   display: inline-block;
@@ -975,6 +959,7 @@ export default {
   margin-bottom: 20px;
   width: 100%;
 }
+
 /deep/.m-chart {
   height: 145px !important;
 }
@@ -986,6 +971,7 @@ export default {
   padding: 20px;
   z-index: 999;
 }
+
 @media screen and (max-width: 1310px) {
   .ceph-table-td {
     font-size: 12px;

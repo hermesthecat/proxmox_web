@@ -1,30 +1,13 @@
 <template>
-  <m-dialog
-    :visible="visible"
-    title="Manage Global OSD Flags"
-    @close="close"
-    @cancel="close"
-    @confirm="confirm"
-  >
+  <m-dialog :visible="visible" title="Manage Global OSD Flags" @close="close" @cancel="close" @confirm="confirm">
     <template slot="content">
       <el-scrollbar style="height: 450px">
         <div class="m-form__content">
           <div class="m-form__section">
-            <el-table
-              :data="flagList"
-              ref="dataTable"
-              @selection-change="(rows) => (selectedList = rows)"
-            >
-              <el-table-column
-                label="Enable"
-                type="selection"
-                width="55px"
-              ></el-table-column>
+            <el-table :data="flagList" ref="dataTable" @selection-change="(rows) => (selectedList = rows)">
+              <el-table-column label="Enable" type="selection" width="55px"></el-table-column>
               <el-table-column label="Name" prop="name"></el-table-column>
-              <el-table-column
-                label="Description"
-                prop="description"
-              ></el-table-column>
+              <el-table-column label="Description" prop="description"></el-table-column>
             </el-table>
           </div>
         </div>

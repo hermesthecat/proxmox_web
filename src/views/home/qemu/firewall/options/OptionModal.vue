@@ -1,24 +1,14 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @close="close()"
-    :drag="false"
-    :title="title"
-    :_style="{
-      height: '300px',
-      width: '900px',
-    }"
-  >
+  <Dialog :visible="visible" @close="close()" :drag="false" :title="title" :_style="{
+    height: '300px',
+    width: '900px',
+  }">
     <template slot="content" v-if="type === 'enable'">
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-checkbox
-                label="Firewall"
-                v-model="enable"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-checkbox label="Firewall" v-model="enable" labelWidth="100px"></m-checkbox>
             </dd>
           </dl>
         </div>
@@ -29,11 +19,7 @@
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-checkbox
-                label="DHCP"
-                v-model="dhcp"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-checkbox label="DHCP" v-model="dhcp" labelWidth="100px"></m-checkbox>
             </dd>
           </dl>
         </div>
@@ -44,11 +30,7 @@
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-checkbox
-                label="MAC Filter"
-                v-model="macfilter"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-checkbox label="MAC Filter" v-model="macfilter" labelWidth="100px"></m-checkbox>
             </dd>
           </dl>
         </div>
@@ -59,11 +41,7 @@
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-checkbox
-                label="IP Filter"
-                v-model="ipfilter"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-checkbox label="IP Filter" v-model="ipfilter" labelWidth="100px"></m-checkbox>
             </dd>
           </dl>
         </div>
@@ -74,11 +52,7 @@
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-checkbox
-                label="NDP"
-                v-model="ndp"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-checkbox label="NDP" v-model="ndp" labelWidth="100px"></m-checkbox>
             </dd>
           </dl>
         </div>
@@ -89,11 +63,7 @@
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-checkbox
-                label="Router Advertisement"
-                v-model="radv"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-checkbox label="Router Advertisement" v-model="radv" labelWidth="100px"></m-checkbox>
             </dd>
           </dl>
         </div>
@@ -104,19 +74,9 @@
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-select
-                prop="log_level_in"
-                label="log_level_in"
-                @on-change="handleUnitSelect"
-                v-model="log_level_in"
-                placeholder="Please select operation"
-              >
-                <m-option
-                  v-for="item in logsOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-select prop="log_level_in" label="log_level_in" @on-change="handleUnitSelect" v-model="log_level_in"
+                placeholder="Please select operation">
+                <m-option v-for="item in logsOptions" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
             </dd>
@@ -129,19 +89,9 @@
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-select
-                prop="log_level_out"
-                label="log_level_out"
-                @on-change="handleUnitSelect"
-                v-model="log_level_out"
-                placeholder="Please select operation"
-              >
-                <m-option
-                  v-for="item in logsOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-select prop="log_level_out" label="log_level_out" @on-change="handleUnitSelect" v-model="log_level_out"
+                placeholder="Please select operation">
+                <m-option v-for="item in logsOptions" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
             </dd>
@@ -154,19 +104,9 @@
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-select
-                prop="policy_in"
-                label="Input Policy"
-                @on-change="(value) => (policy_in = value)"
-                v-model="policy_in"
-                placeholder="Please select input policy"
-              >
-                <m-option
-                  v-for="item in policyItems"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-select prop="policy_in" label="Input Policy" @on-change="(value) => (policy_in = value)"
+                v-model="policy_in" placeholder="Please select input policy">
+                <m-option v-for="item in policyItems" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
             </dd>
@@ -179,19 +119,9 @@
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-select
-                prop="policy_out"
-                label="Output Policy"
-                @on-change="(value) => (policy_out = value)"
-                v-model="policy_out"
-                placeholder="Please select output policy"
-              >
-                <m-option
-                  v-for="item in policyItems"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-select prop="policy_out" label="Output Policy" @on-change="(value) => (policy_out = value)"
+                v-model="policy_out" placeholder="Please select output policy">
+                <m-option v-for="item in policyItems" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
             </dd>
@@ -201,12 +131,8 @@
     </template>
     <template slot="footer">
       <template>
-        <m-button class="create-btn" type="danger" @on-click="close()"
-          >Cancel</m-button
-        >
-        <m-button class="create-btn" type="primary" @on-click="confirm()"
-          >Confirm</m-button
-        >
+        <m-button class="create-btn" type="danger" @on-click="close()">Cancel</m-button>
+        <m-button class="create-btn" type="primary" @on-click="confirm()">Confirm</m-button>
       </template>
     </template>
   </Dialog>
@@ -300,8 +226,8 @@ export default {
     ) {
       this[this.type] =
         this.db.qemuFireWallOptionsObj &&
-        this.db.qemuFireWallOptionsObj[this.type] &&
-        this.db.qemuFireWallOptionsObj[this.type] === 1
+          this.db.qemuFireWallOptionsObj[this.type] &&
+          this.db.qemuFireWallOptionsObj[this.type] === 1
           ? true
           : false;
     } else {
@@ -365,15 +291,18 @@ export default {
     display: flex;
     height: 35px;
     line-height: 35px;
+
     label {
       flex: 1 1 auto;
     }
   }
+
   &-item {
     flex: 1 1 auto;
     width: 200px;
   }
 }
+
 .create-btn {
   width: 100px;
   height: 42px;

@@ -1,24 +1,14 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @close="close()"
-    :drag="false"
-    :title="title"
-    :_style="{
-      height: '300px',
-      width: '900px',
-    }"
-  >
+  <Dialog :visible="visible" @close="close()" :drag="false" :title="title" :_style="{
+    height: '300px',
+    width: '900px',
+  }">
     <template slot="content" v-if="type === 'enable'">
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-checkbox
-                label="enable"
-                v-model="enable"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-checkbox label="enable" v-model="enable" labelWidth="100px"></m-checkbox>
             </dd>
           </dl>
         </div>
@@ -29,11 +19,7 @@
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-checkbox
-                label="SMURFS Filter"
-                v-model="nosmurfs"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-checkbox label="SMURFS Filter" v-model="nosmurfs" labelWidth="100px"></m-checkbox>
             </dd>
           </dl>
         </div>
@@ -44,11 +30,7 @@
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-checkbox
-                label="TCP Flags Filter"
-                v-model="tcpflags"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-checkbox label="TCP Flags Filter" v-model="tcpflags" labelWidth="100px"></m-checkbox>
             </dd>
           </dl>
         </div>
@@ -59,11 +41,7 @@
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-checkbox
-                label="NDP"
-                v-model="ndp"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-checkbox label="NDP" v-model="ndp" labelWidth="100px"></m-checkbox>
             </dd>
           </dl>
         </div>
@@ -74,35 +52,21 @@
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-input
-                prop="nf_conntrack_max"
-                label="nf_conntrack_max"
-                :min="32768"
-                type="number"
-                v-model="nf_conntrack_max"
-                placeholder="Please enter nf_conntrack_max"
-              />
+              <m-input prop="nf_conntrack_max" label="nf_conntrack_max" :min="32768" type="number"
+                v-model="nf_conntrack_max" placeholder="Please enter nf_conntrack_max" />
             </dd>
           </dl>
         </div>
       </div>
     </template>
-    <template
-      slot="content"
-      v-if="type === 'nf_conntrack_tcp_timeout_established'"
-    >
+    <template slot="content" v-if="type === 'nf_conntrack_tcp_timeout_established'">
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-input
-                prop="nf_conntrack_tcp_timeout_established"
-                label="nf_conntrack_tcp_timeout_established"
-                type="number"
-                :min="32768"
-                v-model="nf_conntrack_tcp_timeout_established"
-                placeholder="Please enter nf_conntrack_tcp_timeout_established"
-              />
+              <m-input prop="nf_conntrack_tcp_timeout_established" label="nf_conntrack_tcp_timeout_established"
+                type="number" :min="32768" v-model="nf_conntrack_tcp_timeout_established"
+                placeholder="Please enter nf_conntrack_tcp_timeout_established" />
             </dd>
           </dl>
         </div>
@@ -113,19 +77,9 @@
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-select
-                prop="log_level_in"
-                label="log_level_in"
-                @on-change="handleUnitSelect"
-                v-model="log_level_in"
-                placeholder="Please select operation"
-              >
-                <m-option
-                  v-for="item in logsOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-select prop="log_level_in" label="log_level_in" @on-change="handleUnitSelect" v-model="log_level_in"
+                placeholder="Please select operation">
+                <m-option v-for="item in logsOptions" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
             </dd>
@@ -138,19 +92,9 @@
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-select
-                prop="log_level_out"
-                label="log_level_out"
-                @on-change="handleUnitSelect"
-                v-model="log_level_out"
-                placeholder="Please select operation"
-              >
-                <m-option
-                  v-for="item in logsOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-select prop="log_level_out" label="log_level_out" @on-change="handleUnitSelect" v-model="log_level_out"
+                placeholder="Please select operation">
+                <m-option v-for="item in logsOptions" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
             </dd>
@@ -163,19 +107,9 @@
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-select
-                prop="tcp_flags_log_level"
-                label="tcp_flags_log_level"
-                @on-change="handleUnitSelect"
-                v-model="tcp_flags_log_level"
-                placeholder="Please select operation"
-              >
-                <m-option
-                  v-for="item in logsOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-select prop="tcp_flags_log_level" label="tcp_flags_log_level" @on-change="handleUnitSelect"
+                v-model="tcp_flags_log_level" placeholder="Please select operation">
+                <m-option v-for="item in logsOptions" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
             </dd>
@@ -188,19 +122,9 @@
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-select
-                prop="smurf_log_level"
-                label="smurf_log_level"
-                @on-change="handleUnitSelect"
-                v-model="smurf_log_level"
-                placeholder="Please select operation"
-              >
-                <m-option
-                  v-for="item in logsOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-select prop="smurf_log_level" label="smurf_log_level" @on-change="handleUnitSelect"
+                v-model="smurf_log_level" placeholder="Please select operation">
+                <m-option v-for="item in logsOptions" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
             </dd>
@@ -210,12 +134,8 @@
     </template>
     <template slot="footer">
       <template>
-        <m-button class="create-btn" type="primary" @on-click="close()"
-          >Cancel</m-button
-        >
-        <m-button class="create-btn" type="primary" @on-click="confirm()"
-          >Confirm</m-button
-        >
+        <m-button class="create-btn" type="primary" @on-click="close()">Cancel</m-button>
+        <m-button class="create-btn" type="primary" @on-click="confirm()">Confirm</m-button>
       </template>
     </template>
   </Dialog>
@@ -300,8 +220,8 @@ export default {
     if (["enable", "ndp", "nosmurfs", "tcpflags"].includes(this.type)) {
       this[this.type] =
         this.db.nodeFireWallOptionObj &&
-        this.db.nodeFireWallOptionObj[this.type] &&
-        this.db.nodeFireWallOptionObj[this.type] === 1
+          this.db.nodeFireWallOptionObj[this.type] &&
+          this.db.nodeFireWallOptionObj[this.type] === 1
           ? true
           : false;
     } else {
@@ -361,15 +281,18 @@ export default {
     display: flex;
     height: 35px;
     line-height: 35px;
+
     label {
       flex: 1 1 auto;
     }
   }
+
   &-item {
     flex: 1 1 auto;
     width: 200px;
   }
 }
+
 .create-btn {
   width: 100px;
   height: 42px;

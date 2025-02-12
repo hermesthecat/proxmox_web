@@ -1,38 +1,18 @@
 <template>
-  <m-dialog
-    :visible="visible"
-    @confirm="confirm"
-    @cancel="close"
-    @close="close"
-    :_style="{
-      width: '946px',
-    }"
-    :title="title"
-  >
+  <m-dialog :visible="visible" @confirm="confirm" @cancel="close" @close="close" :_style="{
+    width: '946px',
+  }" :title="title">
     <div slot="content">
       <div class="m-form__section">
         <template v-if="modalType === 'backup'">
           <dl>
             <dt>Basic Operations</dt>
             <dd>
-              <m-select
-                v-model="storage"
-                @on-change="(value) => (storage = value)"
-                validateEvent
-                @validate="validate"
-                label="Storage"
-                labelWidth="100px"
-                prop="storage"
-                required
-                :show-error="rules['storage'].error"
-                :error-msg="rules['storage'].message"
-              >
-                <m-option
-                  v-for="(item, index) in qemuStorageList"
-                  :key="item.storage"
-                  :value="item.storage"
-                  :label="item.storage"
-                >
+              <m-select v-model="storage" @on-change="(value) => (storage = value)" validateEvent @validate="validate"
+                label="Storage" labelWidth="100px" prop="storage" required :show-error="rules['storage'].error"
+                :error-msg="rules['storage'].message">
+                <m-option v-for="(item, index) in qemuStorageList" :key="item.storage" :value="item.storage"
+                  :label="item.storage">
                   <div class="table-tr" v-if="index === 0">
                     <div class="table-td">Name</div>
                     <div class="table-td">Category</div>
@@ -46,61 +26,27 @@
                     <div class="table-td" :title="item.type">
                       {{ item.type }}
                     </div>
-                    <div
-                      class="table-td"
-                      :title="item.avail ? byteToSize(item.avail) : '0'"
-                    >
+                    <div class="table-td" :title="item.avail ? byteToSize(item.avail) : '0'">
                       {{ item.avail ? byteToSize(item.avail) : "0" }}
                     </div>
-                    <div
-                      class="table-td"
-                      :title="item.total ? byteToSize(item.total) : '0'"
-                    >
+                    <div class="table-td" :title="item.total ? byteToSize(item.total) : '0'">
                       {{ item.total ? byteToSize(item.total) : "0" }}
                     </div>
                   </div>
                 </m-option>
               </m-select>
-              <m-select
-                v-model="mode"
-                @on-change="(value) => (mode = value)"
-                label="Mode"
-                labelWidth="100px"
-                prop="mode"
-              >
-                <m-option
-                  v-for="item in modeItems"
-                  :key="item.value"
-                  :value="item.value"
-                  :label="item.label"
-                >
+              <m-select v-model="mode" @on-change="(value) => (mode = value)" label="Mode" labelWidth="100px"
+                prop="mode">
+                <m-option v-for="item in modeItems" :key="item.value" :value="item.value" :label="item.label">
                 </m-option>
               </m-select>
-              <m-select
-                v-model="compress"
-                @on-change="(value) => (compress = value)"
-                label="Compression"
-                labelWidth="100px"
-                prop="compress"
-              >
-                <m-option
-                  v-for="item in compressItems"
-                  :key="item.value"
-                  :value="item.value"
-                  :label="item.label"
-                >
+              <m-select v-model="compress" @on-change="(value) => (compress = value)" label="Compression"
+                labelWidth="100px" prop="compress">
+                <m-option v-for="item in compressItems" :key="item.value" :value="item.value" :label="item.label">
                 </m-option>
               </m-select>
-              <m-input
-                v-model="emailto"
-                validateEvent
-                prop="emailto"
-                label="Send Email To"
-                labelWidth="100px"
-                @validate="validate"
-                :show-error="rules['emailto'].error"
-                :error-msg="rules['emailto'].message"
-              />
+              <m-input v-model="emailto" validateEvent prop="emailto" label="Send Email To" labelWidth="100px"
+                @validate="validate" :show-error="rules['emailto'].error" :error-msg="rules['emailto'].message" />
             </dd>
           </dl>
         </template>
@@ -109,38 +55,20 @@
             <dt>Basic Operations</dt>
             <dd>
               <m-input :disabled="true" label="Source" labelWidth="100px">
-                <div
-                  slot="other"
-                  class="disabled ellipsis"
-                  style="
+                <div slot="other" class="disabled ellipsis" style="
                     height: 28px;
                     line-height: 28px;
                     padding-left: 5px;
                     padding-right: 5px;
-                  "
-                >
+                  ">
                   {{ param.volid.replace(/([\s\S]*)\\/, "") }}
                 </div>
               </m-input>
-              <m-select
-                v-model="storage"
-                @on-change="(value) => (storage = value)"
-                validateEvent
-                @validate="validate"
-                label="Storage"
-                labelWidth="100px"
-                prop="storage"
-                required
-                :show-error="rules['storage'].error"
-                placeholder="From backup configuration"
-                :error-msg="rules['storage'].message"
-              >
-                <m-option
-                  v-for="(item, index) in qemuStorageList"
-                  :key="item.storage"
-                  :value="item.storage"
-                  :label="item.storage"
-                >
+              <m-select v-model="storage" @on-change="(value) => (storage = value)" validateEvent @validate="validate"
+                label="Storage" labelWidth="100px" prop="storage" required :show-error="rules['storage'].error"
+                placeholder="From backup configuration" :error-msg="rules['storage'].message">
+                <m-option v-for="(item, index) in qemuStorageList" :key="item.storage" :value="item.storage"
+                  :label="item.storage">
                   <div class="table-tr" v-if="index === 0">
                     <div class="table-td">Name</div>
                     <div class="table-td">Category</div>
@@ -154,104 +82,56 @@
                     <div class="table-td" :title="item.type">
                       {{ item.type }}
                     </div>
-                    <div
-                      class="table-td"
-                      :title="item.avail ? byteToSize(item.avail) : '0'"
-                    >
+                    <div class="table-td" :title="item.avail ? byteToSize(item.avail) : '0'">
                       {{ item.avail ? byteToSize(item.avail) : "0" }}
                     </div>
-                    <div
-                      class="table-td"
-                      :title="item.total ? byteToSize(item.total) : '0'"
-                    >
+                    <div class="table-td" :title="item.total ? byteToSize(item.total) : '0'">
                       {{ item.total ? byteToSize(item.total) : "0" }}
                     </div>
                   </div>
                 </m-option>
               </m-select>
               <m-input :disabled="true" label="VM" labelWidth="100px">
-                <div
-                  slot="other"
-                  class="disabled"
-                  style="height: 28px; line-height: 28px; padding-left: 5px"
-                >
+                <div slot="other" class="disabled" style="height: 28px; line-height: 28px; padding-left: 5px">
                   {{ this.node.vmid }}
                 </div>
               </m-input>
               <div style="position: relative">
-                <m-input
-                  v-model="bwlimit"
-                  validateEvent
-                  @validate="validate"
-                  label="Read Limit"
-                  labelWidth="100px"
-                  prop="bwlimit"
-                  :show-error="rules['bwlimit'].error"
-                  :error-msg="rules['bwlimit'].message"
-                />Mib
+                <m-input v-model="bwlimit" validateEvent @validate="validate" label="Read Limit" labelWidth="100px"
+                  prop="bwlimit" :show-error="rules['bwlimit'].error" :error-msg="rules['bwlimit'].message" />Mib
                 <div class="warning">Use "0" to disable all bandwidth limits</div>
               </div>
-              <m-checkbox
-                v-model="start"
-                label="Start after restore"
-                labelWidth="100px"
-              ></m-checkbox>
-              <m-checkbox
-                v-model="unprivileged"
-                v-if="node.type === 'lxc'"
-                label="Unprivileged container"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-checkbox v-model="start" label="Start after restore" labelWidth="100px"></m-checkbox>
+              <m-checkbox v-model="unprivileged" v-if="node.type === 'lxc'" label="Unprivileged container"
+                labelWidth="100px"></m-checkbox>
             </dd>
           </dl>
         </template>
         <template v-if="modalType === 'config'">
-          <ace-editor
-            v-model="configContent"
-            ref="ace-editor"
-            :readOnly="true"
-            style="max-height: 400px; overflow-y: auto"
-          ></ace-editor>
+          <ace-editor v-model="configContent" ref="ace-editor" :readOnly="true"
+            style="max-height: 400px; overflow-y: auto"></ace-editor>
         </template>
       </div>
-      <m-dialog
-        :visible="showLog"
-        @close="closeLog"
-        :_style="{
-          width: '800px',
-        }"
-        title="View: Backup Task Progress"
-      >
+      <m-dialog :visible="showLog" @close="closeLog" :_style="{
+        width: '800px',
+      }" title="View: Backup Task Progress">
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
             <m-tab-panel label="Output" name="log"></m-tab-panel>
             <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
-          <m-button
-            class="create-btn m-margin-top-10"
-            type="primary"
-            @on-click="stopTask1"
-            :disabled="db.addClusterStatusObj.status !== 'running'"
-            >Stop</m-button
-          >
+          <m-button class="create-btn m-margin-top-10" type="primary" @on-click="stopTask1"
+            :disabled="db.addClusterStatusObj.status !== 'running'">Stop</m-button>
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
               <div class="table" v-if="tab === 'log'">
-                <div
-                  class="table-tr"
-                  v-for="item in db.addClusterLogList"
-                  :key="item.n"
-                >
+                <div class="table-tr" v-for="item in db.addClusterLogList" :key="item.n">
                   {{ item.t }}
                 </div>
               </div>
               <div class="table" v-if="tab === 'status'">
                 <template v-for="(item, key) in db.addClusterStatusObj">
-                  <div
-                    class="table-tr"
-                    v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-                    :key="key"
-                  >
+                  <div class="table-tr" v-if="!['exitstatus', 'id', 'pstart'].includes(key)" :key="key">
                     <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
                     <div class="table-td" v-if="key === 'starttime'">
                       {{
@@ -271,22 +151,10 @@
       </m-dialog>
     </div>
     <template slot="footer">
-      <m-button
-        v-if="modalType === 'backup'"
-        type="primary"
-        class="create-btn"
-        icon="fa fa-save"
-        @on-click="confirm"
-        >Backup</m-button
-      >
-      <m-button
-        v-if="modalType === 'restore'"
-        type="primary"
-        class="create-btn"
-        @on-click="confirm"
-        icon="fa fa-retweet"
-        >Restore</m-button
-      >
+      <m-button v-if="modalType === 'backup'" type="primary" class="create-btn" icon="fa fa-save"
+        @on-click="confirm">Backup</m-button>
+      <m-button v-if="modalType === 'restore'" type="primary" class="create-btn" @on-click="confirm"
+        icon="fa fa-retweet">Restore</m-button>
       <span v-show="modalType === 'config'"></span>
     </template>
   </m-dialog>
@@ -615,6 +483,7 @@ export default {
   display: inline-block;
   line-height: 43px;
 }
+
 .warning {
   padding: 1px 20px;
   position: absolute;

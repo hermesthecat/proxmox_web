@@ -1,59 +1,25 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @cancel="close"
-    @confirm="confirm"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" @cancel="close" @confirm="confirm" :title="title" :_style="{ width: '956px' }"
+    @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-input
-                type="text"
-                prop="group"
-                labelWidth="100px"
-                label="ID"
-                v-model="group"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules.group.error"
-                :error-msg="rules.group.message"
-                placeholder="Please enter ID"
-              />
-              <m-checkbox
-                label="nofailback"
-                v-model="nofailback"
-                labelWidth="100px"
-              ></m-checkbox>
-              <m-checkbox
-                label="restricted"
-                v-model="restricted"
-                labelWidth="100px"
-              ></m-checkbox>
-              <m-input
-                type="textarea"
-                prop="comment"
-                labelWidth="100px"
-                label="Comment"
-                v-model="comment"
-                placeholder="Please enter comment"
-              />
+              <m-input type="text" prop="group" labelWidth="100px" label="ID" v-model="group" validateEvent
+                @validate="validate" required :show-error="rules.group.error" :error-msg="rules.group.message"
+                placeholder="Please enter ID" />
+              <m-checkbox label="nofailback" v-model="nofailback" labelWidth="100px"></m-checkbox>
+              <m-checkbox label="restricted" v-model="restricted" labelWidth="100px"></m-checkbox>
+              <m-input type="textarea" prop="comment" labelWidth="100px" label="Comment" v-model="comment"
+                placeholder="Please enter comment" />
             </dd>
           </dl>
           <dl>
             <dt>Select Node</dt>
             <dd>
-              <el-table
-                :data="nodeList"
-                @selection-change="handleSelect"
-                ref="dataTable"
-              >
+              <el-table :data="nodeList" @selection-change="handleSelect" ref="dataTable">
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column label="Node" prop="node"></el-table-column>
                 <el-table-column label="Memory Usage">
@@ -69,15 +35,10 @@
                 <el-table-column label="Priority" prop="nodes">
                   <template slot-scope="scope">
                     <span sytle="width: 110px;dispaly: inline-block;">
-                      <m-input
-                        type="number"
-                        prop="priority"
-                        style="width: 123px"
+                      <m-input type="number" prop="priority" style="width: 123px"
                         :_style="{ width: '105px', 'min-width': '90px' }"
-                        :__conStyle="{ width: '115px', 'min-width': '115px' }"
-                        v-model="node[scope.row.id]"
-                        placeholder="Please enter comment"
-                    /></span>
+                        :__conStyle="{ width: '115px', 'min-width': '115px' }" v-model="node[scope.row.id]"
+                        placeholder="Please enter comment" /></span>
                   </template>
                 </el-table-column>
               </el-table>

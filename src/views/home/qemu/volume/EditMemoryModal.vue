@@ -1,63 +1,27 @@
 <template>
-  <m-dialog
-    :title="modalType !== 'edit' ? 'Add: Memory' : 'Edit: Memory'"
-    :visible="visible"
-    v-if="visible"
-    @confirm="confirm"
-    @cancel="close"
-    :_style="{
+  <m-dialog :title="modalType !== 'edit' ? 'Add: Memory' : 'Edit: Memory'" :visible="visible" v-if="visible"
+    @confirm="confirm" @cancel="close" :_style="{
       width: '946px',
-    }"
-    @close="close"
-  >
+    }" @close="close">
     <div slot="content" style="max-height: 400px; overflow: auto">
       <div class="m-form__section">
         <dl>
           <dt>Basic Information</dt>
           <dd>
-            <m-input
-              type="number"
-              labelWidth="100px"
-              label="Memory (MiB)"
-              v-model="memory"
-              validateEvent
-              @validate="validate"
-              prop="memory"
-              :min="1"
-              required
-              :error-msg="rules['memory'].message"
-              :show-error="rules['memory'].error"
-            />
+            <m-input type="number" labelWidth="100px" label="Memory (MiB)" v-model="memory" validateEvent
+              @validate="validate" prop="memory" :min="1" required :error-msg="rules['memory'].message"
+              :show-error="rules['memory'].error" />
           </dd>
         </dl>
       </div>
       <div class="m-margin-top-10 m-form__section" v-if="isAdvice">
         <dt>Advanced</dt>
         <dd>
-          <m-input
-            type="number"
-            labelWidth="100px"
-            label="Minimum Memory (MiB)"
-            v-model="balloon"
-            validateEvent
-            @validate="validate"
-            prop="balloon"
-            :min="1"
-            :max="memory"
-            :disabled="!isBalloon"
-            :error-msg="rules['balloon'].message"
-            :show-error="rules['balloon'].error"
-          />
-          <m-input
-            type="number"
-            labelWidth="100px"
-            label="Shared Memory (MiB)"
-            v-model="shares"
-            prop="shares"
-            :min="1"
-            :disabled="memory <= balloon || !isBalloon"
-            placeholder="Default 1000"
-          />
+          <m-input type="number" labelWidth="100px" label="Minimum Memory (MiB)" v-model="balloon" validateEvent
+            @validate="validate" prop="balloon" :min="1" :max="memory" :disabled="!isBalloon"
+            :error-msg="rules['balloon'].message" :show-error="rules['balloon'].error" />
+          <m-input type="number" labelWidth="100px" label="Shared Memory (MiB)" v-model="shares" prop="shares" :min="1"
+            :disabled="memory <= balloon || !isBalloon" placeholder="Default 1000" />
           <m-checkbox v-model="isBalloon" label="Ballooning"></m-checkbox>
         </dd>
       </div>
@@ -69,12 +33,8 @@
           <div>Advanced</div>
         </label>
       </div>
-      <m-button
-        type="primary"
-        style="height: 40px; line-height: 40px; width: 100px"
-        @on-click="confirm()"
-        >Confirm</m-button
-      >
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px"
+        @on-click="confirm()">Confirm</m-button>
     </template>
   </m-dialog>
 </template>

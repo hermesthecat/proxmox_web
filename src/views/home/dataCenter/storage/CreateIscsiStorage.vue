@@ -4,83 +4,29 @@
       <dl>
         <dt>Basic Information</dt>
         <dd>
-          <m-input
-            type="text"
-            prop="storage"
-            label="ID"
-            labelWidth="100px"
-            validateEvent
-            @validate="validate"
-            :show-error="rules.storage.error"
-            :error-msg="rules.storage.message"
-            v-model="storage"
-            required
-            :disabled="!isCreate"
-            placeholder="Please enter ID"
-          />
-          <m-checkbox
-            label="Enable"
-            v-model="disable"
-            labelWidth="100px"
-          ></m-checkbox>
-          <m-input
-            type="text"
-            prop="portal"
-            label="Portal"
-            labelWidth="100px"
-            validateEvent
-            @validate="validate"
-            required
-            :show-error="rules.portal.error"
-            :error-msg="rules.portal.message"
-            v-model="portal"
-            :disabled="!isCreate"
-            placeholder="Please enter portal"
-          />
+          <m-input type="text" prop="storage" label="ID" labelWidth="100px" validateEvent @validate="validate"
+            :show-error="rules.storage.error" :error-msg="rules.storage.message" v-model="storage" required
+            :disabled="!isCreate" placeholder="Please enter ID" />
+          <m-checkbox label="Enable" v-model="disable" labelWidth="100px"></m-checkbox>
+          <m-input type="text" prop="portal" label="Portal" labelWidth="100px" validateEvent @validate="validate"
+            required :show-error="rules.portal.error" :error-msg="rules.portal.message" v-model="portal"
+            :disabled="!isCreate" placeholder="Please enter portal" />
 
-          <m-select
-            labelWidth="100px"
-            @on-change="handleTargetSelect"
-            validateEvent
-            @validate="validate"
-            prop="target"
-            v-model="target"
-            :readonly="false"
-            required
-            @visible-change="handleTargetReq"
-            :show-error="rules.target.error"
-            :error-msg="rules.target.message"
-            :disabled="!isCreate"
-            label="Target"
-          >
-            <m-option
-              v-for="item in db.glusterfsList"
-              :key="item.share"
-              :label="item.share"
-              :value="item.share"
-            ></m-option>
+          <m-select labelWidth="100px" @on-change="handleTargetSelect" validateEvent @validate="validate" prop="target"
+            v-model="target" :readonly="false" required @visible-change="handleTargetReq"
+            :show-error="rules.target.error" :error-msg="rules.target.message" :disabled="!isCreate" label="Target">
+            <m-option v-for="item in db.glusterfsList" :key="item.share" :label="item.share"
+              :value="item.share"></m-option>
           </m-select>
-          <m-checkbox
-            label="Use LUN Directly"
-            v-model="lun"
-            labelWidth="100px"
-          ></m-checkbox>
+          <m-checkbox label="Use LUN Directly" v-model="lun" labelWidth="100px"></m-checkbox>
         </dd>
       </dl>
       <dl>
         <dt>Nodes</dt>
         <dd>
-          <el-table
-            :data="db.nodeList"
-            ref="dataTable"
-            @selection-change="handleSelectionChange"
-          >
+          <el-table :data="db.nodeList" ref="dataTable" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55"> </el-table-column>
-            <el-table-column
-              label="Node"
-              prop="node"
-              sortable
-            ></el-table-column>
+            <el-table-column label="Node" prop="node" sortable></el-table-column>
             <el-table-column label="Memory Usage">
               <template slot-scope="scope">
                 {{

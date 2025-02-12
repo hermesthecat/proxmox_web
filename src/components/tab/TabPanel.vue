@@ -1,6 +1,8 @@
 <template>
   <div class="tabs__item" ref="tab_item" :name="name" @click="handleClick">
-    <template v-if="$slots['tab']"><slot name="tab"></slot></template>
+    <template v-if="$slots['tab']">
+      <slot name="tab"></slot>
+    </template>
     <template v-else>{{ label }}</template>
   </div>
 </template>

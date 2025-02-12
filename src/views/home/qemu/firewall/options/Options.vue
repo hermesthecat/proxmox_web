@@ -1,58 +1,36 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button
-        type="primary"
-        :disabled="option === ''"
-        @on-click="showModal(option)"
-        >Edit</m-button
-      >
+      <m-button type="primary" :disabled="option === ''" @on-click="showModal(option)">Edit</m-button>
     </div>
     <div slot="page-content">
       <div class="table">
-        <div
-          class="table-tr"
-          @click="handleClick"
-          v-for="item in options"
-          :key="item.value"
-          :id="item.value"
-          :class="{ 'single-selected': option === item.value }"
-        >
+        <div class="table-tr" @click="handleClick" v-for="item in options" :key="item.value" :id="item.value"
+          :class="{ 'single-selected': option === item.value }">
           <div class="table-td table-radio">
             <label class="m-input__radio">
-              <input
-                type="radio"
-                :value="item.value"
-                name="option"
-                v-model="option"
-              />
+              <input type="radio" :value="item.value" name="option" v-model="option" />
               <div></div>
             </label>
           </div>
           <div class="table-td">{{ item.label }}</div>
-          <div
-            class="table-td"
-            v-if="
-              [
-                'enable',
-                'ndp',
-                'dhcp',
-                'radv',
-                'macfilter',
-                'ipfilter',
-              ].includes(item.value)
-            "
-          >
+          <div class="table-td" v-if="
+            [
+              'enable',
+              'ndp',
+              'dhcp',
+              'radv',
+              'macfilter',
+              'ipfilter',
+            ].includes(item.value)
+          ">
             {{
               db.qemuFireWallOptionsObj &&
-              db.qemuFireWallOptionsObj[item.value] == 1
+                db.qemuFireWallOptionsObj[item.value] == 1
                 ? "Yes"
                 : "No"
             }}
-            <i
-              class="el-icon-edit edit-icon"
-              @click="showModal(item.value)"
-            ></i>
+            <i class="el-icon-edit edit-icon" @click="showModal(item.value)"></i>
           </div>
           <div class="table-td" v-else>
             {{
@@ -60,23 +38,14 @@
                 ? db.qemuFireWallOptionsObj[item.value]
                 : "Default"
             }}
-            <i
-              class="el-icon-edit edit-icon"
-              @click="showModal(item.value)"
-            ></i>
+            <i class="el-icon-edit edit-icon" @click="showModal(item.value)"></i>
           </div>
         </div>
       </div>
-      <OptionModal
-        :visible="visible"
-        v-if="visible"
-        :title="title"
-        @close="
-          visible = false;
-          __init__();
-        "
-        :type="type"
-      ></OptionModal>
+      <OptionModal :visible="visible" v-if="visible" :title="title" @close="
+        visible = false;
+      __init__();
+      " :type="type"></OptionModal>
     </div>
   </page-template>
 </template>
@@ -202,25 +171,30 @@ export default {
   padding: 10px 0px;
   border-top: 1px solid #c4d6ec;
   border-bottom: 1px solid #c4d6ec;
+
   &__item {
     flex: 1 1 auto;
     display: flex;
   }
+
   &__title {
     flex: 1 1 auto;
     display: inline-flex;
   }
+
   &__desc {
     flex: 1 1 auto;
     display: inline-flex;
   }
 }
+
 .table {
   &-td {
     height: 35px;
     line-height: 35px;
     width: 50%;
   }
+
   &-radio {
     width: 50px;
     padding-right: 20px;

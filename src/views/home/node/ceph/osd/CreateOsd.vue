@@ -3,22 +3,10 @@
     <template slot="content">
       <div class="m-form__content">
         <div class="m-form__section">
-          <m-select
-            v-model="dev"
-            labelWidth="100px"
-            prop="dev"
-            label="Disk"
-            @on-change="(value) => (dev = value)"
-            validateEvent
-            @validate="validate"
-            :show-error="rules['dev'].error"
-            :error-msg="rules['dev'].message"
-          >
+          <m-select v-model="dev" labelWidth="100px" prop="dev" label="Disk" @on-change="(value) => (dev = value)"
+            validateEvent @validate="validate" :show-error="rules['dev'].error" :error-msg="rules['dev'].message">
             <template v-for="(item, index) in unusedStorageList" :key="item.devpath">
-              <m-option
-                :label="item.devpath"
-                :value="item.devpath"
-              >
+              <m-option :label="item.devpath" :value="item.devpath">
                 <div v-if="index === 0" class="table-tr">
                   <div class="table-td">Device</div>
                   <div class="table-td">Size</div>
@@ -33,18 +21,10 @@
             </template>
           </m-select>
 
-          <m-select
-            v-model="db_dev"
-            labelWidth="100px"
-            prop="db_dev"
-            label="Database Disk"
-            @on-change="(value) => (db_dev = value)"
-          >
+          <m-select v-model="db_dev" labelWidth="100px" prop="db_dev" label="Database Disk"
+            @on-change="(value) => (db_dev = value)">
             <template v-for="(item, index) in journalStorageList" :key="item.devpath">
-              <m-option
-                :label="item.devpath"
-                :value="item.devpath"
-              >
+              <m-option :label="item.devpath" :value="item.devpath">
                 <div v-if="index === 0" class="table-tr">
                   <div class="table-td">Device</div>
                   <div class="table-td">Size</div>
@@ -59,35 +39,16 @@
             </template>
           </m-select>
 
-          <m-input
-            v-model="db_size"
-            type="number"
-            labelWidth="100px"
-            prop="db_size"
-            label="Database Size (GiB)"
-            min="0"
-            :disabled="!db_dev"
-          />
+          <m-input v-model="db_size" type="number" labelWidth="100px" prop="db_size" label="Database Size (GiB)" min="0"
+            :disabled="!db_dev" />
 
           <template v-if="isAdvice">
-            <m-checkbox
-              labelWidth="100px"
-              label="Encrypt OSD"
-              v-model="encrypted"
-            ></m-checkbox>
+            <m-checkbox labelWidth="100px" label="Encrypt OSD" v-model="encrypted"></m-checkbox>
 
-            <m-select
-              v-model="wal_dev"
-              labelWidth="100px"
-              porp="wal_dev"
-              label="WAL Disk"
-              @on-change="(value) => (wal_dev = value)"
-            >
+            <m-select v-model="wal_dev" labelWidth="100px" porp="wal_dev" label="WAL Disk"
+              @on-change="(value) => (wal_dev = value)">
               <template v-for="(item, index) in journalStorageList" :key="item.devpath">
-                <m-option
-                  :label="item.devpath"
-                  :value="item.devpath"
-                >
+                <m-option :label="item.devpath" :value="item.devpath">
                   <div v-if="index === 0" class="table-tr">
                     <div class="table-td">Device</div>
                     <div class="table-td">Size</div>
@@ -102,15 +63,8 @@
               </template>
             </m-select>
 
-            <m-input
-              v-model="wal_size"
-              type="number"
-              labelWidth="100px"
-              porp="wal_size"
-              label="WAL Disk Size (GiB)"
-              min="0"
-              :disabled="!wal_dev"
-            />
+            <m-input v-model="wal_size" type="number" labelWidth="100px" porp="wal_size" label="WAL Disk Size (GiB)"
+              min="0" :disabled="!wal_dev" />
           </template>
         </div>
       </div>
@@ -122,9 +76,7 @@
           <div>Advanced</div>
         </label>
       </div>
-      <m-button class="create-btn" type="primary" @on-click="confirm"
-        >Create</m-button
-      >
+      <m-button class="create-btn" type="primary" @on-click="confirm">Create</m-button>
     </template>
   </m-dialog>
 </template>

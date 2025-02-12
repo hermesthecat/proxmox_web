@@ -2,50 +2,22 @@
   <page-template>
     <div slot="toolbar-left" style="flex: 2 1 auto">
       <span class="tab" @click="changeTab">
-        <span
-          class="tab-item"
-          :class="{ 'is-active': livemode }"
-          type="livemode"
-          >Live Mode</span
-        >
-        <span class="tab-item" :class="{ 'is-active': !livemode }" type="time"
-          >Select Time Range</span
-        >
+        <span class="tab-item" :class="{ 'is-active': livemode }" type="livemode">Live Mode</span>
+        <span class="tab-item" :class="{ 'is-active': !livemode }" type="time">Select Time Range</span>
       </span>
-      <m-input
-        prop="expire"
-        labelWidth="60px"
-        label="Select Date"
-        style="vertical-align: top"
-        :__conStyle="{ width: '355px' }"
-      >
+      <m-input prop="expire" labelWidth="60px" label="Select Date" style="vertical-align: top"
+        :__conStyle="{ width: '355px' }">
         <template slot="other">
-          <el-date-picker
-            v-model="datetime"
-            type="daterange"
-            format="yyyy-MM-dd"
-            value-format="yyyy-MM-dd"
-            placeholder="Select Date"
-            :disabled="livemode"
-          >
+          <el-date-picker v-model="datetime" type="daterange" format="yyyy-MM-dd" value-format="yyyy-MM-dd"
+            placeholder="Select Date" :disabled="livemode">
           </el-date-picker>
         </template>
       </m-input>
-      <m-button
-        type="primary"
-        style="vertical-align: middle"
-        @on-click="handleUpdate()"
-        icon="el-icon-refresh"
-        :disabled="livemode"
-        >Update</m-button
-      >
+      <m-button type="primary" style="vertical-align: middle" @on-click="handleUpdate()" icon="el-icon-refresh"
+        :disabled="livemode">Update</m-button>
     </div>
     <div slot="page-content">
-      <ace-editor
-        v-model="hostContent"
-        :read-only="true"
-        ref="ace-editor"
-      ></ace-editor>
+      <ace-editor v-model="hostContent" :read-only="true" ref="ace-editor"></ace-editor>
     </div>
   </page-template>
 </template>
@@ -182,15 +154,18 @@ export default {
   cursor: pointer;
   height: 28px;
   line-height: 28px;
+
   &-item {
     flex: 1 1 auto;
     padding: 0px 10px;
   }
 }
+
 .is-active {
   color: #fff;
   background: #409eff;
 }
+
 /deep/.tool-bar-left {
   width: auto;
 }

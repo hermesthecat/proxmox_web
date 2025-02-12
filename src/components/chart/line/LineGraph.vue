@@ -78,19 +78,16 @@ export default {
             <div>${param[0].axisValueLabel}</div>`;
             for (let i in param) {
               str += `<div style="padding: 5px 0px;">
-                 <span style="display: inline-block;width: 10px;height: 10px; background:${
-                   param[i].color.color
-                 }"></span>
-                 <span style="dispaly: inline-block;color: #222;">${
-                   param[i].seriesName
-                 }\r\t${
-                param[i].value
+                 <span style="display: inline-block;width: 10px;height: 10px; background:${param[i].color.color
+                }"></span>
+                 <span style="dispaly: inline-block;color: #222;">${param[i].seriesName
+                }\r\t${param[i].value
                   ? (_this.param &&
-                      _this.param.func &&
-                      _this.param.func(param[i].value)) ||
-                    param[i].value.toFixed(2)
+                    _this.param.func &&
+                    _this.param.func(param[i].value)) ||
+                  param[i].value.toFixed(2)
                   : 0
-              }</span>
+                }</span>
                </div>`;
             }
             str += `</div>`;
@@ -373,18 +370,22 @@ export default {
   height: 274px;
   width: 100%;
   position: relative;
+
   &-content {
     height: 250px;
   }
+
   &-instance {
     height: 100%;
   }
+
   &-nodata {
     display: flex;
     flex-grow: 1;
     justify-content: center;
     align-items: center;
   }
+
   &-legend {
     width: 100%;
     text-align: center;
@@ -393,6 +394,7 @@ export default {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+
     &-item {
       height: 30px;
       line-height: 30px;
@@ -401,6 +403,7 @@ export default {
       border-radius: 3px;
       position: relative;
     }
+
     &-checkbox {
       display: inline-block;
       width: 100%;
@@ -410,17 +413,20 @@ export default {
       left: 0;
       opacity: 0;
     }
+
     .checked {
       .dot {
         opacity: 1;
       }
     }
+
     .unchecked {
       .dot {
         opacity: 0.5;
       }
     }
   }
+
   .dot {
     background: #ff4e41;
     display: inline-block;

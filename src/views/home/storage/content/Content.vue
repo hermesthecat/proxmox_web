@@ -5,11 +5,12 @@
         :disabled="canConfig('backup')">Restore</m-button>
       <m-button type="danger" @on-click="handleDelete()" icon="el-icon-delete"
         :disabled="selectedList.length <= 0">Delete</m-button>
-      <m-button type="primary" @on-click="downLoadTemplate()" icon="el-icon-download" :disabled="!templ">Template</m-button>
+      <m-button type="primary" @on-click="downLoadTemplate()" icon="el-icon-download"
+        :disabled="!templ">Template</m-button>
       <m-button type="primary" @on-click="showModal()" icon="el-icon-upload2"
         :disabled="!upload && !templ">Upload</m-button>
-      <m-button type="primary" @on-click="showConfigModal()" icon="el-icon-view"
-        :disabled="canConfig('backup')">Show Config</m-button>
+      <m-button type="primary" @on-click="showConfigModal()" icon="el-icon-view" :disabled="canConfig('backup')">Show
+        Config</m-button>
     </div>
     <div slot="toolbar-right" style="text-align: right">
       <m-input placeholder="Please enter name" @input="debounce(handleSearch(), 1000)" v-model="search">
@@ -53,14 +54,14 @@
         </el-table-column>
       </el-table>
       <el-pagination class="page-table-pagination" @size-change="(val) => {
-          currentPage = 1;
-          pageSize = val;
+        currentPage = 1;
+        pageSize = val;
+        setData();
+      }
+        " @current-change="(val) => {
+          currentPage = val;
           setData();
         }
-        " @current-change="(val) => {
-            currentPage = val;
-            setData();
-          }
           " :current-page="currentPage" :page-sizes="[10, 20, 50, 100]" :page-size="pageSize"
         :total="(storageContentList && storageContentList.length) || 0" :pager-count="5" small
         layout="total, sizes, prev, pager, next, jumper">

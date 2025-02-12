@@ -1,25 +1,10 @@
 <template>
-  <m-dialog
-    :visible="visible"
-    :title="title"
-    @cancel="close"
-    @close="close"
-    @confirm="confirm"
-  >
+  <m-dialog :visible="visible" :title="title" @cancel="close" @close="close" @confirm="confirm">
     <div slot="content">
       <template v-if="modalType === 'metadata'">
-        <m-select
-          prop="nodename"
-          v-model="nodename"
-          @on-change="(value) => (nodename = value)"
-          vidateEvent
-          @validate="validate"
-          required
-          :show-error="rules['nodename'].error"
-          :error-msg="rules['nodename'].message"
-          label="Host"
-          labelWidth="100px"
-        >
+        <m-select prop="nodename" v-model="nodename" @on-change="(value) => (nodename = value)" vidateEvent
+          @validate="validate" required :show-error="rules['nodename'].error" :error-msg="rules['nodename'].message"
+          label="Host" labelWidth="100px">
           <template v-for="(item, index) in nodeList" :key="item.node">
             <m-option :label="item.node" :value="item.node">
               <div class="table-tr" v-show="index === 0">
@@ -30,22 +15,16 @@
               <div class="table-tr">
                 <div class="table-td">{{ item.node }}</div>
                 <div class="table-td" style="height: 28px; line-height: 28px">
-                  <line-charts
-                    style="margin: 11px 0px"
-                    :value="
-                      Number(
-                        (item && item.maxmem && item.mem
-                          ? item.mem / item.maxmem
-                          : 0) * 100
-                      )
-                    "
-                  ></line-charts>
+                  <line-charts style="margin: 11px 0px" :value="Number(
+                    (item && item.maxmem && item.mem
+                      ? item.mem / item.maxmem
+                      : 0) * 100
+                  )
+                    "></line-charts>
                 </div>
                 <div class="table-td" style="height: 28px; line-height: 28px">
-                  <line-charts
-                    style="margin: 11px 0px"
-                    :value="Number((item && item.cpu ? item.cpu : 0) * 100)"
-                  ></line-charts>
+                  <line-charts style="margin: 11px 0px"
+                    :value="Number((item && item.cpu ? item.cpu : 0) * 100)"></line-charts>
                 </div>
               </div>
             </m-option>
@@ -53,62 +32,26 @@
         </m-select>
       </template>
       <template v-if="modalType === 'cephfs'">
-        <m-input
-          v-model="name"
-          label="Name"
-          labelWidth="110px"
-          @validate="validate"
-          :validateEvent="true"
-          prop="name"
-          required
-          :show-error="rules['name'].error"
-          :error-msg="rules['name'].message"
-        />
-        <m-input
-          v-model="placement_groups"
-          label="Placement Groups"
-          labelWidth="110px"
-          @validate="validate"
-          :validateEvent="true"
-          prop="placement_groups"
-          required
-          :show-error="rules['placement_groups'].error"
-          :error-msg="rules['placement_groups'].message"
-        />
-        <m-checkbox
-          v-model="add_storage"
-          label="Add Storage"
-          labelWidth="110px"
-        ></m-checkbox>
+        <m-input v-model="name" label="Name" labelWidth="110px" @validate="validate" :validateEvent="true" prop="name"
+          required :show-error="rules['name'].error" :error-msg="rules['name'].message" />
+        <m-input v-model="placement_groups" label="Placement Groups" labelWidth="110px" @validate="validate"
+          :validateEvent="true" prop="placement_groups" required :show-error="rules['placement_groups'].error"
+          :error-msg="rules['placement_groups'].message" />
+        <m-checkbox v-model="add_storage" label="Add Storage" labelWidth="110px"></m-checkbox>
         <div class="warning">Add CephFs to cluster storage configuration</div>
       </template>
       <template v-if="modalType === 'log'">
         <div slot="toolbar-right" style="flex: 2 1 auto">
-          <m-input
-            prop="expire"
-            labelWidth="60px"
-            label="Select Date"
-            style="vertical-align: top"
-            :__conStyle="{ width: '355px' }"
-          >
+          <m-input prop="expire" labelWidth="60px" label="Select Date" style="vertical-align: top"
+            :__conStyle="{ width: '355px' }">
             <template slot="other">
-              <el-date-picker
-                v-model="datetime"
-                type="daterange"
-                format="yyyy-MM-dd hh:mm"
-                value-format="yyyy-MM-dd hh:mm"
-                placeholder="Select Date"
-              >
+              <el-date-picker v-model="datetime" type="daterange" format="yyyy-MM-dd hh:mm"
+                value-format="yyyy-MM-dd hh:mm" placeholder="Select Date">
               </el-date-picker>
             </template>
           </m-input>
-          <m-button
-            type="primary"
-            style="vertical-align: middle"
-            @on-click="__init__()"
-            icon="el-icon-refresh"
-            >Refresh</m-button
-          >
+          <m-button type="primary" style="vertical-align: middle" @on-click="__init__()"
+            icon="el-icon-refresh">Refresh</m-button>
         </div>
         <div slot="page-content">
           <ul class="log-content">
@@ -118,44 +61,26 @@
           </ul>
         </div>
       </template>
-      <m-dialog
-        :visible="showLog"
-        @close="closeLog"
-        :_style="{
-          width: '800px',
-        }"
-        title="Task Viewer: Task Progress"
-      >
+      <m-dialog :visible="showLog" @close="closeLog" :_style="{
+        width: '800px',
+      }" title="Task Viewer: Task Progress">
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
             <m-tab-panel label="Output" name="log"></m-tab-panel>
             <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
-          <m-button
-            class="create-btn m-margin-top-10"
-            type="primary"
-            @on-click="stopTask1"
-            :disabled="db.addClusterStatusObj.status !== 'running'"
-            >Stop</m-button
-          >
+          <m-button class="create-btn m-margin-top-10" type="primary" @on-click="stopTask1"
+            :disabled="db.addClusterStatusObj.status !== 'running'">Stop</m-button>
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
               <div class="table" v-if="tab === 'log'">
-                <div
-                  class="table-tr"
-                  v-for="item in db.addClusterLogList"
-                  :key="item.n"
-                >
+                <div class="table-tr" v-for="item in db.addClusterLogList" :key="item.n">
                   {{ item.t }}
                 </div>
               </div>
               <div class="table" v-if="tab === 'status'">
                 <template v-for="(item, key) in db.addClusterStatusObj">
-                  <div
-                    class="table-tr"
-                    v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-                    :key="key"
-                  >
+                  <div class="table-tr" v-if="!['exitstatus', 'id', 'pstart'].includes(key)" :key="key">
                     <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
                     <div class="table-td" v-if="key === 'starttime'">
                       {{

@@ -65,7 +65,7 @@ export default {
             "content-type": "application/x-www-form-urlencoded; charset=utf8",
           },
         })
-        .then((res) => {});
+        .then((res) => { });
     },
     configMonNode(nodename) {
       return this.$http

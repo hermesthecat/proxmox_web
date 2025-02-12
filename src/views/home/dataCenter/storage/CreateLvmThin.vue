@@ -4,108 +4,38 @@
       <dl>
         <dt>Basic Information</dt>
         <dd>
-          <m-input
-            type="text"
-            prop="storage"
-            label="ID"
-            labelWidth="100px"
-            validateEvent
-            @validate="validate"
-            required
-            :show-error="rules.storage.error"
-            :error-msg="rules.storage.message"
-            v-model="storage"
-            :disabled="!isCreate"
-            placeholder="Please enter ID"
-          />
+          <m-input type="text" prop="storage" label="ID" labelWidth="100px" validateEvent @validate="validate" required
+            :show-error="rules.storage.error" :error-msg="rules.storage.message" v-model="storage" :disabled="!isCreate"
+            placeholder="Please enter ID" />
 
-          <m-select
-            labelWidth="100px"
-            @on-change="handleVgNameSelect"
-            validateEvent
-            @validate="validate"
-            prop="vgname"
-            v-model="vgname"
-            required
-            :show-error="rules.vgname.error"
-            :error-msg="rules.vgname.message"
-            :disabled="!isCreate"
-            label="Volume Group"
-          >
-            <m-option
-              v-for="item in db.vgList"
-              :key="item.vg"
-              :label="item.vg"
-              :value="item.vg"
-              >{{ item.vg }}</m-option
-            >
+          <m-select labelWidth="100px" @on-change="handleVgNameSelect" validateEvent @validate="validate" prop="vgname"
+            v-model="vgname" required :show-error="rules.vgname.error" :error-msg="rules.vgname.message"
+            :disabled="!isCreate" label="Volume Group">
+            <m-option v-for="item in db.vgList" :key="item.vg" :label="item.vg" :value="item.vg">{{ item.vg
+              }}</m-option>
           </m-select>
 
-          <m-select
-            type="multiple"
-            labelWidth="100px"
-            @on-change="handleLvSelect"
-            @visible-change="handlePoolReq"
-            validateEvent
-            @validate="validate"
-            prop="thinpool"
-            required
-            v-model="thinpool"
-            :disabled="!isCreate"
-            :show-error="rules.thinpool.error"
-            :error-msg="rules.thinpool.message"
-            label="Thin Pool"
-          >
-            <m-option
-              v-for="item in db.poolThinList"
-              :key="item.lv"
-              :label="item.lv"
-              :value="item.lv"
-            ></m-option>
+          <m-select type="multiple" labelWidth="100px" @on-change="handleLvSelect" @visible-change="handlePoolReq"
+            validateEvent @validate="validate" prop="thinpool" required v-model="thinpool" :disabled="!isCreate"
+            :show-error="rules.thinpool.error" :error-msg="rules.thinpool.message" label="Thin Pool">
+            <m-option v-for="item in db.poolThinList" :key="item.lv" :label="item.lv" :value="item.lv"></m-option>
           </m-select>
 
-          <m-checkbox
-            label="Enable"
-            v-model="disable"
-            labelWidth="100px"
-          ></m-checkbox>
+          <m-checkbox label="Enable" v-model="disable" labelWidth="100px"></m-checkbox>
 
-          <m-select
-            type="multiple"
-            labelWidth="100px"
-            @on-change="handleSelect"
-            validateEvent
-            @validate="validate"
-            prop="content"
-            v-model="content"
-            required
-            :show-error="rules.content.error"
-            :error-msg="rules.content.message"
-            label="Content"
-          >
-            <m-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></m-option>
+          <m-select type="multiple" labelWidth="100px" @on-change="handleSelect" validateEvent @validate="validate"
+            prop="content" v-model="content" required :show-error="rules.content.error"
+            :error-msg="rules.content.message" label="Content">
+            <m-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></m-option>
           </m-select>
         </dd>
       </dl>
       <dl>
         <dt>Nodes</dt>
         <dd>
-          <el-table
-            :data="db.nodeList"
-            ref="dataTable"
-            @selection-change="handleSelectionChange"
-          >
+          <el-table :data="db.nodeList" ref="dataTable" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55"> </el-table-column>
-            <el-table-column
-              label="Node"
-              prop="node"
-              sortable
-            ></el-table-column>
+            <el-table-column label="Node" prop="node" sortable></el-table-column>
             <el-table-column label="Memory Usage">
               <template slot-scope="scope">
                 {{

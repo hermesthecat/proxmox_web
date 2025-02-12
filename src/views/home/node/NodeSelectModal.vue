@@ -1,35 +1,13 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @cancel="close"
-    @confirm="confirm"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" @cancel="close" @confirm="confirm" :title="title" :_style="{ width: '956px' }"
+    @close="$emit('close')">
     <div slot="content" style="max-height: 500px; padding: 10px 20px">
       <dl>
         <dd>
-          <m-select
-            prop="node"
-            label="Node"
-            labelWidth="110px"
-            validateEvent
-            @on-change="handleNodeSelect"
-            v-model="node"
-            @validate="validate('node')"
-            required
-            :show-error="rules['node'].error"
-            :error-msg="rules['node'].message"
-            placeholder="Please select node"
-            v-if="modalType === 'migrateall'"
-          >
-            <m-option
-              v-for="(item, index) in nodeList"
-              :key="item.node"
-              :label="item.node"
-              :value="item.node"
-            >
+          <m-select prop="node" label="Node" labelWidth="110px" validateEvent @on-change="handleNodeSelect"
+            v-model="node" @validate="validate('node')" required :show-error="rules['node'].error"
+            :error-msg="rules['node'].message" placeholder="Please select node" v-if="modalType === 'migrateall'">
+            <m-option v-for="(item, index) in nodeList" :key="item.node" :label="item.node" :value="item.node">
               <div class="table">
                 <template v-if="index === 0">
                   <div class="table-header__tr">
@@ -42,53 +20,30 @@
                   <span class="table-td" :title="item.node">{{
                     item.node
                   }}</span>
-                  <span
-                    class="table-td"
-                    :title="
+                  <span class="table-td" :title="item.mem &&
+                    item.maxmem &&
+                    percentToFixed(item.mem / item.maxmem, 3)
+                    ">{{
                       item.mem &&
                       item.maxmem &&
                       percentToFixed(item.mem / item.maxmem, 3)
-                    "
-                    >{{
-                      item.mem &&
-                      item.maxmem &&
-                      percentToFixed(item.mem / item.maxmem, 3)
-                    }}</span
-                  >
-                  <span
-                    class="table-td"
-                    :title="
+                    }}</span>
+                  <span class="table-td" :title="item.cpu &&
+                    item.maxcpu &&
+                    `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
+                    ">{{
                       item.cpu &&
                       item.maxcpu &&
                       `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
-                    "
-                    >{{
-                      item.cpu &&
-                      item.maxcpu &&
-                      `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
-                    }}</span
-                  >
+                    }}</span>
                 </div>
               </div>
             </m-option>
           </m-select>
-          <m-input
-            type="number"
-            prop="maxworkers"
-            label="Parallel Jobs"
-            labelWidth="110px"
-            v-model="maxworkers"
-            min="1"
-            max="100"
-            v-if="modalType === 'migrateall'"
-            placeholder="Please enter parallel jobs"
-          />
-          <m-checkbox
-            label="Allow Local Disk Migration"
-            v-model="withLocalDisks"
-            labelWidth="110px"
-            v-if="modalType === 'migrateall'"
-          >
+          <m-input type="number" prop="maxworkers" label="Parallel Jobs" labelWidth="110px" v-model="maxworkers" min="1"
+            max="100" v-if="modalType === 'migrateall'" placeholder="Please enter parallel jobs" />
+          <m-checkbox label="Allow Local Disk Migration" v-model="withLocalDisks" labelWidth="110px"
+            v-if="modalType === 'migrateall'">
             Note: Migration with local disks might take long.
           </m-checkbox>
         </dd>
@@ -99,18 +54,13 @@
         <el-table-column label="Node" prop="node"></el-table-column>
         <el-table-column label="Status" prop="status">
           <template slot-scope="scope">
-            <table-info-state
-              :content="
-                scope.row.status && scope.row.status === 'running'
-                  ? 'Running'
-                  : 'Stopped'
-              "
-              :state="
-                scope.row.status && scope.row.status === 'running'
+            <table-info-state :content="scope.row.status && scope.row.status === 'running'
+                ? 'Running'
+                : 'Stopped'
+              " :state="scope.row.status && scope.row.status === 'running'
                   ? 'actived'
                   : 'unActived'
-              "
-            ></table-info-state>
+                "></table-info-state>
           </template>
         </el-table-column>
         <el-table-column label="Name" prop="name"></el-table-column>
@@ -118,59 +68,36 @@
         <el-table-column label="Category" prop="type"></el-table-column>
         <el-table-column label="HA Status" prop="hastate">
           <template slot-scope="scope">
-            <table-info-state
-              :content="
-                scope.row.status && scope.row.status === 'started'
-                  ? 'Running'
-                  : 'Stopped'
-              "
-              :state="
-                scope.row.status && scope.row.status === 'started'
+            <table-info-state :content="scope.row.status && scope.row.status === 'started'
+                ? 'Running'
+                : 'Stopped'
+              " :state="scope.row.status && scope.row.status === 'started'
                   ? 'actived'
                   : 'unActived'
-              "
-            ></table-info-state>
+                "></table-info-state>
           </template>
         </el-table-column>
       </el-table>
-      <Dialog
-        :visible="showLog"
-        @close="closeLog"
-        :_style="{
-          width: '800px',
-        }"
-        title="Task Viewer: Task Progress"
-      >
+      <Dialog :visible="showLog" @close="closeLog" :_style="{
+        width: '800px',
+      }" title="Task Viewer: Task Progress">
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
             <m-tab-panel label="Output" name="log"></m-tab-panel>
             <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
-          <m-button
-            class="create-btn m-margin-top-10"
-            type="primary"
-            @on-click="stopTask1"
-            :disabled="db.addClusterStatusObj.status !== 'running'"
-            >Stop</m-button
-          >
+          <m-button class="create-btn m-margin-top-10" type="primary" @on-click="stopTask1"
+            :disabled="db.addClusterStatusObj.status !== 'running'">Stop</m-button>
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
               <div class="table" v-if="tab === 'log'">
-                <div
-                  class="table-tr"
-                  v-for="item in db.addClusterLogList"
-                  :key="item.n"
-                >
+                <div class="table-tr" v-for="item in db.addClusterLogList" :key="item.n">
                   {{ item.t }}
                 </div>
               </div>
               <div class="table" v-if="tab === 'status'">
                 <template v-for="(item, key) in db.addClusterStatusObj">
-                  <div
-                    class="table-tr"
-                    v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-                    :key="key"
-                  >
+                  <div class="table-tr" v-if="!['exitstatus', 'id', 'pstart'].includes(key)" :key="key">
                     <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
                     <div class="table-td" v-if="key === 'starttime'">
                       {{

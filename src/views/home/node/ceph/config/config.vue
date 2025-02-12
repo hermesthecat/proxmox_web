@@ -5,11 +5,7 @@
         <overview-card>
           <div slot="title">Configuration</div>
           <div slot="content" class="card-content">
-            <ace-editor
-              v-model="config"
-              style="height: 300px"
-              :read-only="true"
-            ></ace-editor>
+            <ace-editor v-model="config" style="height: 300px" :read-only="true"></ace-editor>
           </div>
         </overview-card>
       </div>
@@ -90,27 +86,32 @@ export default {
   position: relative;
   display: flex;
   flex-grow: 1;
+
   &-right {
     flex: 1 1 auto;
     width: 0;
     font-size: 0;
     margin-right: 20px;
+
     &_config {
       height: calc(50% - 20px);
       margin-bottom: 40px;
       font-size: 14px;
     }
+
     &_configdb {
       height: calc(50% - 20px);
       font-size: 14px;
     }
   }
+
   &-left {
     flex: 1 1 auto;
     width: 0;
     height: 100%;
   }
 }
+
 .card {
   width: 100%;
 }

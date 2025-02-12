@@ -49,17 +49,6 @@
       "create": "Create Certificates",
       "acme": "Update Acme"
     },
-    "acme": {
-      "account": {
-        "create": "Add Acme account"
-      },
-      "domains": {
-        "create": "Create Domain"
-      },
-      "certifices": {
-        "order": "Update Order"
-      }
-    },
     "timezone": {
       "update": "Update Time Zone"
     },
@@ -100,9 +89,6 @@
     },
     "update": {
       "pool": "Update Pools {name}"
-    },
-    "lxc": {
-      "reboot": "Reboot Lxc"
     },
     "template": {
       "translate": "Translate template {name}"
@@ -247,12 +233,19 @@
         "create": "Add Acme plugin {name}",
         "update": "Update Acme plugin {name}",
         "delete": "Delete Acme plugin {name}"
+      },
+      "domains": {
+        "create": "Create Domain"
+      },
+      "certifices": {
+        "order": "Update Order"
       }
     },
     "lxc": {
       "create": "Create Lxc {name}",
       "delete": "Delete Lxc {name}",
-      "update": "Update Lxc {name}"
+      "update": "Update Lxc {name}",
+      "reboot": "Reboot Lxc"
     }
   },
   "type": {

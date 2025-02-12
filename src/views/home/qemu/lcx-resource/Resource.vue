@@ -1,117 +1,52 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-dropdown
-        trigger="click"
-        @on-change="handleCommand"
-        style="
+      <m-dropdown trigger="click" @on-change="handleCommand" style="
           width: 8rem;
           height: 30px;
           line-height: 30px;
           color: #fff !important;
-        "
-      >
+        ">
         <span slot="label">
-          <m-button
-            type="primary"
-            style="position: absolute; left: -1px; top: -1px; right: -1px"
-            icon="el-icon-plus"
-            >Add</m-button
-          >
+          <m-button type="primary" style="position: absolute; left: -1px; top: -1px; right: -1px"
+            icon="el-icon-plus">Add</m-button>
         </span>
         <template v-for="item in menu_items">
-          <m-dropdown-item
-            v-if="/^fa/.test(item.iconCls)"
-            :key="item.itemId + '_fa'"
-            :command="item.itemId"
-            :icon="item.iconCls"
-            :disabled="item.disabled"
-            >{{ item.text }}</m-dropdown-item
-          >
-          <m-dropdown-item
-            v-else
-            :key="item.itemId + '_other'"
-            :command="item.itemId"
-            :name="item.iconCls"
-            :disabled="item.disabled"
-            >{{ item.text }}</m-dropdown-item
-          >
+          <m-dropdown-item v-if="/^fa/.test(item.iconCls)" :key="item.itemId + '_fa'" :command="item.itemId"
+            :icon="item.iconCls" :disabled="item.disabled">{{ item.text }}</m-dropdown-item>
+          <m-dropdown-item v-else :key="item.itemId + '_other'" :command="item.itemId" :name="item.iconCls"
+            :disabled="item.disabled">{{ item.text }}</m-dropdown-item>
         </template>
       </m-dropdown>
-      <m-button
-        type="primary"
-        @on-click="handleResume()"
-        icon="el-icon-edit"
-        :disabled="!canResume()"
-        >Restore</m-button
-      >
-      <m-button
-        type="warning"
-        @on-click="handleCommand('', 'edit')"
-        icon="el-icon-video-play"
-        :disabled="!current"
-        >Edit</m-button
-      >
-      <m-button
-        type="danger"
-        @on-click="handleDelete()"
-        icon="el-icon-delete"
-        :disabled="
-          !inType('memory', 'swap', 'cores', 'rootfs') ||
-          canResume() ||
-          !current
-        "
-        >Delete</m-button
-      >
-      <m-button
-        type="info"
-        @on-click="handleCommand('updatedisksize', 'updatedisksize')"
-        icon="el-icon-edit-outline"
-        :disabled="inType('rootfs', 'mp')"
-        >Resize Disk</m-button
-      >
-      <m-button
-        type="info"
-        @on-click="handleCommand('migrate', 'migrate')"
-        icon="el-icon-edit-outline"
-        :disabled="inType('rootfs', 'mp')"
-        >Move Disk</m-button
-      >
+      <m-button type="primary" @on-click="handleResume()" icon="el-icon-edit"
+        :disabled="!canResume()">Restore</m-button>
+      <m-button type="warning" @on-click="handleCommand('', 'edit')" icon="el-icon-video-play"
+        :disabled="!current">Edit</m-button>
+      <m-button type="danger" @on-click="handleDelete()" icon="el-icon-delete" :disabled="!inType('memory', 'swap', 'cores', 'rootfs') ||
+        canResume() ||
+        !current
+        ">Delete</m-button>
+      <m-button type="info" @on-click="handleCommand('updatedisksize', 'updatedisksize')" icon="el-icon-edit-outline"
+        :disabled="inType('rootfs', 'mp')">Resize Disk</m-button>
+      <m-button type="info" @on-click="handleCommand('migrate', 'migrate')" icon="el-icon-edit-outline"
+        :disabled="inType('rootfs', 'mp')">Move Disk</m-button>
     </div>
     <div slot="page-content">
-      <edit-modal
-        :visible="visible"
-        :type="type"
-        v-if="visible"
-        :modal-type="modalType"
-        :param="param"
-        :title="title"
+      <edit-modal :visible="visible" :type="type" v-if="visible" :modal-type="modalType" :param="param" :title="title"
         @close="
           visible = false;
-          __init__();
-        "
-      ></edit-modal>
-      <el-table
-        :data="hardwareList"
-        :show-header="false"
-        highlight-current-row
-        @row-click="handleSingleSelect"
-      >
+        __init__();
+        "></edit-modal>
+      <el-table :data="hardwareList" :show-header="false" highlight-current-row @row-click="handleSingleSelect">
         <el-table-column width="55px">
           <template slot-scope="scope">
-            <el-radio :label="scope.row.type" v-model="current"
-              >&nbsp;</el-radio
-            >
+            <el-radio :label="scope.row.type" v-model="current">&nbsp;</el-radio>
           </template>
         </el-table-column>
         <el-table-column label="Name" prop="name" width="200px">
           <template slot-scope="scope">
             <div>
-              <base-icon
-                class="hardware-icon"
-                :name="scope.row.icon"
-                v-if="!/^[fa]/.test(scope.row.icon)"
-              ></base-icon>
+              <base-icon class="hardware-icon" :name="scope.row.icon" v-if="!/^[fa]/.test(scope.row.icon)"></base-icon>
               <i v-else :class="scope.row.icon" class="fa"></i>
               <span>{{ scope.row.name }}</span>
             </div>
@@ -126,15 +61,10 @@
                 String(scope.row.render(false)).replace(/(delete\:true)$/, "")
               }}
             </div>
-            <div
-              v-show="
-                scope.row &&
-                scope.row.render &&
-                String(scope.row.render(false)).indexOf('delete:true') >= 0
-              "
-              class="pending"
-              style="text-decoration: line-through"
-            >
+            <div v-show="scope.row &&
+              scope.row.render &&
+              String(scope.row.render(false)).indexOf('delete:true') >= 0
+              " class="pending" style="text-decoration: line-through">
               {{
                 String(scope.row.render(false)).replace(/(delete\:true)$/, "")
               }}
@@ -365,8 +295,8 @@ export default {
                   : _this.store[confid] &&
                     _this.store[confid].data &&
                     !isEmpty(_this.store[confid].data.value)
-                  ? _this.store[confid].data.value
-                  : "";
+                    ? _this.store[confid].data.value
+                    : "";
               }
             },
           });
@@ -423,8 +353,8 @@ export default {
       //If modalType exists, it means adding disk type
       this.modalType =
         modaltype === "migrate" ||
-        modaltype === "updatedisksize" ||
-        modaltype === "create"
+          modaltype === "updatedisksize" ||
+          modaltype === "create"
           ? type
           : this.currentObj.itemId;
       this.param = modaltype !== "create" ? this.currentObj : {};
@@ -540,6 +470,7 @@ export default {
 .pending {
   color: #f87c7c;
 }
+
 .hardware-icon {
   width: 16px;
   vertical-align: middle;
@@ -548,10 +479,12 @@ export default {
   margin-right: 5px;
   background-size: 16px;
 }
+
 /deep/.el-table td,
 .el-table th {
   padding: 0px;
 }
+
 /deep/.base-icon {
   background-size: 16px;
 }

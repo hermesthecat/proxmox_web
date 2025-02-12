@@ -1,37 +1,17 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @cancel="close"
-    @confirm="confirm"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" @cancel="close" @confirm="confirm" :title="title" :_style="{ width: '956px' }"
+    @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-select
-                prop="device"
-                label="Disk"
-                labelWidth="100px"
-                @on-change="handleDestSelect"
-                v-model="device"
-                validateEvent
-                @validate="validate"
-                :error-msg="rules['device'].message"
-                :show-error="rules['device'].error"
-                :readonly="true"
-                placeholder="Please select disk"
-              >
-                <m-option
-                  v-for="(item, index) in db.nodeDiskList"
-                  :key="item.devpath"
-                  :label="item.devpath"
-                  :value="item.devpath"
-                >
+              <m-select prop="device" label="Disk" labelWidth="100px" @on-change="handleDestSelect" v-model="device"
+                validateEvent @validate="validate" :error-msg="rules['device'].message"
+                :show-error="rules['device'].error" :readonly="true" placeholder="Please select disk">
+                <m-option v-for="(item, index) in db.nodeDiskList" :key="item.devpath" :label="item.devpath"
+                  :value="item.devpath">
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
@@ -44,11 +24,9 @@
                       <span class="table-td" :title="item.devpath">{{
                         item.devpath
                       }}</span>
-                      <span
-                        class="table-td"
-                        :title="(item.size && byteToSize(item.size)) || 0"
-                        >{{ (item.size && byteToSize(item.size)) || 0 }}</span
-                      >
+                      <span class="table-td" :title="(item.size && byteToSize(item.size)) || 0">{{ (item.size &&
+                        byteToSize(item.size)) || 0
+                        }}</span>
                       <span class="table-td" :title="item.serial">{{
                         item.serial
                       }}</span>
@@ -56,48 +34,23 @@
                   </div>
                 </m-option>
               </m-select>
-              <m-select
-                prop="filesystem"
-                label="File System"
-                labelWidth="100px"
-                @on-change="handleFsSelect"
-                v-model="filesystem"
-                validateEvent
-                @validate="validate"
-                :error-msg="rules['filesystem'].message"
-                :show-error="rules['filesystem'].error"
-                :readonly="false"
-                placeholder="Please select disk"
-              >
+              <m-select prop="filesystem" label="File System" labelWidth="100px" @on-change="handleFsSelect"
+                v-model="filesystem" validateEvent @validate="validate" :error-msg="rules['filesystem'].message"
+                :show-error="rules['filesystem'].error" :readonly="false" placeholder="Please select disk">
                 <m-option key="ext4" label="ext4" value="ext4"> </m-option>
                 <m-option key="xfs" label="xfs" value="xfs"> </m-option>
               </m-select>
-              <m-input
-                type="text"
-                prop="name"
-                label="Name"
-                labelWidth="100px"
-                v-model="name"
-                validateEvent
-                @validate="validate"
-                :error-msg="rules['name'].message"
-                :show-error="rules['name'].error"
-                :placeholder="'Please enter name'"
-              />
-              <m-checkbox
-                label="Add Storage"
-                v-model="add_storage"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-input type="text" prop="name" label="Name" labelWidth="100px" v-model="name" validateEvent
+                @validate="validate" :error-msg="rules['name'].message" :show-error="rules['name'].error"
+                :placeholder="'Please enter name'" />
+              <m-checkbox label="Add Storage" v-model="add_storage" labelWidth="100px"></m-checkbox>
             </dd>
           </dl>
         </div>
       </div>
     </div>
     <template slot="footer">
-      <m-button class="create-btn" type="primary" @on-click="confirm"
-        >Create</m-button
-      >
+      <m-button class="create-btn" type="primary" @on-click="confirm">Create</m-button>
     </template>
   </Dialog>
 </template>

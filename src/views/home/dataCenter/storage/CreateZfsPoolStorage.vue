@@ -4,101 +4,33 @@
       <dl>
         <dt>Basic Information</dt>
         <dd>
-          <m-input
-            type="text"
-            prop="storage"
-            label="ID"
-            labelWidth="100px"
-            validateEvent
-            @validate="validate"
-            :show-error="rules.storage.error"
-            :error-msg="rules.storage.message"
-            v-model="storage"
-            required
-            :disabled="!isCreate"
-            placeholder="Please enter ID"
-          />
-          <m-checkbox
-            label="Enable"
-            v-model="disable"
-            labelWidth="100px"
-          ></m-checkbox>
+          <m-input type="text" prop="storage" label="ID" labelWidth="100px" validateEvent @validate="validate"
+            :show-error="rules.storage.error" :error-msg="rules.storage.message" v-model="storage" required
+            :disabled="!isCreate" placeholder="Please enter ID" />
+          <m-checkbox label="Enable" v-model="disable" labelWidth="100px"></m-checkbox>
 
-          <m-select
-            labelWidth="100px"
-            @on-change="handleZfsPoolSelect"
-            prop="pool"
-            label="ZFS Pool"
-            validateEvent
-            :disabled="!isCreate"
-            @validate="validate"
-            required
-            :show-error="rules.pool.error"
-            :error-msg="rules.pool.message"
-            v-model="pool"
-            placeholder="Please enter iSCSI provider"
-          >
-            <m-option
-              v-for="item in db.zfsList"
-              :key="item.pool"
-              :label="item.pool"
-              :value="item.pool"
-            ></m-option>
+          <m-select labelWidth="100px" @on-change="handleZfsPoolSelect" prop="pool" label="ZFS Pool" validateEvent
+            :disabled="!isCreate" @validate="validate" required :show-error="rules.pool.error"
+            :error-msg="rules.pool.message" v-model="pool" placeholder="Please enter iSCSI provider">
+            <m-option v-for="item in db.zfsList" :key="item.pool" :label="item.pool" :value="item.pool"></m-option>
           </m-select>
-          <m-checkbox
-            label="Thin Provisioning"
-            v-model="sparse"
-            labelWidth="100px"
-          ></m-checkbox>
-          <m-input
-            type="text"
-            prop="blocksize"
-            label="Block Size"
-            labelWidth="100px"
-            validateEvent
-            @validate="validate"
-            required
-            :show-error="rules.blocksize.error"
-            :error-msg="rules.blocksize.message"
-            v-model="blocksize"
-            placeholder="8k"
-          />
-          <m-select
-            type="multiple"
-            labelWidth="100px"
-            @on-change="handleContentSelect"
-            validateEvent
-            @validate="validate"
-            prop="content"
-            v-model="content"
-            required
-            :show-error="rules.content.error"
-            :error-msg="rules.content.message"
-            label="Content"
-          >
-            <m-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></m-option>
+          <m-checkbox label="Thin Provisioning" v-model="sparse" labelWidth="100px"></m-checkbox>
+          <m-input type="text" prop="blocksize" label="Block Size" labelWidth="100px" validateEvent @validate="validate"
+            required :show-error="rules.blocksize.error" :error-msg="rules.blocksize.message" v-model="blocksize"
+            placeholder="8k" />
+          <m-select type="multiple" labelWidth="100px" @on-change="handleContentSelect" validateEvent
+            @validate="validate" prop="content" v-model="content" required :show-error="rules.content.error"
+            :error-msg="rules.content.message" label="Content">
+            <m-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></m-option>
           </m-select>
         </dd>
       </dl>
       <dl>
         <dt>Nodes</dt>
         <dd>
-          <el-table
-            :data="db.nodeList"
-            ref="dataTable"
-            @selection-change="handleSelectionChange"
-          >
+          <el-table :data="db.nodeList" ref="dataTable" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55"> </el-table-column>
-            <el-table-column
-              label="Node"
-              prop="node"
-              sortable
-            ></el-table-column>
+            <el-table-column label="Node" prop="node" sortable></el-table-column>
             <el-table-column label="Memory Usage">
               <template slot-scope="scope">
                 {{

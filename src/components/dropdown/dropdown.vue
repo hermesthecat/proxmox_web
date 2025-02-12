@@ -1,16 +1,9 @@
 <template>
-  <ul
-    class="dropdown"
-    tabindex="-1"
-    :class="{
-      show: trigger === 'hover' && isOpen,
-      'is-click': isOpen,
-      disabled: disabled,
-    }"
-    @click.stop="!disabled ? (isOpen = !isOpen) : null"
-    @blur.stop="handleBlur"
-    ref="dropdown"
-  >
+  <ul class="dropdown" tabindex="-1" :class="{
+    show: trigger === 'hover' && isOpen,
+    'is-click': isOpen,
+    disabled: disabled,
+  }" @click.stop="!disabled ? (isOpen = !isOpen) : null" @blur.stop="handleBlur" ref="dropdown">
     <span class="prefix-icon">
       <span :class="['icon', icon]"></span>
       <slot name="label"></slot>
@@ -18,7 +11,9 @@
     <transition name="el-zoom-in-top">
       <div class="dropdown-menu" v-show="renderDropMenu" ref="dropdown-menu">
         <div x-arrow="" class="popper__arrow el-icon-caret-top"></div>
-        <div style="overflow-y: auto; max-height: 200px"><slot></slot></div>
+        <div style="overflow-y: auto; max-height: 200px">
+          <slot></slot>
+        </div>
       </div>
     </transition>
   </ul>
@@ -45,13 +40,11 @@ export default {
           this.$refs &&
           this.$refs["dropdown"] &&
           this.$refs["dropdown"].getBoundingClientRect();
-        this.$refs["dropdown-menu"].style.top = `${
-          top + this.$refs["dropdown"].clientHeight + 10
-        }px`;
+        this.$refs["dropdown-menu"].style.top = `${top + this.$refs["dropdown"].clientHeight + 10
+          }px`;
         this.$refs["dropdown-menu"].style.left = `${el + left}px`;
-        this.$refs["dropdown-menu"].style.minWidth = `${
-          1.2 * this.$refs["dropdown"].clientWidth
-        }px`;
+        this.$refs["dropdown-menu"].style.minWidth = `${1.2 * this.$refs["dropdown"].clientWidth
+          }px`;
         this.$refs["dropdown-menu"].style.transition = `all 0.5s ease-in`;
         setTimeout(() => {
           document.body.appendChild(this.$refs["dropdown-menu"]);
@@ -114,6 +107,7 @@ export default {
 <style scoped lang="less">
 .prefix-icon {
   padding-right: 10px;
+
   &::after {
     position: absolute;
     right: 10px;
@@ -136,6 +130,7 @@ export default {
   outline: none;
   border: 1px solid #adb0b8;
   display: inline-block;
+
   &-menu {
     position: absolute;
     top: 100%;
@@ -148,29 +143,35 @@ export default {
     max-height: 200px;
     transform-origin: center top 0px;
   }
+
   // &-item{
   //   display: none;
   // }
 }
+
 .dropdown.is-click {
   .dropdown-item {
     display: block;
     z-index: 999;
   }
+
   .dropdown-menu {
     border: 1px solid #3973ff;
   }
 }
+
 .dropdown.show {
   &:hover {
     .dropdown-item {
       display: block;
     }
+
     .dropdown-menu {
       border: 1px solid #3973ff;
     }
   }
 }
+
 .popper__arrow {
   top: -15px;
   left: 50%;

@@ -1,16 +1,9 @@
 <template>
   <div class="overview chart-content">
     <div class="overview-time__select">
-      <m-button class="soft-version" @on-click="watchVersion"
-        >Software Package Version</m-button
-      >
+      <m-button class="soft-version" @on-click="watchVersion">Software Package Version</m-button>
       <m-select @on-change="handleIntervalChange" v-model="timeframe">
-        <m-option
-          v-for="(item, index) of intervalList"
-          :key="index"
-          :label="item.label"
-          :value="item.value"
-        >
+        <m-option v-for="(item, index) of intervalList" :key="index" :label="item.label" :value="item.value">
         </m-option>
       </m-select>
     </div>
@@ -22,161 +15,113 @@
           </div>
           <div slot="content" class="card-content">
             <div class="card-item">
-              <line-percent-chart
-                name="icon-cpu"
-                :desc="`${Number(
-                  (baseInfo.cpu ? baseInfo.cpu : 0) * 100
-                ).toFixed(1)}% of ${
-                  (baseInfo.cpuinfo &&
-                    baseInfo.cpuinfo.cpus &&
-                    baseInfo.cpuinfo.cpus) ||
-                  0
-                } CPU(s)`"
-                :value="(baseInfo.cpu ? baseInfo.cpu : 0) * 100"
-                title="CPU Usage"
-              />
-              <single-line
-                icon="fa fa-tasks"
-                title="Average Load"
-                :desc="
-                  baseInfo && baseInfo.loadavg && baseInfo.loadavg.join(',')
-                "
-              />
+              <line-percent-chart name="icon-cpu" :desc="`${Number(
+                (baseInfo.cpu ? baseInfo.cpu : 0) * 100
+              ).toFixed(1)}% of ${(baseInfo.cpuinfo &&
+                  baseInfo.cpuinfo.cpus &&
+                  baseInfo.cpuinfo.cpus) ||
+                0
+                } CPU(s)`" :value="(baseInfo.cpu ? baseInfo.cpu : 0) * 100" title="CPU Usage" />
+              <single-line icon="fa fa-tasks" title="Average Load" :desc="baseInfo && baseInfo.loadavg && baseInfo.loadavg.join(',')
+                " />
             </div>
             <div class="card-item">
-              <line-percent-chart
-                icon="fa fa-clock-o"
-                :desc="`${Number(
-                  (baseInfo.cpu ? baseInfo.wait : 0) * 100
-                ).toFixed(1)}%`"
-                :value="(baseInfo.wait ? baseInfo.wait : 0) * 100"
-                title="IO Delay"
-              />
+              <line-percent-chart icon="fa fa-clock-o" :desc="`${Number(
+                (baseInfo.cpu ? baseInfo.wait : 0) * 100
+              ).toFixed(1)}%`" :value="(baseInfo.wait ? baseInfo.wait : 0) * 100" title="IO Delay" />
             </div>
           </div>
           <div slot="content" class="card-content">
             <div class="card-item">
-              <line-percent-chart
-                name="icon-ram"
-                :desc="`${Number(
-                  (baseInfo.memory &&
+              <line-percent-chart name="icon-ram" :desc="`${Number(
+                (baseInfo.memory &&
                   baseInfo.memory.used &&
                   baseInfo.memory.total
-                    ? baseInfo.memory.used / baseInfo.memory.total
-                    : 0) * 100
-                ).toFixed(1)}%
+                  ? baseInfo.memory.used / baseInfo.memory.total
+                  : 0) * 100
+              ).toFixed(1)}%
                               (${byteToSize(
-                                (baseInfo.memory && baseInfo.memory.used) || 0
-                              )} of ${byteToSize(
-                  (baseInfo.memory && baseInfo.memory.total) || 0
-                )})`"
-                :value="
-                  (baseInfo.memory &&
-                  baseInfo.memory.used &&
-                  baseInfo.memory.total
+                (baseInfo.memory && baseInfo.memory.used) || 0
+              )} of ${byteToSize(
+                (baseInfo.memory && baseInfo.memory.total) || 0
+              )})`" :value="(baseInfo.memory &&
+                    baseInfo.memory.used &&
+                    baseInfo.memory.total
                     ? baseInfo.memory.used / baseInfo.memory.total
                     : 0) * 100
-                "
-                title="Memory Usage"
-              />
+                  " title="Memory Usage" />
             </div>
             <div class="card-item">
-              <single-line
-                title="KSM Sharing"
-                :desc="
-                  baseInfo &&
-                  baseInfo.ksm &&
-                  byteToSize(baseInfo.ksm.shared, 'B')
-                "
-              />
+              <single-line title="KSM Sharing" :desc="baseInfo &&
+                baseInfo.ksm &&
+                byteToSize(baseInfo.ksm.shared, 'B')
+                " />
             </div>
           </div>
           <div slot="content" class="card-content">
             <div class="card-item">
-              <line-percent-chart
-                icon="fa fa-hdd-o"
-                :desc="`${Number(
-                  (baseInfo.rootfs &&
+              <line-percent-chart icon="fa fa-hdd-o" :desc="`${Number(
+                (baseInfo.rootfs &&
                   baseInfo.rootfs.used &&
                   baseInfo.rootfs.total
-                    ? baseInfo.rootfs.used / baseInfo.rootfs.total
-                    : 0) * 100
-                ).toFixed(1)}%
+                  ? baseInfo.rootfs.used / baseInfo.rootfs.total
+                  : 0) * 100
+              ).toFixed(1)}%
                               (${byteToSize(
-                                (baseInfo.rootfs && baseInfo.rootfs.used) || 0
-                              )} of ${byteToSize(
-                  (baseInfo.rootfs && baseInfo.rootfs.total) || 0
-                )})`"
-                :value="
-                  (baseInfo.rootfs &&
-                  baseInfo.rootfs.used &&
-                  baseInfo.rootfs.total
+                (baseInfo.rootfs && baseInfo.rootfs.used) || 0
+              )} of ${byteToSize(
+                (baseInfo.rootfs && baseInfo.rootfs.total) || 0
+              )})`" :value="(baseInfo.rootfs &&
+                    baseInfo.rootfs.used &&
+                    baseInfo.rootfs.total
                     ? baseInfo.rootfs.used / baseInfo.rootfs.total
                     : 0) * 100
-                "
-                title="Disk Space (root)"
-              />
+                  " title="Disk Space (root)" />
             </div>
             <div class="card-item">
-              <line-percent-chart
-                icon="fa fa-refresh"
-                :desc="`${Number(
-                  (baseInfo &&
+              <line-percent-chart icon="fa fa-refresh" :desc="`${Number(
+                (baseInfo &&
                   baseInfo.swap &&
                   baseInfo.swap.used &&
                   baseInfo.swap.total
-                    ? baseInfo.swap.used / baseInfo.swap.total
-                    : 0) * 100
-                ).toFixed(1)}%
+                  ? baseInfo.swap.used / baseInfo.swap.total
+                  : 0) * 100
+              ).toFixed(1)}%
                               (${byteToSize(
-                                (baseInfo &&
-                                  baseInfo.swap &&
-                                  baseInfo.swap.used) ||
-                                  0
-                              )} of ${byteToSize(
-                  (baseInfo.swap && baseInfo.swap.total) || 0
-                )})`"
-                :value="
-                  (baseInfo &&
+                (baseInfo &&
                   baseInfo.swap &&
-                  baseInfo.swap.used &&
-                  baseInfo.swap.total
+                  baseInfo.swap.used) ||
+                0
+              )} of ${byteToSize(
+                (baseInfo.swap && baseInfo.swap.total) || 0
+              )})`" :value="(baseInfo &&
+                    baseInfo.swap &&
+                    baseInfo.swap.used &&
+                    baseInfo.swap.total
                     ? baseInfo.swap.used / baseInfo.swap.total
                     : 0) * 100
-                "
-                title="SWAP Usage"
-              />
+                  " title="SWAP Usage" />
             </div>
           </div>
           <div slot="content" class="card-content">
             <div class="card-item">
-              <single-line
-                title="CPU(s)"
-                :desc="`${
-                  (baseInfo &&
-                    baseInfo.cpuinfo &&
-                    baseInfo.cpuinfo.cpus &&
-                    baseInfo.cpuinfo.model &&
-                    baseInfo.cpuinfo.cpus + 'x ' + baseInfo.cpuinfo.model) ||
-                  ''
-                }`"
-              />
+              <single-line title="CPU(s)" :desc="`${(baseInfo &&
+                  baseInfo.cpuinfo &&
+                  baseInfo.cpuinfo.cpus &&
+                  baseInfo.cpuinfo.model &&
+                  baseInfo.cpuinfo.cpus + 'x ' + baseInfo.cpuinfo.model) ||
+                ''
+                }`" />
             </div>
           </div>
           <div slot="content" class="card-content">
             <div class="card-item">
-              <single-line
-                title="Kernel Version"
-                :desc="baseInfo && baseInfo.kversion && baseInfo.kversion"
-              />
+              <single-line title="Kernel Version" :desc="baseInfo && baseInfo.kversion && baseInfo.kversion" />
             </div>
           </div>
           <div slot="content" class="card-content">
             <div class="card-item">
-              <single-line
-                title="PVE Manager Version"
-                :desc="baseInfo && baseInfo.pveversion && baseInfo.pveversion"
-              />
+              <single-line title="PVE Manager Version" :desc="baseInfo && baseInfo.pveversion && baseInfo.pveversion" />
             </div>
           </div>
         </overview-card>
@@ -214,21 +159,12 @@
         <line-graph :param="network" v-loading="rrdLoading"></line-graph>
       </template>
     </overview-card>
-    <m-dialog
-      :visible="visible"
-      v-if="visible"
-      title="Software Package Version"
-      @close="visible = false"
-    >
+    <m-dialog :visible="visible" v-if="visible" title="Software Package Version" @close="visible = false">
       <template slot="content">
         <el-scrollbar style="height: 100%">
           <div class="m-form__section" style="max-height: 400px">
             <div class="m-form__content">
-              <div
-                class="table-tr"
-                v-for="item in versionList"
-                :key="item.package"
-              >
+              <div class="table-tr" v-for="item in versionList" :key="item.package">
                 {{ item.Package + ": " + item.Version }}
                 {{
                   item.RunningKernel
@@ -507,15 +443,18 @@ export default {
     text-align: right;
   }
 }
+
 .soft-version {
   display: inline-block;
   vertical-align: middle;
 }
+
 .overview-content {
   &__top {
     height: 340px;
     display: flex;
     background: #f5f5f5;
+
     &_right {
       flex-grow: 1;
       flex-basis: auto;
@@ -524,6 +463,7 @@ export default {
       display: flex;
       width: 0;
     }
+
     &_left {
       flex-grow: 1;
       flex-basis: auto;
@@ -534,10 +474,12 @@ export default {
       display: flex;
     }
   }
+
   &__center {
     height: 340px;
     display: flex;
     background: #f5f5f5;
+
     &_right {
       flex-grow: 1;
       flex-basis: auto;
@@ -545,6 +487,7 @@ export default {
       flex-wrap: nowrap;
       width: 0;
     }
+
     &_left {
       flex-grow: 1;
       flex-basis: auto;
@@ -555,6 +498,7 @@ export default {
     }
   }
 }
+
 .card {
   height: 320px;
 }

@@ -2,15 +2,9 @@
   <ul class="m-sub-tree">
     <li v-for="tree of renderData" :key="tree.data.id" class="m-sub_li">
       <template v-if="tree.data.parentId === parentId">
-        <div
-          class="m-sub-item"
-          :class="tree.data.selected && tree.data.selected ? 'is-selected' : ''"
-          @click.stop="handleSelect(tree.data)"
-          @mouseover.stop="showTip(tree)"
-          @mouseout="hiddenTip(tree)"
-          @contextmenu="handleContextMenu"
-          @mousedown="showContext = false"
-        >
+        <div class="m-sub-item" :class="tree.data.selected && tree.data.selected ? 'is-selected' : ''"
+          @click.stop="handleSelect(tree.data)" @mouseover.stop="showTip(tree)" @mouseout="hiddenTip(tree)"
+          @contextmenu="handleContextMenu" @mousedown="showContext = false">
           <div class="m-sub-item-content" :ref="`m$sub$item${tree.data.id}`">
             <i :class="tree.data.iconCls" class="m-icon-custom"></i>
             <span>{{ tree.data.text }}</span>
@@ -19,32 +13,16 @@
       </template>
       <div class="m-sub_li"></div>
       <template v-if="tree.childNodes && tree.childNodes.length > 0">
-        <m-sub-tree
-          :tree-data="tree.childNodes"
-          :parent-id="tree.data.parentId"
-        />
+        <m-sub-tree :tree-data="tree.childNodes" :parent-id="tree.data.parentId" />
       </template>
     </li>
-    <context-menu
-      v-show="showContext"
-      :visible="showContext"
-      :axis="axis"
-      :menuData="menuData"
-      :param="param"
-      @on-click="handleOperate"
-    ></context-menu>
-    <operate-modal
-      :visible="visible"
-      :title="title"
-      v-if="visible"
-      :modalType="modalType"
-      :isLeft="true"
-      :param="qemu"
+    <context-menu v-show="showContext" :visible="showContext" :axis="axis" :menuData="menuData" :param="param"
+      @on-click="handleOperate"></context-menu>
+    <operate-modal :visible="visible" :title="title" v-if="visible" :modalType="modalType" :isLeft="true" :param="qemu"
       @close="
         visible = false;
-        __init__();
-      "
-    ></operate-modal>
+      __init__();
+      "></operate-modal>
   </ul>
 </template>
 
@@ -200,42 +178,38 @@ export default {
       dom.innerHTML = `<ul>
    <li>Name: ${tree.data.text ? tree.data.text : ""}</li>
    <li>Status: ${tree.data.status ? tree.data.status : ""}</li>
-   ${
-     tree.data.type === "storage"
-       ? `
+   ${tree.data.type === "storage"
+          ? `
     <li>
     <span style="display: inline-block;margin-right: 3px;">Usage:</span>
     <span style="width: calc(100% - 47px); display: inline-block; height: 8px;line-height: 8px;border-radius: 50px;position: relative; background-color: #dde4ed;">
-        <div style="position: absolute;top:0;height: 100%;border-radius: 50px;width:${
-          tree.data.disk && tree.data.maxdisk && tree.data.maxdisk !== 0
+        <div style="position: absolute;top:0;height: 100%;border-radius: 50px;width:${tree.data.disk && tree.data.maxdisk && tree.data.maxdisk !== 0
             ? ((tree.data.disk / tree.data.maxdisk) * 100).toFixed(1)
             : 0
-        }%;
-                    background: ${
-                      tree.data.disk &&
-                      tree.data.maxdisk &&
-                      tree.data.maxdisk !== 0
-                        ? (tree.data.disk / tree.data.maxdisk) * 100 < 50
-                          ? "rgb(33, 191, 75)"
-                          : (tree.data.disk / tree.data.maxdisk) * 100 >= 50 &&
-                            (tree.data.disk / tree.data.maxdisk) * 100 <= 80
-                          ? "rgb(255, 204, 0)"
-                          : (tree.data.disk / tree.data.maxdisk) * 100 >= 80 &&
-                            (tree.data.disk / tree.data.maxdisk) * 100 <= 100
-                          ? "#ff0000"
-                          : "transparent"
-                        : "transparent"
-                    }">
+          }%;
+                    background: ${tree.data.disk &&
+            tree.data.maxdisk &&
+            tree.data.maxdisk !== 0
+            ? (tree.data.disk / tree.data.maxdisk) * 100 < 50
+              ? "rgb(33, 191, 75)"
+              : (tree.data.disk / tree.data.maxdisk) * 100 >= 50 &&
+                (tree.data.disk / tree.data.maxdisk) * 100 <= 80
+                ? "rgb(255, 204, 0)"
+                : (tree.data.disk / tree.data.maxdisk) * 100 >= 80 &&
+                  (tree.data.disk / tree.data.maxdisk) * 100 <= 100
+                  ? "#ff0000"
+                  : "transparent"
+            : "transparent"
+          }">
                     </div>
-        <div style="position: absolute; width: 100%;text-align: center;height: 8px; line-height: 8px;">${
-          tree.data.disk && tree.data.maxdisk && tree.data.maxdisk !== 0
+        <div style="position: absolute; width: 100%;text-align: center;height: 8px; line-height: 8px;">${tree.data.disk && tree.data.maxdisk && tree.data.maxdisk !== 0
             ? ((tree.data.disk / tree.data.maxdisk) * 100).toFixed(1)
             : 0
-        }%</div>
+          }%</div>
      </span>
     </li>`
-       : ""
-   }
+          : ""
+        }
 </ul>`;
       el.appendChild(dom);
       document.body.appendChild(el);
@@ -470,7 +444,7 @@ export default {
               this.alertConfirm(res);
             });
         })
-        .catch(() => {});
+        .catch(() => { });
     },
     /**
      * Restart virtual machine
@@ -574,7 +548,7 @@ export default {
               this.alertConfirm(res);
             });
         })
-        .catch(() => {});
+        .catch(() => { });
     },
     /**
      * Pause virtual machine
@@ -589,12 +563,12 @@ export default {
         })
         .then(() => {
           this.pausedQemu()
-            .then((res) => {})
+            .then((res) => { })
             .catch((res) => {
               this.alertConfirm(res);
             });
         })
-        .catch(() => {});
+        .catch(() => { });
     },
     /**
      * Stop virtual machine
@@ -616,7 +590,7 @@ export default {
               this.alertConfirm(res);
             });
         })
-        .catch(() => {});
+        .catch(() => { });
     },
     /**
      * Restart virtual machine
@@ -638,7 +612,7 @@ export default {
               this.alertConfirm(res);
             });
         })
-        .catch(() => {});
+        .catch(() => { });
     },
     alertConfirm(msg) {
       this.$confirm.confirm({
@@ -696,6 +670,7 @@ export default {
     padding: 5px 0px;
     width: 100%;
     position: relative;
+
     &-content {
       padding-left: 47px;
       overflow: hidden;
@@ -704,6 +679,7 @@ export default {
       table-layout: fixed;
       display: inline-block;
     }
+
     &-tips {
       position: absolute;
       z-index: 1086;
@@ -716,6 +692,7 @@ export default {
       white-space: normal;
       box-shadow: 1px 1px 12px #ccc;
       transition: all 0.5s ease-in;
+
       &:before {
         content: "";
         display: block;
@@ -735,14 +712,17 @@ export default {
         left: -5px;
       }
     }
+
     &:hover {
       .m-sub-item-tips {
         display: block;
       }
     }
   }
+
   &_li {
     position: relative;
+
     &:after {
       content: "";
       position: absolute;
@@ -754,12 +734,11 @@ export default {
     }
   }
 }
+
 .is-selected {
-  background-image: linear-gradient(
-    180deg,
-    rgba(64, 158, 255, 0.7),
-    rgba(64, 158, 255)
-  );
+  background-image: linear-gradient(180deg,
+      rgba(64, 158, 255, 0.7),
+      rgba(64, 158, 255));
   color: #fff;
 }
 </style>

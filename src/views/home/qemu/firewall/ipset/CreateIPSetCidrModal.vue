@@ -1,38 +1,17 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @cancel="close"
-    @confirm="confirm"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" @cancel="close" @confirm="confirm" :title="title" :_style="{ width: '956px' }"
+    @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-select
-                prop="cidr"
-                label="IP/CIDR"
-                labelWidth="100px"
-                validateEvent
-                @on-change="handleCidrSelect"
-                v-model="cidr"
-                :readonly="false"
-                @validate="validate('cidr')"
-                :show-error="rules['cidr'].error"
-                :error-msg="rules['cidr'].message"
-                required
-                placeholder="Please select security group"
-              >
-                <m-option
-                  v-for="(item, index) in db.fireWallResfList"
-                  :key="item.name"
-                  :label="item.name"
-                  :value="item.name"
-                >
+              <m-select prop="cidr" label="IP/CIDR" labelWidth="100px" validateEvent @on-change="handleCidrSelect"
+                v-model="cidr" :readonly="false" @validate="validate('cidr')" :show-error="rules['cidr'].error"
+                :error-msg="rules['cidr'].message" required placeholder="Please select security group">
+                <m-option v-for="(item, index) in db.fireWallResfList" :key="item.name" :label="item.name"
+                  :value="item.name">
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
@@ -51,19 +30,9 @@
                   </div>
                 </m-option>
               </m-select>
-              <m-checkbox
-                label="Enable"
-                v-model="nomatch"
-                labelWidth="100px"
-              ></m-checkbox>
-              <m-input
-                type="textarea"
-                prop="comment"
-                labelWidth="100px"
-                label="Comment"
-                v-model="comment"
-                placeholder="Please enter comment"
-              />
+              <m-checkbox label="Enable" v-model="nomatch" labelWidth="100px"></m-checkbox>
+              <m-input type="textarea" prop="comment" labelWidth="100px" label="Comment" v-model="comment"
+                placeholder="Please enter comment" />
             </dd>
           </dl>
         </div>

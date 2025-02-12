@@ -45,9 +45,8 @@ export default {
                                       vertical-align: middle;
                                       border-radius: 50%;"></span>
                                 <span style="display: inline-block;">
-                                  <span style="margin-right: 20px;">${
-                                    param.data.desc ? param.data.desc : ""
-                                  }</span>
+                                  <span style="margin-right: 20px;">${param.data.desc ? param.data.desc : ""
+              }</span>
                                   <span>${param.value ? param.value : 0}</span>
                                 </span>
                              </div>

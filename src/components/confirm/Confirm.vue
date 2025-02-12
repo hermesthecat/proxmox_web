@@ -3,11 +3,7 @@
     <div class="popup-mask" v-if="hasMark"></div>
     <transition name="bottom">
       <div class="popup-note bottom">
-        <div
-          class="pop-content animate__backInLeft"
-          ref="pop-wrapper"
-          :style="contentStyles"
-        >
+        <div class="pop-content animate__backInLeft" ref="pop-wrapper" :style="contentStyles">
           <div class="pop-tit" ref="pop-header" @mousedown="handleMoveStart">
             {{ title }}
             <span class="pop-close" @click.prevent="noClick">&times;</span>
@@ -15,38 +11,21 @@
           <p class="pop-note hasTitle">
             <base-icon :name="icon" v-if="icon" />
             <slot>
-              <p
-                v-if="!dangerouslyUseHTMLString"
-                style="display: inline-block; width: calc(100% - 80px)"
-              >
+              <p v-if="!dangerouslyUseHTMLString" style="display: inline-block; width: calc(100% - 80px)">
                 {{ msg }}
               </p>
-              <p
-                v-else
-                v-html="msg"
-                style="display: inline-block; width: calc(100% - 80px)"
-              ></p>
+              <p v-else v-html="msg" style="display: inline-block; width: calc(100% - 80px)"></p>
             </slot>
           </p>
           <div class="btn-wrapper" v-if="type == 'alert'">
-            <m-button
-              class="confirm-btn"
-              type="primary"
-              @on-click="alertClick"
-              >{{ alertBtnText }}</m-button
-            >
+            <m-button class="confirm-btn" type="primary" @on-click="alertClick">{{ alertBtnText }}</m-button>
           </div>
           <div class="btn-wrapper">
             <m-button class="confirm-btn" type="danger" @on-click="noClick">{{
               noBtnText
             }}</m-button>
-            <m-button
-              class="confirm-btn"
-              type="primary"
-              @on-click="yesClick"
-              v-if="['confirm', 'info', 'warning'].includes(type)"
-              >{{ yesBtnText }}</m-button
-            >
+            <m-button class="confirm-btn" type="primary" @on-click="yesClick"
+              v-if="['confirm', 'info', 'warning'].includes(type)">{{ yesBtnText }}</m-button>
           </div>
         </div>
       </div>
@@ -257,6 +236,7 @@ export default {
 
 <style lang="less" scoped>
 @import "~@src/components/confirm/confirm.less";
+
 /deep/ .base-icon {
   display: inline-block;
   height: 36px;

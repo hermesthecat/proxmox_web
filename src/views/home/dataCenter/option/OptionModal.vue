@@ -1,25 +1,14 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @close="close()"
-    :drag="false"
-    :title="title"
-    :_style="{
-      height: '300px',
-    }"
-  >
+  <Dialog :visible="visible" @close="close()" :drag="false" :title="title" :_style="{
+    height: '300px',
+  }">
     <template slot="content" v-if="type === 'ha'">
       <div class="option-tr">
         <label>Shutdown Policy</label>
         <div class="option-item">
           <Dropdown trigger="click" @on-change="handleCommand">
             <span slot="label">{{ kvm_ha_map[ha] }}</span>
-            <DropdownItem
-              v-for="(value, key) of kvm_ha_map"
-              :command="key"
-              :key="key"
-              >{{ value }}</DropdownItem
-            >
+            <DropdownItem v-for="(value, key) of kvm_ha_map" :command="key" :key="key">{{ value }}</DropdownItem>
           </Dropdown>
         </div>
       </div>
@@ -28,16 +17,8 @@
       <div class="option-tr">
         <label>HTTP Proxy</label>
         <div class="option-item">
-          <m-input
-            placeholder="None"
-            prop="http_proxy"
-            validateEvent
-            @validate="validate"
-            required
-            :error-msg="rules.http_proxy.message"
-            :show-error="rules.http_proxy.error"
-            v-model="http_proxy"
-          />
+          <m-input placeholder="None" prop="http_proxy" validateEvent @validate="validate" required
+            :error-msg="rules.http_proxy.message" :show-error="rules.http_proxy.error" v-model="http_proxy" />
         </div>
       </div>
     </template>
@@ -45,15 +26,8 @@
       <div class="option-tr">
         <label>Email From Address</label>
         <div class="option-item">
-          <m-input
-            placeholder="root@$hostname"
-            prop="email_from"
-            validateEvent
-            @validate="validate"
-            :error-msg="rules.email_from.message"
-            :show-error="rules.email_from.error"
-            v-model="email_from"
-          />
+          <m-input placeholder="root@$hostname" prop="email_from" validateEvent @validate="validate"
+            :error-msg="rules.email_from.message" :show-error="rules.email_from.error" v-model="email_from" />
         </div>
       </div>
     </template>
@@ -61,15 +35,8 @@
       <div class="option-tr">
         <label>MAC Address Prefix</label>
         <div class="option-item">
-          <m-input
-            placeholder="None"
-            prop="mac_prefix"
-            validateEvent
-            @validate="validate"
-            :error-msg="rules.mac_prefix.message"
-            :show-error="rules.mac_prefix.error"
-            v-model="mac_prefix"
-          />
+          <m-input placeholder="None" prop="mac_prefix" validateEvent @validate="validate"
+            :error-msg="rules.mac_prefix.message" :show-error="rules.mac_prefix.error" v-model="mac_prefix" />
         </div>
       </div>
     </template>
@@ -79,12 +46,7 @@
         <div class="option-item">
           <Dropdown trigger="click" @on-change="handleCommand">
             <span slot="label">{{ console_map[console] }}</span>
-            <DropdownItem
-              v-for="(value, key) of console_map"
-              :command="key"
-              :key="key"
-              >{{ value }}</DropdownItem
-            >
+            <DropdownItem v-for="(value, key) of console_map" :command="key" :key="key">{{ value }}</DropdownItem>
           </Dropdown>
         </div>
       </div>
@@ -99,34 +61,18 @@
       <div class="option-tr">
         <label>Network</label>
         <div class="option-item">
-          <el-table
-            :data="netWorkList"
-            @current-change="handleLink1Change"
-            highlight-current-row
-          >
+          <el-table :data="netWorkList" @current-change="handleLink1Change" highlight-current-row>
             <el-table-column width="50">
               <template slot-scope="scope">
-                <el-radio :label="scope.row.cidr" v-model="link1Radio"
-                  >&nbsp;</el-radio
-                >
+                <el-radio :label="scope.row.cidr" v-model="link1Radio">&nbsp;</el-radio>
               </template>
             </el-table-column>
-            <el-table-column
-              label="CIDR"
-              prop="cidr"
-              sortable
-            ></el-table-column>
-            <el-table-column
-              label="Interface"
-              prop="iface"
-              sortable
-            ></el-table-column>
+            <el-table-column label="CIDR" prop="cidr" sortable></el-table-column>
+            <el-table-column label="Interface" prop="iface" sortable></el-table-column>
             <el-table-column label="Active" prop="active">
               <template slot-scope="scope">
-                <table-info-state
-                  :content="scope.row.active === 1 ? 'Yes' : 'No'"
-                  :state="scope.row.active === 1 ? 'actived' : 'unactived'"
-                ></table-info-state>
+                <table-info-state :content="scope.row.active === 1 ? 'Yes' : 'No'"
+                  :state="scope.row.active === 1 ? 'actived' : 'unactived'"></table-info-state>
               </template>
             </el-table-column>
             <el-table-column label="Comment" prop="comment"></el-table-column>
@@ -140,28 +86,15 @@
         <div class="option-item">
           <Dropdown trigger="click" @on-change="handleCommand">
             <span slot="label">{{ kvm_keymaps[keyboard] }}</span>
-            <DropdownItem
-              v-for="(value, key) of kvm_keymaps"
-              :command="key"
-              :key="key"
-              >{{ value }}</DropdownItem
-            >
+            <DropdownItem v-for="(value, key) of kvm_keymaps" :command="key" :key="key">{{ value }}</DropdownItem>
           </Dropdown>
         </div>
       </div>
     </template>
     <template slot="footer">
       <template>
-        <m-button class="create-btn" type="primary" @on-click="close()"
-          >Cancel</m-button
-        >
-        <m-button
-          class="create-btn"
-          type="primary"
-          @on-click="confirm()"
-          :disabled="instate()"
-          >OK</m-button
-        >
+        <m-button class="create-btn" type="primary" @on-click="close()">Cancel</m-button>
+        <m-button class="create-btn" type="primary" @on-click="confirm()" :disabled="instate()">OK</m-button>
       </template>
     </template>
   </Dialog>
@@ -295,61 +228,61 @@ export default {
           param =
             this.keyboard === "__default__"
               ? {
-                  delete: "keyboard",
-                }
+                delete: "keyboard",
+              }
               : {
-                  keyboard: this.keyboard,
-                };
+                keyboard: this.keyboard,
+              };
           break;
         case "console":
           param =
             this.console === "__default__"
               ? {
-                  delete: "console",
-                }
+                delete: "console",
+              }
               : {
-                  console: this.console,
-                };
+                console: this.console,
+              };
           break;
         case "ha":
           param =
             this.ha === "__default__"
               ? {
-                  delete: "ha",
-                }
+                delete: "ha",
+              }
               : {
-                  ha: `shutdown_policy=${this.ha}`,
-                };
+                ha: `shutdown_policy=${this.ha}`,
+              };
           break;
         case "email_from":
           param =
             this.email_from === ""
               ? {
-                  delete: "email_from",
-                }
+                delete: "email_from",
+              }
               : {
-                  email_from: this.email_from,
-                };
+                email_from: this.email_from,
+              };
           break;
         case "http_proxy":
           param =
             this.http_proxy === ""
               ? {
-                  delete: "http_proxy",
-                }
+                delete: "http_proxy",
+              }
               : {
-                  http_proxy: this.http_proxy,
-                };
+                http_proxy: this.http_proxy,
+              };
           break;
         case "mac_prefix":
           param =
             this.mac_prefix === ""
               ? {
-                  delete: "mac_prefix",
-                }
+                delete: "mac_prefix",
+              }
               : {
-                  mac_prefix: this.mac_prefix,
-                };
+                mac_prefix: this.mac_prefix,
+              };
           break;
         case "migration":
           param = {
@@ -433,15 +366,18 @@ export default {
     display: flex;
     height: 35px;
     line-height: 35px;
+
     label {
       flex: 1 1 auto;
     }
   }
+
   &-item {
     flex: 1 1 auto;
     width: 200px;
   }
 }
+
 .create-btn {
   width: 100px;
   height: 42px;

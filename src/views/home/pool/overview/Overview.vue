@@ -4,11 +4,8 @@
       <div slot="title">Status</div>
       <div slot="content" class="card-content">
         <div class="card-item">
-          <single-line
-            :desc="db.poolsObj && db.poolsObj.comment && db.poolsObj.comment"
-            title="Comments"
-            :__style="{ whiteSpace: 'normal' }"
-          />
+          <single-line :desc="db.poolsObj && db.poolsObj.comment && db.poolsObj.comment" title="Comments"
+            :__style="{ whiteSpace: 'normal' }" />
         </div>
       </div>
     </overview-card>

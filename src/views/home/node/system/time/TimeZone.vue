@@ -1,30 +1,18 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button type="primary" @on-click="showModal('edit')" icon="el-icon-edit"
-        >Edit</m-button
-      >
+      <m-button type="primary" @on-click="showModal('edit')" icon="el-icon-edit">Edit</m-button>
     </div>
     <div slot="page-content">
-      <el-table
-        :data="timeList"
-        ref="dataTable"
-        :show-header="false"
-        :default-sort="{ prop: 'label', order: 'ascending' }"
-      >
+      <el-table :data="timeList" ref="dataTable" :show-header="false"
+        :default-sort="{ prop: 'label', order: 'ascending' }">
         <el-table-column label="Name" prop="label" sortable></el-table-column>
         <el-table-column label="Category" prop="value" sortable></el-table-column>
       </el-table>
-      <edit-time-modal
-        :visible="visible"
-        :title="title"
-        :param="param"
-        @close="
-          visible = false;
-          __init__();
-        "
-        v-if="visible"
-      ></edit-time-modal>
+      <edit-time-modal :visible="visible" :title="title" :param="param" @close="
+        visible = false;
+      __init__();
+      " v-if="visible"></edit-time-modal>
     </div>
   </page-template>
 </template>
@@ -94,9 +82,9 @@ export default {
               time === "timezone"
                 ? _this.db.timeZoneObj[time]
                 : dateFormat(
-                    new Date(_this.db.timeZoneObj[time] * 1000),
-                    "yyyy-MM-dd hh:mm"
-                  ),
+                  new Date(_this.db.timeZoneObj[time] * 1000),
+                  "yyyy-MM-dd hh:mm"
+                ),
           });
         }
       });

@@ -1,66 +1,24 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @cancel="close"
-    @confirm="confirm"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" @cancel="close" @confirm="confirm" :title="title" :_style="{ width: '956px' }"
+    @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-input
-                type="text"
-                prop="search"
-                label="Search Domain"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.search.error"
-                :error-msg="rules.search.message"
-                v-model="search"
-                placeholder="Please enter search domain"
-              />
-              <m-input
-                type="text"
-                prop="dns1"
-                label="dns1"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.dns1.error"
-                :error-msg="rules.dns1.message"
-                v-model="dns1"
-                placeholder="Please enter IPV4/CIDR"
-              />
-              <m-input
-                type="text"
-                prop="dns2"
-                label="dns2"
-                labelWidth="100px"
-                v-model="dns2"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.dns2.error"
-                :error-msg="rules.dns2.message"
-                placeholder="Please enter dns2"
-              />
-              <m-input
-                type="text"
-                prop="dns3"
-                label="dns3"
-                labelWidth="100px"
-                v-model="dns3"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.dns3.error"
-                :error-msg="rules.dns3.message"
-                placeholder="Please enter dns3"
-              />
+              <m-input type="text" prop="search" label="Search Domain" labelWidth="100px" validateEvent
+                @validate="validate" :show-error="rules.search.error" :error-msg="rules.search.message" v-model="search"
+                placeholder="Please enter search domain" />
+              <m-input type="text" prop="dns1" label="dns1" labelWidth="100px" validateEvent @validate="validate"
+                :show-error="rules.dns1.error" :error-msg="rules.dns1.message" v-model="dns1"
+                placeholder="Please enter IPV4/CIDR" />
+              <m-input type="text" prop="dns2" label="dns2" labelWidth="100px" v-model="dns2" validateEvent
+                @validate="validate" :show-error="rules.dns2.error" :error-msg="rules.dns2.message"
+                placeholder="Please enter dns2" />
+              <m-input type="text" prop="dns3" label="dns3" labelWidth="100px" v-model="dns3" validateEvent
+                @validate="validate" :show-error="rules.dns3.error" :error-msg="rules.dns3.message"
+                placeholder="Please enter dns3" />
             </dd>
           </dl>
         </div>
@@ -205,27 +163,32 @@ export default {
     border-bottom: 1px solid #ebeef5;
     cursor: pointer;
   }
+
   &-td {
     display: table-cell;
     height: 35px;
     line-height: 35px;
     max-width: 100px;
   }
+
   &-radio {
     width: 50px;
     padding-right: 20px;
   }
 }
+
 .checkbox {
   margin-bottom: 20px;
   margin-right: 10px;
   display: inline-block;
   vertical-align: -webkit-baseline-middle;
 }
+
 .m-button {
   height: 33px;
   line-height: 28px;
 }
+
 .create-btn {
   width: 100px;
   height: 42px;

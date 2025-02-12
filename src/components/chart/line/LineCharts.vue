@@ -1,10 +1,7 @@
 <template>
   <div class="line-chart">
     <div class="line-chart-outer"></div>
-    <div
-      class="line-chart-inner"
-      :style="{ width: `${Number(value).toFixed(1)}%`, background: bgColor }"
-    ></div>
+    <div class="line-chart-inner" :style="{ width: `${Number(value).toFixed(1)}%`, background: bgColor }"></div>
     <div class="line-chart-des">{{ Number(value).toFixed(1) }}%</div>
   </div>
 </template>
@@ -48,9 +45,11 @@ export default {
   height: 12px;
   border-radius: 12px;
   overflow: hidden;
+
   &::after {
     clear: both;
   }
+
   &-outer {
     position: relative;
     width: 100%;
@@ -58,6 +57,7 @@ export default {
     background: #e0eaf3;
     border-radius: 12px;
   }
+
   &-inner {
     position: absolute;
     height: 12px;
@@ -66,6 +66,7 @@ export default {
     border-radius: 16px;
     transition: all 0.5s ease-in;
   }
+
   &-des {
     position: absolute;
     width: 100%;

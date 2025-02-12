@@ -1,30 +1,18 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button type="primary" @on-click="showModal('edit')" icon="el-icon-edit"
-        >Edit</m-button
-      >
+      <m-button type="primary" @on-click="showModal('edit')" icon="el-icon-edit">Edit</m-button>
     </div>
     <div slot="page-content">
-      <el-table
-        :data="dnsList"
-        ref="dataTable"
-        :show-header="false"
-        :default-sort="{ prop: 'label', order: 'ascending' }"
-      >
+      <el-table :data="dnsList" ref="dataTable" :show-header="false"
+        :default-sort="{ prop: 'label', order: 'ascending' }">
         <el-table-column label="Name" prop="label" sortable></el-table-column>
         <el-table-column label="Category" prop="value" sortable></el-table-column>
       </el-table>
-      <edit-dns-modal
-        :visible="visible"
-        :title="title"
-        :param="param"
-        @close="
-          visible = false;
-          __init__();
-        "
-        v-if="visible"
-      ></edit-dns-modal>
+      <edit-dns-modal :visible="visible" :title="title" :param="param" @close="
+        visible = false;
+      __init__();
+      " v-if="visible"></edit-dns-modal>
     </div>
   </page-template>
 </template>

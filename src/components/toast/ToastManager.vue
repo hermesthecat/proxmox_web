@@ -2,73 +2,37 @@
   <div>
     <div class="toast-container">
       <div v-for="(item, index) in toastList" :key="index">
-        <div
-          class="toast alarm"
-          v-if="item.type === 'ticketMessage'"
-          :class="getAlarmClassList(item)"
-        >
-          <span
-            class="text"
-            style="margin-left: 15px"
-            :title="item.message.content"
-            >{{ item.message.content }}</span
-          >
-          <i
-            @click="deleteToast($event, item)"
-            style="position: absolute; right: 15px; top: 18px; cursor: pointer"
-            class="el-alert__closebtn el-icon-close"
-          ></i>
+        <div class="toast alarm" v-if="item.type === 'ticketMessage'" :class="getAlarmClassList(item)">
+          <span class="text" style="margin-left: 15px" :title="item.message.content">{{ item.message.content }}</span>
+          <i @click="deleteToast($event, item)" style="position: absolute; right: 15px; top: 18px; cursor: pointer"
+            class="el-alert__closebtn el-icon-close"></i>
         </div>
-        <div
-          class="toast alarm"
-          v-if="item.type === 'alarmMessage'"
-          :class="getAlarmClassList(item)"
-        >
+        <div class="toast alarm" v-if="item.type === 'alarmMessage'" :class="getAlarmClassList(item)">
           <span class="icon">
             <i class="icon-zhaoshengbaobiao"></i>
           </span>
           <span class="text" :title="item.message.content">{{
             item.message.content
           }}</span>
-          <i
-            @click="deleteToast($event, item)"
-            style="position: absolute; right: 15px; top: 18px; cursor: pointer"
-            class="el-alert__closebtn el-icon-close"
-          ></i>
+          <i @click="deleteToast($event, item)" style="position: absolute; right: 15px; top: 18px; cursor: pointer"
+            class="el-alert__closebtn el-icon-close"></i>
         </div>
-        <div
-          v-if="item.type !== 'ticketMessage' && item.type !== 'alarmMessage'"
-          class="toast"
-          :class="getClass(item)"
-        >
+        <div v-if="item.type !== 'ticketMessage' && item.type !== 'alarmMessage'" class="toast" :class="getClass(item)">
           <!-- <div v-for="item in toastList" class="toast success"> -->
           <span class="icon"></span>
-          <span
-            class="text"
-            :title="$t(item.action, { name: `'${item.name}'` })"
-            v-if="item.count === 1 && item.name !== undefined"
-            >{{ $t(item.action, { name: `"${item.name}"` }) }}</span
-          >
-          <span
-            class="text"
-            :title="$t(item.action, { name: '' })"
-            v-if="item.count > 1 || item.name === undefined"
-          >
+          <span class="text" :title="$t(item.action, { name: `'${item.name}'` })"
+            v-if="item.count === 1 && item.name !== undefined">{{ $t(item.action, { name: `"${item.name}"` }) }}</span>
+          <span class="text" :title="$t(item.action, { name: '' })" v-if="item.count > 1 || item.name === undefined">
             <span style="width: 120px">{{
               $t(item.action, { name: "" })
             }}</span>
-            <span v-if="item.resultType === 'success'"
-              >Success {{ item.count }}</span
-            >
+            <span v-if="item.resultType === 'success'">Success {{ item.count }}</span>
             <span v-if="item.resultType === 'fail'">Failed {{ item.count }}</span>
           </span>
           <!--<img @click="deleteToast($event, item)" style="position: absolute; right: 15px; top: 18px; cursor: pointer;" src="~assets/close.svg" />-->
           <span style="position: absolute; top: 0; right: 15px">
-            <i
-              @click="deleteToast($event, item)"
-              class="el-alert__closebtn el-icon-close"
-              style="color: #ccc; font-size: 16px"
-            ></i>
+            <i @click="deleteToast($event, item)" class="el-alert__closebtn el-icon-close"
+              style="color: #ccc; font-size: 16px"></i>
           </span>
         </div>
       </div>
@@ -264,9 +228,10 @@ export default {
 }
 
 @keyframes run {
-  　from {
+  from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

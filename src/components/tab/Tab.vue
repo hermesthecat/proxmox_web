@@ -1,9 +1,6 @@
 <template>
   <div class="tabs" ref="tabs">
-    <div
-      :class="['tabs__active-bar', `is-${placement}`]"
-      :style="barStyle"
-    ></div>
+    <div :class="['tabs__active-bar', `is-${placement}`]" :style="barStyle"></div>
     <slot></slot>
   </div>
 </template>
@@ -59,17 +56,22 @@ export default {
   transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
   list-style: none;
 }
+
 .is-bottom {
   bottom: 0;
 }
+
 .is-top {
   top: 100%;
 }
+
 .tabs {
   position: relative;
+
   &:nth-child(2) {
     padding-left: 0px;
   }
+
   &:nth-last-child {
     padding-right: 0px;
   }

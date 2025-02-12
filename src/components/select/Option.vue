@@ -2,18 +2,10 @@
   <div class="option-item" :class="{ disabled: disabled }">
     <div v-if="Select.type !== 'multiple'" @mousedown.stop="handleClick">
       <span v-if="icon" :class="['icon', icon]"></span>
-      <base-icon
-        v-if="name"
-        :class="['icon']"
-        :name="name"
-        :_style="{ width: '16px', height: '16px' }"
-      ></base-icon>
+      <base-icon v-if="name" :class="['icon']" :name="name" :_style="{ width: '16px', height: '16px' }"></base-icon>
       <template>
-        <div
-          class="option-item__content"
-          :class="{ 'option-item__selected': Select.selectValues === value }"
-          @blur.stop="Select.handleBlur"
-        >
+        <div class="option-item__content" :class="{ 'option-item__selected': Select.selectValues === value }"
+          @blur.stop="Select.handleBlur">
           <template v-if="$slots['default']">
             <slot></slot>
           </template>
@@ -21,27 +13,16 @@
         </div>
       </template>
     </div>
-    <div
-      v-if="Select.type === 'multiple'"
-      @click="handleClick"
-      style="display: inline-flex; align-items: center; width: 100%"
-    >
+    <div v-if="Select.type === 'multiple'" @click="handleClick"
+      style="display: inline-flex; align-items: center; width: 100%">
       <span v-if="icon" :class="['icon', icon]"></span>
-      <base-icon
-        v-if="name"
-        :class="['icon']"
-        :name="name"
-        :_style="{ width: '16px', height: '16px' }"
-      ></base-icon>
+      <base-icon v-if="name" :class="['icon']" :name="name" :_style="{ width: '16px', height: '16px' }"></base-icon>
       <template>
         <label class="option-item__checkbox">
           <input type="checkbox" v-model="isChecked" />
           <div></div>
         </label>
-        <div
-          class="option-item__content"
-          :class="{ 'option-item__selected': isChecked }"
-        >
+        <div class="option-item__content" :class="{ 'option-item__selected': isChecked }">
           <template v-if="$slots['default']">
             <slot></slot>
           </template>
@@ -128,24 +109,29 @@ export default {
   background: #fff;
   cursor: pointer;
   text-align: left;
+
   &:hover {
     color: #7fdbff;
   }
+
   &__selected {
     color: #3973ff;
   }
+
   &__content {
     display: block;
-    vertical-align: middle;
     min-height: 28px;
     line-height: 28px;
     margin: 5px 10px;
   }
+
   &__checkbox {
     padding-right: 10px;
+
     input[type="checkbox"] {
       display: none;
     }
+
     div {
       position: relative;
       width: 15px;
@@ -154,7 +140,8 @@ export default {
       display: inline-block;
       vertical-align: middle;
     }
-    input[type="checkbox"] + div::after {
+
+    input[type="checkbox"]+div::after {
       content: "";
       width: 15px;
       height: 15px;
@@ -162,7 +149,8 @@ export default {
       border: 1px solid #c4d6ec;
       display: inline-block;
     }
-    input[type="checkbox"]:checked + div::before {
+
+    input[type="checkbox"]:checked+div::before {
       content: "";
       display: inline-block;
       width: 3px;
@@ -179,7 +167,8 @@ export default {
       outline: 0;
       vertical-align: middle;
     }
-    input[type="checkbox"]:checked + div:after {
+
+    input[type="checkbox"]:checked+div:after {
       content: "";
       display: inline-block;
       width: 15px;

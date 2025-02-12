@@ -1,26 +1,14 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button type="primary" @on-click="showModal('edit')" icon="el-icon-edit"
-        >Edit</m-button
-      >
+      <m-button type="primary" @on-click="showModal('edit')" icon="el-icon-edit">Edit</m-button>
     </div>
     <template slot="page-content">
-      <ace-editor
-        v-model="nodeContent"
-        :read-only="true"
-        ref="ace-editor"
-      ></ace-editor>
-      <node-notes-edit-modal
-        :title="title"
-        v-if="visible"
-        :visible="visible"
-        :param="param"
-        @close="
-          visible = false;
-          __init__();
-        "
-      ></node-notes-edit-modal>
+      <ace-editor v-model="nodeContent" :read-only="true" ref="ace-editor"></ace-editor>
+      <node-notes-edit-modal :title="title" v-if="visible" :visible="visible" :param="param" @close="
+        visible = false;
+      __init__();
+      "></node-notes-edit-modal>
     </template>
   </page-template>
 </template>
@@ -107,7 +95,7 @@ export default {
         .then(() => {
           this.delete(type);
         })
-        .catch(() => {});
+        .catch(() => { });
     },
   },
   beforeDestroy() {
@@ -123,19 +111,23 @@ export default {
   padding: 10px 0px;
   border-top: 1px solid #c4d6ec;
   border-bottom: 1px solid #c4d6ec;
+
   &__item {
     flex: 1 1 auto;
     display: flex;
   }
+
   &__title {
     flex: 1 1 auto;
     display: inline-flex;
   }
+
   &__desc {
     flex: 1 1 auto;
     display: inline-flex;
   }
 }
+
 .notes-content {
   white-space: pre;
   text-align: left;

@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="base-icon"
-    :style="__style"
-    v-lazy:background-image="__bgImage"
-  ></div>
+  <div class="base-icon" :style="__style" v-lazy:background-image="__bgImage"></div>
 </template>
 
 <script>

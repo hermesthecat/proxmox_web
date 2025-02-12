@@ -2,26 +2,15 @@
   <div class="line-wrapper">
     <div class="line-desc">
       <div class="line-title">
-        <i
-          v-if="icon"
-          :class="icon"
-          style="font-size: 16px; display: inline-block; width: 19px"
-        ></i>
-        <base-icon
-          v-if="name"
-          :name="name"
-          :_style="{ width: '16px', height: '16px' }"
-        />
+        <i v-if="icon" :class="icon" style="font-size: 16px; display: inline-block; width: 19px"></i>
+        <base-icon v-if="name" :name="name" :_style="{ width: '16px', height: '16px' }" />
         <span>{{ title }}</span>
       </div>
       <div class="line-desc-content">{{ desc }}</div>
     </div>
     <div class="line-chart">
       <div class="line-chart-outer"></div>
-      <div
-        class="line-chart-inner"
-        :style="{ width: `${Number(value).toFixed(2)}%`, background: bgColor }"
-      ></div>
+      <div class="line-chart-inner" :style="{ width: `${Number(value).toFixed(2)}%`, background: bgColor }"></div>
     </div>
   </div>
 </template>
@@ -71,12 +60,14 @@ export default {
   &-wrapper {
     width: 100%;
   }
+
   &-desc {
     display: flex;
     justify-content: space-between;
     padding-bottom: 5px;
     font-size: 1em;
     flex-wrap: wrap;
+
     &-content {
       flex: 1 1 auto;
       width: 0;
@@ -84,21 +75,25 @@ export default {
       letter-spacing: -1px;
     }
   }
+
   &-title {
     flex: 1 1 auto;
     width: 0;
     text-align: left;
   }
 }
+
 .line-chart {
   position: relative;
   width: 100%;
   height: 8px;
   border-radius: 8px;
   overflow: hidden;
+
   &::after {
     clear: both;
   }
+
   &-outer {
     position: relative;
     width: 100%;
@@ -106,6 +101,7 @@ export default {
     background: #e0eaf3;
     border-radius: 8px;
   }
+
   &-inner {
     position: absolute;
     height: 8px;
@@ -114,6 +110,7 @@ export default {
     border-radius: 8px;
     transition: all 0.5s ease-in;
   }
+
   &-des {
     position: absolute;
     width: 100%;

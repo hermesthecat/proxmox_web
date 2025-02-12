@@ -45,8 +45,8 @@
             <dt>Basic Information</dt>
             <dd>
               <m-input type="text" label="Source" labelWidth="100px" v-model="source" :disabled="true" />
-              <m-select prop="storage" label="Storage" labelWidth="100px" @on-change="handleStorageSelect" v-model="storage"
-                validateEvent @validate="validate" :error-msg="rules['storage'].message"
+              <m-select prop="storage" label="Storage" labelWidth="100px" @on-change="handleStorageSelect"
+                v-model="storage" validateEvent @validate="validate" :error-msg="rules['storage'].message"
                 :show-error="rules['storage'].error" :readonly="false" placeholder="Please select disk">
                 <div class="table">
                   <template v-for="(item, index) in db.storageList" :key="item.storage">

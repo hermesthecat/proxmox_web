@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="aside_col-resize"
-    @mousedown.stop="handleMouseDown"
-    @mouseup.stop="handleMouseUp"
-  ></div>
+  <div class="aside_col-resize" @mousedown.stop="handleMouseDown" @mouseup.stop="handleMouseUp"></div>
 </template>
 
 <script>

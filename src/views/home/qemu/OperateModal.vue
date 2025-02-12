@@ -16,9 +16,9 @@
 
               <m-select prop="nodename" label="Target Node" labelWidth="100px" validateEvent @validate="validate"
                 :show-error="rules.nodename.error" :error-msg="rules.nodename.message" required @on-change="(value) => {
-                    nodename = value;
-                    checkMigratePreconditions();
-                  }
+                  nodename = value;
+                  checkMigratePreconditions();
+                }
                   " v-model="nodename" placeholder="Please Select Node">
                 <m-option v-for="(item, index) in nodeList" :key="item.node" :label="item.node" :value="item.node">
                   <div v-if="index === 0" class="table-tr">
@@ -115,9 +115,9 @@
             <dd style="width: 100%">
               <m-select prop="nodename" label="Target Node" labelWidth="100px" validateEvent @validate="validate"
                 :show-error="rules.nodename.error" :error-msg="rules.nodename.message" required @on-change="(value) => {
-                    nodename = value;
-                    queryTargetStorage();
-                  }
+                  nodename = value;
+                  queryTargetStorage();
+                }
                   " v-model="nodename" placeholder="Please Select Node">
                 <m-option v-for="(item, index) in nodeList" :key="item.node" :label="item.node" :value="item.node">
                   <div v-if="index === 0" class="table-tr">
@@ -140,9 +140,9 @@
               </m-select>
 
               <m-select prop="clonemode" label="Clone Mode" labelWidth="100px" :readonly="true" @on-change="(value) => {
-                  clonemode = value;
-                  storage = '';
-                }
+                clonemode = value;
+                storage = '';
+              }
                 " v-model="clonemode" placeholder="Please Select Clone Mode">
                 <m-option v-for="item in modeList" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
@@ -154,16 +154,17 @@
                 ">
                 <div>Snapshot</div>
                 <div>
-                  <m-input placeholder="Please Enter Snapshot Name" @input="debounce(searchSnapshot(), 1000)" v-model="snaphot">
+                  <m-input placeholder="Please Enter Snapshot Name" @input="debounce(searchSnapshot(), 1000)"
+                    v-model="snaphot">
                     <i slot="prefix" class="el-icon-search"></i>
                   </m-input>
                 </div>
               </div>
               <el-table v-if="!isTemplate && hasSnapshots" highlight-current-row @current-change="(value) => {
-                  if (value && value.name) {
-                    snapshotname = value.name;
-                  }
+                if (value && value.name) {
+                  snapshotname = value.name;
                 }
+              }
                 " :show-error="rules['snapshotname'].error" :error-msg="rules['snapshotname'].message"
                 :data="chunkData(snapdbshotList, pageSize)[currentPage - 1]" @sort-change="handleSort"
                 style="width: 100%" max-height="250">
@@ -192,12 +193,12 @@
                 </el-table-column>
               </el-table>
               <el-pagination class="page-table-pagination" @size-change="(val) => {
-                  currentPage = 1;
-                  pageSize = val;
-                }
+                currentPage = 1;
+                pageSize = val;
+              }
                 " @current-change="(val) => {
-                    currentPage = val;
-                  }
+                  currentPage = val;
+                }
                   " :current-page="currentPage" :page-sizes="[5, 10, 50]" :page-size="pageSize"
                 v-if="!isTemplate && hasSnapshots" :total="(snapdbshotList && snapdbshotList.length) || 0"
                 :pager-count="5" small layout="total, sizes, prev, pager, next, jumper">
@@ -256,7 +257,8 @@
               </m-select>
 
               <m-select prop="format" label="Format" labelWidth="100px" @on-change="(value) => (format = value)"
-                v-model="format" :readonly="false" :disabled="!storageType || storageType !== 'dir'" placeholder="Please Select Format">
+                v-model="format" :readonly="false" :disabled="!storageType || storageType !== 'dir'"
+                placeholder="Please Select Format">
                 <m-option v-for="(item, index) in formatList" :key="index" :value="item.value" :label="item.label">
                 </m-option>
               </m-select>
@@ -273,9 +275,10 @@
             </div>
           </m-input>
 
-          <m-select prop="group" label="Group" labelWidth="100px" :readonly="true" @on-change="(value) => (group = value)"
-            v-model="group" validateEvent @validate="validate" :show-error="rules['group'].error"
-            :error-msg="rules['group'].message" required placeholder="Please Select Group">
+          <m-select prop="group" label="Group" labelWidth="100px" :readonly="true"
+            @on-change="(value) => (group = value)" v-model="group" validateEvent @validate="validate"
+            :show-error="rules['group'].error" :error-msg="rules['group'].message" required
+            placeholder="Please Select Group">
             <m-option v-for="(item, index) in groupList" :key="item.group" :label="item.group" :value="item.group">
               <div v-if="index === 0" class="table-tr">
                 <div class="table-td">Group</div>

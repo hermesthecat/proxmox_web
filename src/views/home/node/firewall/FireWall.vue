@@ -1,72 +1,31 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button
-        type="primary"
-        @on-click="showModal('create')"
-        icon="el-icon-plus"
-        >Add</m-button
-      >
-      <m-button
-        type="warning"
-        @on-click="showModal('copy')"
-        icon="el-icon-copy-document"
-        :disabled="
-          inStatus() ||
-          (selectedList && selectedList[0] && selectedList[0].type === 'group')
-        "
-        >Copy</m-button
-      >
-      <m-button
-        type="primary"
-        @on-click="showModal('rule')"
-        icon="el-icon-folder-add"
-        :disabled="inStatus()"
-        >Insert: Security Group</m-button
-      >
-      <m-button
-        type="danger"
-        v-confirm="{
-          msg: 'Are you sure you want to delete the selected items?',
-          icon: 'icon-question',
-          ok: () => handleDelete(),
-        }"
-        icon="el-icon-delete"
-        :disabled="selectedList.length <= 0"
-        >Delete</m-button
-      >
-      <m-button
-        type="info"
-        icon="el-icon-edit"
-        :disabled="selectedList.length !== 1"
-        @on-click="showModal('edit')"
-        >Edit</m-button
-      >
+      <m-button type="primary" @on-click="showModal('create')" icon="el-icon-plus">Add</m-button>
+      <m-button type="warning" @on-click="showModal('copy')" icon="el-icon-copy-document" :disabled="inStatus() ||
+        (selectedList && selectedList[0] && selectedList[0].type === 'group')
+        ">Copy</m-button>
+      <m-button type="primary" @on-click="showModal('rule')" icon="el-icon-folder-add" :disabled="inStatus()">Insert:
+        Security Group</m-button>
+      <m-button type="danger" v-confirm="{
+        msg: 'Are you sure you want to delete the selected items?',
+        icon: 'icon-question',
+        ok: () => handleDelete(),
+      }" icon="el-icon-delete" :disabled="selectedList.length <= 0">Delete</m-button>
+      <m-button type="info" icon="el-icon-edit" :disabled="selectedList.length !== 1"
+        @on-click="showModal('edit')">Edit</m-button>
     </div>
     <div slot="page-content">
-      <el-table
-        :data="db.nodeFireWallRuleList"
-        ref="dataTable"
-        @selection-change="handleSelect"
-      >
-        <el-table-column
-          type="selection"
-          width="55"
-          prop="pos"
-        ></el-table-column>
+      <el-table :data="db.nodeFireWallRuleList" ref="dataTable" @selection-change="handleSelect">
+        <el-table-column type="selection" width="55" prop="pos"></el-table-column>
         <el-table-column width="55" prop="pos"></el-table-column>
         <el-table-column label="Enable" prop="enable">
           <template slot-scope="scope">
-            <table-info-state
-              :content="
-                scope.row.enable && scope.row.enable === 1 ? 'Yes' : 'No'
-              "
-              :state="
-                scope.row.enable && scope.row.enable === 1
+            <table-info-state :content="scope.row.enable && scope.row.enable === 1 ? 'Yes' : 'No'
+              " :state="scope.row.enable && scope.row.enable === 1
                   ? 'actived'
                   : 'unActived'
-              "
-            ></table-info-state>
+                "></table-info-state>
           </template>
         </el-table-column>
         <el-table-column label="Type" prop="type"></el-table-column>
@@ -82,32 +41,18 @@
         <el-table-column label="Comment" prop="comment"></el-table-column>
         <el-table-column>
           <template slot-scope="scope">
-            <m-button
-              type="info"
-              :icon="
-                scope.row.enable === 0
-                  ? 'el-icon-video-play'
-                  : 'el-icon-video-pause'
-              "
-              @on-click="handleEnable(scope.row)"
-              >{{ scope.row.enable === 0 ? "Enable" : "Disable" }}</m-button
-            >
+            <m-button type="info" :icon="scope.row.enable === 0
+                ? 'el-icon-video-play'
+                : 'el-icon-video-pause'
+              " @on-click="handleEnable(scope.row)">{{ scope.row.enable === 0 ? "Enable" : "Disable" }}</m-button>
           </template>
         </el-table-column>
       </el-table>
-      <create-firewall-Rule-modal
-        :title="title"
-        :isCreate="isCreate"
-        :param="param"
-        :visible="visible"
-        v-if="visible"
-        :modal-type="type"
-        :isGroup="isGroup"
-        @close="
+      <create-firewall-Rule-modal :title="title" :isCreate="isCreate" :param="param" :visible="visible" v-if="visible"
+        :modal-type="type" :isGroup="isGroup" @close="
           visible = false;
-          queryFireWallList();
-        "
-      ></create-firewall-Rule-modal>
+        queryFireWallList();
+        "></create-firewall-Rule-modal>
     </div>
   </page-template>
 </template>
@@ -151,10 +96,10 @@ export default {
         type === "create"
           ? "Add: Rule"
           : type === "copy"
-          ? "Copy: Rule"
-          : type === "edit"
-          ? "Edit: Rule"
-          : "Add: Security Group";
+            ? "Copy: Rule"
+            : type === "edit"
+              ? "Edit: Rule"
+              : "Add: Security Group";
       this.param = type === "create" ? {} : this.selectedList[0];
       this.visible = true;
       debugger;
@@ -188,14 +133,17 @@ export default {
   padding: 10px 0px;
   border-top: 1px solid #c4d6ec;
   border-bottom: 1px solid #c4d6ec;
+
   &__item {
     flex: 1 1 auto;
     display: flex;
   }
+
   &__title {
     flex: 1 1 auto;
     display: inline-flex;
   }
+
   &__desc {
     flex: 1 1 auto;
     display: inline-flex;

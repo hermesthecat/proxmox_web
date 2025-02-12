@@ -10,9 +10,10 @@
               <m-input type="number" prop="id" label="CT/VM ID" labelWidth="100px" min="100" validateEvent
                 @validate="validate" required :show-error="rules.id.error" :error-msg="rules.id.message" v-model="id"
                 :disabled="true" placeholder="Please enter CT/VM ID" />
-              <m-select type="multiple" prop="target" label="Target" labelWidth="100px" validateEvent :disabled="!isCreate"
-                @validate="validate" required :show-error="rules.target.error" :error-msg="rules.target.message"
-                :readonly="false" @on-change="handleNodeSelect" v-model="target" placeholder="Please select target">
+              <m-select type="multiple" prop="target" label="Target" labelWidth="100px" validateEvent
+                :disabled="!isCreate" @validate="validate" required :show-error="rules.target.error"
+                :error-msg="rules.target.message" :readonly="false" @on-change="handleNodeSelect" v-model="target"
+                placeholder="Please select target">
                 <m-option v-for="(item, index) in nodeList" :key="item.node" :label="item.node" :value="item.node">
                   <div class="table-tr" v-if="index === 0">
                     <div class="table-td">Node</div>
@@ -24,16 +25,16 @@
                       item.node
                     }}</span>
                     <span class="table-td" :title="item.mum && item.maxmem
-                        ? percentToFixed(item.mem / item.maxmem, 3)
-                        : 0
+                      ? percentToFixed(item.mem / item.maxmem, 3)
+                      : 0
                       ">{{
                         item.mum && item.maxmem
                           ? percentToFixed(item.mem / item.maxmem, 3)
                           : 0
                       }}</span>
                     <span class="table-td" :title="item.cpu && item.maxcpu
-                        ? `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
-                        : ''
+                      ? `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
+                      : ''
                       ">{{
                         item.cpu && item.maxcpu
                           ? `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`

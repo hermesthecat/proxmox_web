@@ -12,12 +12,8 @@
             <router-view />
           </div>
         </div>
-        <div
-          class="m-scroll-bar"
-          v-show="showScrollbar"
-          :style="{ top: scrollTop + 'px', height: scrollLength + 'px' }"
-          @mousedown="onScrollBarMouseDown($event)"
-        ></div>
+        <div class="m-scroll-bar" v-show="showScrollbar" :style="{ top: scrollTop + 'px', height: scrollLength + 'px' }"
+          @mousedown="onScrollBarMouseDown($event)"></div>
       </div>
     </div>
   </transition>
@@ -83,6 +79,7 @@ export default {
 .transition-enter {
   transition: all 0.5s ease-in;
 }
+
 .content {
   height: 100%;
 }

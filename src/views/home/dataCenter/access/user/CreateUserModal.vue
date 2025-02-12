@@ -1,98 +1,35 @@
 <template>
-  <Dialog
-    :visible="visible"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" :title="title" :_style="{ width: '956px' }" @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
-      <div
-        class="m-form__content"
-        v-if="['create', 'edit'].includes(modalType)"
-      >
+      <div class="m-form__content" v-if="['create', 'edit'].includes(modalType)">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
-              <m-input
-                type="text"
-                prop="username"
-                labelWidth="100px"
-                label="用户名"
-                v-model="username"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules.username.error"
-                :error-msg="rules.username.message"
-                :disabled="modalType !== 'create'"
-                placeholder="请输入用户名"
-              />
-              <m-input
-                type="text"
-                prop="lastname"
-                labelWidth="100px"
-                label="名"
-                v-model="lastname"
-                placeholder="请输入名"
-              />
-              <m-select
-                prop="realm"
-                label="领域"
-                labelWidth="100px"
-                @on-change="handleRealmSelect"
-                v-model="realm"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules.realm.error"
-                :error-msg="rules.realm.message"
-                :readonly="false"
-                placeholder="请选择领域"
-              >
-                <m-option
-                  v-for="item in realmList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-input type="text" prop="username" labelWidth="100px" label="Username" v-model="username" validateEvent
+                @validate="validate" required :show-error="rules.username.error" :error-msg="rules.username.message"
+                :disabled="modalType !== 'create'" placeholder="Please enter username" />
+              <m-input type="text" prop="lastname" labelWidth="100px" label="First Name" v-model="lastname"
+                placeholder="Please enter first name" />
+              <m-select prop="realm" label="Realm" labelWidth="100px" @on-change="handleRealmSelect" v-model="realm"
+                validateEvent @validate="validate" required :show-error="rules.realm.error"
+                :error-msg="rules.realm.message" :readonly="false" placeholder="Please select realm">
+                <m-option v-for="item in realmList" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
-              <m-input
-                type="text"
-                prop="firstname"
-                labelWidth="100px"
-                label="姓"
-                v-model="firstname"
-                placeholder="请输入姓"
-              />
-              <m-select
-                type="multiple"
-                prop="groups"
-                label="组"
-                labelWidth="100px"
-                @on-change="handleGroupSelect"
-                v-model="groups"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules.groups.error"
-                :error-msg="rules.groups.message"
-                :readonly="false"
-                placeholder="请选择组"
-              >
-                <m-option
-                  v-for="(item, index) in db.groupsList"
-                  :key="item.groupid"
-                  :label="item.groupid"
-                  :value="item.groupid"
-                >
+              <m-input type="text" prop="firstname" labelWidth="100px" label="Last Name" v-model="firstname"
+                placeholder="Please enter last name" />
+              <m-select type="multiple" prop="groups" label="Groups" labelWidth="100px" @on-change="handleGroupSelect"
+                v-model="groups" validateEvent @validate="validate" required :show-error="rules.groups.error"
+                :error-msg="rules.groups.message" :readonly="false" placeholder="Please select groups">
+                <m-option v-for="(item, index) in db.groupsList" :key="item.groupid" :label="item.groupid"
+                  :value="item.groupid">
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
-                        <span class="table-td">组</span>
-                        <span class="table-td">备注</span>
-                        <span class="table-td">用户</span>
+                        <span class="table-td">Group</span>
+                        <span class="table-td">Comment</span>
+                        <span class="table-td">Users</span>
                       </div>
                     </template>
                     <div class="table-tr">
@@ -109,60 +46,25 @@
                   </div>
                 </m-option>
               </m-select>
-              <m-input
-                type="text"
-                prop="email"
-                labelWidth="100px"
-                label="E-Mail"
-                v-model="email"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules.email.error"
-                :error-msg="rules.email.message"
-                placeholder="请输入Email"
-              />
-              <m-input
-                prop="comment"
-                labelWidth="100px"
-                :__conStyle="{ width: '202px' }"
-                label="选择日期"
-              >
+              <m-input type="text" prop="email" labelWidth="100px" label="E-Mail" v-model="email" validateEvent
+                @validate="validate" required :show-error="rules.email.error" :error-msg="rules.email.message"
+                placeholder="Please enter email" />
+              <m-input prop="comment" labelWidth="100px" :__conStyle="{ width: '202px' }" label="Select Date">
                 <template slot="other">
-                  <el-date-picker
-                    v-model="expire"
-                    type="date"
-                    placeholder="永久有效"
-                  >
+                  <el-date-picker v-model="expire" type="date" placeholder="Never Expires">
                   </el-date-picker>
                 </template>
               </m-input>
-              <m-input
-                type="textarea"
-                prop="comment"
-                labelWidth="100px"
-                label="备注"
-                v-model="comment"
-                placeholder="请输入备注"
-              />
-              <m-checkbox
-                label="已启用"
-                v-model="enable"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-input type="textarea" prop="comment" labelWidth="100px" label="Comment" v-model="comment"
+                placeholder="Please enter comment" />
+              <m-checkbox label="Enabled" v-model="enable" labelWidth="100px"></m-checkbox>
             </dd>
           </dl>
           <dl v-if="isAdvice">
-            <dt>高级</dt>
+            <dt>Advanced</dt>
             <dd>
-              <m-input
-                type="textarea"
-                prop="keys"
-                labelWidth="100px"
-                label="Key IDs"
-                v-model="keys"
-                placeholder="请输入Key IDs"
-              />
+              <m-input type="textarea" prop="keys" labelWidth="100px" label="Key IDs" v-model="keys"
+                placeholder="Please enter Key IDs" />
             </dd>
           </dl>
         </div>
@@ -170,34 +72,14 @@
       <div class="m-form_content" v-else-if="modalType === 'modifyPsw'">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
-              <m-input
-                type="password"
-                prop="password"
-                labelWidth="100px"
-                label="密码"
-                v-model="password"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules.password.error"
-                :error-msg="rules.password.message"
-                placeholder="请输入密码"
-              />
-              <m-input
-                type="password"
-                prop="confirmPsw"
-                labelWidth="100px"
-                label="确认密码"
-                v-model="confirmPsw"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules.confirmPsw.error"
-                :error-msg="rules.confirmPsw.message"
-                placeholder="请输入确认密码"
-              />
+              <m-input type="password" prop="password" labelWidth="100px" label="Password" v-model="password"
+                validateEvent @validate="validate" required :show-error="rules.password.error"
+                :error-msg="rules.password.message" placeholder="Please enter password" />
+              <m-input type="password" prop="confirmPsw" labelWidth="100px" label="Confirm Password"
+                v-model="confirmPsw" validateEvent @validate="validate" required :show-error="rules.confirmPsw.error"
+                :error-msg="rules.confirmPsw.message" placeholder="Please confirm password" />
             </dd>
           </dl>
         </div>
@@ -210,76 +92,36 @@
         <div v-show="tfa_type === 'totp'">
           <div class="m-form__section">
             <dl>
-              <dt>基本信息</dt>
+              <dt>Basic Information</dt>
               <dd>
-                <m-input
-                  type="text"
-                  prop="username"
-                  labelWidth="100px"
-                  label="用户名"
-                  v-model="username"
-                  :disabled="true"
-                  placeholder="请输入用户名"
-                />
-                <m-input
-                  type="text"
-                  prop="issuer"
-                  labelWidth="100px"
-                  label="发行者名称"
-                  v-model="issuer"
-                  placeholder="请输入发行者名称"
-                />
-                <m-input
-                  type="text"
-                  prop="secret"
-                  labelWidth="100px"
-                  label="Secret"
-                  v-model="secret"
-                  validateEvent
-                  @validate="validate"
-                  :show-error="rules.secret.error"
-                  :error-msg="rules.secret.message"
-                  placeholder="请输入Secret"
-                />
-                <m-button type="primary" @on-click="randomizeSecret"
-                  >随机化</m-button
-                >
-                <div
-                  id="canvas"
-                  style="margin: 0 auto; padding-bottom: 20px; width: 345px"
-                ></div>
-                <m-input
-                  type="text"
-                  prop="challenge"
-                  labelWidth="100px"
-                  label="验证码"
-                  v-model="challenge"
-                  validateEvent
-                  @validate="validate"
-                  required
-                  :show-error="rules.challenge.error"
-                  :error-msg="rules.challenge.message"
-                  placeholder="请输入验证码"
-                />
+                <m-input type="text" prop="username" labelWidth="100px" label="Username" v-model="username"
+                  :disabled="true" placeholder="Please enter username" />
+                <m-input type="text" prop="issuer" labelWidth="100px" label="Issuer Name" v-model="issuer"
+                  placeholder="Please enter issuer name" />
+                <m-input type="text" prop="secret" labelWidth="100px" label="Secret" v-model="secret" validateEvent
+                  @validate="validate" :show-error="rules.secret.error" :error-msg="rules.secret.message"
+                  placeholder="Please enter secret" />
+                <m-button type="primary" @on-click="randomizeSecret">Randomize</m-button>
+                <div id="canvas" style="margin: 0 auto; padding-bottom: 20px; width: 345px"></div>
+                <m-input type="text" prop="challenge" labelWidth="100px" label="Challenge" v-model="challenge"
+                  validateEvent @validate="validate" required :show-error="rules.challenge.error"
+                  :error-msg="rules.challenge.message" placeholder="Please enter challenge" />
               </dd>
             </dl>
           </div>
         </div>
         <div v-show="tfa_type == 'uf2'">
-          要注册U2F设备，请连接设备，然后单击按钮并按照说明进行操作。
+          To register a U2F device, please connect the device, then click the button and follow the instructions.
         </div>
       </div>
       <div class="m-form_content" v-else>
         <el-tree :data="permissionTreeData">
-          <span
-            slot-scope="{ node, data }"
-            style="display: flex; flex-grow: 1; justify-content: space-between"
-          >
+          <span slot-scope="{ node, data }" style="display: flex; flex-grow: 1; justify-content: space-between">
             <div>
               <i :class="data.icon"></i>
               <span>{{ node.label }}</span>
             </div>
-            <div v-if="data.value">{{ data.value === 1 ? "是" : "否" }}</div>
+            <div v-if="data.value">{{ data.value === 1 ? "Yes" : "No" }}</div>
           </span>
         </el-tree>
       </div>
@@ -289,44 +131,22 @@
         <div class="label_box" v-if="modalType === 'create'">
           <label>
             <input type="checkbox" v-model="isAdvice" />
-            <div>高级</div>
+            <div>Advanced</div>
           </label>
         </div>
-        <m-button
-          v-if="modalType === 'modifyPsw'"
-          class="create-btn"
-          type="danger"
-          @on-click="close"
-          >取消</m-button
-        >
-        <m-button
-          v-if="modalType === 'tfa' && tfa_type === 'uf2'"
-          class="create-btn"
-          type="primary"
-          @on-click="registerUf2"
-          >注册uf2设备</m-button
-        >
-        <m-button
-          v-if="modalType === 'tfa' && tfa_type === 'totp'"
-          class="create-btn"
-          type="primary"
-          @on-click="apply"
-          >应用</m-button
-        >
-        <m-button
-          class="create-btn"
-          type="primary"
-          v-show="modalType !== 'permission'"
-          @on-click="confirm"
-          :disabled="modalType === 'tfa' && !canDeleteTFA()"
-          >{{
+        <m-button v-if="modalType === 'modifyPsw'" class="create-btn" type="danger" @on-click="close">Cancel</m-button>
+        <m-button v-if="modalType === 'tfa' && tfa_type === 'uf2'" class="create-btn" type="primary"
+          @on-click="registerUf2">Register UF2 Device</m-button>
+        <m-button v-if="modalType === 'tfa' && tfa_type === 'totp'" class="create-btn" type="primary"
+          @on-click="apply">Apply</m-button>
+        <m-button class="create-btn" type="primary" v-show="modalType !== 'permission'" @on-click="confirm"
+          :disabled="modalType === 'tfa' && !canDeleteTFA()">{{
             modalType === "create"
-              ? "创建"
+              ? "Create"
               : modalType === "tfa"
-              ? "删除"
-              : "确定"
-          }}</m-button
-        >
+                ? "Delete"
+                : "Confirm"
+          }}</m-button>
       </template>
     </template>
   </Dialog>
@@ -516,17 +336,17 @@ export default {
       _this.qrcode.clear();
       _this.qrcode.makeCode(
         "otpauth://totp/" +
-          encodeURIComponent(_this.param.userid) +
-          "?secret=" +
-          _this.secret +
-          "&period=" +
-          this.step +
-          "&digits=" +
-          this.digits +
-          "&algorithm=" +
-          algorithm +
-          "&issuer=" +
-          encodeURIComponent(_this.issuer)
+        encodeURIComponent(_this.param.userid) +
+        "?secret=" +
+        _this.secret +
+        "&period=" +
+        this.step +
+        "&digits=" +
+        this.digits +
+        "&algorithm=" +
+        algorithm +
+        "&issuer=" +
+        encodeURIComponent(_this.issuer)
       );
     },
     handlePathSelect(value) {
@@ -565,7 +385,7 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value) && prop !== "email") {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
       if (
@@ -576,19 +396,19 @@ export default {
         )
       ) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "邮箱不合法";
+        this.rules[prop].message = "Invalid email format";
         return;
       }
       if (value && ["confirmPsw", "password"].includes(prop)) {
         if (this.confirmPsw !== this.password && prop !== "password") {
           this.rules[prop].error = true;
-          this.rules[prop].message = "两次输入密码不一致!";
+          this.rules[prop].message = "Passwords do not match!";
           return;
         }
       }
       if (value && prop === "secret" && !/^[A-Z2-7=]+$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "必须是 base32 [A-Z2-7=]";
+        this.rules[prop].message = "Must be base32 [A-Z2-7=]";
         return;
       }
     },
@@ -645,7 +465,7 @@ export default {
         );
       }
     },
-    //注册uf2设备
+    //Register UF2 device
     registerUf2() {
       this.updateTfa({ userid: this.param.userid, action: "new" }).catch(
         (res) => {
@@ -654,15 +474,15 @@ export default {
               msg: res,
               type: "error",
             })
-            .then(() => {})
-            .catch(() => {});
+            .then(() => { })
+            .catch(() => { });
         }
       );
     },
     canDeleteTFA() {
       return this.tfa_type !== null && this.tfa_required;
     },
-    //应用
+    //Apply
     apply() {
       if (this.validateAll()) return;
       let param = {
@@ -678,8 +498,8 @@ export default {
             msg: res,
             type: "error",
           })
-          .then(() => {})
-          .catch(() => {});
+          .then(() => { })
+          .catch(() => { });
       });
     },
     validateAll() {
@@ -744,8 +564,8 @@ export default {
               msg: res,
               type: "error",
             })
-            .then(() => {})
-            .catch(() => {});
+            .then(() => { })
+            .catch(() => { });
         });
       }
     },
@@ -768,9 +588,11 @@ export default {
   display: inline-block;
   line-height: 43px;
 }
+
 .m-tree-icon-parent:not(.m-tree-icon-custom):before {
   content: "\f114";
 }
+
 .expanded.el-tree-node__expand-icon {
   -webkit-transform: rotate(0deg) !important;
   transform: rotate(0deg) !important;

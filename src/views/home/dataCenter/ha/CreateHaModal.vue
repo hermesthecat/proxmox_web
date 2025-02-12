@@ -1,39 +1,17 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @cancel="close"
-    @confirm="confirm"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" @cancel="close" @confirm="confirm" :title="title" :_style="{ width: '956px' }"
+    @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-select
-                prop="vmid"
-                label="VM"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.vmid.error"
-                :error-msg="rules.vmid.message"
-                :readonly="false"
-                @on-change="handleVmidSelect"
-                required
-                v-model="vmid"
-                :disabled="!isCreate"
-                placeholder="Please select VM"
-              >
-                <m-option
-                  v-for="(item, index) in vmList"
-                  :key="item.vmid"
-                  :label="item.vmid"
-                  :value="item.vmid"
-                >
+              <m-select prop="vmid" label="VM" labelWidth="100px" validateEvent @validate="validate"
+                :show-error="rules.vmid.error" :error-msg="rules.vmid.message" :readonly="false"
+                @on-change="handleVmidSelect" required v-model="vmid" :disabled="!isCreate"
+                placeholder="Please select VM">
+                <m-option v-for="(item, index) in vmList" :key="item.vmid" :label="item.vmid" :value="item.vmid">
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
@@ -55,37 +33,22 @@
                         {{ item.node }}
                       </span>
                       <span class="table-td">
-                        <table-info-state
-                          :content="item.status"
-                          :state="
-                            item.status === 'stopped'
-                              ? 'unActived'
-                              : item.status === 'unknown'
+                        <table-info-state :content="item.status" :state="item.status === 'stopped'
+                            ? 'unActived'
+                            : item.status === 'unknown'
                               ? 'unknown'
                               : 'actived'
-                          "
-                        ></table-info-state>
+                          "></table-info-state>
                       </span>
                       <span class="table-td" :title="'Virtual Machine'">Virtual Machine</span>
                     </div>
                   </div>
                 </m-option>
               </m-select>
-              <m-select
-                prop="group"
-                label="Group"
-                labelWidth="100px"
-                @on-change="handleGroupSelect"
-                v-model="group"
-                :readonly="false"
-                placeholder="Please select group"
-              >
-                <m-option
-                  v-for="(item, index) in db.groupsList"
-                  :key="item.group"
-                  :label="item.group"
-                  :value="item.group"
-                >
+              <m-select prop="group" label="Group" labelWidth="100px" @on-change="handleGroupSelect" v-model="group"
+                :readonly="false" placeholder="Please select group">
+                <m-option v-for="(item, index) in db.groupsList" :key="item.group" :label="item.group"
+                  :value="item.group">
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
@@ -109,63 +72,21 @@
                 </m-option>
               </m-select>
 
-              <m-input
-                type="number"
-                prop="max_restart"
-                labelWidth="100px"
-                label="Max Restart"
-                v-model="max_restart"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules.max_restart.error"
-                :error-msg="rules.max_restart.message"
-                placeholder="Please enter max restart"
-              />
-              <m-select
-                prop="state"
-                label="Request Status"
-                labelWidth="100px"
-                @on-change="handleStateSelect"
-                v-model="state"
-                :readonly="false"
-                placeholder="Please select group"
-              >
-                <m-option
-                  v-for="item in stateOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-input type="number" prop="max_restart" labelWidth="100px" label="Max Restart" v-model="max_restart"
+                validateEvent @validate="validate" required :show-error="rules.max_restart.error"
+                :error-msg="rules.max_restart.message" placeholder="Please enter max restart" />
+              <m-select prop="state" label="Request Status" labelWidth="100px" @on-change="handleStateSelect"
+                v-model="state" :readonly="false" placeholder="Please select group">
+                <m-option v-for="item in stateOptions" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
 
-              <m-input
-                type="number"
-                prop="max_relocate"
-                labelWidth="100px"
-                label="Max Relocate"
-                v-model="max_relocate"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules.max_relocate.error"
-                :error-msg="rules.max_relocate.message"
-                placeholder="Please enter max relocate"
-              />
-              <m-input
-                type="textarea"
-                prop="comment"
-                labelWidth="100px"
-                label="Comment"
-                v-model="comment"
-                placeholder="Please enter comment"
-              />
-              <div
-                class="m-alert-info"
-                style="margin-bottom: 5px"
-                v-show="state === 'disabled'"
-              >
+              <m-input type="number" prop="max_relocate" labelWidth="100px" label="Max Relocate" v-model="max_relocate"
+                validateEvent @validate="validate" required :show-error="rules.max_relocate.error"
+                :error-msg="rules.max_relocate.message" placeholder="Please enter max relocate" />
+              <m-input type="textarea" prop="comment" labelWidth="100px" label="Comment" v-model="comment"
+                placeholder="Please enter comment" />
+              <div class="m-alert-info" style="margin-bottom: 5px" v-show="state === 'disabled'">
                 Disabling the resource will stop the guest system. See the
                 online help for details.
               </div>

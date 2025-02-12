@@ -18,12 +18,14 @@ export default {
   height: 35px;
   line-height: 35px;
   position: relative;
+
   &-inner {
     display: inline-block;
     height: 100%;
     border: 1px solid #e0eaf3;
     padding-left: 5px;
   }
+
   .prefix {
     position: absolute;
     right: 10px;

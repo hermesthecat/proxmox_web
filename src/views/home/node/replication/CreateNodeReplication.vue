@@ -1,53 +1,20 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @cancel="close"
-    @confirm="confirm"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" @cancel="close" @confirm="confirm" :title="title" :_style="{ width: '956px' }"
+    @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
       <div class="m-form__content" v-if="modalType !== 'log'">
         <div class="m-form__section">
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-input
-                type="number"
-                prop="id"
-                label="CT/VM ID"
-                labelWidth="100px"
-                min="100"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.id.error"
-                :error-msg="rules.id.message"
-                v-model="id"
-                :disabled="!isCreate"
-                placeholder="Please enter CT/VM ID"
-              />
-              <m-select
-                type="multiple"
-                prop="target"
-                label="Target"
-                labelWidth="100px"
-                validateEvent
-                :disabled="!isCreate"
-                @validate="validate"
-                :show-error="rules.target.error"
-                :error-msg="rules.target.message"
-                :readonly="false"
-                @on-change="handleNodeSelect"
-                v-model="target"
-                placeholder="Please select target"
-              >
-                <m-option
-                  v-for="(item, index) in nodeList"
-                  :key="item.node"
-                  :label="item.node"
-                  :value="item.node"
-                >
+              <m-input type="number" prop="id" label="CT/VM ID" labelWidth="100px" min="100" validateEvent
+                @validate="validate" :show-error="rules.id.error" :error-msg="rules.id.message" v-model="id"
+                :disabled="!isCreate" placeholder="Please enter CT/VM ID" />
+              <m-select type="multiple" prop="target" label="Target" labelWidth="100px" validateEvent
+                :disabled="!isCreate" @validate="validate" :show-error="rules.target.error"
+                :error-msg="rules.target.message" :readonly="false" @on-change="handleNodeSelect" v-model="target"
+                placeholder="Please select target">
+                <m-option v-for="(item, index) in nodeList" :key="item.node" :label="item.node" :value="item.node">
                   <div class="table-tr" v-if="index === 0">
                     <div class="table-td">Node</div>
                     <div class="table-td">Memory</div>
@@ -57,83 +24,41 @@
                     <span class="table-td" :title="item.node">{{
                       item.node
                     }}</span>
-                    <span
-                      class="table-td"
-                      :title="
+                    <span class="table-td" :title="item.mum && item.maxmem
+                        ? percentToFixed(item.mem / item.maxmem, 3)
+                        : 0
+                      ">{{
                         item.mum && item.maxmem
                           ? percentToFixed(item.mem / item.maxmem, 3)
                           : 0
-                      "
-                      >{{
-                        item.mum && item.maxmem
-                          ? percentToFixed(item.mem / item.maxmem, 3)
-                          : 0
-                      }}</span
-                    >
-                    <span
-                      class="table-td"
-                      :title="
-                        item.cpu && item.maxcpu
-                          ? `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
-                          : ''
-                      "
-                      >{{
+                      }}</span>
+                    <span class="table-td" :title="item.cpu && item.maxcpu
+                        ? `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
+                        : ''
+                      ">{{
                         item.cpu && item.maxcpu
                           ? `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
                           : ""
-                      }}</span
-                    >
+                      }}</span>
                   </div>
                 </m-option>
               </m-select>
-              <m-select
-                prop="schedule"
-                label="Schedule"
-                labelWidth="100px"
-                @on-change="handleScheduleSelect"
-                v-model="schedule"
-                placeholder="*/15 - Every 15 minutes"
-              >
-                <m-option
-                  v-for="item in scheduleList"
-                  :key="item.value"
-                  :label="item.text"
-                  :value="item.value"
-                >
+              <m-select prop="schedule" label="Schedule" labelWidth="100px" @on-change="handleScheduleSelect"
+                v-model="schedule" placeholder="*/15 - Every 15 minutes">
+                <m-option v-for="item in scheduleList" :key="item.value" :label="item.text" :value="item.value">
                 </m-option>
               </m-select>
-              <m-input
-                type="number"
-                prop="rate"
-                label="Rate Limit (MB/s)"
-                labelWidth="100px"
-                v-model="rate"
-                placeholder="Please enter rate"
-              />
-              <m-input
-                type="textarea"
-                prop="comment"
-                labelWidth="100px"
-                label="Comment"
-                v-model="comment"
-                placeholder="Please enter comment"
-              />
-              <m-checkbox
-                label="Enable"
-                v-model="disable"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-input type="number" prop="rate" label="Rate Limit (MB/s)" labelWidth="100px" v-model="rate"
+                placeholder="Please enter rate" />
+              <m-input type="textarea" prop="comment" labelWidth="100px" label="Comment" v-model="comment"
+                placeholder="Please enter comment" />
+              <m-checkbox label="Enable" v-model="disable" labelWidth="100px"></m-checkbox>
             </dd>
           </dl>
         </div>
       </div>
       <template v-else>
-        <ace-editor
-          ref="ace-editor"
-          style="height: 300px"
-          :read-only="true"
-          v-model="logContent"
-        >
+        <ace-editor ref="ace-editor" style="height: 300px" :read-only="true" v-model="logContent">
         </ace-editor>
       </template>
     </div>
@@ -278,7 +203,7 @@ export default {
     handleDowSelect(value) {
       this.dow = value;
     },
-    validate() {},
+    validate() { },
     //Select target node
     handleNodeSelect(value) {
       this.target = value;
@@ -366,12 +291,14 @@ export default {
     border-bottom: 1px solid #ebeef5;
     cursor: pointer;
   }
+
   &-td {
     display: table-cell;
     height: 35px;
     line-height: 35px;
     max-width: 100px;
   }
+
   &-radio {
     width: 50px;
     padding-right: 20px;

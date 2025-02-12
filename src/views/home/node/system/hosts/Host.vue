@@ -1,20 +1,10 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button
-        type="primary"
-        @on-click="updateHost"
-        icon="el-icon-edit"
-        :disabled="oldContent === hostContent"
-        >Save</m-button
-      >
-      <m-button
-        type="primary"
-        @on-click="hostContent = oldContent"
-        icon="el-icon-edit"
-        :disabled="oldContent === hostContent"
-        >Reset</m-button
-      >
+      <m-button type="primary" @on-click="updateHost" icon="el-icon-edit"
+        :disabled="oldContent === hostContent">Save</m-button>
+      <m-button type="primary" @on-click="hostContent = oldContent" icon="el-icon-edit"
+        :disabled="oldContent === hostContent">Reset</m-button>
     </div>
     <div slot="page-content">
       <ace-editor v-model="hostContent" ref="ace-editor"></ace-editor>

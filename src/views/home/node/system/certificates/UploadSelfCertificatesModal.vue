@@ -1,70 +1,25 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @cancel="close"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" @cancel="close" :title="title" :_style="{ width: '956px' }" @close="$emit('close')">
     <div slot="content" style="max-height: 500px" v-if="isCreate">
       <div class="m-form__content">
         <div class="m-form__section">
-          <m-input
-            type="textarea"
-            label="Private Key"
-            v-model="key"
-            validateEvent
-            @validate="validate"
-            prop="key"
-            :show-error="rules['key'].error"
-            :error-msg="rules['key'].message"
-            :_style="{ width: '100%' }"
-            style="width: 100%; padding-left: 0px"
-            rows="5"
-            :__conStyle="{ width: '100%' }"
-          />
-          <m-button
-            type="primary"
-            icon="el-icon-upload"
-            style="position: relative"
-            >Upload from file
-            <input
-              type="file"
-              class="upload"
-              value="Please select file"
-              ref="key"
-              @change="uplodFile('key')"
-            />
+          <m-input type="textarea" label="Private Key" v-model="key" validateEvent @validate="validate" prop="key"
+            :show-error="rules['key'].error" :error-msg="rules['key'].message" :_style="{ width: '100%' }"
+            style="width: 100%; padding-left: 0px" rows="5" :__conStyle="{ width: '100%' }" />
+          <m-button type="primary" icon="el-icon-upload" style="position: relative">Upload from file
+            <input type="file" class="upload" value="Please select file" ref="key" @change="uplodFile('key')" />
           </m-button>
         </div>
       </div>
       <div class="m-form__content">
         <div class="m-form__section">
-          <m-input
-            type="textarea"
-            label="Certificate Chain"
-            :_style="{ width: '100%' }"
-            v-model="certificates"
-            validateEvent
-            @validate="validate"
-            prop="certificates"
-            :show-error="rules['certificates'].error"
-            :error-msg="rules['certificates'].message"
-            style="width: 100%; padding-left: 0px"
-            rows="5"
-            :__conStyle="{ width: '100%' }"
-          />
-          <m-button
-            type="primary"
-            style="position: relative"
-            icon="el-icon-upload"
-            >Upload from file<input
-              type="file"
-              class="upload"
-              value="Please select file"
-              ref="certificates"
-              @change="uplodFile('certificates')"
-          /></m-button>
+          <m-input type="textarea" label="Certificate Chain" :_style="{ width: '100%' }" v-model="certificates"
+            validateEvent @validate="validate" prop="certificates" :show-error="rules['certificates'].error"
+            :error-msg="rules['certificates'].message" style="width: 100%; padding-left: 0px" rows="5"
+            :__conStyle="{ width: '100%' }" />
+          <m-button type="primary" style="position: relative" icon="el-icon-upload">Upload from file<input type="file"
+              class="upload" value="Please select file" ref="certificates"
+              @change="uplodFile('certificates')" /></m-button>
         </div>
       </div>
     </div>
@@ -92,20 +47,8 @@
     </div>
     <template slot="footer">
       <template>
-        <m-button
-          class="create-btn"
-          type="primary"
-          @on-click="create"
-          v-if="isCreate"
-          >Upload</m-button
-        >
-        <m-button
-          class="create-btn"
-          type="primary"
-          @on-click="close"
-          v-if="!isCreate"
-          >Cancel</m-button
-        >
+        <m-button class="create-btn" type="primary" @on-click="create" v-if="isCreate">Upload</m-button>
+        <m-button class="create-btn" type="primary" @on-click="close" v-if="!isCreate">Cancel</m-button>
       </template>
     </template>
   </Dialog>
@@ -254,30 +197,36 @@ export default {
     width: 100%;
     padding: 20px;
   }
+
   &-tr {
     display: table-row;
     height: 35px;
     line-height: 35px;
+
     &:nth-child(2n) {
       background: #dde4ed;
     }
   }
+
   &-key,
   &-value {
     display: table-cell;
     width: 50%;
   }
 }
+
 .checkbox {
   margin-bottom: 20px;
   margin-right: 10px;
   display: inline-block;
   vertical-align: -webkit-baseline-middle;
 }
+
 .m-button {
   height: 33px;
   line-height: 28px;
 }
+
 .create-btn {
   width: 100px;
   height: 42px;

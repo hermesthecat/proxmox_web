@@ -1,22 +1,14 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @close="close()"
-    @confirm="confirm"
-    @cancel="cancel"
-    cancelText="Reset"
-    :_style="{
-      width: '100%',
-      height: 'calc(100%)',
-      position: 'absolute',
-      top: '0',
-      left: '0',
-      right: '0',
-      bottom: '0',
-      'overflow-y': 'clip',
-    }"
-    title="Create Virtual Machine"
-  >
+  <Dialog :visible="visible" @close="close()" @confirm="confirm" @cancel="cancel" cancelText="Reset" :_style="{
+    width: '100%',
+    height: 'calc(100%)',
+    position: 'absolute',
+    top: '0',
+    left: '0',
+    right: '0',
+    bottom: '0',
+    'overflow-y': 'clip',
+  }" title="Create Virtual Machine">
     <template slot="content">
       <div>
         <!--Step indicator-->
@@ -37,51 +29,17 @@
           <dl>
             <dd>
               <!--Input component validateEvent indicates validation is required, show-error indicates whether validation passed; error-msg shows validation failure message; validate for validation; v-modal for input value-->
-              <m-input
-                v-model="hostname"
-                prop="hostname"
-                label="Hostname"
-                labelWidth="100px"
-                validateEvent
-                :show-error="rules['hostname'].error"
-                :error-msg="rules['hostname'].message"
-                @validate="validate"
-                placeholder="Please enter name"
-              />
-              <m-input
-                v-model="vmid"
-                type="number"
-                prop="vmid"
-                label="CT ID"
-                labelWidth="100px"
-                validateEvent
-                required
-                :show-error="rules['vmid'].error"
-                :error-msg="rules['vmid'].message"
-                @validate="validate"
-                placeholder="Please enter ID"
-              />
+              <m-input v-model="hostname" prop="hostname" label="Hostname" labelWidth="100px" validateEvent
+                :show-error="rules['hostname'].error" :error-msg="rules['hostname'].message" @validate="validate"
+                placeholder="Please enter name" />
+              <m-input v-model="vmid" type="number" prop="vmid" label="CT ID" labelWidth="100px" validateEvent required
+                :show-error="rules['vmid'].error" :error-msg="rules['vmid'].message" @validate="validate"
+                placeholder="Please enter ID" />
 
-              <m-select
-                prop="nodename"
-                label="Node"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.nodename.error"
-                :error-msg="rules.nodename.message"
-                :readonly="false"
-                required
-                @on-change="(value) => (nodename = value)"
-                v-model="nodename"
-                placeholder="Please select node"
-              >
-                <m-option
-                  v-for="(item, index) in nodeList"
-                  :key="item.node"
-                  :label="item.node"
-                  :value="item.node"
-                >
+              <m-select prop="nodename" label="Node" labelWidth="100px" validateEvent @validate="validate"
+                :show-error="rules.nodename.error" :error-msg="rules.nodename.message" :readonly="false" required
+                @on-change="(value) => (nodename = value)" v-model="nodename" placeholder="Please select node">
+                <m-option v-for="(item, index) in nodeList" :key="item.node" :label="item.node" :value="item.node">
                   <div v-if="index === 0" class="table-tr">
                     <div class="table-td">Node</div>
                     <div class="table-td">Memory Usage</div>
@@ -91,55 +49,31 @@
                     <span class="table-td" :title="item.node">{{
                       item.node
                     }}</span>
-                    <span
-                      class="table-td"
-                      :title="
+                    <span class="table-td" :title="item.mem &&
+                      item.maxmem &&
+                      percentToFixed(item.mem / item.maxmem, 3)
+                      ">{{
                         item.mem &&
                         item.maxmem &&
                         percentToFixed(item.mem / item.maxmem, 3)
-                      "
-                      >{{
-                        item.mem &&
-                        item.maxmem &&
-                        percentToFixed(item.mem / item.maxmem, 3)
-                      }}</span
-                    >
-                    <span
-                      class="table-td"
-                      :title="
+                      }}</span>
+                    <span class="table-td" :title="item.cpu &&
+                      item.maxcpu &&
+                      `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
+                      ">{{
                         item.cpu &&
                         item.maxcpu &&
                         `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
-                      "
-                      >{{
-                        item.cpu &&
-                        item.maxcpu &&
-                        `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
-                      }}</span
-                    >
+                      }}</span>
                   </div>
                 </m-option>
               </m-select>
 
-              <m-select
-                prop="pool"
-                label="Resource Pool"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.pool.error"
-                :error-msg="rules.pool.message"
-                :readonly="false"
-                @on-change="(value) => (pool = value)"
-                v-model="pool"
-                placeholder="Please select node"
-              >
-                <m-option
-                  v-for="(item, index) in poolList"
-                  :key="item.poolid"
-                  :label="item.poolid"
-                  :value="item.poolid"
-                >
+              <m-select prop="pool" label="Resource Pool" labelWidth="100px" validateEvent @validate="validate"
+                :show-error="rules.pool.error" :error-msg="rules.pool.message" :readonly="false"
+                @on-change="(value) => (pool = value)" v-model="pool" placeholder="Please select node">
+                <m-option v-for="(item, index) in poolList" :key="item.poolid" :label="item.poolid"
+                  :value="item.poolid">
                   <div v-if="index === 0" class="table-tr">
                     <div class="table-td">Pool</div>
                     <div class="table-td">Description</div>
@@ -155,59 +89,23 @@
                 </m-option>
               </m-select>
 
-              <m-input
-                v-model="password"
-                type="password"
-                prop="password"
-                label="Password"
-                labelWidth="100px"
-                validateEvent
-                :show-error="rules['password'].error"
-                :error-msg="rules['password'].message"
-                @validate="validate"
-                placeholder="Please enter password"
-              />
+              <m-input v-model="password" type="password" prop="password" label="Password" labelWidth="100px"
+                validateEvent :show-error="rules['password'].error" :error-msg="rules['password'].message"
+                @validate="validate" placeholder="Please enter password" />
 
-              <m-input
-                v-model="vPsw"
-                type="password"
-                prop="vPsw"
-                label="Confirm Password"
-                labelWidth="100px"
-                validateEvent
-                :show-error="rules['vPsw'].error"
-                :error-msg="rules['vPsw'].message"
-                @validate="validate"
-                placeholder="Please confirm password"
-              />
+              <m-input v-model="vPsw" type="password" prop="vPsw" label="Confirm Password" labelWidth="100px"
+                validateEvent :show-error="rules['vPsw'].error" :error-msg="rules['vPsw'].message" @validate="validate"
+                placeholder="Please confirm password" />
 
-              <m-input
-                v-model="ssh"
-                type="text"
-                prop="ssh"
-                label="SSH Public Key"
-                labelWidth="100px"
-                validateEvent
-                :show-error="rules['ssh'].error"
-                :error-msg="rules['ssh'].message"
-                @validate="validate"
-                placeholder="Please enter SSH public key"
-              />
+              <m-input v-model="ssh" type="text" prop="ssh" label="SSH Public Key" labelWidth="100px" validateEvent
+                :show-error="rules['ssh'].error" :error-msg="rules['ssh'].message" @validate="validate"
+                placeholder="Please enter SSH public key" />
               <m-button type="primary" style="position: relative">
-                <input
-                  type="file"
-                  ref="uploadFile"
-                  @change="uploadSsh"
-                  class="upload-input"
-                />
+                <input type="file" ref="uploadFile" @change="uploadSsh" class="upload-input" />
                 Load SSH Key File
               </m-button>
 
-              <m-checkbox
-                v-model="unprivileged"
-                label="Unprivileged Container"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-checkbox v-model="unprivileged" label="Unprivileged Container" labelWidth="100px"></m-checkbox>
             </dd>
           </dl>
         </div>
@@ -217,26 +115,11 @@
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-select
-                prop="storage"
-                label="Storage"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules.storage.error"
-                :error-msg="rules.storage.message"
-                :readonly="false"
-                @on-change="handleStorageSelect"
-                v-model="storage"
-                placeholder="Please select node"
-              >
-                <m-option
-                  v-for="(item, index) in storageList"
-                  :key="item.storage"
-                  :label="item.storage"
-                  :value="item.storage"
-                >
+              <m-select prop="storage" label="Storage" labelWidth="100px" validateEvent @validate="validate" required
+                :show-error="rules.storage.error" :error-msg="rules.storage.message" :readonly="false"
+                @on-change="handleStorageSelect" v-model="storage" placeholder="Please select node">
+                <m-option v-for="(item, index) in storageList" :key="item.storage" :label="item.storage"
+                  :value="item.storage">
                   <div v-if="index === 0" class="table-tr">
                     <div class="table-td">Name</div>
                     <div class="table-td">Type</div>
@@ -260,52 +143,28 @@
                 </m-option>
               </m-select>
 
-              <m-select
-                prop="tmpl"
-                label="Template"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.tmpl.error"
-                :error-msg="rules.tmpl.message"
-                required
-                :readonly="false"
-                @on-change="(value) => (tmpl = value)"
-                v-model="tmpl"
-                placeholder="Please select disk image"
-              >
-                <m-option
-                  v-for="(item, index) in isoList"
-                  :key="
-                    item.volid &&
+              <m-select prop="tmpl" label="Template" labelWidth="100px" validateEvent @validate="validate"
+                :show-error="rules.tmpl.error" :error-msg="rules.tmpl.message" required :readonly="false"
+                @on-change="(value) => (tmpl = value)" v-model="tmpl" placeholder="Please select disk image">
+                <m-option v-for="(item, index) in isoList" :key="item.volid &&
+                  item.volid.replace(/([\s\S]*)\/([\s\S]*)$/, '$2')
+                  " :label="item.volid &&
                     item.volid.replace(/([\s\S]*)\/([\s\S]*)$/, '$2')
-                  "
-                  :label="
-                    item.volid &&
+                    " :value="item.volid &&
                     item.volid.replace(/([\s\S]*)\/([\s\S]*)$/, '$2')
-                  "
-                  :value="
-                    item.volid &&
-                    item.volid.replace(/([\s\S]*)\/([\s\S]*)$/, '$2')
-                  "
-                >
+                    ">
                   <div v-if="index === 0" class="table-tr">
                     <div class="table-td">Name</div>
                     <div class="table-td">Format</div>
                     <div class="table-td">Size</div>
                   </div>
                   <div class="table-tr">
-                    <span
-                      class="table-td"
-                      :title="
-                        item.volid &&
-                        item.volid.replace(/([\s\S]*)\/([\s\S]*)$/, '$2')
-                      "
-                      >{{
+                    <span class="table-td" :title="item.volid &&
+                      item.volid.replace(/([\s\S]*)\/([\s\S]*)$/, '$2')
+                      ">{{
                         item.volid &&
                         item.volid.replace(/([\s\S]*)\/([\s\S]*)$/, "$2")
-                      }}</span
-                    >
+                      }}</span>
                     <span class="table-td" :title="item.format">{{
                       item.format
                     }}</span>
@@ -325,27 +184,13 @@
           <dl>
             <dt>GPU</dt>
             <dd>
-              <m-select
-                prop="rootStorage"
-                label="Storage"
-                labelWidth="100px"
-                @on-change="(value) => (rootStorage = value)"
-                v-model="rootStorage"
-                validateEvent
-                @validate="validate"
-                :error-msg="rules['rootStorage'].message"
-                :show-error="rules['rootStorage'].error"
-                required
-                :readonly="false"
-                placeholder="Please select storage"
-              >
+              <m-select prop="rootStorage" label="Storage" labelWidth="100px"
+                @on-change="(value) => (rootStorage = value)" v-model="rootStorage" validateEvent @validate="validate"
+                :error-msg="rules['rootStorage'].message" :show-error="rules['rootStorage'].error" required
+                :readonly="false" placeholder="Please select storage">
                 <div class="table">
-                  <m-option
-                    v-for="(item, index) in rootStorageList"
-                    :key="item.storage"
-                    :value="item.storage"
-                    :label="item.storage"
-                  >
+                  <m-option v-for="(item, index) in rootStorageList" :key="item.storage" :value="item.storage"
+                    :label="item.storage">
                     <div v-if="index === 0" class="table-tr">
                       <div class="table-td">Name</div>
                       <div class="table-td">Type</div>
@@ -369,20 +214,9 @@
                   </m-option>
                 </div>
               </m-select>
-              <m-input
-                type="number"
-                labelWidth="100px"
-                label="Disk Size (GiB)"
-                v-model="size"
-                :max="131072"
-                validateEvent
-                @validate="validate"
-                prop="size"
-                :min="1"
-                required
-                :error-msg="rules['size'].message"
-                :show-error="rules['size'].error"
-              />
+              <m-input type="number" labelWidth="100px" label="Disk Size (GiB)" v-model="size" :max="131072"
+                validateEvent @validate="validate" prop="size" :min="1" required :error-msg="rules['size'].message"
+                :show-error="rules['size'].error" />
             </dd>
           </dl>
         </div>
@@ -390,47 +224,17 @@
           <dl>
             <dt>Advanced</dt>
             <dd>
-              <m-checkbox
-                v-model="quota"
-                label="Enable Quota"
-                :disabled="!isQuota()"
-                labelWidth="100px"
-              />
-              <m-select
-                v-model="acl"
-                prop="acl"
-                @on-change="(value) => (acl = value)"
-                placeholder="Please enter disk image"
-                label="ACLs"
-                labelWidth="100px"
-              >
-                <m-option
-                  v-for="item in aclsItems"
-                  :key="item.value"
-                  :value="item.value"
-                  :label="item.label"
-                ></m-option>
+              <m-checkbox v-model="quota" label="Enable Quota" :disabled="!isQuota()" labelWidth="100px" />
+              <m-select v-model="acl" prop="acl" @on-change="(value) => (acl = value)"
+                placeholder="Please enter disk image" label="ACLs" labelWidth="100px">
+                <m-option v-for="item in aclsItems" :key="item.value" :value="item.value"
+                  :label="item.label"></m-option>
               </m-select>
-              <m-checkbox
-                v-model="replicate"
-                label="Skip Replication"
-                labelWidth="100px"
-              />
-              <m-select
-                v-model="mountoptions"
-                type="multiple"
-                prop="mountoptions"
-                @on-change="(value) => (mountoptions = value)"
-                placeholder="Select mount options"
-                label="Mount Options"
-                labelWidth="100px"
-              >
-                <m-option
-                  v-for="item in munteoptionsItems"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-checkbox v-model="replicate" label="Skip Replication" labelWidth="100px" />
+              <m-select v-model="mountoptions" type="multiple" prop="mountoptions"
+                @on-change="(value) => (mountoptions = value)" placeholder="Select mount options" label="Mount Options"
+                labelWidth="100px">
+                <m-option v-for="item in munteoptionsItems" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
             </dd>
@@ -443,20 +247,9 @@
           <dl>
             <dt>CPU</dt>
             <dd>
-              <m-input
-                type="number"
-                v-model="cores"
-                prop="cores"
-                :min="0"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules['cores'].error"
-                :error-msg="rules['cores'].message"
-                placeholder="Please enter number of cores"
-                label="Cores"
-                labelWidth="100px"
-              />
+              <m-input type="number" v-model="cores" prop="cores" :min="0" validateEvent @validate="validate" required
+                :show-error="rules['cores'].error" :error-msg="rules['cores'].message"
+                placeholder="Please enter number of cores" label="Cores" labelWidth="100px" />
             </dd>
           </dl>
         </div>
@@ -464,34 +257,12 @@
         <div class="m-margin-top-10 m-form__section" v-if="isAdvice">
           <dt>Advanced</dt>
           <dd>
-            <m-input
-              type="number"
-              v-model="cpulimit"
-              prop="cpulimit"
-              :min="0"
-              validateEvent
-              @validate="validate"
-              required
-              :show-error="rules['cpulimit'].error"
-              :error-msg="rules['cpulimit'].message"
-              placeholder="Please enter CPU limit"
-              label="CPU Limit"
-              labelWidth="100px"
-            />
-            <m-input
-              type="number"
-              v-model="cpuunits"
-              prop="cpuunits"
-              :min="8"
-              validateEvent
-              @validate="validate"
-              required
-              :show-error="rules['cpuunits'].error"
-              :error-msg="rules['cpuunits'].message"
-              placeholder="Please enter CPU weight"
-              label="CPU Weight"
-              labelWidth="100px"
-            />
+            <m-input type="number" v-model="cpulimit" prop="cpulimit" :min="0" validateEvent @validate="validate"
+              required :show-error="rules['cpulimit'].error" :error-msg="rules['cpulimit'].message"
+              placeholder="Please enter CPU limit" label="CPU Limit" labelWidth="100px" />
+            <m-input type="number" v-model="cpuunits" prop="cpuunits" :min="8" validateEvent @validate="validate"
+              required :show-error="rules['cpuunits'].error" :error-msg="rules['cpuunits'].message"
+              placeholder="Please enter CPU weight" label="CPU Weight" labelWidth="100px" />
           </dd>
         </div>
       </div>
@@ -502,34 +273,12 @@
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-input
-                type="number"
-                v-model="memory"
-                prop="memory"
-                validateEvent
-                :min="16"
-                @validate="validate"
-                required
-                :show-error="rules['memory'].error"
-                :error-msg="rules['memory'].message"
-                placeholder="Please enter memory"
-                label="Memory (MiB)"
-                labelWidth="100px"
-              />
-              <m-input
-                type="number"
-                v-model="swap"
-                prop="swap"
-                validateEvent
-                @validate="validate"
-                :min="0"
-                required
-                :show-error="rules['swap'].error"
-                :error-msg="rules['swap'].message"
-                placeholder="Please enter swap"
-                label="Swap (MiB)"
-                labelWidth="100px"
-              />
+              <m-input type="number" v-model="memory" prop="memory" validateEvent :min="16" @validate="validate"
+                required :show-error="rules['memory'].error" :error-msg="rules['memory'].message"
+                placeholder="Please enter memory" label="Memory (MiB)" labelWidth="100px" />
+              <m-input type="number" v-model="swap" prop="swap" validateEvent @validate="validate" :min="0" required
+                :show-error="rules['swap'].error" :error-msg="rules['swap'].message" placeholder="Please enter swap"
+                label="Swap (MiB)" labelWidth="100px" />
             </dd>
           </dl>
         </div>
@@ -541,49 +290,19 @@
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-input
-                v-model="name"
-                prop="name"
-                label="Name"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                placeholder="Format: eth0"
-                required
-                :show-error="rules['name'].error"
-                :error-msg="rules['name'].message"
-              />
+              <m-input v-model="name" prop="name" label="Name" labelWidth="100px" validateEvent @validate="validate"
+                placeholder="Format: eth0" required :show-error="rules['name'].error"
+                :error-msg="rules['name'].message" />
 
-              <m-input
-                v-model="hwaddr"
-                prop="hwaddr"
-                label="MAC Address"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                placeholder="Format: 2A:75:78:42:45:37"
-                :show-error="rules['hwaddr'].error"
-                :error-msg="rules['hwaddr'].message"
-              />
+              <m-input v-model="hwaddr" prop="hwaddr" label="MAC Address" labelWidth="100px" validateEvent
+                @validate="validate" placeholder="Format: 2A:75:78:42:45:37" :show-error="rules['hwaddr'].error"
+                :error-msg="rules['hwaddr'].message" />
 
-              <m-select
-                v-model="bridge"
-                prop="bridge"
-                label="Bridge"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules['bridge'].error"
-                :error-msg="rules['bridge'].message"
-                @on-change="(value) => (bridge = value)"
-              >
-                <m-option
-                  v-for="(item, index) in networkList"
-                  :key="item.iface"
-                  :label="item.iface"
-                  :value="item.iface"
-                >
+              <m-select v-model="bridge" prop="bridge" label="Bridge" labelWidth="100px" validateEvent
+                @validate="validate" required :show-error="rules['bridge'].error" :error-msg="rules['bridge'].message"
+                @on-change="(value) => (bridge = value)">
+                <m-option v-for="(item, index) in networkList" :key="item.iface" :label="item.iface"
+                  :value="item.iface">
                   <div v-if="index === 0" class="table-tr">
                     <div class="table-td">Bridge</div>
                     <div class="table-td">Active</div>
@@ -594,16 +313,11 @@
                       {{ item.iface }}
                     </div>
                     <div class="table-td" :title="item.active">
-                      <table-info-state
-                        :content="
-                          item.active && item.active === 1 ? 'Yes' : 'No'
-                        "
-                        :state="
-                          item.active && item.active === 1
+                      <table-info-state :content="item.active && item.active === 1 ? 'Yes' : 'No'
+                        " :state="item.active && item.active === 1
                             ? 'actived'
                             : 'unActived'
-                        "
-                      ></table-info-state>
+                          "></table-info-state>
                     </div>
                     <div class="table-td" :title="item.comment">
                       {{ item.comment }}
@@ -612,31 +326,13 @@
                 </m-option>
               </m-select>
 
-              <m-input
-                v-model="tag"
-                prop="tag"
-                type="number"
-                label="VLAN Tag"
-                labelWidth="100px"
-                placeholder="Please enter VLAN tag"
-              />
+              <m-input v-model="tag" prop="tag" type="number" label="VLAN Tag" labelWidth="100px"
+                placeholder="Please enter VLAN tag" />
 
-              <m-input
-                v-model="rate"
-                type="number"
-                prop="rate"
-                label="Rate Limit (MiB)"
-                labelWidth="100px"
-                :min="0"
-                placeholder="Please enter rate limit"
-              />
+              <m-input v-model="rate" type="number" prop="rate" label="Rate Limit (MiB)" labelWidth="100px" :min="0"
+                placeholder="Please enter rate limit" />
 
-              <m-checkbox
-                v-model="firewall"
-                prop="firewall"
-                label="Firewall"
-                labelWidth="100px"
-              />
+              <m-checkbox v-model="firewall" prop="firewall" label="Firewall" labelWidth="100px" />
             </dd>
           </dl>
           <dl>
@@ -644,57 +340,27 @@
             <dd>
               <div>
                 <label class="m-input__radio">
-                  <input
-                    type="radio"
-                    value="static"
-                    name="ipv4"
-                    v-model="ip4type"
-                  />
+                  <input type="radio" value="static" name="ipv4" v-model="ip4type" />
                   <div></div>
                   <span>Static</span>
                 </label>
                 <label class="m-input__radio">
-                  <input
-                    type="radio"
-                    value="dhcp"
-                    name="ipv4"
-                    v-model="ip4type"
-                    @change="
-                      () => {
-                        ip = '';
-                        gw = '';
-                      }
-                    "
-                  />
+                  <input type="radio" value="dhcp" name="ipv4" v-model="ip4type" @change="() => {
+                      ip = '';
+                      gw = '';
+                    }
+                    " />
                   <div></div>
                   <span>DHCP</span>
                 </label>
               </div>
-              <m-input
-                v-model="ip"
-                prop="ip"
-                label="IPv4/CIDR"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules['ip'].error"
-                :error-msg="rules['ip'].message"
-                :disabled="ip4type !== 'static'"
-                placeholder="None"
-              />
+              <m-input v-model="ip" prop="ip" label="IPv4/CIDR" labelWidth="100px" validateEvent @validate="validate"
+                :show-error="rules['ip'].error" :error-msg="rules['ip'].message" :disabled="ip4type !== 'static'"
+                placeholder="None" />
 
-              <m-input
-                v-model="gw"
-                prop="gw"
-                label="Gateway (IPv4)"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                placeholder="Format: 10.10.10.0"
-                :show-error="rules['gw'].error"
-                :disabled="ip4type !== 'static'"
-                :error-msg="rules['gw'].message"
-              />
+              <m-input v-model="gw" prop="gw" label="Gateway (IPv4)" labelWidth="100px" validateEvent
+                @validate="validate" placeholder="Format: 10.10.10.0" :show-error="rules['gw'].error"
+                :disabled="ip4type !== 'static'" :error-msg="rules['gw'].message" />
             </dd>
           </dl>
 
@@ -703,73 +369,36 @@
             <dd>
               <div>
                 <label class="m-input__radio">
-                  <input
-                    type="radio"
-                    value="static"
-                    name="ipv6"
-                    v-model="ip6type"
-                  />
+                  <input type="radio" value="static" name="ipv6" v-model="ip6type" />
                   <div></div>
                   <span>Static</span>
                 </label>
                 <label class="m-input__radio">
-                  <input
-                    type="radio"
-                    value="dhcp"
-                    name="ipv6"
-                    v-model="ip6type"
-                    @change="
-                      () => {
-                        ip6 = '';
-                        gw6 = '';
-                      }
-                    "
-                  />
+                  <input type="radio" value="dhcp" name="ipv6" v-model="ip6type" @change="() => {
+                      ip6 = '';
+                      gw6 = '';
+                    }
+                    " />
                   <div></div>
                   <span>DHCP</span>
                 </label>
                 <label class="m-input__radio">
-                  <input
-                    type="radio"
-                    value="auto"
-                    name="ipv6"
-                    v-model="ip6type"
-                    @change="
-                      () => {
-                        ip6 = '';
-                        gw6 = '';
-                      }
-                    "
-                  />
+                  <input type="radio" value="auto" name="ipv6" v-model="ip6type" @change="() => {
+                      ip6 = '';
+                      gw6 = '';
+                    }
+                    " />
                   <div></div>
                   <span>SLAAC</span>
                 </label>
               </div>
-              <m-input
-                v-model="ip6"
-                prop="ip6"
-                label="IPv6/CIDR"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules['ip6'].error"
-                :error-msg="rules['ip6'].message"
-                :disabled="ip6type !== 'static'"
-                placeholder="None"
-              />
+              <m-input v-model="ip6" prop="ip6" label="IPv6/CIDR" labelWidth="100px" validateEvent @validate="validate"
+                :show-error="rules['ip6'].error" :error-msg="rules['ip6'].message" :disabled="ip6type !== 'static'"
+                placeholder="None" />
 
-              <m-input
-                v-model="gw6"
-                prop="gw6"
-                label="Gateway (IPv6)"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules['gw6'].error"
-                placeholder="Format: 2001:DB8::42"
-                :disabled="ip6type !== 'static'"
-                :error-msg="rules['gw6'].message"
-              />
+              <m-input v-model="gw6" prop="gw6" label="Gateway (IPv6)" labelWidth="100px" validateEvent
+                @validate="validate" :show-error="rules['gw6'].error" placeholder="Format: 2001:DB8::42"
+                :disabled="ip6type !== 'static'" :error-msg="rules['gw6'].message" />
             </dd>
           </dl>
         </div>
@@ -781,25 +410,12 @@
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-input
-                v-model="searchdomain"
-                prop="searchdomain"
-                label="DNS Domain"
-                labelWidth="100px"
-                placeholder="Please enter DNS domain"
-              />
+              <m-input v-model="searchdomain" prop="searchdomain" label="DNS Domain" labelWidth="100px"
+                placeholder="Please enter DNS domain" />
 
-              <m-input
-                v-model="nameserver"
-                prop="nameserver"
-                label="DNS Server"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :show-error="rules['nameserver'].error"
-                placeholder="Format: 192.168.1.1"
-                :error-msg="rules['nameserver'].message"
-              />
+              <m-input v-model="nameserver" prop="nameserver" label="DNS Server" labelWidth="100px" validateEvent
+                @validate="validate" :show-error="rules['nameserver'].error" placeholder="Format: 192.168.1.1"
+                :error-msg="rules['nameserver'].message" />
             </dd>
           </dl>
         </div>
@@ -836,64 +452,32 @@
           <div>Advanced</div>
         </label>
       </div>
-      <m-button
-        type="primary"
-        style="height: 40px; line-height: 40px; width: 100px"
-        @on-click="prev()"
-        >Previous</m-button
-      >
-      <m-button
-        type="primary"
-        style="height: 40px; line-height: 40px; width: 100px"
-        @on-click="next()"
-        v-show="step < 8"
-        >Next</m-button
-      >
-      <m-button
-        type="primary"
-        style="height: 40px; line-height: 40px; width: 100px"
-        @on-click="confirm()"
-        v-show="step === 8"
-        >Confirm</m-button
-      >
-      <m-dialog
-        :visible="showLog"
-        @close="closeLog"
-        :_style="{
-          width: '800px',
-        }"
-        title="Task Viewer: Recovery"
-      >
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px"
+        @on-click="prev()">Previous</m-button>
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px" @on-click="next()"
+        v-show="step < 8">Next</m-button>
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px" @on-click="confirm()"
+        v-show="step === 8">Confirm</m-button>
+      <m-dialog :visible="showLog" @close="closeLog" :_style="{
+        width: '800px',
+      }" title="Task Viewer: Recovery">
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
             <m-tab-panel label="Output" name="log"></m-tab-panel>
             <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
-          <m-button
-            class="create-btn m-margin-top-10"
-            type="primary"
-            @on-click="stopTask1"
-            :disabled="db.addClusterStatusObj.status !== 'running'"
-            >Stop</m-button
-          >
+          <m-button class="create-btn m-margin-top-10" type="primary" @on-click="stopTask1"
+            :disabled="db.addClusterStatusObj.status !== 'running'">Stop</m-button>
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
               <div class="table" v-if="tab === 'log'">
-                <div
-                  class="table-tr"
-                  v-for="item in db.addClusterLogList"
-                  :key="item.n"
-                >
+                <div class="table-tr" v-for="item in db.addClusterLogList" :key="item.n">
                   {{ item.t }}
                 </div>
               </div>
               <div class="table" v-if="tab === 'status'">
                 <template v-for="(item, key) in db.addClusterStatusObj">
-                  <div
-                    class="table-tr"
-                    v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-                    :key="key"
-                  >
+                  <div class="table-tr" v-if="!['exitstatus', 'id', 'pstart'].includes(key)" :key="key">
                     <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
                     <div class="table-td" v-if="key === 'starttime'">
                       {{
@@ -1191,7 +775,7 @@ export default {
       };
       rs.readAsText(file);
     },
-    cancel() {},
+    cancel() { },
     // Next button operations
     async next() {
       // Validate form for each step
@@ -1438,7 +1022,7 @@ export default {
         }
       }
     },
-    handleStepChange() {},
+    handleStepChange() { },
     __init__() {
       Promise.all([
         this.queryNodeList(),
@@ -1479,7 +1063,7 @@ export default {
         }
       );
     },
-    isQuota() {},
+    isQuota() { },
     handleTabChange(value) {
       this.tab = value;
     },
@@ -1512,14 +1096,17 @@ export default {
     font-size: 12px;
   }
 }
+
 .cpu-check {
   width: 100%;
   white-space: nowrap;
 }
+
 .cpu-label {
   width: 55px;
   display: inline-block;
 }
+
 .m-form__section {
   dl {
     width: 964px;
