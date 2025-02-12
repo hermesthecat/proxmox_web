@@ -2,7 +2,7 @@
   <page-template>
     <div slot="toolbar-left">
       <m-button type="primary" @on-click="handleRefresh()" icon="el-icon-edit"
-        >刷新</m-button
+        >Refresh</m-button
       >
       <m-dropdown
         trigger="click"
@@ -19,7 +19,7 @@
             type="primary"
             style="position: absolute; left: -1px; top: -1px; right: -1px"
             icon="fa fa-refresh"
-            >更新</m-button
+            >Update</m-button
           >
         </span>
         <m-dropdown-item command="html5" name="novnc">NoVNC</m-dropdown-item>
@@ -33,7 +33,7 @@
         @on-click="showChangeLog()"
         icon="el-icon-video-play"
         :disabled="selectedList.length !== 1"
-        >变更日志</m-button
+        >Changelog</m-button
       >
     </div>
     <div slot="page-content">
@@ -45,16 +45,16 @@
       >
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column
-          label="软件包"
+          label="Package"
           prop="Package"
           sortable
         ></el-table-column>
-        <el-table-column label="版本">
-          <el-table-column prop="OldVersion" label="当前"></el-table-column>
-          <el-table-column prop="Version" label="新"></el-table-column>
+        <el-table-column label="Version">
+          <el-table-column prop="OldVersion" label="Current"></el-table-column>
+          <el-table-column prop="Version" label="New"></el-table-column>
         </el-table-column>
         <el-table-column
-          label="描述"
+          label="Description"
           prop="Description"
           sortable
           show-overflow-tooltip
@@ -67,19 +67,19 @@
         :_style="{
           width: '800px',
         }"
-        title="变更日志"
+        title="Changelog"
       >
         <template slot="content" v-if="modalType === 'log'">
           <m-tab v-model="tab" @tab-click="handleTabChange">
-            <m-tab-panel label="输出" name="log"></m-tab-panel>
-            <m-tab-panel label="状态" name="status"></m-tab-panel>
+            <m-tab-panel label="Output" name="log"></m-tab-panel>
+            <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
           <m-button
             class="create-btn m-margin-top-10"
             type="primary"
             @on-click="stopTask1"
             :disabled="db.addClusterStatusObj.status !== 'running'"
-            >停止</m-button
+            >Stop</m-button
           >
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
@@ -141,7 +141,7 @@ export default {
   data() {
     return {
       visible: false,
-      title: "创建：复制作业",
+      title: "Create: Copy Job",
       selectedList: [],
       param: {},
       showLog: false,
@@ -158,20 +158,20 @@ export default {
   },
   methods: {
     dateFormat,
-    //初始化查找
+    // Initialize search
     __init__() {
       let _this = this;
       _this.queryAptUpdateList();
     },
-    //选择
+    // Selection
     handleSelect(row) {
       this.selectedList = row;
     },
-    //切换tab触发事件
+    // Tab change event
     handleTabChange(tab) {
       this.tab = tab;
     },
-    //关闭日志页面
+    // Close log page
     closeLog() {
       if (this.interVal) {
         clearInterval(this.interVal);
@@ -180,19 +180,19 @@ export default {
       this.showLog = false;
       this.__init__();
     },
-    //停止任务
+    // Stop task
     stopTask1() {
       this.stopTask(
         this.db.addClusterStatusObj.node,
         this.db.addClusterStatusObj.upid
       );
     },
-    //选择哪种方式创建
+    // Choose creation method
     handleCommand(type) {
       let _this = this;
       openConsoleWindow(type, "upgrade", 0, _this.node, "", "");
     },
-    //更新
+    // Update
     handleRefresh() {
       this.querySubscriptionInfo().then((res) => {
         this.$confirm
@@ -218,7 +218,7 @@ export default {
           });
       });
     },
-    //变更日志
+    // Changelog
     showChangeLog() {
       let param = {
           _dc: new Date().getTime(),
@@ -239,7 +239,7 @@ export default {
         });
     },
   },
-  //销毁定时任务
+  // Destroy timer
   beforeDestroy() {
     if (this.interVal) {
       clearInterval(this.interVal);

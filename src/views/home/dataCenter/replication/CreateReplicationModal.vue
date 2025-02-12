@@ -11,7 +11,7 @@
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-input
                 type="number"
@@ -26,12 +26,12 @@
                 :error-msg="rules.id.message"
                 v-model="id"
                 :disabled="!isCreate"
-                placeholder="请输入CT/VM ID"
+                placeholder="Please enter CT/VM ID"
               />
               <m-select
                 type="multiple"
                 prop="target"
-                label="目标"
+                label="Target"
                 labelWidth="100px"
                 validateEvent
                 :disabled="!isCreate"
@@ -42,7 +42,7 @@
                 :readonly="false"
                 @on-change="handleNodeSelect"
                 v-model="target"
-                placeholder="请选择目标"
+                placeholder="Please select target"
               >
                 <m-option
                   v-for="item in db.nodeList"
@@ -85,11 +85,11 @@
               </m-select>
               <m-select
                 prop="schedule"
-                label="安排"
+                label="Schedule"
                 labelWidth="100px"
                 @on-change="handleScheduleSelect"
                 v-model="schedule"
-                placeholder="*/15 - 每15分钟"
+                placeholder="*/15 - Every 15 minutes"
               >
                 <m-option
                   v-for="item in scheduleList"
@@ -102,21 +102,21 @@
               <m-input
                 type="number"
                 prop="rate"
-                label="速率限制（MB/s）"
+                label="Rate Limit (MB/s)"
                 labelWidth="100px"
                 v-model="rate"
-                placeholder="请输入速率"
+                placeholder="Please enter rate"
               />
               <m-input
                 type="textarea"
                 prop="comment"
                 labelWidth="100px"
-                label="备注"
+                label="Comment"
                 v-model="comment"
-                placeholder="请输入备注"
+                placeholder="Please enter comment"
               />
               <m-checkbox
-                label="启用"
+                label="Enable"
                 v-model="disable"
                 labelWidth="100px"
               ></m-checkbox>
@@ -173,12 +173,12 @@ export default {
       schedule: "",
       highestids: [],
       scheduleList: [
-        { value: "*/30", text: "每30分钟" },
-        { value: "*/2:00", text: "每两小时" },
-        { value: "2,22:30", text: "每天 02:30, 22:30" },
-        { value: "mon..fri", text: "周一到周五 00:00" },
-        { value: "mon..fri */1:00", text: "周一到周五每小时" },
-        { value: "sun 01:00", text: "周日 01:00" },
+        { value: "*/30", text: "Every 30 minutes" },
+        { value: "*/2:00", text: "Every 2 hours" },
+        { value: "2,22:30", text: "Daily at 02:30, 22:30" },
+        { value: "mon..fri", text: "Monday to Friday at 00:00" },
+        { value: "mon..fri */1:00", text: "Every hour Monday to Friday" },
+        { value: "sun 01:00", text: "Sunday at 01:00" },
       ],
       rules: {
         id: {
@@ -266,7 +266,7 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
     },

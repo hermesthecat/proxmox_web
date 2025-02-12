@@ -16,7 +16,7 @@
             type="primary"
             style="position: absolute; left: -1px; top: -1px; right: -1px"
             icon="el-icon-plus"
-            >添加</m-button
+            >Add</m-button
           >
         </span>
         <DropdownItem
@@ -32,19 +32,19 @@
         icon="el-icon-delete"
         :disabled="curStorage.length !== 1"
         v-confirm="{
-          msg: `确定要删除${
+          msg: `Are you sure you want to delete ${
             curStorage && curStorage[0] && curStorage[0].storage
           }?`,
           ok: () => handleDelete(),
         }"
-        >删除</m-button
+        >Delete</m-button
       >
       <m-button
         type="primary"
         icon="el-icon-edit"
         :disabled="curStorage.length !== 1"
         @on-click="handleEdit"
-        >编辑</m-button
+        >Edit</m-button
       >
     </div>
     <div slot="page-content">
@@ -55,30 +55,30 @@
       >
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column label="ID" prop="storage" sortable></el-table-column>
-        <el-table-column label="类别" prop="type">
+        <el-table-column label="Type" prop="type">
           <template slot-scope="scope">
             {{ format_storage_type(scope.row.type) }}
           </template>
         </el-table-column>
-        <el-table-column label="内容" prop="content"></el-table-column>
-        <el-table-column label="路径/目录" prop="path"></el-table-column>
-        <el-table-column label="共享的">
+        <el-table-column label="Content" prop="content"></el-table-column>
+        <el-table-column label="Path/Directory" prop="path"></el-table-column>
+        <el-table-column label="Shared">
           <template slot-scope="scope">
             <table-info-state
               :state="scope.row && scope.row.shared ? 'actived' : 'unActived'"
-              :content="scope.row && scope.row.shared ? '是' : '否'"
+              :content="scope.row && scope.row.shared ? 'Yes' : 'No'"
             ></table-info-state>
           </template>
         </el-table-column>
-        <el-table-column label="已用的">
+        <el-table-column label="Used">
           <template slot-scope="scope">
             <table-info-state
               :state="scope.row && scope.row.disable ? 'unActived' : 'actived'"
-              :content="scope.row && scope.row.disable ? '否' : '是'"
+              :content="scope.row && scope.row.disable ? 'No' : 'Yes'"
             ></table-info-state>
           </template>
         </el-table-column>
-        <el-table-column label="宽带限制"></el-table-column>
+        <el-table-column label="Bandwidth Limit"></el-table-column>
       </el-table>
       <CreateStorageModal
         :visible="visible"
@@ -134,7 +134,7 @@ export default {
     __init__() {
       this.queryStorageList().then(() => {
         this.curStorage = "";
-        //排序
+        // Sort
         this.storageList = quickSort(this.db.storageList, "storage", "+");
       });
       this.setStorageSchame();
@@ -164,12 +164,12 @@ export default {
       if (schema) {
         return schema.name;
       }
-      return "未知";
+      return "Unknown";
     },
     handleCommand(item, type) {
       this.type = item;
-      if (!type) this.title = `添加： ` + this.format_storage_type(item);
-      else this.title = `编辑： ` + this.format_storage_type(item);
+      if (!type) this.title = `Add: ` + this.format_storage_type(item);
+      else this.title = `Edit: ` + this.format_storage_type(item);
       this.isCreate = type !== "edit";
       if (type === "edit") {
         this.editParam = this.curStorage[0];
@@ -186,7 +186,7 @@ export default {
       this.handleCommand(this.curStorage[0].type, "edit");
     },
     /**
-     * 排序
+     * Sort
      */
     handleSort({ colume, prop, order }) {
       let _this = this;

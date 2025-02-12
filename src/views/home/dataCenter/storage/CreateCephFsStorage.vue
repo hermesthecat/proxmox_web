@@ -2,7 +2,7 @@
   <div class="m-form__content">
     <div class="m-form__section">
       <dl>
-        <dt>基本信息</dt>
+        <dt>Basic Information</dt>
         <dd>
           <m-input
             type="text"
@@ -16,7 +16,7 @@
             v-model="storage"
             required
             :disabled="!isCreate"
-            placeholder="请输入ID"
+            placeholder="Please enter ID"
           />
           <m-input
             type="text"
@@ -30,19 +30,19 @@
             :show-error="rules.monhost.error"
             :error-msg="rules.monhost.message"
             v-model="monhost"
-            placeholder="请输入monitor"
+            placeholder="Please enter monitor"
           />
           <m-input
             type="text"
             prop="username"
-            label="用户名"
+            label="Username"
             labelWidth="100px"
             :disabled="!isCreate || pveceph"
             v-model="username"
-            placeholder="请输入用户名"
+            placeholder="Please enter username"
           />
           <m-checkbox
-            label="启用"
+            label="Enable"
             v-model="disable"
             labelWidth="100px"
           ></m-checkbox>
@@ -57,7 +57,7 @@
             required
             :show-error="rules.content.error"
             :error-msg="rules.content.message"
-            label="内容"
+            label="Content"
           >
             <m-option
               v-for="item in options"
@@ -69,7 +69,7 @@
           <m-input
             type="number"
             prop="maxfiles"
-            label="最大备份数"
+            label="Max Backups"
             labelWidth="100px"
             validateEvent
             @validate="validate"
@@ -78,7 +78,7 @@
             min="0"
             :disabled="content.indexOf('backup') === -1"
             v-model="maxfiles"
-            placeholder="请输入最大备份数"
+            placeholder="Please enter max backups"
           />
           <m-checkbox
             label=""
@@ -99,12 +99,12 @@
               }
             "
             labelWidth="100px"
-            >使用Proxmox VE管理的超融合cephFS</m-checkbox
+            >Use Proxmox VE managed hyper-converged cephFS</m-checkbox
           >
         </dd>
       </dl>
       <dl>
-        <dt>节点</dt>
+        <dt>Nodes</dt>
         <dd>
           <el-table
             :data="db.nodeList"
@@ -113,11 +113,11 @@
           >
             <el-table-column type="selection" width="55"> </el-table-column>
             <el-table-column
-              label="节点"
+              label="Node"
               prop="node"
               sortable
             ></el-table-column>
-            <el-table-column label="内存使用率">
+            <el-table-column label="Memory Usage">
               <template slot-scope="scope">
                 {{
                   scope.row.mem &&
@@ -126,7 +126,7 @@
                 }}
               </template>
             </el-table-column>
-            <el-table-column label="CPU使用率">
+            <el-table-column label="CPU Usage">
               <template slot-scope="scope">
                 {{
                   scope.row.cpu &&
@@ -172,19 +172,19 @@ export default {
       pvecephPossible: true,
       options: [
         {
-          label: "iso镜像",
+          label: "ISO Images",
           value: "iso",
         },
         {
-          label: "VZDump备份文件",
+          label: "VZDump Backup Files",
           value: "backup",
         },
         {
-          label: "容器",
+          label: "Containers",
           value: "rootdir",
         },
         {
-          label: "片段",
+          label: "Snippets",
           value: "snippets",
         },
       ],
@@ -259,41 +259,41 @@ export default {
             this.pveceph = false;
           });
     },
-    //单个校验
+    // Single validation
     validate(prop) {
       let value = String(this[prop]).trim();
       this.rules[prop].error = false;
       this.rules[prop].message = "";
-      //校验是否为空
+      // Validate if empty
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
-      //校验名称
+      // Validate name
       if (
         prop === "storage" &&
         !/^[A-Z|a-z][\w\-\_\.]{0,}[A-Z|a-z|0-9]$/.test(value)
       ) {
         this.rules[prop].error = true;
         this.rules[prop].message =
-          "ID只能以A-Z|a-z开头，以A-Z|a-z|0-9结尾，至少两个字符允许'A-Z','a-z','0-9','-',_,'.'";
+          "ID must start with A-Z|a-z, end with A-Z|a-z|0-9, minimum 2 characters, allowing 'A-Z','a-z','0-9','-',_,'.'";
         return;
       }
       if (prop === "path" && !/^[\/][A-Za-z\\\-\_0-9]{1,}/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "路径是以/开头的绝对路径";
+        this.rules[prop].message = "Path must be absolute starting with /";
         return;
       }
     },
-    //选择内容
+    // Select content
     handleSelect(value) {
       this.content = value;
     },
     handleSelectionChange(row) {
       this.nodes = row.map((item) => item.node);
     },
-    //整体校验
+    // Validate all
     validateAll() {
       let props = ["storage", "monhost", "content", "maxfiles"];
       props.forEach((prop) => this.validate(prop));

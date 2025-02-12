@@ -11,7 +11,7 @@
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-select
                 prop="cidr"
@@ -25,7 +25,7 @@
                 required
                 :show-error="rules['cidr'].error"
                 :error-msg="rules['cidr'].message"
-                placeholder="请选择安全组"
+                placeholder="Please select security group"
               >
                 <m-option
                   v-for="(item, index) in db.fireWallResfList"
@@ -36,8 +36,8 @@
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
-                        <span class="table-td">名称</span>
-                        <span class="table-td">备注</span>
+                        <span class="table-td">Name</span>
+                        <span class="table-td">Comment</span>
                       </div>
                     </template>
                     <div class="table-tr">
@@ -52,7 +52,7 @@
                 </m-option>
               </m-select>
               <m-checkbox
-                label="启用"
+                label="Enable"
                 v-model="nomatch"
                 labelWidth="100px"
               ></m-checkbox>
@@ -60,9 +60,9 @@
                 type="textarea"
                 prop="comment"
                 labelWidth="100px"
-                label="备注"
+                label="Comment"
                 v-model="comment"
-                placeholder="请输入备注"
+                placeholder="Please enter comment"
               />
             </dd>
           </dl>
@@ -147,13 +147,12 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
       if (prop === "cidr" && !/^[a-zA-Z][a-zA-Z0-9_-]{2,253}$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message =
-          "名称以字母开头，内含字母数字下划线至少2位字符";
+        this.rules[prop].message = "Name must start with a letter and contain at least 2 characters including letters, numbers and underscores";
         return;
       }
     },

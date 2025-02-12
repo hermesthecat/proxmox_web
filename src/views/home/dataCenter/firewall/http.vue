@@ -106,7 +106,7 @@ export default {
           }
         });
     },
-    //编辑更新防火墙
+    // Edit and update firewall
     updateFireWall(id, param) {
       let event = this.createEvent("action.firewall.update");
       return this.$http
@@ -123,7 +123,7 @@ export default {
           return Promise.reject(res);
         });
     },
-    //查询安全组
+    // Query security groups
     queryFireWallGroupList() {
       return this.$http.get(`json/cluster/firewall/groups`).then((res) => {
         if (res.data) {
@@ -134,7 +134,7 @@ export default {
         }
       });
     },
-    //数据中心防火墙配置选项
+    // Data center firewall configuration options
     queryFireOptionList(param) {
       return this.$http
         .get(`json/cluster/firewall/options`, param)
@@ -147,7 +147,7 @@ export default {
           }
         });
     },
-    //编辑Option
+    // Edit options
     modifyOptions(param) {
       let event = this.createEvent("action.firewall.update");
       return this.$http
@@ -164,7 +164,7 @@ export default {
           return Promise.reject(res);
         });
     },
-    //查询规则
+    // Query rules
     queryFireRuleList(group) {
       return this.$http
         .get(`json/cluster/firewall/groups/${group}`)
@@ -491,7 +491,7 @@ export default {
       });
       return Promise.all(tasks);
     },
-    //创建IPSetcidr
+    // Create IPSet CIDR
     createIPSetCidr(name, param) {
       let event = this.createEvent(`action.firewallipset.cidr.create`);
       return this.$http
@@ -508,7 +508,7 @@ export default {
           return Promise.reject(res);
         });
     },
-    //编辑更新IPSetCidr
+    // Edit and update IPSet CIDR
     updateIPSetCidr(ipset, param) {
       let event = this.createEvent("action.firewall.ipset.cidr.update"),
         params = deepCopy(param);

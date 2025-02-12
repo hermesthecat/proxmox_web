@@ -21,11 +21,11 @@
       <div class="label_box">
         <label>
           <input type="checkbox" v-model="isAdvice" />
-          <div>高级</div>
+          <div>Advanced</div>
         </label>
       </div>
       <m-button class="create-btn" type="primary" @on-click="confirm"
-        >创建</m-button
+        >Create</m-button
       >
     </template>
   </Dialog>

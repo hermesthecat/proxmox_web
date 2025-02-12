@@ -2,7 +2,7 @@
   <page-template>
     <div slot="toolbar-right" style="text-align: right; padding-right: 10px">
       <span class="search-input">
-        <m-input placeholder="搜索" v-model="searchModel">
+        <m-input placeholder="Search" v-model="searchModel">
           <i slot="prefix" class="el-icon-search"></i>
         </m-input>
       </span>
@@ -13,7 +13,7 @@
         highlight-current-row
         @row-click="handleRowClick"
       >
-        <el-table-column prop="type" label="类别">
+        <el-table-column prop="type" label="Category">
           <template slot-scope="scope">
             <span>
               <i
@@ -43,7 +43,7 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column label="描述">
+        <el-table-column label="Description">
           <template slot-scope="scope">
             <span v-if="scope.row.type === 'pool'">pools</span>
             <span
@@ -59,7 +59,7 @@
             <span v-if="scope.row.type === 'node'">{{ scope.row.node }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="node" label="磁盘使用率">
+        <el-table-column prop="node" label="Disk Usage">
           <template slot-scope="scope">
             <line-charts
               :value="
@@ -72,7 +72,7 @@
             ></line-charts>
           </template>
         </el-table-column>
-        <el-table-column prop="pool" label="内存使用率">
+        <el-table-column prop="pool" label="Memory Usage">
           <template slot-scope="scope">
             <line-charts
               :value="
@@ -85,7 +85,7 @@
             ></line-charts>
           </template>
         </el-table-column>
-        <el-table-column prop="pool" label="CPU使用率">
+        <el-table-column prop="pool" label="CPU Usage">
           <template slot-scope="scope">
             <line-charts
               :value="
@@ -97,7 +97,7 @@
             ></line-charts>
           </template>
         </el-table-column>
-        <el-table-column prop="pool" label="运行时间">
+        <el-table-column prop="pool" label="Uptime">
           <template slot-scope="scope">
             {{ scope.row.uptime ? render_uptime(scope.row.uptime) : "-" }}
           </template>
@@ -151,7 +151,7 @@ export default {
     };
   },
   computed: {
-    //计算数据
+    // Calculate data
     searchTable() {
       let _this = this;
       let datas = _this.data.filter((item) => {
@@ -164,23 +164,23 @@ export default {
           return item;
         }
       });
-      //快排
+      // Quick sort
       return quickSort(datas, "type", "+");
     },
   },
   methods: {
     render_uptime,
     chunkData,
-    //设置状态class
+    // Set status class
     setStautsCls(record, type) {
       let status = "";
       let objType = type;
       if (record.template && this.isTemplate(record.template)) {
-        // 模板
+        // Template
         objType = "template";
         status = type;
       } else {
-        // 出其他以外的记录
+        // Other records
         status = record.status
           ? record.status + " ha-" + record.hastate
           : " ha-" + record.hastate;
@@ -190,15 +190,15 @@ export default {
       }
       return status;
     },
-    //单选
+    // Single selection
     handleRowClick(row, columns, event) {
       this.updateSearchObj(row);
     },
-    //初始化请求资源
+    // Initialize request resources
     __init__() {
       this.queryResource();
     },
-    //判断是否是模板
+    // Check if it's a template
     isTemplate(tmpl) {
       if (tmpl && String(tmpl) !== "0") {
         return true;
@@ -219,7 +219,7 @@ export default {
     this.intervalId = setInterval(() => this.__init__(), 10000);
   },
   beforeDestroy() {
-    //清除定时器
+    // Clear timer
     clearInterval(this.intervalId);
     this.intervalId = null;
   },

@@ -5,25 +5,25 @@
         type="primary"
         @on-click="showModal('create')"
         icon="el-icon-plus"
-        >创建</m-button
+        >Create</m-button
       >
       <m-button
         type="danger"
         v-confirm="{
-          msg: '确定要删除已选择项?',
+          msg: 'Are you sure you want to delete the selected items?',
           ok: () => handleDelete(),
           icon: 'icon-question',
         }"
         icon="el-icon-delete"
         :disabled="selectedList.length <= 0"
-        >删除</m-button
+        >Delete</m-button
       >
       <m-button
         type="info"
         icon="el-icon-edit"
         :disabled="selectedList.length !== 1"
         @on-click="showModal('edit')"
-        >编辑</m-button
+        >Edit</m-button
       >
     </div>
     <div slot="page-content">
@@ -43,32 +43,32 @@
                   type="primary"
                   @on-click="showRuleModal('create')"
                   icon="el-icon-plus"
-                  >添加</m-button
+                  >Add</m-button
                 >
                 <m-button
                   type="warning"
                   @on-click="showRuleModal('copy')"
                   icon="el-icon-copy-document"
                   :disabled="selectedRuleList && selectedRuleList.length !== 1"
-                  >拷贝</m-button
+                  >Copy</m-button
                 >
                 <m-button
                   type="danger"
                   v-confirm="{
-                    msg: '确定要删除已选择项?',
+                    msg: 'Are you sure you want to delete the selected items?',
                     ok: () => handleGroupRuleDelete(),
                     icon: 'icon-question',
                   }"
                   icon="el-icon-delete"
                   :disabled="selectedRuleList.length <= 0"
-                  >删除</m-button
+                  >Delete</m-button
                 >
                 <m-button
                   type="info"
                   icon="el-icon-edit"
                   :disabled="selectedRuleList.length !== 1"
                   @on-click="showRuleModal('edit')"
-                  >编辑</m-button
+                  >Edit</m-button
                 >
               </div>
               <div slot="page-content">
@@ -82,13 +82,13 @@
                     prop="pos"
                   ></el-table-column>
                   <el-table-column width="55" prop="pos"></el-table-column>
-                  <el-table-column label="启用" prop="enable">
+                  <el-table-column label="Enable" prop="enable">
                     <template slot-scope="scope">
                       <table-info-state
                         :content="
                           scope.row.enable && scope.row.enable === 1
-                            ? '是'
-                            : '否'
+                            ? 'Yes'
+                            : 'No'
                         "
                         :state="
                           scope.row.enable && scope.row.enable === 1
@@ -98,24 +98,24 @@
                       ></table-info-state>
                     </template>
                   </el-table-column>
-                  <el-table-column label="类别" prop="type"></el-table-column>
-                  <el-table-column label="操作" prop="action"></el-table-column>
-                  <el-table-column label="宏" prop="macro"> </el-table-column>
-                  <el-table-column label="接口" prop="iface"></el-table-column>
-                  <el-table-column label="源" prop="source"></el-table-column>
-                  <el-table-column label="目标" prop="dest"></el-table-column>
-                  <el-table-column label="协议" prop="proto"></el-table-column>
+                  <el-table-column label="Type" prop="type"></el-table-column>
+                  <el-table-column label="Action" prop="action"></el-table-column>
+                  <el-table-column label="Macro" prop="macro"> </el-table-column>
+                  <el-table-column label="Interface" prop="iface"></el-table-column>
+                  <el-table-column label="Source" prop="source"></el-table-column>
+                  <el-table-column label="Destination" prop="dest"></el-table-column>
+                  <el-table-column label="Protocol" prop="proto"></el-table-column>
                   <el-table-column
-                    label="目标端口"
+                    label="Destination Port"
                     prop="dport"
                   ></el-table-column>
                   <el-table-column
-                    label="源端口"
+                    label="Source Port"
                     prop="sport"
                   ></el-table-column>
-                  <el-table-column label="Log级别" prop="log"></el-table-column>
+                  <el-table-column label="Log Level" prop="log"></el-table-column>
                   <el-table-column
-                    label="备注"
+                    label="Comment"
                     prop="comment"
                   ></el-table-column>
                   <el-table-column width="100">
@@ -131,7 +131,7 @@
                           handleGroupEnable(parentSlot.row.group, scope.row)
                         "
                         >{{
-                          scope.row.enable === 0 ? "启用" : "停用"
+                          scope.row.enable === 0 ? "Enable" : "Disable"
                         }}</m-button
                       >
                     </template>
@@ -142,8 +142,8 @@
           </template>
         </el-table-column>
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="组" prop="group"></el-table-column>
-        <el-table-column label="备注" prop="comment"></el-table-column>
+        <el-table-column label="Group" prop="group"></el-table-column>
+        <el-table-column label="Comment" prop="comment"></el-table-column>
       </el-table>
       <create-fire-wall-group-rule-modal
         :title="ruleTitle"
@@ -192,12 +192,12 @@ export default {
     return {
       type: "create",
       visible: false,
-      title: "创建：安全组",
+      title: "Create: Security Group",
       selectedList: [],
       selectedRuleList: [],
       ruleParam: {},
       isRuleCreate: true,
-      ruleTitle: "添加：规则",
+      ruleTitle: "Add: Rule",
       ruleType: "create",
       ruleVisible: false,
       isCreate: true,
@@ -211,25 +211,25 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化查找
+    // Initialize search
     __init__() {
       this.queryFireWallGroupList();
     },
-    //是否展示弹框
+    // Show modal dialog
     showModal(type) {
       this.type = type;
       this.isCreate = type === "create";
-      this.title = type === "create" ? "创建：安全组" : "编辑：安全组";
+      this.title = type === "create" ? "Create: Security Group" : "Edit: Security Group";
       this.param = type === "create" ? {} : this.selectedList[0];
       this.visible = true;
       this.isGroup =
         this.selectedList[0] && this.selectedList[0].type === "group";
     },
-    //按钮是否可点击
+    // Check if button is clickable
     inStatus() {
       return this.selectedList.length !== 1;
     },
-    //选择
+    // Selection
     handleSelect(row) {
       this.selectedList = row;
     },
@@ -265,7 +265,7 @@ export default {
     showRuleModal(type) {
       this.ruleType = type;
       this.isRuleCreate = type === "create";
-      this.ruleTitle = type === "create" ? "创建：复制作业" : "编辑：复制作业";
+      this.ruleTitle = type === "create" ? "Create: Copy Job" : "Edit: Copy Job";
       this.ruleParam = type === "create" ? {} : this.selectedRuleList[0];
       this.ruleVisible = true;
       this.isGroup =

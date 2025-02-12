@@ -5,34 +5,34 @@
         type="primary"
         @on-click="showModal('create')"
         icon="el-icon-plus"
-        >添加</m-button
+        >Add</m-button
       >
       <m-button
         type="primary"
         @on-click="showModal('edit')"
         icon="el-icon-edit"
         :disabled="selectedList.length !== 1"
-        >编辑</m-button
+        >Edit</m-button
       >
       <m-button
         type="danger"
         v-confirm="{
-          msg: `你确定你要删除已选择项吗?`,
+          msg: `Are you sure you want to delete the selected items?`,
           ok: () => handleDelete('keep'),
         }"
         icon="el-icon-delete"
         :disabled="inStatus()"
-        >删除</m-button
+        >Delete</m-button
       >
       <m-button
         type="danger"
         v-confirm="{
-          msg: `你确定你要强制删除已选择项吗?`,
+          msg: `Are you sure you want to force delete the selected items?`,
           ok: () => handleDelete('force'),
         }"
         icon="el-icon-delete"
         :disabled="inStatus()"
-        >强制删除</m-button
+        >Force Delete</m-button
       >
     </div>
     <div slot="page-content">
@@ -42,14 +42,14 @@
         @selection-change="handleSelect"
       >
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="访客" prop="guest"></el-table-column>
-        <el-table-column label="作业" prop="jobnum"></el-table-column>
-        <el-table-column label="目标" prop="target"></el-table-column>
-        <el-table-column label="已启用" prop="disable">
+        <el-table-column label="Guest" prop="guest"></el-table-column>
+        <el-table-column label="Job" prop="jobnum"></el-table-column>
+        <el-table-column label="Target" prop="target"></el-table-column>
+        <el-table-column label="Enabled" prop="disable">
           <template slot-scope="scope">
             <table-info-state
               :content="
-                scope.row.disable && scope.row.disable === 1 ? '否' : '是'
+                scope.row.disable && scope.row.disable === 1 ? 'No' : 'Yes'
               "
               :state="
                 scope.row.disable && scope.row.disable === 1
@@ -59,12 +59,12 @@
             ></table-info-state>
           </template>
         </el-table-column>
-        <el-table-column label="安排" prop="schedule">
+        <el-table-column label="Schedule" prop="schedule">
           <template slot-scope="scope">
             <span>{{ scope.row.schedule ? scope.row.schedule : "*/15" }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="备注" prop="comment"></el-table-column>
+        <el-table-column label="Comment" prop="comment"></el-table-column>
       </el-table>
       <create-replication-modal
         :title="title"
@@ -98,7 +98,7 @@ export default {
     return {
       type: "create",
       visible: false,
-      title: "创建：复制作业",
+      title: "Create: Copy Job",
       selectedList: [],
       isCreate: true,
       param: {},
@@ -110,27 +110,27 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化查找
+    // Initialize search
     __init__() {
       this.queryReplicationList();
     },
-    //是否展示弹框
+    // Show modal dialog
     showModal(type) {
       this.type = type;
       this.isCreate = type === "create";
-      this.title = type === "create" ? "创建：复制作业" : "编辑：复制作业";
+      this.title = type === "create" ? "Create: Copy Job" : "Edit: Copy Job";
       this.param = type === "create" ? {} : this.selectedList[0];
       this.visible = true;
     },
-    //按钮是否可点击
+    // Check if button is clickable
     inStatus() {
       return this.selectedList.length <= 0;
     },
-    //选择
+    // Selection
     handleSelect(row) {
       this.selectedList = row;
     },
-    //删除复制
+    // Delete replication
     handleDelete(type) {
       this.delete(type);
     },

@@ -1,7 +1,7 @@
 <template>
   <div style="padding: 20px">
     <overview-card>
-      <div slot="title">状态</div>
+      <div slot="title">Status</div>
       <div
         slot="operate"
         :class="{ 'm-tool-collpise': !showStatus }"
@@ -13,8 +13,8 @@
           <page-template>
             <div slot="page-content">
               <el-table :data="db.haStatusList" ref="dataTable">
-                <el-table-column label="类别" prop="type"></el-table-column>
-                <el-table-column label="状态" prop="status"></el-table-column>
+                <el-table-column label="Type" prop="type"></el-table-column>
+                <el-table-column label="Status" prop="status"></el-table-column>
               </el-table>
             </div>
           </page-template>
@@ -22,7 +22,7 @@
       </div>
     </overview-card>
     <overview-card>
-      <div slot="title">资源</div>
+      <div slot="title">Resources</div>
       <div
         slot="operate"
         :class="{ 'm-tool-collpise': !showResource }"
@@ -37,25 +37,25 @@
                 type="primary"
                 @on-click="showModal('create')"
                 icon="el-icon-plus"
-                >添加</m-button
+                >Add</m-button
               >
               <m-button
                 type="danger"
                 @on-click="showModal('edit')"
                 icon="el-icon-edit"
                 :disabled="selectedList.length <= 0"
-                >编辑</m-button
+                >Edit</m-button
               >
               <m-button
                 type="danger"
                 v-confirm="{
-                  msg: '确定要删除已选择项?',
+                  msg: 'Are you sure you want to delete the selected items?',
                   ok: () => handleDelete(),
                   icon: 'icon-question',
                 }"
                 icon="el-icon-delete"
                 :disabled="selectedList.length <= 0"
-                >删除</m-button
+                >Delete</m-button
               >
             </div>
             <div slot="page-content">
@@ -66,19 +66,19 @@
               >
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column label="ID" prop="sid"></el-table-column>
-                <el-table-column label="状态" prop="state"></el-table-column>
-                <el-table-column label="节点" prop="node"></el-table-column>
-                <el-table-column label="名称" prop="sid"></el-table-column>
+                <el-table-column label="Status" prop="state"></el-table-column>
+                <el-table-column label="Node" prop="node"></el-table-column>
+                <el-table-column label="Name" prop="sid"></el-table-column>
                 <el-table-column
-                  label="最大重启"
+                  label="Max Restart"
                   prop="max_restart"
                 ></el-table-column>
                 <el-table-column
-                  label="最大重定位"
+                  label="Max Relocate"
                   prop="max_relocate"
                 ></el-table-column>
-                <el-table-column label="组" prop="group"></el-table-column>
-                <el-table-column label="描述" prop="comment"></el-table-column>
+                <el-table-column label="Group" prop="group"></el-table-column>
+                <el-table-column label="Description" prop="comment"></el-table-column>
               </el-table>
             </div>
           </page-template>
@@ -118,7 +118,7 @@ export default {
     return {
       type: "create",
       visible: false,
-      title: "创建：复制作业",
+      title: "Create: Copy Job",
       selectedList: [],
       isCreate: true,
       param: {},
@@ -131,24 +131,24 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化查找
+    // Initialize search
     __init__() {
       this.queryHaStatus();
     },
-    //是否展示弹框
+    // Show modal dialog
     showModal(type) {
       this.type = type;
       this.isCreate = type === "create";
       this.title =
-        type === "create" ? "添加：资源：容器/虚拟机" : "编辑：复制作业";
+        type === "create" ? "Add: Resource: Container/VM" : "Edit: Copy Job";
       this.param = type === "create" ? {} : this.selectedList[0];
       this.visible = true;
     },
-    //按钮是否可点击
+    // Check if button is clickable
     inStatus() {
       return this.selectedList.length <= 0;
     },
-    //选择
+    // Selection
     handleSelect(row) {
       this.selectedList = row;
     },

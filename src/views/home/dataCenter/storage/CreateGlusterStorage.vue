@@ -2,7 +2,7 @@
   <div class="m-form__content">
     <div class="m-form__section">
       <dl>
-        <dt>基本信息</dt>
+        <dt>Basic Information</dt>
         <dd>
           <m-input
             type="text"
@@ -16,17 +16,17 @@
             :error-msg="rules.storage.message"
             v-model="storage"
             :disabled="!isCreate"
-            placeholder="请输入ID"
+            placeholder="Please enter ID"
           />
           <m-checkbox
-            label="启用"
+            label="Enable"
             v-model="disable"
             labelWidth="100px"
           ></m-checkbox>
           <m-input
             type="text"
             prop="server"
-            label="服务器"
+            label="Server"
             labelWidth="100px"
             validateEvent
             @validate="validate"
@@ -35,12 +35,12 @@
             :error-msg="rules.server.message"
             v-model="server"
             :disabled="!isCreate"
-            placeholder="请输入服务器"
+            placeholder="Please enter server"
           />
           <m-input
             type="text"
             prop="server2"
-            label="第二服务器"
+            label="Second Server"
             labelWidth="100px"
             validateEvent
             @validate="validate"
@@ -48,7 +48,7 @@
             :error-msg="rules.server2.message"
             v-model="server2"
             :disabled="!isCreate"
-            placeholder="请输入第二服务器"
+            placeholder="Please enter second server"
           />
           <m-select
             labelWidth="100px"
@@ -83,7 +83,7 @@
             required
             :show-error="rules.content.error"
             :error-msg="rules.content.message"
-            label="内容"
+            label="Content"
           >
             <m-option
               v-for="item in options"
@@ -95,7 +95,7 @@
           <m-input
             type="number"
             prop="maxfiles"
-            label="最大备份数"
+            label="Max Backups"
             labelWidth="100px"
             validateEvent
             @validate="validate"
@@ -104,12 +104,12 @@
             min="0"
             :disabled="content.indexOf('backup') === -1"
             v-model="maxfiles"
-            placeholder="请输入最大备份数"
+            placeholder="Please enter max backups"
           />
         </dd>
       </dl>
       <dl>
-        <dt>节点</dt>
+        <dt>Nodes</dt>
         <dd>
           <el-table
             :data="db.nodeList"
@@ -118,11 +118,11 @@
           >
             <el-table-column type="selection" width="55"> </el-table-column>
             <el-table-column
-              label="节点"
+              label="Node"
               prop="node"
               sortable
             ></el-table-column>
-            <el-table-column label="内存使用率">
+            <el-table-column label="Memory Usage">
               <template slot-scope="scope">
                 {{
                   scope.row.mem &&
@@ -131,7 +131,7 @@
                 }}
               </template>
             </el-table-column>
-            <el-table-column label="CPU使用率">
+            <el-table-column label="CPU Usage">
               <template slot-scope="scope">
                 {{
                   scope.row.cpu &&
@@ -175,27 +175,27 @@ export default {
       maxfiles: 1,
       options: [
         {
-          label: "磁盘映像",
+          label: "Disk Images",
           value: "images",
         },
         {
-          label: "iso镜像",
+          label: "ISO Images",
           value: "iso",
         },
         {
-          label: "容器模板",
+          label: "Container Templates",
           value: "vztmpl",
         },
         {
-          label: "VZDump备份文件",
+          label: "VZDump Backup Files",
           value: "backup",
         },
         {
-          label: "容器",
+          label: "Containers",
           value: "rootdir",
         },
         {
-          label: "片段",
+          label: "Snippets",
           value: "snippets",
         },
       ],
@@ -270,41 +270,41 @@ export default {
         this.disable = this.param.disable ? false : true;
       }
     },
-    //单个校验
+    // Single validation
     validate(prop) {
       let value = String(this[prop]).trim();
       this.rules[prop].error = false;
       this.rules[prop].message = "";
-      //校验是否为空
+      // Validate if empty
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
-      //校验名称
+      // Validate name
       if (
         prop === "storage" &&
         !/^[A-Z|a-z][\w\-\_\.]{0,}[A-Z|a-z|0-9]$/.test(value)
       ) {
         this.rules[prop].error = true;
         this.rules[prop].message =
-          "ID只能以A-Z|a-z开头，以A-Z|a-z|0-9结尾，至少两个字符允许'A-Z','a-z','0-9','-',_,'.'";
+          "ID must start with A-Z|a-z, end with A-Z|a-z|0-9, minimum 2 characters, allowing 'A-Z','a-z','0-9','-',_,'.'";
         return;
       }
       if (prop === "path" && !/^[\/][A-Za-z\\\-\_0-9]{1,}/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "路径是以/开头的绝对路径";
+        this.rules[prop].message = "Path must be absolute starting with /";
         return;
       }
     },
-    //选择内容
+    // Select content
     handleSelect(value) {
       this.content = value;
     },
     handleSelectionChange(row) {
       this.nodes = row.map((item) => item.node);
     },
-    //整体校验
+    // Validate all
     validateAll() {
       let props = [
         "storage",
@@ -317,12 +317,12 @@ export default {
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
     },
-    //查询导出数据
+    // Query export data
     handleGlusterExportReq() {
       this.validate("server");
       this.queryGlusterfs("", this.server);
     },
-    //选择share
+    // Select share
     handleGlusterSelect(value) {
       this.volumename = value;
     },

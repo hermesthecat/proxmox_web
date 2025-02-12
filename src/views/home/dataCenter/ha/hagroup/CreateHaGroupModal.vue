@@ -11,7 +11,7 @@
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-input
                 type="text"
@@ -24,7 +24,7 @@
                 required
                 :show-error="rules.group.error"
                 :error-msg="rules.group.message"
-                placeholder="请输入ID"
+                placeholder="Please enter ID"
               />
               <m-checkbox
                 label="nofailback"
@@ -40,14 +40,14 @@
                 type="textarea"
                 prop="comment"
                 labelWidth="100px"
-                label="备注"
+                label="Comment"
                 v-model="comment"
-                placeholder="请输入备注"
+                placeholder="Please enter comment"
               />
             </dd>
           </dl>
           <dl>
-            <dt>选择节点</dt>
+            <dt>Select Node</dt>
             <dd>
               <el-table
                 :data="nodeList"
@@ -55,13 +55,13 @@
                 ref="dataTable"
               >
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column label="节点" prop="node"></el-table-column>
-                <el-table-column label="内存使用率">
+                <el-table-column label="Node" prop="node"></el-table-column>
+                <el-table-column label="Memory Usage">
                   <template slot-scope="scope">
                     <span>{{ scope.row | formatSize("memory") }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="CPU使用率">
+                <el-table-column label="CPU Usage">
                   <template slot-scope="scope">
                     <span>{{ scope.row | formatSize("cpu") }}</span>
                   </template>
@@ -76,7 +76,7 @@
                         :_style="{ width: '105px', 'min-width': '90px' }"
                         :__conStyle="{ width: '115px', 'min-width': '115px' }"
                         v-model="node[scope.row.id]"
-                        placeholder="请输入备注"
+                        placeholder="Please enter comment"
                     /></span>
                   </template>
                 </el-table-column>
@@ -227,7 +227,7 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
     },

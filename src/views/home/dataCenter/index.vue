@@ -2,7 +2,7 @@
   <transition name="transition">
     <div class="content">
       <div class="m-operate">
-        <div class="m-operate-left">数据中心</div>
+        <div class="m-operate-left">Data Center</div>
         <div class="m-operate-right"></div>
       </div>
       <Pv-Menu :data="menuData"></Pv-Menu>
@@ -28,7 +28,7 @@ import { mapState } from "vuex";
 import PvMenu from "@src/components/menu/Menu";
 import MScrollbar from "@src/components/scroll/Scrollbar";
 import MButton from "@src/components/button/Button";
-//菜单tree
+// Menu tree
 import { dataCenterMenuList } from "@src/components/menu/menuList";
 import Dropdown from "@src/components/dropdown/dropdown";
 import DropdownItem from "@src/components/dropdown/dropdownItem";
@@ -53,13 +53,13 @@ export default {
     }),
   },
   mounted() {
-    //视图
+    // View
     this.scrollElementSelector = ".scroll-view";
-    //容器
+    // Container
     this.scrollContainerSelector = ".scroll-container";
   },
   methods: {
-    //重置
+    // Reset
     handleReset() {
       let lastSelectView = window.localStorage.getItem("lastsel") || "[]";
       this.node = lastSelectView.text || "";

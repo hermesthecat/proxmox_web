@@ -2,7 +2,7 @@
   <div class="m-form__content">
     <div class="m-form__section">
       <dl>
-        <dt>基本信息</dt>
+        <dt>Basic Information</dt>
         <dd>
           <m-input
             type="text"
@@ -16,7 +16,7 @@
             :error-msg="rules.storage.message"
             v-model="storage"
             :disabled="!isCreate"
-            placeholder="请输入ID"
+            placeholder="Please enter ID"
           />
 
           <m-select
@@ -30,7 +30,7 @@
             :show-error="rules.vgname.error"
             :error-msg="rules.vgname.message"
             :disabled="!isCreate"
-            label="卷组"
+            label="Volume Group"
           >
             <m-option
               v-for="item in db.vgList"
@@ -54,7 +54,7 @@
             :disabled="!isCreate"
             :show-error="rules.thinpool.error"
             :error-msg="rules.thinpool.message"
-            label="精简池"
+            label="Thin Pool"
           >
             <m-option
               v-for="item in db.poolThinList"
@@ -65,7 +65,7 @@
           </m-select>
 
           <m-checkbox
-            label="启用"
+            label="Enable"
             v-model="disable"
             labelWidth="100px"
           ></m-checkbox>
@@ -81,7 +81,7 @@
             required
             :show-error="rules.content.error"
             :error-msg="rules.content.message"
-            label="内容"
+            label="Content"
           >
             <m-option
               v-for="item in options"
@@ -93,7 +93,7 @@
         </dd>
       </dl>
       <dl>
-        <dt>节点</dt>
+        <dt>Nodes</dt>
         <dd>
           <el-table
             :data="db.nodeList"
@@ -102,11 +102,11 @@
           >
             <el-table-column type="selection" width="55"> </el-table-column>
             <el-table-column
-              label="节点"
+              label="Node"
               prop="node"
               sortable
             ></el-table-column>
-            <el-table-column label="内存使用率">
+            <el-table-column label="Memory Usage">
               <template slot-scope="scope">
                 {{
                   scope.row.mem &&
@@ -115,7 +115,7 @@
                 }}
               </template>
             </el-table-column>
-            <el-table-column label="CPU使用率">
+            <el-table-column label="CPU Usage">
               <template slot-scope="scope">
                 {{
                   scope.row.cpu &&
@@ -159,11 +159,11 @@ export default {
       thinpool: [],
       options: [
         {
-          label: "磁盘映像",
+          label: "Disk Images",
           value: "images",
         },
         {
-          label: "容器",
+          label: "Containers",
           value: "rootdir",
         },
       ],
@@ -233,57 +233,57 @@ export default {
         this.disable = this.param.disable ? false : true;
       }
     },
-    //单个校验
+    // Single validation
     validate(prop) {
       let value = String(this[prop]).trim();
       this.rules[prop].error = false;
       this.rules[prop].message = "";
-      //校验是否为空
+      // Validate if empty
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
-      //校验名称
+      // Validate name
       if (
         prop === "storage" &&
         !/^[A-Z|a-z][\w\-\_\.]{0,}[A-Z|a-z|0-9]$/.test(value)
       ) {
         this.rules[prop].error = true;
         this.rules[prop].message =
-          "ID只能以A-Z|a-z开头，以A-Z|a-z|0-9结尾，至少两个字符允许'A-Z','a-z','0-9','-',_,'.'";
+          "ID must start with A-Z|a-z, end with A-Z|a-z|0-9, minimum 2 characters, allowing 'A-Z','a-z','0-9','-',_,'.'";
         return;
       }
       if (prop === "path" && !/^[\/][A-Za-z\\\-\_0-9]{1,}/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "路径是以/开头的绝对路径";
+        this.rules[prop].message = "Path must be absolute starting with /";
         return;
       }
     },
-    //选择内容
+    // Select content
     handleSelect(value) {
       this.content = value;
     },
     handleSelectionChange(row) {
       this.nodes = row.map((item) => item.node);
     },
-    //整体校验
+    // Validate all
     validateAll() {
       let props = ["storage", "vgname", "content", "thinpool"];
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
     },
-    //vgName选择
+    // Select vgName
     handleVgNameSelect(value) {
       this.vgname = value;
     },
-    //请求精简池
+    // Request thin pool
     handlePoolReq() {
       this.validate("vgname");
       if (this.rules["vgname"].error) return;
       this.queryPoolThin(this.vgname);
     },
-    //选择精简池
+    // Select thin pool
     handleLvSelect(value) {
       this.thinpool = value;
     },

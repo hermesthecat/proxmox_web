@@ -26,10 +26,10 @@
     </template>
     <template slot="content" v-if="type === 'http_proxy'">
       <div class="option-tr">
-        <label>Http代理</label>
+        <label>HTTP Proxy</label>
         <div class="option-item">
           <m-input
-            placeholder="无"
+            placeholder="None"
             prop="http_proxy"
             validateEvent
             @validate="validate"
@@ -43,7 +43,7 @@
     </template>
     <template slot="content" v-if="type === 'email_from'">
       <div class="option-tr">
-        <label>来自......的Eamil</label>
+        <label>Email From Address</label>
         <div class="option-item">
           <m-input
             placeholder="root@$hostname"
@@ -59,10 +59,10 @@
     </template>
     <template slot="content" v-if="type === 'mac_prefix'">
       <div class="option-tr">
-        <label>MAC地址前缀</label>
+        <label>MAC Address Prefix</label>
         <div class="option-item">
           <m-input
-            placeholder="无"
+            placeholder="None"
             prop="mac_prefix"
             validateEvent
             @validate="validate"
@@ -75,7 +75,7 @@
     </template>
     <template slot="content" v-if="type === 'console'">
       <div class="option-tr">
-        <label>控制台查看器</label>
+        <label>Console Viewer</label>
         <div class="option-item">
           <Dropdown trigger="click" @on-change="handleCommand">
             <span slot="label">{{ console_map[console] }}</span>
@@ -91,13 +91,13 @@
     </template>
     <template slot="content" v-if="type === 'migration'">
       <div class="option-tr">
-        <label>类别</label>
+        <label>Type</label>
         <div class="option-item">
           {{ secutity }}
         </div>
       </div>
       <div class="option-tr">
-        <label>网络</label>
+        <label>Network</label>
         <div class="option-item">
           <el-table
             :data="netWorkList"
@@ -117,26 +117,26 @@
               sortable
             ></el-table-column>
             <el-table-column
-              label="接口"
+              label="Interface"
               prop="iface"
               sortable
             ></el-table-column>
-            <el-table-column label="活动" prop="active">
+            <el-table-column label="Active" prop="active">
               <template slot-scope="scope">
                 <table-info-state
-                  :content="scope.row.active === 1 ? '是' : '否'"
+                  :content="scope.row.active === 1 ? 'Yes' : 'No'"
                   :state="scope.row.active === 1 ? 'actived' : 'unactived'"
                 ></table-info-state>
               </template>
             </el-table-column>
-            <el-table-column label="备注" prop="comment"></el-table-column>
+            <el-table-column label="Comment" prop="comment"></el-table-column>
           </el-table>
         </div>
       </div>
     </template>
     <template slot="content" v-if="type === 'keyboard'">
       <div class="option-tr">
-        <label>键盘布局</label>
+        <label>Keyboard Layout</label>
         <div class="option-item">
           <Dropdown trigger="click" @on-change="handleCommand">
             <span slot="label">{{ kvm_keymaps[keyboard] }}</span>
@@ -153,14 +153,14 @@
     <template slot="footer">
       <template>
         <m-button class="create-btn" type="primary" @on-click="close()"
-          >取消</m-button
+          >Cancel</m-button
         >
         <m-button
           class="create-btn"
           type="primary"
           @on-click="confirm()"
           :disabled="instate()"
-          >确定</m-button
+          >OK</m-button
         >
       </template>
     </template>
@@ -185,12 +185,12 @@ export default {
     MButton,
   },
   props: {
-    //配置弹框是否可见
+    // Whether the configuration dialog is visible
     visible: {
       type: Boolean,
       default: false,
     },
-    //根据不同的type来显示相应的配置
+    // Show corresponding configuration based on different types
     type: {
       type: String,
       default: "",
@@ -214,7 +214,7 @@ export default {
       secutity: "secure",
       netWorkList: [],
       link1Radio: "",
-      //校验规则
+      // Validation rules
       rules: {
         http_proxy: {
           error: false,
@@ -232,7 +232,7 @@ export default {
     };
   },
   mounted() {
-    //设置默认选中或输入
+    // Set default selection or input
     switch (this.type) {
       case "keyboard":
         this.keyboard =
@@ -278,15 +278,15 @@ export default {
       });
   },
   methods: {
-    //关闭弹框
+    // Close dialog
     close() {
       this.$emit("close");
     },
-    //选择不同选项
+    // Select different options
     handleCommand(prop) {
       this[this.type] = prop;
     },
-    //确定修改
+    // Confirm modification
     confirm() {
       let param;
       if (this.validateAll()) return;
@@ -363,7 +363,7 @@ export default {
         this.close();
       });
     },
-    //整体校验
+    // Overall validation
     validateAll() {
       let props = [];
       if (this.type === "http_proxy") props.push("http_proxy");
@@ -372,32 +372,32 @@ export default {
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
     },
-    //单个校验
+    // Single validation
     validate(prop) {
       let value = String(this[prop]).trim();
       this.rules[prop].error = false;
       this.rules[prop].message = "";
       if (value && prop === "http_proxy" && !httpProxy(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "必须以http://开头";
+        this.rules[prop].message = "Must start with http://";
         return;
       }
       if (value && prop === "email_from" && !proxmoxMail(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "请输入正确的邮箱";
+        this.rules[prop].message = "Please enter a valid email address";
         return;
       }
       if (value && prop === "mac_prefix" && !macPrefix(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "示例：02:8f - 只允许单播地址";
+        this.rules[prop].message = "Example: 02:8f - Only unicast addresses allowed";
         return;
       }
     },
-    //选择网络
+    // Select network
     handleLink1Change(row) {
       this.link1Radio = row.cidr;
     },
-    //设置disabled值
+    // Set disabled value
     instate() {
       if (["http_proxy", "email_from", "mac_prefix"].includes(this.type)) {
         if (

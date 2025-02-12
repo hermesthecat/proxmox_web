@@ -5,7 +5,7 @@
         type="primary"
         :disabled="option === ''"
         @on-click="showModal(option)"
-        >编辑</m-button
+        >Edit</m-button
       >
     </div>
     <div slot="page-content">
@@ -27,7 +27,7 @@
               <div></div>
             </label>
           </div>
-          <div class="table-td">键盘布局</div>
+          <div class="table-td">Keyboard Layout</div>
           <div class="table-td">
             {{ db.optionObj && render_kvm_language(db.optionObj.keyboard) }}
             <i
@@ -53,12 +53,12 @@
               <div></div>
             </label>
           </div>
-          <div class="table-td">http代理</div>
+          <div class="table-td">HTTP Proxy</div>
           <div class="table-td">
             {{
               db.optionObj && db.optionObj.http_proxy
                 ? db.optionObj.http_proxy
-                : "无"
+                : "None"
             }}
             <i
               class="el-icon-edit edit-icon"
@@ -83,7 +83,7 @@
               <div></div>
             </label>
           </div>
-          <div class="table-td">控制台查看器</div>
+          <div class="table-td">Console Viewer</div>
           <div class="table-td">
             {{ db.optionObj && render_kvm_console(db.optionObj.console) }}
             <i class="el-icon-edit edit-icon" @click="showModal('console')"></i>
@@ -106,7 +106,7 @@
               <div></div>
             </label>
           </div>
-          <div class="table-td">来自......地址的Email</div>
+          <div class="table-td">Email From Address</div>
           <div class="table-td">
             {{
               db.optionObj && db.optionObj.email_from
@@ -136,12 +136,12 @@
               <div></div>
             </label>
           </div>
-          <div class="table-td">MAC地址前缀</div>
+          <div class="table-td">MAC Address Prefix</div>
           <div class="table-td">
             {{
               db.optionObj && db.optionObj.mac_prefix
                 ? db.optionObj.mac_prefix
-                : "无"
+                : "None"
             }}
             <i
               class="el-icon-edit edit-icon"
@@ -237,18 +237,18 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化查找
+    // Initialize search
     __init__() {
       this.queryOptionList();
     },
-    //点击表格行触发事件
+    // Click event for table row
     handleClick(event) {
       this.option = event.target.parentElement.id;
     },
-    //渲染键盘语言
+    // Render keyboard language
     render_kvm_language(value) {
       if (!value || value === "__default__") {
-        return "默认";
+        return "Default";
       }
       var text = KVM_KEYMAPS[value];
       if (text) {
@@ -256,10 +256,10 @@ export default {
       }
       return value;
     },
-    //渲染控制台
+    // Render console
     render_kvm_console(value) {
       if (!value || value === "__default__") {
-        return "默认";
+        return "Default";
       }
       var text = CONSOLE_Map[value];
       if (text) {
@@ -267,41 +267,41 @@ export default {
       }
       return value;
     },
-    //渲染高可用
+    // Render high availability
     render_dc_ha_opts: function (value) {
       if (!value) {
-        return "默认";
+        return "Default";
       } else {
         return printPropertyString(value);
       }
     },
-    //渲染网络
+    // Render network
     render_as_property_string: function (value) {
-      return !value ? "默认" : printPropertyString(value);
+      return !value ? "Default" : printPropertyString(value);
     },
     showModal(key) {
       this.type = key;
       switch (key) {
         case "keyboard":
-          this.title = "编辑：键盘布局";
+          this.title = "Edit: Keyboard Layout";
           break;
         case "http_proxy":
-          this.title = "编辑：Http代理";
+          this.title = "Edit: HTTP Proxy";
           break;
         case "console":
-          this.title = "编辑：控制台查看器";
+          this.title = "Edit: Console Viewer";
           break;
         case "migration":
-          this.title = "编辑：Migration Settings";
+          this.title = "Edit: Migration Settings";
           break;
         case "ha":
-          this.title = "编辑：HA Settings";
+          this.title = "Edit: HA Settings";
           break;
         case "email_from":
-          this.title = "编辑：来自......的邮箱";
+          this.title = "Edit: Email From Address";
           break;
         case "mac_prefix":
-          this.title = "编辑：MAC地址前缀";
+          this.title = "Edit: MAC Address Prefix";
           break;
       }
       this.visible = true;

@@ -2,7 +2,7 @@
   <div class="m-form__content">
     <div class="m-form__section">
       <dl>
-        <dt>基本信息</dt>
+        <dt>Basic Information</dt>
         <dd>
           <m-input
             type="text"
@@ -16,17 +16,17 @@
             v-model="storage"
             required
             :disabled="!isCreate"
-            placeholder="请输入ID"
+            placeholder="Please enter ID"
           />
           <m-checkbox
-            label="启用"
+            label="Enable"
             v-model="disable"
             labelWidth="100px"
           ></m-checkbox>
           <m-input
             type="text"
             prop="portal"
-            label="门户"
+            label="Portal"
             labelWidth="100px"
             validateEvent
             :disabled="!isCreate"
@@ -35,13 +35,13 @@
             :error-msg="rules.portal.message"
             v-model="portal"
             required
-            placeholder="请输入门户"
+            placeholder="Please enter portal"
           />
           <m-select
             labelWidth="100px"
             @on-change="handleSelect"
             prop="iscsiprovider"
-            label="iSCSI提供者"
+            label="iSCSI Provider"
             :disabled="!isCreate"
             validateEvent
             @validate="validate"
@@ -49,7 +49,7 @@
             :show-error="rules.iscsiprovider.error"
             :error-msg="rules.iscsiprovider.message"
             v-model="iscsiprovider"
-            placeholder="请输入iSCSI提供者"
+            placeholder="Please enter iSCSI provider"
           >
             <m-option
               v-for="item in options"
@@ -61,7 +61,7 @@
           <m-input
             type="text"
             prop="pool"
-            label="资源池"
+            label="Resource Pool"
             :disabled="!isCreate"
             labelWidth="100px"
             validateEvent
@@ -70,12 +70,12 @@
             :show-error="rules.pool.error"
             :error-msg="rules.pool.message"
             v-model="pool"
-            placeholder="请输入资源池"
+            placeholder="Please enter resource pool"
           />
           <m-input
             type="text"
             prop="blocksize"
-            label="块尺寸"
+            label="Block Size"
             labelWidth="100px"
             :disabled="!isCreate"
             validateEvent
@@ -84,12 +84,12 @@
             :show-error="rules.blocksize.error"
             :error-msg="rules.blocksize.message"
             v-model="blocksize"
-            placeholder="请输入块尺寸"
+            placeholder="Please enter block size"
           />
           <m-input
             type="text"
             prop="target"
-            label="目标"
+            label="Target"
             labelWidth="100px"
             validateEvent
             :disabled="!isCreate"
@@ -98,10 +98,10 @@
             :show-error="rules.target.error"
             :error-msg="rules.target.message"
             v-model="target"
-            placeholder="请输入目标"
+            placeholder="Please enter target"
           />
           <m-checkbox
-            label="精简装置"
+            label="Thin Provisioning"
             v-model="sparse"
             :disabled="['LIO', 'IET'].includes(iscsiprovider)"
             labelWidth="100px"
@@ -109,32 +109,32 @@
           <m-input
             type="text"
             prop="comstar_tg"
-            label="目标群组"
+            label="Target Group"
             labelWidth="100px"
             :disabled="iscsiprovider !== 'Comstar' || !isCreate"
             v-model="comstar_tg"
-            placeholder="请输入目标群组"
+            placeholder="Please enter target group"
           />
           <m-checkbox
-            label="写缓存"
+            label="Write Cache"
             v-model="writecache"
             labelWidth="100px"
           ></m-checkbox>
           <m-input
             type="text"
             prop="comstar_hg"
-            label="主机组"
+            label="Host Group"
             labelWidth="100px"
             validateEvent
             :disabled="iscsiprovider !== 'Comstar' || !isCreate"
             v-model="comstar_hg"
-            placeholder="请输入主机组"
+            placeholder="Please enter host group"
           />
 
           <m-input
             type="number"
             prop="lio_tpg"
-            label="目标门户组"
+            label="Target Portal Group"
             labelWidth="100px"
             validateEvent
             @validate="validate"
@@ -142,12 +142,12 @@
             :error-msg="rules.lio_tpg.message"
             :disabled="iscsiprovider !== 'LIO' || !isCreate"
             v-model="lio_tpg"
-            placeholder="请输入目标门户组"
+            placeholder="Please enter target portal group"
           />
         </dd>
       </dl>
       <dl>
-        <dt>节点</dt>
+        <dt>Nodes</dt>
         <dd>
           <el-table
             :data="db.nodeList"
@@ -156,11 +156,11 @@
           >
             <el-table-column type="selection" width="55"> </el-table-column>
             <el-table-column
-              label="节点"
+              label="Node"
               prop="node"
               sortable
             ></el-table-column>
-            <el-table-column label="内存使用率">
+            <el-table-column label="Memory Usage">
               <template slot-scope="scope">
                 {{
                   scope.row.mem &&
@@ -169,7 +169,7 @@
                 }}
               </template>
             </el-table-column>
-            <el-table-column label="CPU使用率">
+            <el-table-column label="CPU Usage">
               <template slot-scope="scope">
                 {{
                   scope.row.cpu &&
@@ -309,41 +309,41 @@ export default {
         this.disable = this.param.disable ? false : true;
       }
     },
-    //单个校验
+    // Single validation
     validate(prop) {
       let value = String(this[prop]).trim();
       this.rules[prop].error = false;
       this.rules[prop].message = "";
-      //校验是否为空
+      // Validate if empty
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
-      //校验名称
+      // Validate name
       if (
         prop === "storage" &&
         !/^[A-Z|a-z][\w\-\_\.]{0,}[A-Z|a-z|0-9]$/.test(value)
       ) {
         this.rules[prop].error = true;
         this.rules[prop].message =
-          "ID只能以A-Z|a-z开头，以A-Z|a-z|0-9结尾，至少两个字符允许'A-Z','a-z','0-9','-',_,'.'";
+          "ID must start with A-Z|a-z, end with A-Z|a-z|0-9, minimum 2 characters, allowing 'A-Z','a-z','0-9','-',_,'.'";
         return;
       }
       if (prop === "path" && !/^[\/][A-Za-z\\\-\_0-9]{1,}/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "路径是以/开头的绝对路径";
+        this.rules[prop].message = "Path must be absolute starting with /";
         return;
       }
     },
-    //选择内容
+    // Select content
     handleSelect(value) {
       this.iscsiprovider = value;
     },
     handleSelectionChange(row) {
       this.nodes = row.map((item) => item.node);
     },
-    //整体校验
+    // Validate all
     validateAll() {
       let props = ["storage", "blocksize", "portal", "target", "pool"];
       if (this.iscsiprovider === "LIO") {

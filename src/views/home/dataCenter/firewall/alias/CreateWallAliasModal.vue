@@ -11,12 +11,12 @@
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-input
                 type="text"
                 prop="name"
-                label="别名"
+                label="Alias"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
@@ -24,7 +24,7 @@
                 :error-msg="rules['name'].message"
                 v-model="name"
                 required
-                :placeholder="'请输入别名'"
+                :placeholder="'Please enter alias'"
               />
               <m-input
                 type="text"
@@ -37,15 +37,15 @@
                 required
                 :show-error="rules['cidr'].error"
                 :error-msg="rules['cidr'].message"
-                :placeholder="'请输入IP/CIDR'"
+                :placeholder="'Please enter IP/CIDR'"
               />
               <m-input
                 type="textarea"
                 prop="comment"
-                label="备注"
+                label="Comment"
                 labelWidth="100px"
                 v-model="comment"
-                placeholder="请输入备注"
+                placeholder="Please enter comment"
               />
             </dd>
           </dl>
@@ -54,7 +54,7 @@
     </div>
     <template slot="footer">
       <m-button class="create-btn" type="primary" @on-click="confirm">{{
-        modalType === "edit" ? "修改" : "添加"
+        modalType === "edit" ? "Update" : "Add"
       }}</m-button>
     </template>
   </Dialog>
@@ -132,11 +132,11 @@ export default {
     byteToSize,
     async __init__() {
       let _this = this;
-      //创建安全组
+      // Create security group
       if (this.isCreate) {
         Object.assign(this.$data, this.$options.data());
       } else if (this.modalType === "edit") {
-        //当类型不为group时编辑安全组
+        // Edit security group when type is not group
         Object.assign(_this.$data, _this.$options.data());
         if (_this.param && String(_this.param.name)) {
           _this.queryFireWallAliasById(_this.param.name).then(() => {
@@ -156,7 +156,7 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
       debugger;
@@ -170,7 +170,7 @@ export default {
         )
       ) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "cidr格式不正确";
+        this.rules[prop].message = "Invalid CIDR format";
         return;
       }
     },

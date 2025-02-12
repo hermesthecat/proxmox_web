@@ -3,11 +3,11 @@
     <div class="overview-content__top">
       <div class="overview-content__top_left">
         <overview-card>
-          <div slot="title">健康</div>
+          <div slot="title">Health</div>
           <div slot="content" class="card-content">
             <div class="card-item">
               <line-item
-                title="状态"
+                title="Status"
                 :isDouble="false"
                 type="cluster"
                 :icon="`${
@@ -19,14 +19,14 @@
                     ? 'fa critical fa-times-circle'
                     : 'good fa-check-circle'
                 }`"
-                :des="`集群${
+                :des="`Cluster${
                   status &&
                   status.cluster &&
                   status.cluster[0] &&
                   status.cluster[0].name
                     ? status.cluster[0].name
                     : ''
-                },具有法定数目的:${
+                }, Quorum:${
                   status &&
                   status.cluster &&
                   status.cluster[0] &&
@@ -38,14 +38,14 @@
             </div>
             <div class="card-item">
               <line-item
-                title="节点"
+                title="Node"
                 :isDouble="true"
                 type="node"
                 :data="status && status.node"
               ></line-item>
             </div>
             <div class="card-item" v-if="!uninstallCeph">
-              <h1 class="ceph-title">Ceph状态</h1>
+              <h1 class="ceph-title">Ceph Status</h1>
               <router-link
                 to="/datacenter/ceph"
                 class="ceph-icon"
@@ -71,11 +71,11 @@
       </div>
       <div class="overview-content__top_right">
         <overview-card>
-          <div slot="title">访客</div>
+          <div slot="title">Guests</div>
           <div slot="content" class="card-content">
             <div class="card-item">
               <line-item
-                title="虚拟机"
+                title="Virtual Machine"
                 :isDouble="true"
                 type="qemu"
                 :data="resources.qemu"
@@ -83,7 +83,7 @@
             </div>
             <div class="card-item">
               <line-item
-                title="LXC容器"
+                title="LXC Container"
                 :isDouble="true"
                 type="lxc"
                 :data="resources.lxc"
@@ -96,7 +96,7 @@
     <div class="overview-content__center">
       <div class="overview-content__center_left">
         <overview-card>
-          <div slot="title">资源</div>
+          <div slot="title">Resources</div>
           <div slot="content" class="card-content">
             <div class="card-item">
               <mh-circle
@@ -118,7 +118,7 @@
                   resources.griditem.memoryusage * 100
                 "
                 :label="setLabel('mem', resources.griditem)"
-                title="内存"
+                title="Memory"
               ></mh-circle>
             </div>
             <div class="card-item">
@@ -129,7 +129,7 @@
                   resources.griditem.storageusage * 100
                 "
                 :label="setLabel('storage', resources.griditem)"
-                title="存储"
+                title="Storage"
               ></mh-circle>
             </div>
           </div>
@@ -137,16 +137,16 @@
       </div>
       <div class="overview-content__center_right">
         <overview-card>
-          <div slot="title">节点</div>
+          <div slot="title">Nodes</div>
           <div slot="content">
             <el-table :data="nodes" class="m-margin-top-10">
-              <el-table-column label="节点" prop="name"></el-table-column>
+              <el-table-column label="Node" prop="name"></el-table-column>
               <el-table-column
                 label="ID"
                 prop="nodeid"
                 width="50px"
               ></el-table-column>
-              <el-table-column label="在线" prop="online">
+              <el-table-column label="Online" prop="online">
                 <template slot-scope="scope">
                   <i
                     :class="{
@@ -155,18 +155,18 @@
                   ></i>
                 </template>
               </el-table-column>
-              <el-table-column label="支持" prop="level">
+              <el-table-column label="Support" prop="level">
                 <template slot-scope="scope">
                   <span v-if="scope.row.level">{{ scope.row.level }}</span>
                   <span v-else>-</span>
                 </template>
               </el-table-column>
-              <el-table-column label="服务器地址" prop="ip">
+              <el-table-column label="Server Address" prop="ip">
                 <template slot-scope="scope">
                   <span style="font-size: 12px">{{ scope.row.ip }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="CPU使用率" prop="cpu">
+              <el-table-column label="CPU Usage" prop="cpu">
                 <template slot-scope="scope">
                   <line-charts
                     :value="
@@ -179,7 +179,7 @@
                   ></line-charts>
                 </template>
               </el-table-column>
-              <el-table-column label="内存使用率" prop="mem">
+              <el-table-column label="Memory Usage" prop="mem">
                 <template slot-scope="scope">
                   <line-charts
                     :value="
@@ -192,7 +192,7 @@
                   ></line-charts>
                 </template>
               </el-table-column>
-              <el-table-column label="运行时间" prop="uptime">
+              <el-table-column label="Uptime" prop="uptime">
                 <template slot-scope="scope">
                   <span style="font-size: 12px">{{
                     scope.row.uptime ? render_uptime(scope.row.uptime) : "-"
@@ -205,7 +205,7 @@
       </div>
     </div>
     <overview-card>
-      <div slot="title">订阅</div>
+      <div slot="title">Subscription</div>
       <div slot="content" class="card-content">
         <div class="card-item">
           <line-item
@@ -244,8 +244,8 @@ export default {
       intervalId: null,
       uninstallCeph: false,
       subs: {
-        title: "未知",
-        text: "未知",
+        title: "Unknown",
+        text: "Unknown",
         iconCls: "fa-info-circle",
       },
     };

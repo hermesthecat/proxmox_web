@@ -5,25 +5,25 @@
         type="primary"
         @on-click="showModal('create')"
         icon="el-icon-plus"
-        >添加</m-button
+        >Add</m-button
       >
       <m-button
         type="danger"
         v-confirm="{
-          msg: '确定要删除已选择项?',
+          msg: 'Are you sure you want to delete the selected items?',
           ok: () => handleDelete(),
           icon: 'icon-question',
         }"
         icon="el-icon-delete"
         :disabled="selectedList.length <= 0"
-        >删除</m-button
+        >Delete</m-button
       >
       <m-button
         type="info"
         icon="el-icon-edit"
         :disabled="selectedList.length !== 1"
         @on-click="showModal('edit')"
-        >编辑</m-button
+        >Edit</m-button
       >
     </div>
     <div slot="page-content">
@@ -33,9 +33,9 @@
         @selection-change="handleSelect"
       >
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="名称" prop="name"></el-table-column>
+        <el-table-column label="Name" prop="name"></el-table-column>
         <el-table-column label="IP/CIDR" prop="cidr"></el-table-column>
-        <el-table-column label="备注" prop="comment"></el-table-column>
+        <el-table-column label="Comment" prop="comment"></el-table-column>
       </el-table>
       <create-wall-alias-modal
         :title="title"
@@ -69,7 +69,7 @@ export default {
     return {
       type: "create",
       visible: false,
-      title: "添加： 别名",
+      title: "Add: Alias",
       selectedList: [],
       isCreate: true,
       param: {},
@@ -80,23 +80,23 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化查找
+    // Initialize search
     __init__() {
       this.queryAliasList();
     },
-    //是否展示弹框
+    // Show modal dialog
     showModal(type) {
       this.type = type;
       this.isCreate = type === "create";
-      this.title = type === "create" ? "添加： 别名" : "编辑：别名";
+      this.title = type === "create" ? "Add: Alias" : "Edit: Alias";
       this.param = type === "create" ? {} : this.selectedList[0];
       this.visible = true;
     },
-    //按钮是否可点击
+    // Check if button is clickable
     inStatus() {
       return this.selectedList.length !== 1;
     },
-    //选择
+    // Selection
     handleSelect(row) {
       this.selectedList = row;
     },

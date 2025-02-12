@@ -3,6 +3,7 @@ import { deepCopy, confirm } from "@libs/utils/index";
 export default {
   name: "DataCenterReplicationHttp",
   methods: {
+    // Query replication list
     queryReplicationList() {
       this.loading = true;
       return this.$http
@@ -19,6 +20,7 @@ export default {
           this.loadingText = res;
         });
     },
+    // Query node list
     queryNodeList() {
       return this.$http.get("json/nodes").then((res) => {
         if (res.data)
@@ -28,6 +30,7 @@ export default {
           });
       });
     },
+    // Query highest IDs
     queryHighIds() {
       return this.$http
         .get("json/cluster/replication", {
@@ -37,6 +40,7 @@ export default {
           if (res.data) this.jobs = res.data;
         });
     },
+    // Create replication
     createReplication(params) {
       let event = this.createEvent("action.replication.create", params.guest);
       return this.$http
@@ -54,6 +58,7 @@ export default {
           confirm.call(this, res, "confirm", "icon-warning");
         });
     },
+    // Update replication
     updateReplication(params) {
       let param = deepCopy(params);
       delete param.id;
@@ -75,6 +80,7 @@ export default {
           confirm.call(this, res, "confirm", "icon-warning");
         });
     },
+    // Query replication by ID
     queryReplicationById(id) {
       return this.$http.get(`json/cluster/replication/${id}`).then((res) => {
         if (res.data)
@@ -84,6 +90,7 @@ export default {
           });
       });
     },
+    // Delete replication
     delete(type) {
       let event = this.createEvent("action.replication.delete");
       let tasks = [],

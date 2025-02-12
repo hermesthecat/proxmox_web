@@ -3,11 +3,11 @@ import { confirm } from "@libs/utils/index";
 export default {
   name: "OptionHttp",
   methods: {
-    //查找选项
+    // Query options
     queryOptionList() {
       return this.$http.get("json/cluster/options").then((res) => {
         if (res.data) {
-          //当为以下数据为空时设置为空来显示默认
+          // Set empty values for the following data to show defaults
           [
             "console",
             "http_proxy",
@@ -28,7 +28,7 @@ export default {
         }
       });
     },
-    //修改选项
+    // Modify options
     modifyOptions(param) {
       let event = this.createEvent("options.action.modify");
       return this.$http
@@ -46,7 +46,7 @@ export default {
           confirm.call(this, res, "confirm", "icon-warning");
         });
     },
-    //查询网络
+    // Query network
     queryClusterNetWork() {
       return this.$http.get("json/nodes/localhost/network").then((res) => {
         if (res.data) {

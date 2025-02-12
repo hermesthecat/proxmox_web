@@ -7,12 +7,12 @@
             type="primary"
             :disabled="cephFsList.length > 0 && cephFsList.length !== 1"
             @on-click="showModal('cephfs')"
-            >创建CephFs</m-button
+            >Create CephFs</m-button
           >
         </div>
         <div slot="page-content">
           <el-table :data="cephFsList">
-            <el-table-column label="名称" prop="name"></el-table-column>
+            <el-table-column label="Name" prop="name"></el-table-column>
             <el-table-column
               label="Data Pool"
               prop="data_pool"
@@ -26,7 +26,7 @@
       </page-template>
     </div>
     <div class="ceph-fs__bottom">
-      <h1 class="ceph-fs__metadata">源数据服务器</h1>
+      <h1 class="ceph-fs__metadata">Metadata Servers</h1>
       <page-template>
         <div slot="toolbar-left">
           <m-button
@@ -36,44 +36,44 @@
               selectedList.length !== 1 || !inState('stopped', 'unknown')
             "
             @on-click="handleOperate('start')"
-            >启动</m-button
+            >Start</m-button
           >
           <m-button
             icon="fa fa-stop"
             type="danger"
             :disabled="selectedList.length !== 1"
             @on-click="handleOperate('stop')"
-            >停止</m-button
+            >Stop</m-button
           >
           <m-button
             icon="fa fa-refresh"
             type="primary"
             :disabled="selectedList.length !== 1"
             @on-click="handleOperate('restart')"
-            >重启</m-button
+            >Restart</m-button
           >
           <m-button
             icon="el-icon-plus"
             type="primary"
             @on-click="showModal('metadata')"
-            >创建</m-button
+            >Create</m-button
           >
           <m-button
             icon="el-icon-delete"
             type="danger"
             :disabled="selectedList.length !== 1"
             @on-click="handleOperate('delete')"
-            >销毁</m-button
+            >Destroy</m-button
           >
           <m-button
             icon="el-icon-document"
             type="info"
             :disabled="selectedList.length !== 1"
             @on-click="showModal('log')"
-            >系统日志</m-button
+            >System Log</m-button
           >
           <m-button icon="el-icon-refresh" type="info" @on-click="__init__()"
-            >刷新</m-button
+            >Refresh</m-button
           >
         </div>
         <div slot="page-content">
@@ -82,12 +82,12 @@
             @selection-change="(row) => (selectedList = row)"
           >
             <el-table-column type="selection" width="55px"></el-table-column>
-            <el-table-column label="名称" prop="name"></el-table-column>
-            <el-table-column label="主机" prop="host"></el-table-column>
-            <el-table-column label="地址" prop="addr"></el-table-column>
-            <el-table-column label="状态" prop="state"></el-table-column>
+            <el-table-column label="Name" prop="name"></el-table-column>
+            <el-table-column label="Host" prop="host"></el-table-column>
+            <el-table-column label="Address" prop="addr"></el-table-column>
+            <el-table-column label="Status" prop="state"></el-table-column>
             <el-table-column
-              label="版本"
+              label="Version"
               prop="ceph_version_short"
             ></el-table-column>
           </el-table>
@@ -108,19 +108,19 @@
       :_style="{
         width: '800px',
       }"
-      title="Task Viewer: 任务进度"
+      title="Task Viewer: Task Progress"
     >
       <template slot="content">
         <m-tab v-model="tab" @tab-click="handleTabChange">
-          <m-tab-panel label="输出" name="log"></m-tab-panel>
-          <m-tab-panel label="状态" name="status"></m-tab-panel>
+          <m-tab-panel label="Output" name="log"></m-tab-panel>
+          <m-tab-panel label="Status" name="status"></m-tab-panel>
         </m-tab>
         <m-button
           class="create-btn m-margin-top-10"
           type="primary"
           @on-click="stopTask1"
           :disabled="db.addClusterStatusObj.status !== 'running'"
-          >停止</m-button
+          >Stop</m-button
         >
         <el-scrollbar style="height: 100%">
           <div class="taskmodal-content">
@@ -189,13 +189,13 @@ export default {
   },
   methods: {
     dateFormat,
-    //初始化请求
+    // Initialize request
     __init__() {
-      //请求fs
+      // Request fs
       this.queryFs().then((res) => {
         this.cephFsList = res;
       });
-      //请求mds
+      // Request mds
       this.queryMds().then((res) => {
         this.mdsList = res;
       });
@@ -217,18 +217,18 @@ export default {
       this.modalType = type;
       this.title =
         type === "metadata"
-          ? "创建源数据服务器"
+          ? "Create Metadata Server"
           : type === "log"
-          ? "系统日志"
-          : "创建CephFs";
+          ? "System Log"
+          : "Create CephFs";
       this.param = this.selectedList[0];
       this.visible = true;
     },
-    //删除、重启、停止等操作
+    // Delete, restart, stop operations
     handleOperate(operate) {
       this.$confirm
         .confirm({
-          msg: "确认要进行以下操作吗?",
+          msg: "Are you sure you want to perform this operation?",
           icon: "icon-warning",
         })
         .then((res) => {
@@ -248,7 +248,7 @@ export default {
               }, 3000);
             });
           } else {
-            //删除mds
+            // Delete mds
             this.deleteMds(selectedList.name).then((res) => {
               this.showLog = true;
               this.interVal = setInterval(() => {
@@ -265,7 +265,7 @@ export default {
           }
         });
     },
-    //判断是否在某个状态下
+    // Check if in certain state
     inState() {
       let states = [],
         _this = this;
@@ -277,7 +277,7 @@ export default {
       });
     },
   },
-  //在实例销毁之前销毁定时器
+  // Destroy timer before instance is destroyed
   beforeDestroy() {
     if (this.interVal) {
       clearInterval(this.interVal);

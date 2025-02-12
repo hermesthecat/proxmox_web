@@ -11,7 +11,7 @@
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-select
                 prop="vmid"
@@ -26,7 +26,7 @@
                 required
                 v-model="vmid"
                 :disabled="!isCreate"
-                placeholder="请选择VM"
+                placeholder="Please select VM"
               >
                 <m-option
                   v-for="(item, index) in vmList"
@@ -37,11 +37,11 @@
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
-                        <span class="table-td">id</span>
-                        <span class="table-td">名称</span>
-                        <span class="table-td">节点</span>
-                        <span class="table-td">状态</span>
-                        <span class="table-td">类别</span>
+                        <span class="table-td">ID</span>
+                        <span class="table-td">Name</span>
+                        <span class="table-td">Node</span>
+                        <span class="table-td">Status</span>
+                        <span class="table-td">Type</span>
                       </div>
                     </template>
                     <div class="table-tr">
@@ -66,19 +66,19 @@
                           "
                         ></table-info-state>
                       </span>
-                      <span class="table-td" :title="'虚拟机'"> 虚拟机 </span>
+                      <span class="table-td" :title="'Virtual Machine'">Virtual Machine</span>
                     </div>
                   </div>
                 </m-option>
               </m-select>
               <m-select
                 prop="group"
-                label="组"
+                label="Group"
                 labelWidth="100px"
                 @on-change="handleGroupSelect"
                 v-model="group"
                 :readonly="false"
-                placeholder="请选择组"
+                placeholder="Please select group"
               >
                 <m-option
                   v-for="(item, index) in db.groupsList"
@@ -89,9 +89,9 @@
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
-                        <span class="table-td">组</span>
-                        <span class="table-td">备注</span>
-                        <span class="table-td">用户</span>
+                        <span class="table-td">Group</span>
+                        <span class="table-td">Comment</span>
+                        <span class="table-td">Users</span>
                       </div>
                     </template>
                     <div class="table-tr">
@@ -113,23 +113,23 @@
                 type="number"
                 prop="max_restart"
                 labelWidth="100px"
-                label="最大重启"
+                label="Max Restart"
                 v-model="max_restart"
                 validateEvent
                 @validate="validate"
                 required
                 :show-error="rules.max_restart.error"
                 :error-msg="rules.max_restart.message"
-                placeholder="请输入最大重启"
+                placeholder="Please enter max restart"
               />
               <m-select
                 prop="state"
-                label="请求状态"
+                label="Request Status"
                 labelWidth="100px"
                 @on-change="handleStateSelect"
                 v-model="state"
                 :readonly="false"
-                placeholder="请选择组"
+                placeholder="Please select group"
               >
                 <m-option
                   v-for="item in stateOptions"
@@ -144,22 +144,22 @@
                 type="number"
                 prop="max_relocate"
                 labelWidth="100px"
-                label="最大重定位"
+                label="Max Relocate"
                 v-model="max_relocate"
                 validateEvent
                 @validate="validate"
                 required
                 :show-error="rules.max_relocate.error"
                 :error-msg="rules.max_relocate.message"
-                placeholder="请输入最大重定位"
+                placeholder="Please enter max relocate"
               />
               <m-input
                 type="textarea"
                 prop="comment"
                 labelWidth="100px"
-                label="备注"
+                label="Comment"
                 v-model="comment"
-                placeholder="请输入备注"
+                placeholder="Please enter comment"
               />
               <div
                 class="m-alert-info"

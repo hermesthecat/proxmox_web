@@ -11,28 +11,28 @@
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-input
                 type="text"
                 prop="group"
                 labelWidth="100px"
-                label="名称"
+                label="Name"
                 v-model="group"
                 validateEvent
                 @validate="validate"
                 required
                 :show-error="rules.group.error"
                 :error-msg="rules.group.message"
-                placeholder="请输入名称"
+                placeholder="Please enter name"
               />
               <m-input
                 type="textarea"
                 prop="comment"
                 labelWidth="100px"
-                label="备注"
+                label="Comment"
                 v-model="comment"
-                placeholder="请输入备注"
+                placeholder="Please enter comment"
               />
             </dd>
           </dl>
@@ -112,7 +112,7 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
     },
