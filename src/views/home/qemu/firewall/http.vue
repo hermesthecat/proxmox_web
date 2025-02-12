@@ -14,7 +14,7 @@ export default {
   },
   methods: {
     /***
-     * 查找规则
+     * Query rules
      */
     queryFireWallList() {
       return this.$http
@@ -105,7 +105,7 @@ export default {
           return Promise.reject(res);
         });
     },
-    //编辑更新防火墙
+    //Update firewall
     updateFireWall(id, param) {
       let event = this.createEvent("action.firewall.update");
       return this.$http
@@ -126,7 +126,7 @@ export default {
           return Promise.reject(res);
         });
     },
-    //查询安全组
+    //Query security group
     queryFireWallGroupList() {
       return this.$http.get(`json/cluster/firewall/groups`).then((res) => {
         if (res.data) {
@@ -182,7 +182,7 @@ export default {
         });
     },
     /**
-     * 查询虚拟机防火墙alias
+     * Query VM firewall alias
      */
     queryFireWallAlias() {
       return this.$http
@@ -197,7 +197,7 @@ export default {
         });
     },
     /**
-     * 创建虚拟机别名
+     * Create VM alias
      */
     createFireWallAlias(param) {
       let _this = this,
@@ -223,7 +223,7 @@ export default {
         });
     },
     /**
-     * 单个查询虚拟机别名
+     * Query single VM alias
      */
     queryFireWallAliasById(id) {
       let _this = this,
@@ -246,7 +246,7 @@ export default {
         });
     },
     /**
-     * 更新虚拟机别名
+     * Update VM alias
      */
     updateFireWallAlias(name, param) {
       let _this = this,
@@ -272,7 +272,7 @@ export default {
         });
     },
     /**
-     * 删除虚拟机防火墙别名
+     * Delete VM firewall alias
      */
     deleteFireWallAlias() {
       let event = this.createEvent("action.firewall.alias.delete");

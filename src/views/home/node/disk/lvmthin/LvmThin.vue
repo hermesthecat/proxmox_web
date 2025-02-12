@@ -2,10 +2,10 @@
   <page-template>
     <div slot="toolbar-left">
       <m-button type="primary" @on-click="refresh" icon="el-icon-refresh"
-        >重载</m-button
+        >Reload</m-button
       >
       <m-button type="primary" @on-click="showModal()" icon="el-icon-plus"
-        >创建：Thinpool</m-button
+        >Create: Thinpool</m-button
       >
     </div>
     <div slot="page-content">
@@ -14,7 +14,7 @@
         ref="dataTable"
         v-loading="loading"
       >
-        <el-table-column label="名称" prop="lv">
+        <el-table-column label="Name" prop="lv">
           <template slot-scope="scope">
             <i
               :class="
@@ -26,7 +26,7 @@
             <span>{{ scope.row && scope.row.lv }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="使用率" prop="used">
+        <el-table-column label="Usage" prop="used">
           <template slot-scope="scope">
             <LinePercentChart
               :value="
@@ -50,19 +50,19 @@
             ></LinePercentChart>
           </template>
         </el-table-column>
-        <el-table-column label="大小" prop="size">
+        <el-table-column label="Size" prop="size">
           <template slot-scope="scope">
             {{
               scope.row && scope.row.lv_size && byteToSize(scope.row.lv_size)
             }}
           </template>
         </el-table-column>
-        <el-table-column label="已用" prop="used">
+        <el-table-column label="Used" prop="used">
           <template slot-scope="scope">
             {{ scope.row && scope.row.used && byteToSize(scope.row.used) }}
           </template>
         </el-table-column>
-        <el-table-column label="元数据使用率" prop="metadata_used">
+        <el-table-column label="Metadata Usage" prop="metadata_used">
           <template slot-scope="scope">
             <LinePercentChart
               :value="
@@ -81,7 +81,7 @@
             ></LinePercentChart>
           </template>
         </el-table-column>
-        <el-table-column label="元数据大小" prop="metadata_size">
+        <el-table-column label="Metadata Size" prop="metadata_size">
           <template slot-scope="scope">
             {{
               scope.row &&
@@ -90,7 +90,7 @@
             }}
           </template>
         </el-table-column>
-        <el-table-column label="已使用的元数据" prop="metadata_used">
+        <el-table-column label="Metadata Used" prop="metadata_used">
           <template slot-scope="scope">
             {{
               scope.row &&
@@ -131,7 +131,7 @@ export default {
   data() {
     return {
       visible: false,
-      title: "创建：Lvm Thinpool",
+      title: "Create: Lvm Thinpool",
       loading: false,
     };
   },
@@ -141,19 +141,19 @@ export default {
   methods: {
     percentToFixed,
     byteToSize,
-    //初始化查找
+    //Initialize search
     __init__() {
       this.queryDiskLvmThin();
     },
     refresh: debounce(function () {
       this.__init__();
     }, 500),
-    //是否展示弹框
+    //Show dialog
     showModal() {
-      this.title = "创建：Lvm Thinpool";
+      this.title = "Create: Lvm Thinpool";
       this.visible = true;
     },
-    //按钮是否可点击
+    //Check if button is clickable
     inStatus() {
       return this.selectedList.length !== 1;
     },

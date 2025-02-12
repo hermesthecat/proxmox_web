@@ -2,14 +2,14 @@
   <page-template>
     <div slot="toolbar-left">
       <m-button type="primary" icon="el-icon-plus" @on-click="visible = true"
-        >创建</m-button
+        >Create</m-button
       >
       <m-button
         type="danger"
         icon="el-icon-delete"
         @on-click="showDelete = true"
         :disabled="selectedList.length <= 0"
-        >销毁</m-button
+        >Destroy</m-button
       >
     </div>
     <div slot="page-content">
@@ -18,8 +18,8 @@
         @selection-change="(row) => (selectedList = row)"
       >
         <el-table-column type="selection" width="55px"></el-table-column>
-        <el-table-column label="名称" prop="pool_name"></el-table-column>
-        <el-table-column label="大小/min" prop="pool_name">
+        <el-table-column label="Name" prop="pool_name"></el-table-column>
+        <el-table-column label="Size/Min" prop="pool_name">
           <template slot-scope="scope">
             {{ scope.row.min_size + "/" + scope.row.size }}
           </template>
@@ -31,11 +31,11 @@
         <el-table-column label="CRUSH Rule">
           <el-table-column label="ID" prop="crush_rule"></el-table-column>
           <el-table-column
-            label="名称"
+            label="Name"
             prop="crush_rule_name"
           ></el-table-column>
         </el-table-column>
-        <el-table-column label="已用">
+        <el-table-column label="Used">
           <el-table-column label="%" prop="percent_used">
             <template slot-scope="scope">
               {{
@@ -49,7 +49,7 @@
               }}
             </template>
           </el-table-column>
-          <el-table-column label="总额" prop="bytes_used">
+          <el-table-column label="Total" prop="bytes_used">
             <template slot-scope="scope">
               {{
                 byteToSize(
@@ -72,15 +72,15 @@
         @confirm="confirm"
         @cancel="showDelete = false"
         @close="showDelete = false"
-        title="销毁：Ceph池"
+        title="Destroy: Ceph Pool"
       >
         <div slot="content">
           <div class="m-input__section">
             <base-icon name="icon-warning" />
             <div style="display: inline-flex">
               <ul>
-                <li>Ceph Pool {{ selectedList[0].pool_name }} - 销毁</li>
-                <li>请输入ID以确认({{ selectedList[0].pool_name }})</li>
+                <li>Ceph Pool {{ selectedList[0].pool_name }} - Destroy</li>
+                <li>Please enter ID to confirm ({{ selectedList[0].pool_name }})</li>
               </ul>
               <m-input
                 v-model="pool_id"
@@ -101,19 +101,19 @@
         :_style="{
           width: '800px',
         }"
-        title="Task Viewer: 任务进度"
+        title="Task Viewer: Task Progress"
       >
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
-            <m-tab-panel label="输出" name="log"></m-tab-panel>
-            <m-tab-panel label="状态" name="status"></m-tab-panel>
+            <m-tab-panel label="Output" name="log"></m-tab-panel>
+            <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
           <m-button
             class="create-btn m-margin-top-10"
             type="primary"
             @on-click="stopTask1"
             :disabled="db.addClusterStatusObj.status !== 'running'"
-            >停止</m-button
+            >Stop</m-button
           >
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
@@ -222,29 +222,29 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "ID不能为空!";
+        this.rules[prop].message = "ID cannot be empty!";
         return;
       }
       if (value && value !== this.selectedList[0].pool_name) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "ID不正确!";
+        this.rules[prop].message = "ID is incorrect!";
         return;
       }
     },
     confirm() {
-      //校验poolid
+      //Validate pool ID
       this.validate("pool_id");
       if (this.rules["pool_id"].error) return;
-      //删除池
+      //Delete pool
       this.deleteCephPool(this.selectedList[0].pool_name).then((res) => {
-        this.showLog = true; //展示日志弹框
+        this.showLog = true; //Show log dialog
         this.interVal = setInterval(() => {
-          //查询状态
+          //Query status
           this.queryStatus(
             this.db.addClusterStatusObj.node,
             this.db.addClusterStatusObj.upid
           );
-          //查询日志
+          //Query log
           this.queryLog(
             this.db.addClusterStatusObj.node,
             this.db.addClusterStatusObj.upid

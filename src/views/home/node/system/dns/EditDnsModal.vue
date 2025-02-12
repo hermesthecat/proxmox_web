@@ -11,19 +11,19 @@
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-input
                 type="text"
                 prop="search"
-                label="搜索域"
+                label="Search Domain"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
                 :show-error="rules.search.error"
                 :error-msg="rules.search.message"
                 v-model="search"
-                placeholder="请输入搜索域"
+                placeholder="Please enter search domain"
               />
               <m-input
                 type="text"
@@ -35,7 +35,7 @@
                 :show-error="rules.dns1.error"
                 :error-msg="rules.dns1.message"
                 v-model="dns1"
-                placeholder="请输入IPV4/CIDR"
+                placeholder="Please enter IPV4/CIDR"
               />
               <m-input
                 type="text"
@@ -47,7 +47,7 @@
                 @validate="validate"
                 :show-error="rules.dns2.error"
                 :error-msg="rules.dns2.message"
-                placeholder="请输入dns2"
+                placeholder="Please enter dns2"
               />
               <m-input
                 type="text"
@@ -59,7 +59,7 @@
                 @validate="validate"
                 :show-error="rules.dns3.error"
                 :error-msg="rules.dns3.message"
-                placeholder="请输入dns3"
+                placeholder="Please enter dns3"
               />
             </dd>
           </dl>
@@ -141,16 +141,16 @@ export default {
       let value = String(this[prop]).trim();
       this.rules[prop].error = false;
       this.rules[prop].message = "";
-      if (/^\s*$/.test(value) && prop === "serach") {
+      if (/^\s*$/.test(value) && prop === "search") {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
       if (value && /^(dns)/.test(prop)) {
         if (!IP64_match.test(value)) {
           this.rules[prop].error = true;
           this.rules[prop].message =
-            "dns格式不正确;示例192.168.1.1   2001:DB8::42";
+            "Invalid DNS format; Example: 192.168.1.1 or 2001:DB8::42";
           return;
         }
       }

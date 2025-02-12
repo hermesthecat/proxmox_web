@@ -3,7 +3,7 @@ import { parse_task_upid } from "@libs/utils/index";
 export default {
   name: "NodeHttp",
   methods: {
-    //批量操作vm
+    //Batch operation vm
     beatchOperate(operate, node, param) {
       let event = this.createEvent(`action.node.${operate}`);
       return this.$http
@@ -25,7 +25,7 @@ export default {
           return Promise.reject(event);
         });
     },
-    //查询资源
+    //Query resources
     queryResource() {
       return this.$http
         .get(`json/cluster/resources`)
@@ -38,7 +38,7 @@ export default {
           return Promise.reject(res);
         });
     },
-    //查询批量操作日志
+    //Query batch operation logs
     queryLog(node, pid) {
       return this.$http
         .get(`json/nodes/${node}/tasks/${pid}/log`, {
@@ -57,7 +57,7 @@ export default {
           });
         });
     },
-    //查询批量操作状态
+    //Query batch operation status
     queryStatus(node, pid) {
       return this.$http
         .get(`json/nodes/${node}/tasks/${pid}/status`, {
@@ -74,11 +74,11 @@ export default {
           });
         });
     },
-    //停止当前任务
+    //Stop current task
     stopTask(node, pid) {
       return this.$http.del(`json/nodes/${node}/tasks/${pid}`);
     },
-    //查询节点
+    //Query nodes
     queryNodeList() {
       return this.$http.get(`json/nodes`).then((res) => {
         if (res.data) {

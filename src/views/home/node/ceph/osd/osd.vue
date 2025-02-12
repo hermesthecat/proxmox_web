@@ -2,19 +2,19 @@
   <page-template>
     <div slot="toolbar-left">
       <m-button icon="fa fa-refresh" type="primary" @on-click="__init__()"
-        >重载</m-button
+        >Reload</m-button
       >
       <m-button
         icon="el-icon-plus"
         type="primary"
         @on-click="showModal('create')"
-        >创建</m-button
+        >Create</m-button
       >
       <m-button
         icon="el-icon-plus"
         type="primary"
         @on-click="visibleFlag = true"
-        >管理</m-button
+        >Manage</m-button
       >
     </div>
     <div slot="toolbar-right" style="text-align: right">
@@ -56,35 +56,35 @@
             type="primary"
             style="position: absolute; left: -1px; top: -1px; right: -1px"
             icon="el-icon-plus"
-            >更多操作</m-button
+            >More Operations</m-button
           >
         </span>
         <m-dropdown-item command="start" icon="fa fa-play" :disabled="!current"
-          >启动</m-dropdown-item
+          >Start</m-dropdown-item
         >
         <m-dropdown-item
           command="stop"
           icon="fa fa-stop"
           :disabled="!current || inStatus('down')"
-          >停止</m-dropdown-item
+          >Stop</m-dropdown-item
         >
         <m-dropdown-item
           command="restart"
           icon="fa fa-refresh"
           :disabled="!current || inStatus('down')"
-          >重启</m-dropdown-item
+          >Restart</m-dropdown-item
         >
         <m-dropdown-item command="clear" icon="fa fa-refresh"
-          >擦洗</m-dropdown-item
+          >Scrub</m-dropdown-item
         >
         <m-dropdown-item command="deepClear" icon="fa fa-refresh"
-          >深度擦洗</m-dropdown-item
+          >Deep Scrub</m-dropdown-item
         >
         <m-dropdown-item
           command="clean"
           icon="fa fa-refresh"
           :disabled="inStatus('up')"
-          >清除</m-dropdown-item
+          >Clean</m-dropdown-item
         >
       </m-dropdown>
     </div>
@@ -100,7 +100,7 @@
         ref="dataTable"
         :tree-props="{ children: 'children' }"
       >
-        <el-table-column label="名称" prop="name">
+        <el-table-column label="Name" prop="name">
           <template slot-scope="scope">
             <i
               :class="{
@@ -115,9 +115,9 @@
             {{ scope.row.name }}
           </template>
         </el-table-column>
-        <el-table-column label="类别" prop="type"></el-table-column>
-        <el-table-column label="OSD类型" prop="osdtype"></el-table-column>
-        <el-table-column label="状态" prop="status">
+        <el-table-column label="Category" prop="type"></el-table-column>
+        <el-table-column label="OSD Type" prop="osdtype"></el-table-column>
+        <el-table-column label="Status" prop="status">
           <template slot-scope="scope" v-if="scope.row.type === 'osd'">
             {{ scope.row.status }}
             <i :class="render_statusCls(scope.row.status, scope.row)[0]"></i>
@@ -125,7 +125,7 @@
             <i :class="render_statusCls(scope.row.status, scope.row)[1]"></i>
           </template>
         </el-table-column>
-        <el-table-column label="版本" prop="version"></el-table-column>
+        <el-table-column label="Version" prop="version"></el-table-column>
         <el-table-column label="weight" prop="crush_weight">
           <template slot-scope="scope" v-if="scope.row.type === 'osd'">
             {{
@@ -146,7 +146,7 @@
             }}
           </template>
         </el-table-column>
-        <el-table-column label="已用(%)" prop="">
+        <el-table-column label="Used (%)" prop="">
           <template slot-scope="scope" v-if="scope.row.type === 'osd'">
             {{
               flotToFixed(
@@ -159,7 +159,7 @@
             }}
           </template>
         </el-table-column>
-        <el-table-column label="总额" prop="osd_size">
+        <el-table-column label="Total" prop="osd_size">
           <template slot-scope="scope">
             {{ byteToSize(scope.row.total_space ? scope.row.total_space : 0) }}
           </template>
@@ -199,14 +199,14 @@
           visibleClean = false;
           __init__();
         "
-        :title="`销毁：Ceph OSD ${current.name}`"
+        :title="`Destroy: Ceph OSD ${current.name}`"
       >
         <template slot="content">
           <div class="m-form__content">
             <div class="m-form__section">
               <m-checkbox
                 v-model="clean"
-                label="清理磁盘"
+                label="Clean Disk"
                 labelWidth="100px"
               ></m-checkbox>
             </div>
@@ -272,27 +272,27 @@ export default {
     this.__init__();
   },
   methods: {
-    byteToSize, //格式化磁盘大小
-    flotToFixed, //浮点数保留几位有效数字
-    //初始化请求
+    byteToSize, //Format disk size
+    flotToFixed, //Keep decimal places for floating point numbers
+    //Initialize request
     __init__() {
       this.queryConfig("osd", { _dc: new Date().getTime() }).then((res) => {
         this.treeData = res.root.children;
       });
     },
-    //设置选中高亮
+    //Set selected row highlight
     setRowClassName({ row, rowIndex }) {
       if (row.id === this.current.id) {
         this.current = row;
         return "current-row";
       }
     },
-    //展示创建osd弹框
+    //Show create osd dialog
     showModal(type) {
-      this.title = type === "create" ? "创建： OSD" : "";
+      this.title = type === "create" ? "Create: OSD" : "";
       this.visible = true;
     },
-    //判断数据在哪个状态下
+    //Check if data is in certain status
     inStatus() {
       let states = [];
       for (let i in arguments) {
@@ -300,18 +300,18 @@ export default {
       }
       return states.some((state) => state === this.current.status);
     },
-    //确定添加flag
+    //Confirm add flag
     confirm() {
       this.deleteOSDInOrOut(this.current.id, { cleanup: this.clean ? 1 : 0 });
     },
-    //处理下拉操作项
+    //Handle dropdown operations
     handleCommand(operate) {
       if (!this.current || this.current.type !== "osd") return;
       switch (operate) {
         case "clear":
           this.$confirm
             .confirm({
-              msg: `确定要擦除${this.current.name}?`,
+              msg: `Are you sure you want to scrub ${this.current.name}?`,
               icon: "icon-question",
             })
             .then((res) => {
@@ -321,7 +321,7 @@ export default {
         case "deepClear":
           this.$confirm
             .confirm({
-              msg: `确定要擦除${this.current.name}?\nCaution: This can reduce performance while it is running`,
+              msg: `Are you sure you want to scrub ${this.current.name}?\nCaution: This can reduce performance while it is running`,
               type: "warning",
               icon: "icon-warning",
             })
@@ -333,7 +333,7 @@ export default {
         case "deepClear":
           this.$confirm
             .confirm({
-              msg: `确定要擦除${this.current.name}?\nCaution: This can reduce performance while it is running`,
+              msg: `Are you sure you want to scrub ${this.current.name}?\nCaution: This can reduce performance while it is running`,
               type: "warning",
               icon: "icon-warning",
             })
@@ -347,7 +347,7 @@ export default {
           service: this.current.name,
         });
     },
-    //切换tab
+    //Switch tab
     handleChangeTab(tab) {
       if (!this.current || this.current.type !== "osd") return;
       this.tab = tab;
@@ -364,7 +364,7 @@ export default {
           break;
       }
     },
-    //渲染表格最后一列
+    //Render table last column
     render_osd_latency(recode) {
       if (recode.type !== "osd") {
         return "";
@@ -373,7 +373,7 @@ export default {
         apply_ms = recode.apply_latency_ms || 0;
       return apply_ms + " / " + commit_ms;
     },
-    //渲染状态图标
+    //Render status icons
     render_statusCls(value, rec) {
       if (!value) return ["", ""];
       let inout = rec["in"] ? "in" : "out",
@@ -384,7 +384,7 @@ export default {
         inouticon = rec["in"] ? "fa good fa-circle" : "fa warning fa-circle-o";
       return [updownicon, inouticon];
     },
-    //表格单选
+    //Table single selection
     handleSingleSelect(row) {
       this.current = row;
     },

@@ -6,7 +6,7 @@
         @on-click="showModal()"
         icon="el-icon-plus"
         :disabled="selectedList.length !== 1"
-        >查看</m-button
+        >View</m-button
       >
     </div>
     <div slot="toolbar-right" style="text-align: right">
@@ -14,15 +14,15 @@
         type="text"
         prop="user"
         labelWidth="80px"
-        label="用户名"
+        label="Username"
         v-model="user"
         @change="filter('user')"
-        placeholder="请输入用户名"
+        placeholder="Please enter username"
       >
         <i slot="prefix" class="el-icon-search"></i>
       </m-input>
       <m-checkbox
-        label="仅错误"
+        label="Errors Only"
         v-model="error"
         labelWidth="100px"
         @change="filter('error')"
@@ -53,7 +53,7 @@
           </template>
         </el-table-column>
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="开始" prop="starttime">
+        <el-table-column label="Start" prop="starttime">
           <template slot-scope="scope">
             {{
               dateFormat(
@@ -63,7 +63,7 @@
             }}
           </template>
         </el-table-column>
-        <el-table-column label="结束时间" prop="endtime">
+        <el-table-column label="End Time" prop="endtime">
           <template slot-scope="scope">
             {{
               dateFormat(
@@ -73,14 +73,14 @@
             }}
           </template>
         </el-table-column>
-        <el-table-column label="节点" prop="node"></el-table-column>
-        <el-table-column label="用户名" prop="user"></el-table-column>
-        <el-table-column label="描述" prop="type">
+        <el-table-column label="Node" prop="node"></el-table-column>
+        <el-table-column label="Username" prop="user"></el-table-column>
+        <el-table-column label="Description" prop="type">
           <template slot-scope="scope">
             {{ render_upid(scope.row.pid, null, scope.row) }}
           </template>
         </el-table-column>
-        <el-table-column label="状态" prop="disable" show-overflow-tooltip>
+        <el-table-column label="Status" prop="disable" show-overflow-tooltip>
           <template slot-scope="scope">
             <table-info-state
               :content="scope.row.status && scope.row.status"
@@ -126,15 +126,15 @@
       >
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
-            <m-tab-panel label="输出" name="log"></m-tab-panel>
-            <m-tab-panel label="状态" name="status"></m-tab-panel>
+            <m-tab-panel label="Output" name="log"></m-tab-panel>
+            <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
           <m-button
             class="create-btn m-margin-top-10"
             type="primary"
             @on-click="stopTask1"
             :disabled="db.addClusterStatusObj.status !== 'running'"
-            >停止</m-button
+            >Stop</m-button
           >
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
@@ -197,7 +197,7 @@ export default {
     return {
       type: "create",
       visible: false,
-      title: "创建：复制作业",
+      title: "Create: Copy Job",
       selectedList: [],
       isCreate: true,
       param: {},
@@ -221,7 +221,7 @@ export default {
     dateFormat,
     render_upid,
     chunkData,
-    //初始化查找
+    //Initialize search
     __init__() {
       let _this = this;
       this.queryTask().then((res) => {
@@ -229,10 +229,10 @@ export default {
         this.chunks();
       });
     },
-    //是否展示弹框
+    //Show modal dialog
     async showModal() {
       if (this.selectedList.length !== 1) return;
-      this.title = `查看： ${this.render_upid(
+      this.title = `View: ${this.render_upid(
         null,
         null,
         this.selectedList[0]
@@ -245,11 +245,11 @@ export default {
       }, 3000);
       this.showLog = true;
     },
-    //按钮是否可点击
+    //Check if button is clickable
     inStatus() {
       return this.selectedList.length <= 0;
     },
-    //选择
+    //Selection
     handleSelect(row) {
       this.selectedList = row;
     },
@@ -273,7 +273,7 @@ export default {
     handleDelete(type) {
       this.$confirm
         .confirm({
-          msg: `你确定你要删除已选择项吗？`,
+          msg: `Are you sure you want to delete the selected items?`,
           type: "info",
         })
         .then(() => {
@@ -295,7 +295,7 @@ export default {
     setRowKeys(row) {
       return row.upid;
     },
-    //设置row className
+    //Set row className
     setRoleCalssName({ row, rowIndex }) {
       if (row.status !== "OK") {
         return "run-error";

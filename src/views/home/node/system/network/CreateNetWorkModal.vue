@@ -11,12 +11,12 @@
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-input
                 type="text"
                 prop="name"
-                label="名称"
+                label="Name"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
@@ -24,7 +24,7 @@
                 :error-msg="rules.name.message"
                 v-model="name"
                 :disabled="!isCreate"
-                placeholder="请输入名称"
+                placeholder="Please enter name"
               />
               <m-select
                 prop="ovs_bridge"
@@ -37,7 +37,7 @@
                 v-model="ovs_bridge"
                 @on-change="handleOVSBrigeSelect"
                 v-if="iftype === 'OVSBond' || iftype === 'OVSIntPort'"
-                placeholder="请选择OVS Bridge"
+                placeholder="Please select OVS Bridge"
               >
                 <m-option
                   v-for="(item, index) in networkList"
@@ -47,9 +47,9 @@
                 >
                   <template v-if="index === 0">
                     <div class="table-header__tr">
-                      <span class="table-td">桥接</span>
-                      <span class="table-td">活动</span>
-                      <span class="table-td">备注</span>
+                      <span class="table-td">Bridge</span>
+                      <span class="table-td">Active</span>
+                      <span class="table-td">Comments</span>
                     </div>
                   </template>
                   <div class="table-tr">
@@ -58,11 +58,11 @@
                     }}</span>
                     <span
                       class="table-td"
-                      :title="item.active && item.active === 1 ? '是' : '否'"
+                      :title="item.active && item.active === 1 ? 'Yes' : 'No'"
                     >
                       <table-info-state
                         :content="
-                          item.active && item.active === 1 ? '是' : '否'
+                          item.active && item.active === 1 ? 'Yes' : 'No'
                         "
                         :state="
                           item.active && item.active === 1
@@ -78,7 +78,7 @@
                 </m-option>
               </m-select>
               <m-checkbox
-                label="自启动"
+                label="Auto Start"
                 v-model="autostart"
                 v-if="!['OVSBond', 'OVSIntPort'].includes(iftype)"
                 labelWidth="100px"
@@ -94,7 +94,7 @@
                 :error-msg="rules.cidr.message"
                 v-model="cidr"
                 v-if="iftype !== 'OVSBond'"
-                placeholder="请输入IPV4/CIDR"
+                placeholder="Please enter IPV4/CIDR"
               />
               <m-input
                 type="text"
@@ -104,7 +104,7 @@
                 v-model="vlanRawDevic"
                 :disabled="iftype === 'vlan' && /()(\.\d)/.test(name)"
                 v-if="iftype === 'vlan'"
-                placeholder="请输入Vlan raw device"
+                placeholder="Please enter Vlan raw device"
               />
               <m-input
                 type="text"
@@ -113,10 +113,10 @@
                 labelWidth="100px"
                 v-model="slaves"
                 v-if="iftype === 'bond'"
-                placeholder="请输入Slaves"
+                placeholder="Please enter Slaves"
               />
               <m-checkbox
-                label="VLAN感知"
+                label="VLAN Aware"
                 v-model="bridge_vlan_aware"
                 labelWidth="100px"
                 v-if="iftype === 'bridge'"
@@ -124,7 +124,7 @@
               <m-input
                 type="text"
                 prop="gateway"
-                label="网关(IPV4)"
+                label="Gateway (IPV4)"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
@@ -132,37 +132,37 @@
                 :error-msg="rules.gateway.message"
                 v-model="gateway"
                 v-if="iftype !== 'OVSBond'"
-                placeholder="请输入网关(IPV4)"
+                placeholder="Please enter gateway (IPV4)"
               />
               <m-input
                 type="number"
                 prop="vlan_tag"
-                label="VLAN标签"
+                label="VLAN Tag"
                 labelWidth="100px"
                 v-model="vlan_tag"
                 :disabled="iftype === 'vlan' && /()(\.\d)/.test(name)"
                 v-if="['vlan', 'OVSBond', 'OVSIntPort'].includes(iftype)"
-                placeholder="请输入VLAN标签"
+                placeholder="Please enter VLAN tag"
               />
               <m-input
                 type="text"
                 prop="ovs_options"
-                label="OVS选项"
+                label="OVS Options"
                 labelWidth="100px"
                 v-model="ovs_options"
                 :disabled="!isCreate"
                 v-if="['OVSBridge', 'OVSBond', 'OVSIntPort'].includes(iftype)"
-                placeholder="请输入OVS选项"
+                placeholder="Please enter OVS options"
               />
               <m-select
                 prop="bond_mode"
-                label="模式"
+                label="Mode"
                 labelWidth="100px"
                 :readonly="false"
                 @on-change="handleBondModeSelect"
                 v-model="bond_mode"
                 v-if="iftype === 'bond' || iftype === 'OVSBond'"
-                placeholder="请选择模式"
+                placeholder="Please select mode"
               >
                 <m-option
                   v-for="item in comboItems"
@@ -175,12 +175,12 @@
               <m-input
                 type="number"
                 prop="bridge_ports"
-                label="桥接端口"
+                label="Bridge Ports"
                 labelWidth="100px"
                 min="100"
                 v-model="bridge_ports"
                 v-if="iftype === 'OVSBridge' || iftype === 'bridge'"
-                placeholder="请输入桥接端口"
+                placeholder="Please enter bridge ports"
               />
               <m-input
                 type="text"
@@ -193,18 +193,18 @@
                 :error-msg="rules.cidr6.message"
                 v-model="cidr6"
                 v-if="iftype !== 'OVSBond'"
-                placeholder="请输入IPV6/CIDR"
+                placeholder="Please enter IPV6/CIDR"
               />
               <m-select
                 prop="bind_xmit_hash_policy"
-                label="hash策略"
+                label="Hash Policy"
                 labelWidth="100px"
                 :readonly="false"
                 v-model="bind_xmit_hash_policy"
                 v-if="iftype === 'bond'"
                 @on-change="handleHashPolicySelect"
                 :disabled="isHashDisabled"
-                placeholder="请输入hash策略"
+                placeholder="Please enter hash policy"
               >
                 <m-option
                   v-for="item in hash_policy_comboItems"
@@ -217,15 +217,15 @@
               <m-input
                 type="text"
                 prop="comments"
-                label="备注"
+                label="Comments"
                 labelWidth="100px"
                 v-model="comments"
-                placeholder="请输入备注"
+                placeholder="Please enter comments"
               />
               <m-input
                 type="text"
                 prop="gateway6"
-                label="网关(IPV6)"
+                label="Gateway (IPV6)"
                 labelWidth="100px"
                 min="100"
                 validateEvent
@@ -234,7 +234,7 @@
                 :error-msg="rules.gateway6.message"
                 v-model="gateway6"
                 v-if="iftype !== 'OVSBond'"
-                placeholder="请输入网关(IPV6)"
+                placeholder="Please enter gateway (IPV6)"
               />
               <m-input
                 type="text"
@@ -244,7 +244,7 @@
                 v-model="bond_primary"
                 :disabled="bond_mode !== 'active-backup'"
                 v-if="iftype === 'bond'"
-                placeholder="请输入bond-primary"
+                placeholder="Please enter bond-primary"
               />
               <div v-if="iftype === 'vlan'" class="m-alert-info">
                 Either add the VLAN number to an existing interface name, or
@@ -254,7 +254,7 @@
             </dd>
           </dl>
           <dl v-if="isAdvice && iftype !== 'OVSBridge'">
-            <dt>高级</dt>
+            <dt>Advanced</dt>
             <dd>
               <m-input
                 type="number"
@@ -275,11 +275,11 @@
         <div class="label_box">
           <label>
             <input type="checkbox" v-model="isAdvice" />
-            <div>高级</div>
+            <div>Advanced</div>
           </label>
         </div>
         <m-button class="create-btn" type="primary" @on-click="create"
-          >创建</m-button
+          >Create</m-button
         >
       </template>
     </template>
@@ -369,16 +369,16 @@ export default {
       networkList: [],
       hash_policy_comboItems: [
         {
-          label: "lay2",
-          value: "lay2",
+          label: "layer2",
+          value: "layer2",
         },
         {
-          label: "lay2+3",
-          value: "lay2+3",
+          label: "layer2+3",
+          value: "layer2+3",
         },
         {
-          label: "lay2+4",
-          value: "lay2+4",
+          label: "layer2+4",
+          value: "layer2+4",
         },
       ],
       rules: {
@@ -663,13 +663,13 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value) && prop === "name") {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
       if (value && prop === "cidr") {
         if (!IP4_cidr_match.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "cidr4格式不正确";
+          this.rules[prop].message = "Invalid IPV4/CIDR format";
           return;
         }
       }
@@ -680,7 +680,7 @@ export default {
       ) {
         if (!/(vmbr)((0){1}|([1-9]([\d]){0,3}))$/.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "名称格式vmbrN;其中 0<= N <=9999";
+          this.rules[prop].message = "Name format vmbrN; where 0 <= N <= 9999";
           return;
         }
       }
@@ -691,28 +691,28 @@ export default {
       ) {
         if (!/(bond)((0){1}|([1-9]([\d]){0,3}))$/.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "名称格式bondN;其中 0<= N <=9999";
+          this.rules[prop].message = "Name format bondN; where 0 <= N <= 9999";
           return;
         }
       }
       if (value && prop === "gateway") {
         if (!IP4_match.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "网关（IPV4）格式不正确";
+          this.rules[prop].message = "Invalid gateway (IPV4) format";
           return;
         }
       }
       if (value && prop === "cidr6") {
         if (!IP6_cidr_match.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "cidr6格式不正确";
+          this.rules[prop].message = "Invalid IPV6/CIDR format";
           return;
         }
       }
       if (value && prop === "gateway6") {
         if (!IP6_match.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "网关（IPV6）格式不正确";
+          this.rules[prop].message = "Invalid gateway (IPV6) format";
           return;
         }
       }

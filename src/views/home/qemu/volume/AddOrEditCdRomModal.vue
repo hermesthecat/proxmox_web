@@ -1,59 +1,27 @@
 <template>
-  <m-dialog
-    :title="
-      modalType === 'edit' ? '编辑：CD/DVE Driver' : '添加: CD/DVE Driver'
-    "
-    :visible="visible"
-    v-if="visible"
-    @confirm="confirm"
-    @cancel="close"
-    :_style="{
+  <m-dialog :title="modalType === 'edit' ? 'Edit: CD/DVD Driver' : 'Add: CD/DVD Driver'
+    " :visible="visible" v-if="visible" @confirm="confirm" @cancel="close" :_style="{
       width: '946px',
-    }"
-    @close="close"
-  >
+    }" @close="close">
     <div slot="content" style="max-height: 400px; overflow: auto">
       <div class="m-form__section">
         <dl>
-          <dt>基本信息</dt>
+          <dt>Basic Information</dt>
           <dd>
-            <m-input
-              type="number"
-              label="总线"
-              v-model="deviceIndex"
-              labelWidth="100px"
-              min="0"
-              prop="deviceIndex"
-              :_style="{ paddingLeft: '115px' }"
-              @validate="validate"
-              :error-msg="rules['deviceIndex'].message"
-              :show-error="rules['deviceIndex'].error"
-            >
-              <div
-                slot="prefix"
-                style="
+            <m-input type="number" label="Bus" v-model="deviceIndex" labelWidth="100px" min="0" prop="deviceIndex"
+              :_style="{ paddingLeft: '115px' }" @validate="validate" :error-msg="rules['deviceIndex'].message"
+              :show-error="rules['deviceIndex'].error">
+              <div slot="prefix" style="
                   display: inline-block;
                   position: absolute;
                   top: -16px;
                   left: -6px;
                   height: 100%;
-                "
-              >
-                <div
-                  class="m-margin-top-10 m-form__select"
-                  style="width: 115px"
-                >
-                  <select
-                    class="m-form__select_inner"
-                    v-model="device"
-                    style="width: 110px"
-                  >
+                ">
+                <div class="m-margin-top-10 m-form__select" style="width: 115px">
+                  <select class="m-form__select_inner" v-model="device" style="width: 110px">
                     <template v-for="item of deviceList">
-                      <option
-                        v-if="item.value !== 'virtio'"
-                        :key="item.value"
-                        :value="item.value"
-                      >
+                      <option v-if="item.value !== 'virtio'" :key="item.value" :value="item.value">
                         {{ item.label }}
                       </option>
                     </template>
@@ -67,46 +35,26 @@
         <dl>
           <dt style="width: 100%">
             <label class="m-input__radio">
-              <input
-                type="radio"
-                value="iso"
-                name="mediaType"
-                v-model="mediaType"
-              />
+              <input type="radio" value="iso" name="mediaType" v-model="mediaType" />
               <div></div>
             </label>
-            使用CD/DVD光盘文件(ISO)
+            Use CD/DVD Disc Image (ISO)
           </dt>
           <dd>
             <dl>
               <dd>
-                <m-select
-                  prop="storage"
-                  label="存储"
-                  labelWidth="100px"
-                  @on-change="handleStorageSelect"
-                  v-model="storage"
-                  validateEvent
-                  @validate="validate"
-                  :show-error="rules['storage'].error"
-                  :error-msg="rules['storage'].message"
-                  :readonly="true"
-                  required
-                  :disabled="mediaType !== 'iso'"
-                  placeholder="请选存储"
-                >
+                <m-select prop="storage" label="Storage" labelWidth="100px" @on-change="handleStorageSelect"
+                  v-model="storage" validateEvent @validate="validate" :show-error="rules['storage'].error"
+                  :error-msg="rules['storage'].message" :readonly="true" required :disabled="mediaType !== 'iso'"
+                  placeholder="Please select storage">
                   <div class="table">
-                    <m-option
-                      v-for="(item, index) in db.storageList"
-                      :key="item.storage"
-                      :value="item.storage"
-                      :label="item.storage"
-                    >
+                    <m-option v-for="(item, index) in db.storageList" :key="item.storage" :value="item.storage"
+                      :label="item.storage">
                       <div v-if="index === 0" class="table-tr">
-                        <div class="table-td">名称</div>
-                        <div class="table-td">类别</div>
-                        <div class="table-td">可用</div>
-                        <div class="table-td">容量</div>
+                        <div class="table-td">Name</div>
+                        <div class="table-td">Type</div>
+                        <div class="table-td">Available</div>
+                        <div class="table-td">Capacity</div>
                       </div>
                       <div class="table-tr">
                         <div class="table-td" :title="item.storage">
@@ -125,40 +73,19 @@
                     </m-option>
                   </div>
                 </m-select>
-                <m-select
-                  prop="image"
-                  label="镜像"
-                  labelWidth="100px"
-                  @on-change="handleImageSelect"
-                  v-model="image"
-                  validateEvent
-                  @validate="validate"
-                  :readonly="true"
-                  required
-                  :show-error="rules['image'].error"
-                  :error-msg="rules['image'].message"
-                  :disabled="mediaType !== 'iso'"
-                  placeholder="请选镜像"
-                >
+                <m-select prop="image" label="Image" labelWidth="100px" @on-change="handleImageSelect" v-model="image"
+                  validateEvent @validate="validate" :readonly="true" required :show-error="rules['image'].error"
+                  :error-msg="rules['image'].message" :disabled="mediaType !== 'iso'" placeholder="Please select image">
                   <div class="table">
-                    <m-option
-                      v-for="(item, index) in db.imageList"
-                      :key="item.volid"
-                      :value="item.volid"
-                      :label="render_storage_content(null, null, item)"
-                    >
+                    <m-option v-for="(item, index) in db.imageList" :key="item.volid" :value="item.volid"
+                      :label="render_storage_content(null, null, item)">
                       <div v-if="index === 0" class="table-tr">
-                        <div class="table-td">名称</div>
-                        <div class="table-td">格式</div>
-                        <div class="table-td">大小</div>
+                        <div class="table-td">Name</div>
+                        <div class="table-td">Format</div>
+                        <div class="table-td">Size</div>
                       </div>
                       <div class="table-tr">
-                        <div
-                          class="table-td"
-                          :title="
-                            render_storage_content(null, null, item) || ''
-                          "
-                        >
+                        <div class="table-td" :title="render_storage_content(null, null, item) || ''">
                           {{ render_storage_content(null, null, item) }}
                         </div>
                         <div class="table-td" :title="item.format">
@@ -181,15 +108,10 @@
         <dl>
           <dt style="width: 100%">
             <label class="m-input__radio">
-              <input
-                type="radio"
-                value="cdrom"
-                name="mediaType"
-                v-model="mediaType"
-              />
+              <input type="radio" value="cdrom" name="mediaType" v-model="mediaType" />
               <div></div>
             </label>
-            使用物理CD/DVD驱动器
+            Use Physical CD/DVD Drive
           </dt>
         </dl>
       </div>
@@ -198,26 +120,16 @@
         <dl>
           <dt style="width: 100%">
             <label class="m-input__radio">
-              <input
-                type="radio"
-                value="none"
-                name="mediaType"
-                v-model="mediaType"
-              />
+              <input type="radio" value="none" name="mediaType" v-model="mediaType" />
               <div></div>
             </label>
-            不使用任何介质
+            Do Not Use Any Media
           </dt>
         </dl>
       </div>
     </div>
     <template slot="footer">
-      <m-button
-        type="primary"
-        style="height: 40px; line-height: 40px; width: 100px"
-        @on-click="confirm()"
-        >确定</m-button
-      >
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px" @on-click="confirm()">Confirm</m-button>
     </template>
   </m-dialog>
 </template>
@@ -302,9 +214,8 @@ export default {
     confirm() {
       if (this.validateAll()) return;
       let param = {
-        [`${this.device}${this.deviceIndex}`]: `${
-          this.mediaType === "iso" ? `${this.image}` : this.mediaType
-        },media=cdrom`,
+        [`${this.device}${this.deviceIndex}`]: `${this.mediaType === "iso" ? `${this.image}` : this.mediaType
+          },media=cdrom`,
         digest: this.db.qemuConfigObj.digest,
         background_delay: 5,
       };
@@ -346,7 +257,7 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value) && this.mediaType === "iso") {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
       if (
@@ -355,7 +266,7 @@ export default {
         Number(value) < 10
       ) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "值不能小于10";
+        this.rules[prop].message = "Value cannot be less than 10";
         return;
       }
     },

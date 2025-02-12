@@ -1,68 +1,29 @@
 <template>
-  <m-dialog
-    :visible="visible"
-    @cancel="close()"
-    @confirm="confirm()"
-    :title="title"
-    :confirmText="isCreate ? '做快照' : '编辑快照'"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <m-dialog :visible="visible" @cancel="close()" @confirm="confirm()" :title="title"
+    :confirmText="isCreate ? 'Take Snapshot' : 'Edit Snapshot'" :_style="{ width: '956px' }" @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
-              <m-input
-                type="text"
-                prop="name"
-                label="名称"
-                labelWidth="100px"
-                min="100"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.name.error"
-                :error-msg="rules.name.message"
-                v-model="name"
-                required
-                :disabled="!isCreate"
-                placeholder="请输入名称"
-              />
-              <m-checkbox
-                label="包括内存"
-                v-model="vmstate"
-                v-show="isCreate"
-                labelWidth="100px"
-                v-if="node && node.type !== 'lxc'"
-              ></m-checkbox>
-              <m-input
-                type="text"
-                prop="snaptime"
-                label="时间戳"
-                labelWidth="100px"
-                v-model="snaptime"
-                :disabled="!isCreate"
-                v-show="!isCreate"
-                :__conStyle="{
+              <m-input type="text" prop="name" label="Name" labelWidth="100px" min="100" validateEvent
+                @validate="validate" :show-error="rules.name.error" :error-msg="rules.name.message" v-model="name"
+                required :disabled="!isCreate" placeholder="Please enter name" />
+              <m-checkbox label="Include Memory" v-model="vmstate" v-show="isCreate" labelWidth="100px"
+                v-if="node && node.type !== 'lxc'"></m-checkbox>
+              <m-input type="text" prop="snaptime" label="Timestamp" labelWidth="100px" v-model="snaptime"
+                :disabled="!isCreate" v-show="!isCreate" :__conStyle="{
                   width: '250px',
-                }"
-                placeholder="请输入名称"
-              />
-              <m-input
-                type="textarea"
-                prop="description"
-                labelWidth="100px"
-                label="描述"
-                v-model="description"
-                placeholder="请输入描述"
-              />
+                }" placeholder="Please enter name" />
+              <m-input type="textarea" prop="description" labelWidth="100px" label="Description" v-model="description"
+                placeholder="Please enter description" />
             </dd>
           </dl>
         </div>
         <div class="m-form__section" v-show="!isCreate">
           <dl>
-            <dt>配置信息</dt>
+            <dt>Configuration Information</dt>
             <dd>
               <el-table :data="qemuObjList">
                 <el-table-column label="key" prop="key"></el-table-column>
@@ -72,7 +33,7 @@
           </dl>
         </div>
       </div>
-      <m-dialog :visible="showDeleteLog" @close="closeDeleteLog" title="进度">
+      <m-dialog :visible="showDeleteLog" @close="closeDeleteLog" title="Progress">
         <template slot="content">
           <div class="progress" v-if="!done">
             <div class="progress-inner"></div>
@@ -119,7 +80,7 @@ export default {
       vmstate: false,
       description: "",
       interVal: null,
-      showDeleteLog: false, //是否展示进度
+      showDeleteLog: false, //Show progress
       done: true,
       snaptime: "",
       qemuObjList: [],
@@ -132,7 +93,7 @@ export default {
     };
   },
   mounted() {
-    this.__init__(); //调用初始化操作
+    this.__init__(); //Call initialization operation
   },
   methods: {
     formatDateForWeek,
@@ -169,8 +130,8 @@ export default {
       }
     },
     /**
-     * 校验
-     * @param prop 要校验的字段
+     * Validation
+     * @param prop Field to validate
      */
     validate(prop) {
       let value = String(this[prop]).trim();
@@ -178,7 +139,7 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空!";
+        this.rules[prop].message = "Cannot be empty!";
         return;
       }
     },
@@ -187,7 +148,7 @@ export default {
       return this.rules["name"].error === true;
     },
     /**
-     *确定
+     * Confirm
      */
     confirm() {
       if (this.validateAll()) return;
@@ -229,7 +190,7 @@ export default {
       }
     },
     /**
-     * 关闭弹框
+     * Close modal
      */
     close() {
       this.$emit("close");
@@ -269,6 +230,7 @@ export default {
   padding: 0px 10px;
   margin: 90px 0px;
   text-align: center;
+
   &-inner {
     position: absolute;
     height: 30px;
@@ -282,15 +244,19 @@ export default {
   0% {
     width: 0%;
   }
+
   25% {
     width: 25%;
   }
+
   50% {
     width: 50%;
   }
+
   75% {
     width: 75%;
   }
+
   100% {
     width: 100%;
   }

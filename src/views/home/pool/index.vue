@@ -2,7 +2,7 @@
   <transition name="transition">
     <div class="content">
       <div class="m-operate">
-        <div class="m-operate-left">资源池:{{ pools && pools.pool }}</div>
+        <div class="m-operate-left">Resource Pool: {{ pools && pools.pool }}</div>
       </div>
       <Pv-Menu :data="menuData"></Pv-Menu>
       <div class="m-scroll-wrapper scroll-container">
@@ -25,7 +25,7 @@
 import PvMenu from "@src/components/menu/Menu";
 import MScrollbar from "@src/components/scroll/Scrollbar";
 import MButton from "@src/components/button/Button";
-//菜单tree
+//Menu tree
 import { poolList } from "@src/components/menu/menuList";
 export default {
   name: "StorageIndex",

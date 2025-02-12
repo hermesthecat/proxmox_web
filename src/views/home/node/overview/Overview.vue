@@ -2,7 +2,7 @@
   <div class="overview chart-content">
     <div class="overview-time__select">
       <m-button class="soft-version" @on-click="watchVersion"
-        >软件包版本</m-button
+        >Software Package Version</m-button
       >
       <m-select @on-change="handleIntervalChange" v-model="timeframe">
         <m-option
@@ -18,7 +18,7 @@
       <div class="overview-content__top_left">
         <overview-card v-loading="loading" :element-loading-text="loadingText">
           <div slot="title">
-            {{ node }}(运行时间:{{ render_uptime(baseInfo.uptime) }})
+            {{ node }}(Uptime: {{ render_uptime(baseInfo.uptime) }})
           </div>
           <div slot="content" class="card-content">
             <div class="card-item">
@@ -33,11 +33,11 @@
                   0
                 } CPU(s)`"
                 :value="(baseInfo.cpu ? baseInfo.cpu : 0) * 100"
-                title="CPU利用率"
+                title="CPU Usage"
               />
               <single-line
                 icon="fa fa-tasks"
-                title="平均负荷"
+                title="Average Load"
                 :desc="
                   baseInfo && baseInfo.loadavg && baseInfo.loadavg.join(',')
                 "
@@ -50,7 +50,7 @@
                   (baseInfo.cpu ? baseInfo.wait : 0) * 100
                 ).toFixed(1)}%`"
                 :value="(baseInfo.wait ? baseInfo.wait : 0) * 100"
-                title="IO延迟"
+                title="IO Delay"
               />
             </div>
           </div>
@@ -77,12 +77,12 @@
                     ? baseInfo.memory.used / baseInfo.memory.total
                     : 0) * 100
                 "
-                title="内存使用率"
+                title="Memory Usage"
               />
             </div>
             <div class="card-item">
               <single-line
-                title="KSM共享"
+                title="KSM Sharing"
                 :desc="
                   baseInfo &&
                   baseInfo.ksm &&
@@ -114,7 +114,7 @@
                     ? baseInfo.rootfs.used / baseInfo.rootfs.total
                     : 0) * 100
                 "
-                title="硬盘空间(root)"
+                title="Disk Space (root)"
               />
             </div>
             <div class="card-item">
@@ -144,7 +144,7 @@
                     ? baseInfo.swap.used / baseInfo.swap.total
                     : 0) * 100
                 "
-                title="SWAP使用率"
+                title="SWAP Usage"
               />
             </div>
           </div>
@@ -166,7 +166,7 @@
           <div slot="content" class="card-content">
             <div class="card-item">
               <single-line
-                title="内核版本"
+                title="Kernel Version"
                 :desc="baseInfo && baseInfo.kversion && baseInfo.kversion"
               />
             </div>
@@ -174,7 +174,7 @@
           <div slot="content" class="card-content">
             <div class="card-item">
               <single-line
-                title="PVE管理器版本"
+                title="PVE Manager Version"
                 :desc="baseInfo && baseInfo.pveversion && baseInfo.pveversion"
               />
             </div>
@@ -183,7 +183,7 @@
       </div>
       <div class="overview-content__top_right">
         <overview-card>
-          <div slot="title">CPU利用率</div>
+          <div slot="title">CPU Usage</div>
           <template slot="content">
             <line-graph :param="cpu" v-loading="rrdLoading"></line-graph>
           </template>
@@ -193,7 +193,7 @@
     <div class="overview-content__center">
       <div class="overview-content__center_left">
         <overview-card>
-          <div slot="title">服务器负载</div>
+          <div slot="title">Server Load</div>
           <template slot="content">
             <line-graph :param="loadavg" v-loading="rrdLoading"></line-graph>
           </template>
@@ -201,7 +201,7 @@
       </div>
       <div class="overview-content__center_right">
         <overview-card>
-          <div slot="title">内存使用率</div>
+          <div slot="title">Memory Usage</div>
           <template slot="content">
             <line-graph :param="memory" v-loading="rrdLoading"></line-graph>
           </template>
@@ -209,7 +209,7 @@
       </div>
     </div>
     <overview-card>
-      <div slot="title">网络流量</div>
+      <div slot="title">Network Traffic</div>
       <template slot="content">
         <line-graph :param="network" v-loading="rrdLoading"></line-graph>
       </template>
@@ -217,7 +217,7 @@
     <m-dialog
       :visible="visible"
       v-if="visible"
-      title="软件包版本"
+      title="Software Package Version"
       @close="visible = false"
     >
       <template slot="content">
@@ -278,43 +278,43 @@ export default {
       rrdLoading: false,
       intervalList: [
         {
-          label: "小时（平均）",
+          label: "Hour (Average)",
           value: "hour(AVERAGE)",
         },
         {
-          label: "小时（最大）",
+          label: "Hour (Maximum)",
           value: "hour(MAX)",
         },
         {
-          label: "天（平均）",
+          label: "Day (Average)",
           value: "day(AVERAGE)",
         },
         {
-          label: "天（最大）",
+          label: "Day (Maximum)",
           value: "day(MAX)",
         },
         {
-          label: "周（平均）",
+          label: "Week (Average)",
           value: "week(AVERAGE)",
         },
         {
-          label: "周（最大）",
+          label: "Week (Maximum)",
           value: "week(MAX)",
         },
         {
-          label: "月（平均）",
+          label: "Month (Average)",
           value: "month(AVERAGE)",
         },
         {
-          label: "月（最大）",
+          label: "Month (Maximum)",
           value: "month(MAX)",
         },
         {
-          label: "年（平均）",
+          label: "Year (Average)",
           value: "year(AVERAGE)",
         },
         {
-          label: "年（最大）",
+          label: "Year (Maximum)",
           value: "year(MAX)",
         },
       ],
@@ -366,15 +366,15 @@ export default {
       ],
       cpu: {
         value: [],
-        label: ["CPU使用率", "IO延迟"],
+        label: ["CPU Usage", "IO Delay"],
       },
       loadavg: {
         value: [],
-        label: ["平均负荷"],
+        label: ["Average Load"],
       },
       memory: {
         value: [],
-        label: ["总额", "内存使用率"],
+        label: ["Total", "Memory Usage"],
       },
       network: {
         value: [],
@@ -404,7 +404,7 @@ export default {
           this.loadingText = res;
         });
     },
-    //折线图数据
+    //Line chart data
     queryRrdData() {
       let [timeframe, cf] = [
         this.timeframe.replace(/(.*?)\((.*?)\)/g, "$1"),
@@ -433,7 +433,7 @@ export default {
             value: [res.data.map((it) => it.loadavg)],
             color: this.colors,
             time: res.data.map((it) => it.time),
-            title: "平均负荷",
+            title: "Average Load",
           });
           this.memory = Object.assign({}, this.memory, {
             value: [
@@ -458,13 +458,13 @@ export default {
           this.rrdLoading = false;
         });
     },
-    //定时请求
+    //Scheduled request
     handleIntervalChange(value) {
       if (/[\u4e00-\u9fa5]/.test(value)) return;
       this.timeframe = value;
       this.queryRrdData();
     },
-    //软件包版本
+    //Software package version
     watchVersion() {
       this.visible = true;
       this.$http
@@ -478,12 +478,12 @@ export default {
         });
     },
   },
-  //挂载之后请求
+  //Request after mounting
   mounted() {
     this.__init__();
     this.interval = setInterval(() => this.__init__(), 60 * 1000);
   },
-  //销毁定时器
+  //Destroy timer
   beforeDestroy() {
     if (this.interval) clearInterval(this.interval);
     this.interval = null;

@@ -3,188 +3,90 @@
     <div class="content">
       <div class="m-operate">
         <div class="m-operate-left">
-          {{ qemu.type === "qemu" ? "虚拟机" : "容器" }}{{ qemu.vmid }}({{
+          {{ qemu.type === "qemu" ? "Virtual Machine" : "Container" }}{{ qemu.vmid }}({{
             qemu.name
           }})
         </div>
         <div class="m-operate-right">
-          <m-button
-            v-if="qemu.type === 'qemu' && !isTemplate"
-            icon="fa fa-play"
-            v-confirm="{
-              msg: `启动虚拟机\'${qemu.name}\'？`,
-              ok: () => handleReset(),
-            }"
-            :disabled="inStatus('running')"
-            >{{ inStatus("running") ? "启动" : "再继续" }}
+          <m-button v-if="qemu.type === 'qemu' && !isTemplate" icon="fa fa-play" v-confirm="{
+            msg: `Start virtual machine '${qemu.name}'?`,
+            ok: () => handleReset(),
+          }" :disabled="inStatus('running')">{{ inStatus("running") ? "Start" : "Continue" }}
           </m-button>
-          <!--当为lxc容器时，在stopped状态下才可以启动-->
-          <m-button
-            v-if="qemu.type === 'lxc' && !isTemplate"
-            icon="fa fa-play"
-            v-confirm="{
-              msg: `启动lxc容器\'${qemu.name}\'？`,
-              ok: () => handleReset(),
-            }"
-            :disabled="!inLxcStatus('stopped')"
-            >启动
+          <!--Only start LXC container when in stopped status-->
+          <m-button v-if="qemu.type === 'lxc' && !isTemplate" icon="fa fa-play" v-confirm="{
+            msg: `Start LXC container '${qemu.name}'?`,
+            ok: () => handleReset(),
+          }" :disabled="!inLxcStatus('stopped')">Start
           </m-button>
-          <dropdown
-            style="
+          <dropdown style="
               width: auto;
               border: 1px solid #adb0b8;
               display: inline-block;
               padding: 0px 10px;
-            "
-            :disabled="
-              qemu.type === 'qemu'
-                ? inStatus('stopped', 'suspended')
-                : inLxcStatus('stopped')
-            "
-            @on-change="handleOperate"
-            v-if="!isTemplate"
-          >
-            <m-button
-              icon="fa fa-power-off"
-              slot="label"
-              style="border: none; background: tranparent; height: 28px"
-              >关机
+            " :disabled="qemu.type === 'qemu'
+              ? inStatus('stopped', 'suspended')
+              : inLxcStatus('stopped')
+              " @on-change="handleOperate" v-if="!isTemplate">
+            <m-button icon="fa fa-power-off" slot="label"
+              style="border: none; background: tranparent; height: 28px">Shutdown
             </m-button>
             <template v-if="qemu.type === 'qemu'">
-              <dropdown-item
-                command="off"
-                icon="fa fa-power-off"
-                :disabled="inStatus('stopped')"
-                >关机</dropdown-item
-              >
-              <dropdown-item
-                command="pause"
-                icon="fa fa-pause"
-                :disabled="inStatus('paused')"
-                >暂停</dropdown-item
-              >
-              <dropdown-item
-                command="hibernate"
-                icon="fa fa-download"
-                :disabled="inStatus('paused')"
-                >挂起到磁盘
+              <dropdown-item command="off" icon="fa fa-power-off"
+                :disabled="inStatus('stopped')">Shutdown</dropdown-item>
+              <dropdown-item command="pause" icon="fa fa-pause" :disabled="inStatus('paused')">Pause</dropdown-item>
+              <dropdown-item command="hibernate" icon="fa fa-download" :disabled="inStatus('paused')">Suspend to Disk
               </dropdown-item>
-              <dropdown-item
-                command="stop"
-                icon="fa fa-stop"
-                :disabled="inStatus('stopped')"
-                >立即停止</dropdown-item
-              >
-              <dropdown-item
-                command="reset"
-                icon="fa fa-bolt"
-                :disabled="!inStatus('running')"
-                >重置</dropdown-item
-              >
+              <dropdown-item command="stop" icon="fa fa-stop" :disabled="inStatus('stopped')">Stop
+                Immediately</dropdown-item>
+              <dropdown-item command="reset" icon="fa fa-bolt" :disabled="!inStatus('running')">Reset</dropdown-item>
             </template>
             <template v-if="qemu.type === 'lxc'">
-              <dropdown-item
-                command="reboot"
-                icon="fa fa-refresh"
-                :disabled="!inLxcStatus('running')"
-                >重启
+              <dropdown-item command="reboot" icon="fa fa-refresh" :disabled="!inLxcStatus('running')">Reboot
               </dropdown-item>
-              <dropdown-item
-                command="stop"
-                icon="fa fa-stop"
-                :disabled="inLxcStatus('stopped')"
-                >停止</dropdown-item
-              >
+              <dropdown-item command="stop" icon="fa fa-stop" :disabled="inLxcStatus('stopped')">Stop</dropdown-item>
             </template>
           </dropdown>
-          <m-button
-            icon="fa fa-paper-plane-o"
-            @on-click="showModal('migrate')"
-            :disabled="nodeList.length < 1"
-            v-if="nodeList.length >= 1"
-            >迁移
+          <m-button icon="fa fa-paper-plane-o" @on-click="showModal('migrate')" :disabled="nodeList.length < 1"
+            v-if="nodeList.length >= 1">Migrate
           </m-button>
-          <dropdown
-            style="
+          <dropdown style="
               width: auto;
               border: 1px solid #adb0b8;
               display: inline-block;
               padding: 0px 10px;
-            "
-            @on-change="handleConsole"
-            v-if="!isTemplate"
-          >
-            <m-button
-              icon="fa fa-terminal"
-              slot="label"
-              style="border: none; height: 28px"
-              >控制台</m-button
-            >
+            " @on-change="handleConsole" v-if="!isTemplate">
+            <m-button icon="fa fa-terminal" slot="label" style="border: none; height: 28px">Console</m-button>
             <dropdown-item command="novnc" name="novnc">NoVNC</dropdown-item>
-            <dropdown-item
-              command="spice"
-              name="virt-viewer"
-              :disabled="!qemu.type || qemu.type !== 'lxc'"
-              >SPICE
+            <dropdown-item command="spice" name="virt-viewer" :disabled="!qemu.type || qemu.type !== 'lxc'">SPICE
             </dropdown-item>
-            <dropdown-item
-              command="xtermjs"
-              name="xtermjs"
-              :disabled="!qemu.type || qemu.type !== 'lxc'"
-              >xtermjs
+            <dropdown-item command="xtermjs" name="xtermjs" :disabled="!qemu.type || qemu.type !== 'lxc'">xtermjs
             </dropdown-item>
           </dropdown>
-          <dropdown
-            style="
+          <dropdown style="
               width: auto;
               border: 1px solid #adb0b8;
               display: inline-block;
               padding: 0px 10px;
-            "
-            @on-change="showModal"
-          >
-            <m-button
-              icon="fa fa-fw fa-ellipsis-v"
-              slot="label"
-              style="border: none; height: 28px"
-              >更多操作</m-button
-            >
-            <dropdown-item command="clone" icon="fa fa-fw fa-clone"
-              >克隆</dropdown-item
-            >
-            <dropdown-item
-              command="file"
-              icon="fa fa-fw fa-file-o"
-              :disabled="isTemplate"
-              >转换成模板</dropdown-item
-            >
-            <dropdown-item command="ha" icon="fa fa-heartbeat"
-              >管理HA</dropdown-item
-            >
-            <dropdown-item
-              command="delete"
-              icon="fa fa-trash-o"
-              :disabled="
-                qemu.type === 'qemu'
-                  ? !inStatus('stopped')
-                  : !inLxcStatus('stopped')
-              "
-              >删除
+            " @on-change="showModal">
+            <m-button icon="fa fa-fw fa-ellipsis-v" slot="label" style="border: none; height: 28px">More
+              Actions</m-button>
+            <dropdown-item command="clone" icon="fa fa-fw fa-clone">Clone</dropdown-item>
+            <dropdown-item command="file" icon="fa fa-fw fa-file-o" :disabled="isTemplate">Convert to
+              Template</dropdown-item>
+            <dropdown-item command="ha" icon="fa fa-heartbeat">Manage HA</dropdown-item>
+            <dropdown-item command="delete" icon="fa fa-trash-o" :disabled="qemu.type === 'qemu'
+              ? !inStatus('stopped')
+              : !inLxcStatus('stopped')
+              ">Delete
             </dropdown-item>
           </dropdown>
         </div>
       </div>
-      <operate-modal
-        :visible="visible"
-        :title="title"
-        v-if="visible"
-        :modalType="modalType"
-        :isLeft="false"
-        @close="
-          visible = false;
-          __init__();
-        "
-      ></operate-modal>
+      <operate-modal :visible="visible" :title="title" v-if="visible" :modalType="modalType" :isLeft="false" @close="
+        visible = false;
+      __init__();
+      "></operate-modal>
       <Pv-Menu :data="menuData"></Pv-Menu>
       <div class="m-scroll-wrapper scroll-container">
         <div class="m-scroll-view scroll-view" @scroll="onScroll">
@@ -192,12 +94,8 @@
             <router-view />
           </div>
         </div>
-        <div
-          class="m-scroll-bar"
-          v-show="showScrollbar"
-          :style="{ top: scrollTop + 'px', height: scrollLength + 'px' }"
-          @mousedown="onScrollBarMouseDown($event)"
-        ></div>
+        <div class="m-scroll-bar" v-show="showScrollbar" :style="{ top: scrollTop + 'px', height: scrollLength + 'px' }"
+          @mousedown="onScrollBarMouseDown($event)"></div>
       </div>
     </div>
   </transition>
@@ -208,7 +106,7 @@ import { mapState } from "vuex";
 import PvMenu from "@src/components/menu/Menu";
 import MScrollbar from "@src/components/scroll/Scrollbar";
 import MButton from "@src/components/button/Button";
-//菜单tree
+// Menu tree
 import { qemuMenuList } from "@src/components/menu/menuList";
 import Dropdown from "@src/components/dropdown/dropdown";
 import DropdownItem from "@src/components/dropdown/dropdownItem";
@@ -251,15 +149,15 @@ export default {
   },
   methods: {
     /**
-     * 初始请求
+     * Initial request
      */
     __init__(type) {
       let _this = this;
       _this.queryResource().then((res) => {
         _this.isTemplate =
           _this.db.qemuObj &&
-          _this.db.qemuObj.template &&
-          _this.db.qemuObj.template === 1
+            _this.db.qemuObj.template &&
+            _this.db.qemuObj.template === 1
             ? true
             : false;
         if (type) {
@@ -271,7 +169,7 @@ export default {
       _this.queryNodeList();
     },
     /**
-     * 重启虚拟机
+     * Restart virtual machine
      */
     handleReset() {
       let _this = this;
@@ -333,15 +231,15 @@ export default {
       }
     },
     /**
-     * 克隆模板
+     * Clone template
      */
     handleClose() {
       this.$confirm
         .confirm({
-          title: "确定",
-          msg: `关闭虚拟机\'${this.qemu.name && this.qemu.name}\'？`,
+          title: "Confirm",
+          msg: `Shutdown virtual machine '${this.qemu.name && this.qemu.name}'?`,
           icon: "icon-question",
-          yesBtnText: "确定",
+          yesBtnText: "Confirm",
         })
         .then(() => {
           this.offQemu()
@@ -352,10 +250,10 @@ export default {
               this.alertConfirm(res);
             });
         })
-        .catch(() => {});
+        .catch(() => { });
     },
     /**
-     * vnc操作
+     * VNC operations
      */
     handleConsole(e) {
       let options = {
@@ -399,7 +297,7 @@ export default {
       }
     },
     /**
-     * 虚拟机开关重启停用等操作
+     * Virtual machine power operations (on/off/restart/stop etc.)
      */
     handleOperate(command) {
       switch (command) {
@@ -430,15 +328,15 @@ export default {
       }
     },
     /**
-     * 重置虚拟机
+     * Reset virtual machine
      */
     reset() {
       this.$confirm
         .confirm({
-          title: "确定",
-          msg: `重置虚拟机\'${this.qemu.name && this.qemu.name}\'？`,
+          title: "Confirm",
+          msg: `Reset virtual machine '${this.qemu.name && this.qemu.name}'?`,
           icon: "icon-question",
-          yesBtnText: "确定",
+          yesBtnText: "Confirm",
         })
         .then(() => {
           this.resetQemu()
@@ -454,20 +352,19 @@ export default {
               this.alertConfirm(res);
             });
         })
-        .catch(() => {});
+        .catch(() => { });
     },
     /**
-     * 暂停虚拟机
+     * Pause virtual machine
      */
     paused(params) {
       this.$confirm
         .confirm({
-          title: "确定",
-          msg: `${params ? "挂起" : "暂停"}虚拟机\'${
-            this.qemu.name && this.qemu.name
-          }\'？`,
+          title: "Confirm",
+          msg: `${params ? "Suspend" : "Pause"} virtual machine '${this.qemu.name && this.qemu.name
+            }'?`,
           icon: "icon-question",
-          yesBtnText: "确定",
+          yesBtnText: "Confirm",
         })
         .then(() => {
           this.pausedQemu()
@@ -483,18 +380,18 @@ export default {
               this.alertConfirm(res);
             });
         })
-        .catch(() => {});
+        .catch(() => { });
     },
     /**
-     * 停用虚拟机
+     * Stop virtual machine
      */
     stop() {
       this.$confirm
         .confirm({
-          title: "确定",
-          msg: `停用虚拟机\'${this.qemu.name && this.qemu.name}\'？`,
+          title: "Confirm",
+          msg: `Stop virtual machine '${this.qemu.name && this.qemu.name}'?`,
           icon: "icon-question",
-          yesBtnText: "确定",
+          yesBtnText: "Confirm",
         })
         .then(() => {
           this.stopQemu()
@@ -505,18 +402,18 @@ export default {
               this.alertConfirm(res);
             });
         })
-        .catch(() => {});
+        .catch(() => { });
     },
     /**
-     * 重启虚拟机
+     * Restart virtual machine
      */
     reboot() {
       this.$confirm
         .confirm({
-          title: "确定",
-          msg: `重启\'${this.qemu.name && this.qemu.name}\'？`,
+          title: "Confirm",
+          msg: `Restart '${this.qemu.name && this.qemu.name}'?`,
           icon: "icon-question",
-          yesBtnText: "确定",
+          yesBtnText: "Confirm",
         })
         .then(() => {
           this.rebootLxc()
@@ -527,7 +424,7 @@ export default {
               this.alertConfirm(res);
             });
         })
-        .catch(() => {});
+        .catch(() => { });
     },
     alertConfirm(msg) {
       this.$confirm.confirm({
@@ -536,15 +433,15 @@ export default {
       });
     },
     /**
-     * 删除虚拟机
+     * Delete virtual machine
      */
     delete() {
       this.$confirm
         .confirm({
-          title: "确定",
-          msg: `删除虚拟机\'${this.qemu.name && this.qemu.name}\'？`,
+          title: "Confirm",
+          msg: `Delete virtual machine '${this.qemu.name && this.qemu.name}'?`,
           icon: "icon-question",
-          yesBtnText: "确定",
+          yesBtnText: "Confirm",
         })
         .then(() => {
           this.deleteQemu().catch((res) => {
@@ -553,7 +450,7 @@ export default {
         });
     },
     /**
-     * 判断是否在某个状态下
+     * Check if in certain status
      */
     inStatus() {
       let states = [];
@@ -563,7 +460,7 @@ export default {
       return states.some((status) => status === this.db.qemuObj.qmpstatus);
     },
     /**
-     * 判断lxc容器是否在某个状态下
+     * Check if LXC container is in certain status
      */
     inLxcStatus() {
       let states = [];
@@ -573,7 +470,7 @@ export default {
       return states.some((status) => status === this.db.qemuObj.status);
     },
     /**
-     * 当为lxc容器时， 与虚拟机菜单略有不同分别做不同过滤
+     * For LXC containers, menu is slightly different from virtual machines
      */
     setMenu(type) {
       this.menuData = [];
@@ -607,32 +504,32 @@ export default {
         }
       }
     },
-    /***
-     * 设置弹框标题
+    /**
+     * Set modal title
      */
     setTitle(type) {
       switch (type) {
         case "migrate":
-          this.title = "迁移";
+          this.title = "Migrate";
           break;
         case "delete":
-          this.title = `删除：${this.qemu.id}`;
+          this.title = `Delete: ${this.qemu.id}`;
           break;
         case "ha":
-          this.title = `管理HA： ${this.qemu.id}`;
+          this.title = `Manage HA: ${this.qemu.id}`;
           break;
         case "clone":
-          this.title = `克隆： ${this.qemu.id}`;
+          this.title = `Clone: ${this.qemu.id}`;
           break;
       }
     },
     template() {
       this.$confirm
         .confirm({
-          title: "确定",
-          msg: `删除虚拟机\'${this.db.qemuObj.name}\'？`,
+          title: "Confirm",
+          msg: `Delete virtual machine '${this.db.qemuObj.name}'?`,
           icon: "icon-question",
-          yesBtnText: "确定",
+          yesBtnText: "Confirm",
         })
         .then(() =>
           this.makeTemplate().catch((res) => {

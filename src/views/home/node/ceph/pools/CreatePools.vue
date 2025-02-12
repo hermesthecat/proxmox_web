@@ -1,7 +1,7 @@
 <template>
   <m-dialog
     :visible="visible"
-    title="创建Ceph Pools"
+    title="Create Ceph Pools"
     @close="close"
     @cancel="close"
     @confirm="confirm"
@@ -10,7 +10,7 @@
       <div class="m-form__content">
         <div class="m-form__section">
           <m-input
-            label="名称"
+            label="Name"
             prop="name"
             labelWidth="100px"
             v-model="name"
@@ -21,7 +21,7 @@
             :error-msg="rules['name'].message"
           />
           <m-input
-            label="大小"
+            label="Size"
             prop="size"
             labelWidth="100px"
             v-model="size"
@@ -32,7 +32,7 @@
             :error-msg="rules['size'].message"
           />
           <m-input
-            label="最小尺寸"
+            label="Minimum Size"
             prop="min_size"
             labelWidth="100px"
             v-model="min_size"
@@ -73,7 +73,7 @@
             :error-msg="rules['pg_num'].message"
           />
           <m-checkbox
-            label="添加存储"
+            label="Add Storage"
             labelWidth="100px"
             v-model="add_storages"
           >
@@ -133,26 +133,26 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化
+    //Initialize
     __init__() {
       this.queryRules().then((res) => {
         this.rulesList = res;
         this.crush_rule = this.rulesList[0].rule;
       });
     },
-    //校验
+    //Validate
     validate(prop) {
       let value = String(this[prop]).trim();
       this.rules[prop].message = "";
       this.rules[prop].error = false;
       if (/^\s*$/.test(value)) {
-        this.rules[prop].message = "不能为空！";
+        this.rules[prop].message = "Cannot be empty!";
         this.rules[prop].error = true;
         return;
       }
       if (prop === "min_size" && value) {
         if (this.size < this.min_size) {
-          this.rules[prop].message = "最小大小不能超过大小！";
+          this.rules[prop].message = "Minimum size cannot exceed size!";
           this.rules[prop].error = true;
           return;
         }

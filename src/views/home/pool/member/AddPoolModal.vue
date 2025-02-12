@@ -18,10 +18,10 @@
       >
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column label="ID" prop="vmid"></el-table-column>
-        <el-table-column label="节点" prop="node"></el-table-column>
-        <el-table-column label="状态" prop="status"></el-table-column>
-        <el-table-column label="名称" prop="name"></el-table-column>
-        <el-table-column label="类别" prop="type"></el-table-column>
+        <el-table-column label="Node" prop="node"></el-table-column>
+        <el-table-column label="Status" prop="status"></el-table-column>
+        <el-table-column label="Name" prop="name"></el-table-column>
+        <el-table-column label="Category" prop="type"></el-table-column>
       </el-table>
       <m-select
         prop="storage"
@@ -31,21 +31,20 @@
         @validate="validate"
         :show-error="rules['storage'].error"
         :error-msg="rules['storage'].message"
-        label="存储"
+        label="Storage"
         v-else
         labelWidth="100px"
       >
-        <template v-for="(item, index) in storageList">
+        <template v-for="(item, index) in storageList" :key="item.storage">
           <m-option
             :label="item.storage"
-            :key="item.storage"
             :value="item.storage"
           >
             <div class="table-tr" v-show="index === 0">
-              <div class="table-td">名称</div>
-              <div class="table-td">类别</div>
-              <div class="table-td">可用</div>
-              <div class="table-td">容量</div>
+              <div class="table-td">Name</div>
+              <div class="table-td">Category</div>
+              <div class="table-td">Available</div>
+              <div class="table-td">Capacity</div>
             </div>
             <div class="table-tr">
               <div class="table-td">{{ item.storage }}</div>
@@ -92,7 +91,7 @@ export default {
     byteToSize,
     __init__() {
       let _this = this;
-      //当为虚拟机是过滤为添加的虚拟机
+      //Filter unassigned VMs when type is qemu
       if (_this.modalType === "qemu") {
         let list = _this.db.poolsObj.members.map((it) => {
           return it.name;
@@ -108,24 +107,24 @@ export default {
           });
         });
       } else {
-        //请求存储
+        //Query storage
         _this.queryStorage({ format: 1 }).then((res) => {
           _this.storageList = quickSort(this.db.storageList, "storage", "+");
         });
       }
     },
-    //关闭弹框
+    //Close dialog
     close() {
       this.$emit("close");
     },
-    //确定添加
+    //Confirm add
     confirm() {
       if (this.modalType === "qemu") {
         if (this.selectedList.length <= 0) return;
         let param = {
           vms: this.selectedList.map((item) => item.vmid).join(","),
         };
-        //更新池
+        //Update pool
         this.updatePool(param).then((res) => {
           this.close();
         });
@@ -135,24 +134,24 @@ export default {
           storage: this.storage,
         };
         if (this.rules.storage.error) return;
-        //更新池
+        //Update pool
         this.updatePool(param).then((res) => {
           this.close();
         });
       }
     },
-    //多选
+    //Multiple selection
     handleSelect(row) {
       this.selectedList = row;
     },
-    //校验
+    //Validate
     validate(prop) {
       let value = String(this[prop]).trim();
       this.rules[prop].error = false;
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空!";
+        this.rules[prop].message = "Cannot be empty!";
         return;
       }
     },

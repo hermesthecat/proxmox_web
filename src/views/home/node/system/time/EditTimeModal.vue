@@ -11,16 +11,16 @@
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-select
                 prop="timeZone"
-                label="时区"
+                label="Time Zone"
                 labelWidth="100px"
                 :readonly="false"
                 v-model="timezone"
                 @on-change="handleTimeZoneSelect"
-                placeholder="请选择时区"
+                placeholder="Please select time zone"
               >
                 <m-option
                   v-for="item in timeZoneOptions"
@@ -98,7 +98,7 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
     },

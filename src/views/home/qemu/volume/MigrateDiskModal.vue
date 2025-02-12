@@ -1,58 +1,29 @@
 <template>
-  <m-dialog
-    title="移动磁盘"
-    :visible="visible"
-    v-if="visible"
-    @confirm="confirm"
-    @cancel="close"
-    :_style="{
-      width: '946px',
-    }"
-    @close="close"
-  >
+  <m-dialog title="Move Disk" :visible="visible" v-if="visible" @confirm="confirm" @cancel="close" :_style="{
+    width: '946px',
+  }" @close="close">
     <div slot="content" style="max-height: 400px; overflow: auto">
       <div class="m-form__section">
         <dl>
-          <dt>基本信息</dt>
+          <dt>Basic Information</dt>
           <dd>
-            <m-input
-              type=""
-              labelWidth="100px"
-              label="Sockets"
-              v-model="disk"
-              prop="磁盘"
-              :disabled="true"
-            >
+            <m-input type="" labelWidth="100px" label="Sockets" v-model="disk" prop="Disk" :disabled="true">
               <div style="padding-left: 5px; height: 28px; line-height: 28px">
                 {{ disk }}
               </div>
             </m-input>
-            <m-select
-              prop="storage"
-              label="存储"
-              labelWidth="100px"
-              @on-change="handleStorageSelect"
-              v-model="storage"
-              validateEvent
-              v-show="modalType !== 'edit'"
-              @validate="validate"
-              :error-msg="rules['storage'].message"
-              :show-error="rules['storage'].error"
-              :readonly="true"
-              placeholder="请选缓存"
-            >
+            <m-select prop="storage" label="Storage" labelWidth="100px" @on-change="handleStorageSelect"
+              v-model="storage" validateEvent v-show="modalType !== 'edit'" @validate="validate"
+              :error-msg="rules['storage'].message" :show-error="rules['storage'].error" :readonly="true"
+              placeholder="Please select cache">
               <div class="table">
-                <m-option
-                  v-for="(item, index) in db.storageList"
-                  :key="item.storage"
-                  :value="item.storage"
-                  :label="item.storage"
-                >
+                <m-option v-for="(item, index) in db.storageList" :key="item.storage" :value="item.storage"
+                  :label="item.storage">
                   <div v-if="index === 0" class="table-tr">
-                    <div class="table-td">名称</div>
-                    <div class="table-td">类别</div>
-                    <div class="table-td">可用</div>
-                    <div class="table-td">容量</div>
+                    <div class="table-td">Name</div>
+                    <div class="table-td">Type</div>
+                    <div class="table-td">Available</div>
+                    <div class="table-td">Capacity</div>
                   </div>
                   <div class="table-tr">
                     <div class="table-td" :title="item.storage">
@@ -71,67 +42,36 @@
                 </m-option>
               </div>
             </m-select>
-            <m-select
-              prop="format"
-              label="格式"
-              labelWidth="100px"
-              @on-change="handleFormatSelect"
-              v-model="format"
-              :readonly="false"
-              v-show="modalType === 'create'"
-              :disabled="!storageType || storageType !== 'dir'"
-              placeholder="请选格式"
-            >
-              <m-option
-                v-for="(item, index) in formatList"
-                :key="index"
-                :value="item.value"
-                :label="item.label"
-              >
+            <m-select prop="format" label="Format" labelWidth="100px" @on-change="handleFormatSelect" v-model="format"
+              :readonly="false" v-show="modalType === 'create'" :disabled="!storageType || storageType !== 'dir'"
+              placeholder="Please select format">
+              <m-option v-for="(item, index) in formatList" :key="index" :value="item.value" :label="item.label">
               </m-option>
             </m-select>
-            <m-checkbox label="删除源" v-model="delete_origin"></m-checkbox>
+            <m-checkbox label="Delete Source" v-model="delete_origin"></m-checkbox>
           </dd>
         </dl>
       </div>
-      <m-dialog
-        :visible="showLog"
-        @close="closeLog"
-        :_style="{
-          width: '800px',
-        }"
-        title="Task Viewer: 移动磁盘"
-      >
+      <m-dialog :visible="showLog" @close="closeLog" :_style="{
+        width: '800px',
+      }" title="Task Viewer: Move Disk">
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
-            <m-tab-panel label="输出" name="log"></m-tab-panel>
-            <m-tab-panel label="状态" name="status"></m-tab-panel>
+            <m-tab-panel label="Output" name="log"></m-tab-panel>
+            <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
-          <m-button
-            class="create-btn m-margin-top-10"
-            type="primary"
-            @on-click="stopTask1"
-            :disabled="db.addClusterStatusObj.status !== 'running'"
-            >停止</m-button
-          >
+          <m-button class="create-btn m-margin-top-10" type="primary" @on-click="stopTask1"
+            :disabled="db.addClusterStatusObj.status !== 'running'">Stop</m-button>
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
               <div class="table" v-if="tab === 'log'">
-                <div
-                  class="table-tr"
-                  v-for="item in db.addClusterLogList"
-                  :key="item.n"
-                >
+                <div class="table-tr" v-for="item in db.addClusterLogList" :key="item.n">
                   {{ item.t }}
                 </div>
               </div>
               <div class="table" v-if="tab === 'status'">
                 <template v-for="(item, key) in db.addClusterStatusObj">
-                  <div
-                    class="table-tr"
-                    v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-                    :key="key"
-                  >
+                  <div class="table-tr" v-if="!['exitstatus', 'id', 'pstart'].includes(key)" :key="key">
                     <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
                     <div class="table-td" v-if="key === 'starttime'">
                       {{
@@ -151,12 +91,8 @@
       </m-dialog>
     </div>
     <template slot="footer">
-      <m-button
-        type="primary"
-        style="height: 40px; line-height: 40px; width: 100px"
-        @on-click="confirm()"
-        >确定</m-button
-      >
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px"
+        @on-click="confirm()">Confirm</m-button>
     </template>
   </m-dialog>
 </template>
@@ -193,15 +129,15 @@ export default {
       delete_origin: true,
       formatList: [
         {
-          label: "Raw磁盘映像（raw）",
+          label: "Raw Disk Image (raw)",
           value: "raw",
         },
         {
-          label: "VMware映像格式（vmdk）",
+          label: "VMware Image Format (vmdk)",
           value: "vmdk",
         },
         {
-          label: "QEMU映像格式（qcow2）",
+          label: "QEMU Image Format (qcow2)",
           value: "qcow2",
         },
       ],
@@ -226,7 +162,7 @@ export default {
       });
       _this.queryStorage({ format: 1, content: "images" });
     },
-    //确定触发回调
+    // Confirm callback trigger
     confirm() {
       let param = {
         disk: this.disk,
@@ -236,11 +172,11 @@ export default {
       Object.keys(param).forEach((key) => {
         if (!param[key]) delete param[key];
       });
-      //确定迁移
+      // Confirm migration
       this.removeDisk(param, "move_disk")
         .then((res) => {
           this.showLog = true;
-          //相应成功之后展示任务进度日志
+          // Show task progress log after successful response
           this.interVal = setInterval(() => {
             this.queryStatus(this.db.addClusterStatusObj.upid);
             this.queryLog(
@@ -258,25 +194,25 @@ export default {
     close() {
       this.$emit("close");
     },
-    //单个逐条校验
+    // Single item validation
     validate(prop) {
       let value = String(this[prop]).trim();
       this.rules[prop].error = false;
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
     },
-    //整体校验
+    // Overall validation
     validateAll() {
       let props = ["storage"];
       props.forEach((prop) => this.validate(prop));
-      //有一个为真则返回true
+      // Return true if any validation fails
       return props.some((prop) => this.rules[prop].error === true);
     },
-    //迁移到哪个存储
+    // Select target storage for migration
     handleStorageSelect(value) {
       this.storage = value;
       this.storageType = this.db.storageList.filter(
@@ -285,23 +221,23 @@ export default {
       if (this.storageType === "dir") this.format = "qcow2";
       else this.format = "raw";
     },
-    //选择存储镜像格式
+    // Select storage image format
     handleFormatSelect(value) {
       this.format = value;
     },
-    //关闭日志窗口
+    // Close log window
     closeLog() {
       this.showLog = false;
       this.close();
     },
-    //停止当前任务
+    // Stop current task
     stopTask1() {
       this.stopTask(
         this.db.addClusterStatusObj.node,
         this.db.addClusterStatusObj.upid
       );
     },
-    //切换tab @param type种类log日志、status状态
+    // Switch tab @param type: log or status
     handleTabChange(value) {
       this.tab = value;
     },
@@ -320,10 +256,12 @@ export default {
 /deep/.el-table__body {
   font-size: 12px;
 }
+
 .cpu-check {
   width: 100%;
   white-space: nowrap;
 }
+
 .cpu-label {
   width: 55px;
   display: inline-block;

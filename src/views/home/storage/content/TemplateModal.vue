@@ -1,50 +1,26 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @cancel="close"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" @cancel="close" :title="title" :_style="{ width: '956px' }" @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
-      <Dialog
-        :visible="showLog"
-        @close="closeLog"
-        :_style="{
-          width: '800px',
-        }"
-        title="Task Viewer: 下载模板"
-      >
+      <Dialog :visible="showLog" @close="closeLog" :_style="{
+        width: '800px',
+      }" title="Task Viewer: Download Template">
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
-            <m-tab-panel label="输出" name="log"></m-tab-panel>
-            <m-tab-panel label="状态" name="status"></m-tab-panel>
+            <m-tab-panel label="Output" name="log"></m-tab-panel>
+            <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
-          <m-button
-            class="create-btn m-margin-top-10"
-            type="primary"
-            @on-click="stopTask1"
-            :disabled="db.addClusterStatusObj.status !== 'running'"
-            >停止</m-button
-          >
+          <m-button class="create-btn m-margin-top-10" type="primary" @on-click="stopTask1"
+            :disabled="db.addClusterStatusObj.status !== 'running'">Stop</m-button>
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
               <div class="table" v-if="tab === 'log'">
-                <div
-                  class="table-tr"
-                  v-for="item in db.addClusterLogList"
-                  :key="item.n"
-                >
+                <div class="table-tr" v-for="item in db.addClusterLogList" :key="item.n">
                   {{ item.t }}
                 </div>
               </div>
               <div class="table" v-if="tab === 'status'">
                 <template v-for="(item, key) in db.addClusterStatusObj">
-                  <div
-                    class="table-tr"
-                    v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-                    :key="key"
-                  >
+                  <div class="table-tr" v-if="!['exitstatus', 'id', 'pstart'].includes(key)" :key="key">
                     <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
                     <div class="table-td" v-if="key === 'starttime'">
                       {{
@@ -64,33 +40,20 @@
       </Dialog>
       <page-template>
         <div slot="toolbar-right">
-          <m-input
-            type="text"
-            prop="searchText"
-            labelWidth="80px"
-            label="搜索"
-            v-model="searchText"
-            @input="search()"
-            placeholder="请输入软件包名称"
-          />
+          <m-input type="text" prop="searchText" labelWidth="80px" label="Search" v-model="searchText" @input="search()"
+            placeholder="Please enter package name" />
         </div>
         <div slot="page-content">
-          <el-table
-            :data="templateList"
-            highlight-current-row
-            @row-click="handleSelect"
-          >
+          <el-table :data="templateList" highlight-current-row @row-click="handleSelect">
             <el-table-column width="55px">
               <template slot-scope="scope">
-                <el-radio :label="scope.row.template" v-model="currentPkg"
-                  >&nbsp;</el-radio
-                >
+                <el-radio :label="scope.row.template" v-model="currentPkg">&nbsp;</el-radio>
               </template>
             </el-table-column>
-            <el-table-column label="类别" prop="type"></el-table-column>
-            <el-table-column label="软件包" prop="package"></el-table-column>
-            <el-table-column label="版本" prop="version"></el-table-column>
-            <el-table-column label="描述" prop="description" width="250px">
+            <el-table-column label="Category" prop="type"></el-table-column>
+            <el-table-column label="Package" prop="package"></el-table-column>
+            <el-table-column label="Version" prop="version"></el-table-column>
+            <el-table-column label="Description" prop="description" width="250px">
               <template slot-scope="scope">
                 <span style="font-size: 12px">{{
                   scope.row.description && scope.row.description.split("-")[0]
@@ -102,9 +65,7 @@
       </page-template>
     </div>
     <template slot="footer">
-      <m-button class="create-btn" type="primary" @on-click="downLoad()"
-        >下载</m-button
-      >
+      <m-button class="create-btn" type="primary" @on-click="downLoad()">Download</m-button>
     </template>
   </Dialog>
 </template>
@@ -150,25 +111,25 @@ export default {
   },
   methods: {
     dateFormat,
-    // //请求磁盘
+    // Request disk
     __init__() {
       let _this = this;
       _this.getTemplate().then(() => {
         this.templateList = _this.db.storageTemplateList;
       });
     },
-    //选择磁盘
+    // Select disk
     handleSelect(row) {
       this.currentPkg = row.template;
     },
-    //关闭弹框
+    // Close dialog
     close() {
       this.$emit("close");
     },
     closeLog() {
       this.$emit("close");
     },
-    //节流搜索
+    // Throttle search
     search() {
       throttle(this.filterData(), 500, false);
     },
@@ -194,7 +155,7 @@ export default {
         );
       }, 3000);
     },
-    //切换tab
+    // Switch tab
     handleTabChange(value) {
       this.tab = value;
     },
@@ -229,9 +190,11 @@ export default {
   display: inline-block;
   line-height: 43px;
 }
+
 .upload-file {
   display: inline-flex;
 }
+
 .file-input {
   width: 100%;
   height: 100%;
@@ -240,6 +203,7 @@ export default {
   left: 0px;
   top: 0px;
 }
+
 .upload-btn {
   position: relative;
   margin-left: -10px;

@@ -11,11 +11,11 @@
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-select
                 prop="device"
-                label="磁盘"
+                label="Disk"
                 labelWidth="100px"
                 @on-change="handleDestSelect"
                 v-model="device"
@@ -25,7 +25,7 @@
                 :error-msg="rules['device'].message"
                 :show-error="rules['device'].error"
                 :readonly="false"
-                placeholder="请选择磁盘"
+                placeholder="Please select disk"
               >
                 <m-option
                   v-for="(item, index) in db.nodeDiskList"
@@ -36,9 +36,9 @@
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
-                        <span class="table-td">设备</span>
-                        <span class="table-td">大小</span>
-                        <span class="table-td">串行</span>
+                        <span class="table-td">Device</span>
+                        <span class="table-td">Size</span>
+                        <span class="table-td">Serial</span>
                       </div>
                     </template>
                     <div class="table-tr">
@@ -60,7 +60,7 @@
               <m-input
                 type="text"
                 prop="name"
-                label="名称"
+                label="Name"
                 labelWidth="100px"
                 v-model="name"
                 validateEvent
@@ -68,10 +68,10 @@
                 required
                 :error-msg="rules['name'].message"
                 :show-error="rules['name'].error"
-                :placeholder="'请输入名称'"
+                :placeholder="'Please enter name'"
               />
               <m-checkbox
-                label="添加存储"
+                label="Add Storage"
                 v-model="add_storage"
                 labelWidth="100px"
               ></m-checkbox>
@@ -82,7 +82,7 @@
     </div>
     <template slot="footer">
       <m-button class="create-btn" type="primary" @on-click="confirm"
-        >创建</m-button
+        >Create</m-button
       >
     </template>
   </Dialog>
@@ -131,37 +131,37 @@ export default {
   },
   methods: {
     byteToSize,
-    //请求磁盘
+    //Request disk
     async __init__() {
       let _this = this;
       this.queryListNodeDiskList({ type: "unused" });
     },
-    //选择磁盘
+    //Select disk
     handleDestSelect(value) {
       this.device = value;
     },
-    //关闭弹框
+    //Close dialog
     close() {
       this.$emit("close");
     },
-    //校验表单
+    //Validate form
     validate(prop) {
       let value = String(this[prop]).trim();
       this.rules[prop].error = false;
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
     },
-    //整体校验表单
+    //Validate all form fields
     validateAll() {
       let props = ["name", "device"];
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
     },
-    //确定添加
+    //Confirm add
     confirm() {
       if (this.validateAll()) return;
       let param = {
@@ -184,7 +184,7 @@ export default {
     },
   },
   watch: {
-    //展示弹框
+    //Show dialog
     visible: function (newVal, oldVal) {
       if (newVal !== oldVal) {
         return newVal;

@@ -1,33 +1,15 @@
 <template>
-  <m-dialog
-    :title="modalType !== 'edit' ? '添加: 显示' : '编辑: 显示'"
-    :visible="visible"
-    v-if="visible"
-    @confirm="confirm"
-    @cancel="close"
-    :_style="{
+  <m-dialog :title="modalType !== 'edit' ? 'Add: Display' : 'Edit: Display'" :visible="visible" v-if="visible" @confirm="confirm"
+    @cancel="close" :_style="{
       width: '946px',
-    }"
-    @close="close"
-  >
+    }" @close="close">
     <div slot="content" style="max-height: 400px; overflow: auto">
       <div class="m-form__section">
         <dl>
-          <dt>基本信息</dt>
+          <dt>Basic Information</dt>
           <dd>
-            <m-select
-              labelWidth="100px"
-              label="类别"
-              v-model="machine"
-              prop="cpu"
-              @on-change="handleMachineChange"
-            >
-              <m-option
-                v-for="item in machineItems"
-                :key="item.value"
-                :value="item.value"
-                :label="item.label"
-              >
+            <m-select labelWidth="100px" label="Category" v-model="machine" prop="cpu" @on-change="handleMachineChange">
+              <m-option v-for="item in machineItems" :key="item.value" :value="item.value" :label="item.label">
               </m-option>
             </m-select>
           </dd>
@@ -35,12 +17,7 @@
       </div>
     </div>
     <template slot="footer">
-      <m-button
-        type="primary"
-        style="height: 40px; line-height: 40px; width: 100px"
-        @on-click="confirm()"
-        >确定</m-button
-      >
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px" @on-click="confirm()">Confirm</m-button>
     </template>
   </m-dialog>
 </template>
@@ -118,10 +95,12 @@ export default {
 /deep/.el-table__body {
   font-size: 12px;
 }
+
 .cpu-check {
   width: 100%;
   white-space: nowrap;
 }
+
 .cpu-label {
   width: 55px;
   display: inline-block;

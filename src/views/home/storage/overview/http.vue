@@ -32,8 +32,7 @@ export default {
       this.loading = true;
       return this.$http
         .get(
-          `/json/nodes/${this.storage.node}/storage/${
-            this.storage.storage
+          `/json/nodes/${this.storage.node}/storage/${this.storage.storage
           }/rrddata?timeframe=${encodeURIComponent(timeframe)}&cf=${cf}`
         )
         .then((res) => {

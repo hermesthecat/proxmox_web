@@ -2,21 +2,21 @@
   <page-template>
     <div slot="toolbar-left">
       <m-button type="primary" @on-click="showModal('create')" icon="fa fa-save"
-        >添加</m-button
+        >Add</m-button
       >
       <m-button
         type="primary"
         @on-click="showModal('edit')"
         icon="el-icon-edit"
         :disabled="selectedList.length !== 1"
-        >编辑</m-button
+        >Edit</m-button
       >
       <m-button
         type="danger"
         @on-click="handleDelete()"
         icon="el-icon-delete"
         :disabled="selectedList.length <= 0"
-        >删除</m-button
+        >Delete</m-button
       >
     </div>
     <div slot="page-content">
@@ -28,13 +28,13 @@
       >
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="ID" prop="id" sortable></el-table-column>
-        <el-table-column label="名称" prop="name" sortable></el-table-column>
-        <el-table-column label="桥接" prop="bridge" sortable></el-table-column>
-        <el-table-column label="防火墙" prop="firewall">
+        <el-table-column label="Name" prop="name" sortable></el-table-column>
+        <el-table-column label="Bridge" prop="bridge" sortable></el-table-column>
+        <el-table-column label="Firewall" prop="firewall">
           <template slot-scope="scope">
             <table-info-state
               :content="
-                scope.row.disable && scope.row.disable === 1 ? '否' : '是'
+                scope.row.disable && scope.row.disable === 1 ? 'No' : 'Yes'
               "
               :state="
                 scope.row.disable && scope.row.disable === 1
@@ -45,8 +45,8 @@
           </template>
         </el-table-column>
         <el-table-column label="VLAN" prop="tag" sortable></el-table-column>
-        <el-table-column label="MAC地址" prop="hwaddr"></el-table-column>
-        <el-table-column label="IP地址" prop="ip" sortable>
+        <el-table-column label="MAC Address" prop="hwaddr"></el-table-column>
+        <el-table-column label="IP Address" prop="ip" sortable>
           <template slot-scope="scope">
             <div v-show="scope.row.ip">
               {{ scope.row.ip }}
@@ -56,7 +56,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="网关" prop="gw">
+        <el-table-column label="Gateway" prop="gw">
           <template slot-scope="scope">
             <div v-show="scope.row.gw">
               {{ scope.row.gw }}
@@ -115,7 +115,7 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化查找
+    //Initialize search
     async __init__() {
       let _this = this;
       await _this.queryConfig({ _dc: new Date().getTime() }).then((res) => {
@@ -178,21 +178,21 @@ export default {
         });
       });
     },
-    //按钮是否可点击
+    //Button click state
     inStatus() {
       return this.selectedList.length <= 0;
     },
-    //选择
+    //Selection
     handleSelect(row) {
       this.selectedList = row;
     },
     /**
-     * 删除备份任务
+     * Delete backup task
      */
     handleDelete(type) {
       this.$confirm
         .confirm({
-          msg: `你确定你要删除选择的项吗？`,
+          msg: `Are you sure you want to delete the selected items?`,
           type: "info",
           icon: "icon-warning",
         })
@@ -209,7 +209,7 @@ export default {
         })
         .catch(() => {});
     },
-    //排序
+    //Sort
     handleSort({ colume, prop, order }) {
       let _this = this;
       if (order !== null)
@@ -220,7 +220,7 @@ export default {
         );
     },
     /**
-     * 弹框
+     * Show modal
      */
     showModal(type) {
       this.modalType = type;
@@ -230,15 +230,15 @@ export default {
       this.visible = true;
     },
     /**
-     * 设置标题 @param type 'backup', 'config', 'restore'
+     * Set title @param type 'backup', 'config', 'restore'
      */
     setTitle(type) {
       switch (type) {
         case "create":
-          this.title = `添加： 网络设备(veth)`;
+          this.title = `Add: Network Device (veth)`;
           break;
         case "edit":
-          this.title = `编辑： 网络设备(veth)`;
+          this.title = `Edit: Network Device (veth)`;
           break;
       }
     },

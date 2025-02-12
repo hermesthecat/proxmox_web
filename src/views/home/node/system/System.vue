@@ -6,28 +6,28 @@
         @on-click="handleOperate('start')"
         icon="el-icon-plus"
         :disabled="selectedList.length !== 1 || inStatus('running')"
-        >启动</m-button
+        >Start</m-button
       >
       <m-button
         type="primary"
         @on-click="handleOperate('stop')"
         icon="el-icon-edit"
         :disabled="selectedList.length !== 1 || inStatus('dead')"
-        >停止</m-button
+        >Stop</m-button
       >
       <m-button
         type="warning"
         @on-click="handleOperate('restart')"
         icon="el-icon-video-play"
         :disabled="selectedList.length !== 1 || !inStatus('running')"
-        >重启</m-button
+        >Restart</m-button
       >
       <m-button
         type="info"
         @on-click="handleOperate('systemLog')"
         icon="el-icon-view"
         :disabled="selectedList.length !== 1"
-        >系统日志</m-button
+        >System Log</m-button
       >
     </div>
     <div slot="page-content">
@@ -38,8 +38,8 @@
         :default-sort="{ prop: 'name', order: 'ascending' }"
       >
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="名称" prop="name" sortable></el-table-column>
-        <el-table-column label="状态" prop="state">
+        <el-table-column label="Name" prop="name" sortable></el-table-column>
+        <el-table-column label="Status" prop="state">
           <template slot-scope="scope">
             <table-info-state
               :content="scope.row.state"
@@ -47,7 +47,7 @@
             ></table-info-state>
           </template>
         </el-table-column>
-        <el-table-column label="描述" prop="desc"></el-table-column>
+        <el-table-column label="Description" prop="desc"></el-table-column>
       </el-table>
       <Dialog
         :visible="showLog"
@@ -56,7 +56,7 @@
           width: '900px',
           maxHeight: '520px',
         }"
-        title="Task Viewer: 任务进度"
+        title="Task Viewer: Task Progress"
       >
         <template slot="content">
           <template v-if="modalType === 'progress'">
@@ -73,7 +73,7 @@
                 <m-input
                   prop="expire"
                   labelWidth="100px"
-                  label="选择日期"
+                  label="Select Date"
                   :__conStyle="{ width: 'auto' }"
                 >
                   <template slot="other">
@@ -82,7 +82,7 @@
                       type="daterange"
                       format="yyyy-MM-dd hh:mm"
                       value-format="yyyy-MM-dd hh:mm"
-                      placeholder="永久有效"
+                      placeholder="Permanently Valid"
                     >
                     </el-date-picker>
                   </template>
@@ -92,13 +92,13 @@
                   @on-click="upateSystemLog()"
                   icon="el-icon-refresh"
                   :class="{ refresh: beginRefresh }"
-                  >更新</m-button
+                  >Update</m-button
                 >
               </template>
               <div slot="page-content">
                 <div class="content">
-                  <template v-for="item in db.nodeSystemLogList">
-                    <div :key="item.n">{{ item.t }}</div>
+                  <template v-for="item in db.nodeSystemLogList" :key="item.n">
+                    <div>{{ item.t }}</div>
                   </template>
                 </div>
               </div>
@@ -131,7 +131,7 @@ export default {
   data() {
     return {
       visible: false,
-      title: "创建：复制作业",
+      title: "Create: Copy Job",
       selectedList: [],
       isCreate: true,
       param: {},
@@ -154,19 +154,19 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化查找
+    //Initialize search
     __init__() {
       this.queryNodeSystemList();
     },
-    //是否展示弹框
+    //Show modal dialog
     showModal(type) {
       this.type = type;
       this.isCreate = type === "create";
-      this.title = type === "create" ? "创建：复制作业" : "编辑：复制作业";
+      this.title = type === "create" ? "Create: Copy Job" : "Edit: Copy Job";
       this.param = type === "create" ? {} : this.selectedList[0];
       this.visible = true;
     },
-    //按钮是否可点击
+    //Check if button is clickable
     inStatus() {
       if (this.selectedList.length !== 1) return false;
       let states = [];
@@ -177,7 +177,7 @@ export default {
         states.some((state) => it.state === state)
       );
     },
-    //选择
+    //Selection
     handleSelect(row) {
       this.selectedList = row;
     },

@@ -14,7 +14,7 @@ export default {
   },
   methods: {
     /**
-     * @param guest 虚拟机id
+     * @param guest VM ID
      */
     queryQemuReplication(param) {
       this.loading = true;
@@ -34,7 +34,7 @@ export default {
         });
     },
     /**
-     * 查询node节点列表
+     * Query node list
      */
     queryNodeList() {
       return this.$http.get("json/nodes").then((res) => {
@@ -55,7 +55,7 @@ export default {
         });
     },
     /**
-     * 查询node节点列表
+     * Query node list
      */
     queryReplicationById(id) {
       return this.$http
@@ -72,8 +72,8 @@ export default {
      * @param Object {target: this.target.join(","),
      *   schedule: this.schedule,
      *   rate: this.rate,
-     *		comment: this.comment,
-     *		disable: this.disable ? 0 : 1
+     *   comment: this.comment,
+     *   disable: this.disable ? 0 : 1
      *}
      */
     createReplication(params) {
@@ -116,7 +116,7 @@ export default {
         });
     },
     /**
-     * 删除复制
+     * Delete replication
      */
     delete() {
       let event = this.createEvent("action.replication.delete");
@@ -139,7 +139,7 @@ export default {
       return Promise.all(tasks);
     },
     /**
-     * 立即安排
+     * Schedule immediately
      */
     handleImmidiateSchedule() {
       let event = this.createEvent("action.node.replication.create");
@@ -164,7 +164,7 @@ export default {
         });
     },
     /**
-     * 复制日志
+     * Replication log
      */
     queryReplicationLog(id) {
       return this.$http
@@ -180,7 +180,7 @@ export default {
         });
     },
     /**
-     * 编辑更新复制
+     * Edit and update replication
      */
     updateReplication(params) {
       let param = deepCopy(params);

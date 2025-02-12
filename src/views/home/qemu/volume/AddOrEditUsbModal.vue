@@ -1,15 +1,7 @@
 <template>
-  <m-dialog
-    title="添加磁盘"
-    :visible="visible"
-    v-if="visible"
-    @confirm="confirm"
-    @cancel="close"
-    :_style="{
-      width: '600px',
-    }"
-    @close="close"
-  >
+  <m-dialog title="Add USB Device" :visible="visible" v-if="visible" @confirm="confirm" @cancel="close" :_style="{
+    width: '600px',
+  }" @close="close">
     <div slot="content" style="max-height: 400px; overflow: auto">
       <div class="m-form__section">
         <dl>
@@ -18,7 +10,7 @@
               <input type="radio" value="spice" name="type" v-model="type" />
               <div></div>
             </label>
-            Spice端口
+            Spice Port
           </dt>
         </dl>
       </div>
@@ -30,44 +22,24 @@
               <input type="radio" value="device" name="type" v-model="type" />
               <div></div>
             </label>
-            使用USB供应商/设备ID
+            Use USB Vendor/Device ID
           </dt>
           <dt>
-            <m-select
-              prop="device"
-              label="选择设备"
-              labelWidth="100px"
-              @on-change="handleDeviceSelect"
-              v-model="device"
-              validateEvent
-              @validate="validate"
-              :readonly="true"
-              required
-              :show-error="rules['device'].error"
-              :error-msg="rules['device'].message"
-              :disabled="type !== 'device'"
-              placeholder="请选择设备"
-            >
+            <m-select prop="device" label="Select Device" labelWidth="100px" @on-change="handleDeviceSelect" v-model="device"
+              validateEvent @validate="validate" :readonly="true" required :show-error="rules['device'].error"
+              :error-msg="rules['device'].message" :disabled="type !== 'device'" placeholder="Please select device">
               <div class="table">
-                <m-option
-                  v-for="(item, index) in usbList"
-                  :key="item.vendid + ':' + item.prodid"
-                  :value="item.vendid + ':' + item.prodid"
-                  :label="
-                    item.product + '(' + item.vendid + ':' + item.prodid + ')'
-                  "
-                >
+                <m-option v-for="(item, index) in usbList" :key="item.vendid + ':' + item.prodid"
+                  :value="item.vendid + ':' + item.prodid" :label="item.product + '(' + item.vendid + ':' + item.prodid + ')'
+                    ">
                   <div v-if="index === 0" class="table-tr">
-                    <div class="table-td">设备</div>
-                    <div class="table-td">生产厂商</div>
-                    <div class="table-td">产品</div>
-                    <div class="table-td">速度</div>
+                    <div class="table-td">Device</div>
+                    <div class="table-td">Manufacturer</div>
+                    <div class="table-td">Product</div>
+                    <div class="table-td">Speed</div>
                   </div>
                   <div class="table-tr">
-                    <div
-                      class="table-td"
-                      :title="item.vendid + ':' + item.prodid"
-                    >
+                    <div class="table-td" :title="item.vendid + ':' + item.prodid">
                       {{ item.vendid + ":" + item.prodid }}
                     </div>
                     <div class="table-td" :title="item.manufacturer">
@@ -94,44 +66,24 @@
               <input type="radio" value="port" name="type" v-model="type" />
               <div></div>
             </label>
-            使用USB端口
+            Use USB Port
           </dt>
           <dt>
-            <m-select
-              prop="port"
-              label="选择端口"
-              labelWidth="100px"
-              @on-change="handlePortSelect"
-              v-model="port"
-              validateEvent
-              @validate="validate"
-              required
-              :show-error="rules['port'].error"
-              :error-msg="rules['port'].message"
-              :readonly="true"
-              :disabled="type !== 'port'"
-              placeholder="请选择端口"
-            >
+            <m-select prop="port" label="Select Port" labelWidth="100px" @on-change="handlePortSelect" v-model="port"
+              validateEvent @validate="validate" required :show-error="rules['port'].error"
+              :error-msg="rules['port'].message" :readonly="true" :disabled="type !== 'port'" placeholder="Please select port">
               <div class="table">
-                <m-option
-                  v-for="(item, index) in usbList"
-                  :key="item.busnum + '-' + item.usbpath"
-                  :value="item.busnum + '-' + item.usbpath"
-                  :label="
-                    item.product + '(' + item.busnum + '-' + item.usbpath + ')'
-                  "
-                >
+                <m-option v-for="(item, index) in usbList" :key="item.busnum + '-' + item.usbpath"
+                  :value="item.busnum + '-' + item.usbpath" :label="item.product + '(' + item.busnum + '-' + item.usbpath + ')'
+                    ">
                   <div v-if="index === 0" class="table-tr">
-                    <div class="table-td">端口</div>
-                    <div class="table-td">生产厂商</div>
-                    <div class="table-td">产品</div>
-                    <div class="table-td">速度</div>
+                    <div class="table-td">Port</div>
+                    <div class="table-td">Manufacturer</div>
+                    <div class="table-td">Product</div>
+                    <div class="table-td">Speed</div>
                   </div>
                   <div class="table-tr">
-                    <div
-                      class="table-td"
-                      :title="item.busnum + '-' + item.usbpath"
-                    >
+                    <div class="table-td" :title="item.busnum + '-' + item.usbpath">
                       {{ item.busnum + "-" + item.usbpath }}
                     </div>
                     <div class="table-td" :title="item.manufacturer">
@@ -149,20 +101,11 @@
             </m-select>
           </dt>
         </dl>
-        <m-checkbox
-          label="使用USB3"
-          v-model="usb3"
-          labelWidth="100px"
-        ></m-checkbox>
+        <m-checkbox label="Use USB 3" v-model="usb3" labelWidth="100px"></m-checkbox>
       </div>
     </div>
     <template slot="footer">
-      <m-button
-        type="primary"
-        style="height: 40px; line-height: 40px; width: 100px"
-        @on-click="confirm()"
-        >确定</m-button
-      >
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px" @on-click="confirm()">Confirm</m-button>
     </template>
   </m-dialog>
 </template>
@@ -225,7 +168,7 @@ export default {
         }
       });
     },
-    //解析值
+    //Parse value
     parseValue(value) {
       let values = value.split(","),
         _this = this;
@@ -313,14 +256,14 @@ export default {
       if (this.type == "device" && prop === "device") {
         if (/^\s*$/.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "不能为空";
+          this.rules[prop].message = "Cannot be empty";
           return;
         }
       }
       if (this.type === "port" && prop === "port") {
         if (/^\s*$/.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "不能为空";
+          this.rules[prop].message = "Cannot be empty";
           return;
         }
       }

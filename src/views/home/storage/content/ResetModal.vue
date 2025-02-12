@@ -1,51 +1,27 @@
 <template>
-  <m-dialog
-    :visible="visible"
-    @cancel="close"
-    @confirm="confirm"
-    title="恢复： VM"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <m-dialog :visible="visible" @cancel="close" @confirm="confirm" title="Restore: VM" :_style="{ width: '956px' }"
+    @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
-      <m-dialog
-        :visible="showLog"
-        @close="closeLog"
-        :_style="{
-          width: '800px',
-        }"
-        title="Task Viewer: 恢复"
-      >
+      <m-dialog :visible="showLog" @close="closeLog" :_style="{
+        width: '800px',
+      }" title="Task Viewer: Restore">
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
-            <m-tab-panel label="输出" name="log"></m-tab-panel>
-            <m-tab-panel label="状态" name="status"></m-tab-panel>
+            <m-tab-panel label="Output" name="log"></m-tab-panel>
+            <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
-          <m-button
-            class="create-btn m-margin-top-10"
-            type="primary"
-            @on-click="stopTask1"
-            :disabled="db.addClusterStatusObj.status !== 'running'"
-            >停止</m-button
-          >
+          <m-button class="create-btn m-margin-top-10" type="primary" @on-click="stopTask1"
+            :disabled="db.addClusterStatusObj.status !== 'running'">Stop</m-button>
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
               <div class="table" v-if="tab === 'log'">
-                <div
-                  class="table-tr"
-                  v-for="item in db.addClusterLogList"
-                  :key="item.n"
-                >
+                <div class="table-tr" v-for="item in db.addClusterLogList" :key="item.n">
                   {{ item.t }}
                 </div>
               </div>
               <div class="table" v-if="tab === 'status'">
                 <template v-for="(item, key) in db.addClusterStatusObj">
-                  <div
-                    class="table-tr"
-                    v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-                    :key="key"
-                  >
+                  <div class="table-tr" v-if="!['exitstatus', 'id', 'pstart'].includes(key)" :key="key">
                     <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
                     <div class="table-td" v-if="key === 'starttime'">
                       {{
@@ -66,40 +42,20 @@
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
-              <m-input
-                type="text"
-                label="源"
-                labelWidth="100px"
-                v-model="source"
-                :disabled="true"
-              />
-              <m-select
-                prop="storage"
-                label="存储"
-                labelWidth="100px"
-                @on-change="handleStorageSelect"
-                v-model="storage"
-                validateEvent
-                @validate="validate"
-                :error-msg="rules['storage'].message"
-                :show-error="rules['storage'].error"
-                :readonly="false"
-                placeholder="请选择磁盘"
-              >
+              <m-input type="text" label="Source" labelWidth="100px" v-model="source" :disabled="true" />
+              <m-select prop="storage" label="Storage" labelWidth="100px" @on-change="handleStorageSelect" v-model="storage"
+                validateEvent @validate="validate" :error-msg="rules['storage'].message"
+                :show-error="rules['storage'].error" :readonly="false" placeholder="Please select disk">
                 <div class="table">
-                  <template v-for="(item, index) in db.storageList">
-                    <m-option
-                      :key="item.storage"
-                      :label="item.storage"
-                      :value="item.storage"
-                    >
+                  <template v-for="(item, index) in db.storageList" :key="item.storage">
+                    <m-option :label="item.storage" :value="item.storage">
                       <div v-if="index === 0" class="table-header">
-                        <div class="table-td">名称</div>
-                        <div class="table-td">类别</div>
-                        <div class="table-td">可用</div>
-                        <div class="table-td">容量</div>
+                        <div class="table-td">Name</div>
+                        <div class="table-td">Type</div>
+                        <div class="table-td">Available</div>
+                        <div class="table-td">Capacity</div>
                       </div>
                       <div class="table-row">
                         <div class="table-td" :title="item.storage">
@@ -119,58 +75,26 @@
                   </template>
                 </div>
               </m-select>
-              <m-input
-                type="number"
-                label="VM ID"
-                prop="vmid"
-                v-model="vmid"
-                labelWidth="100px"
-                validateEvent
-                @validate="validate"
-                :error-msg="rules['vmid'].message"
-                :show-error="rules['vmid'].error"
-                :placeholder="'请输入VM ID'"
-              />
+              <m-input type="number" label="VM ID" prop="vmid" v-model="vmid" labelWidth="100px" validateEvent
+                @validate="validate" :error-msg="rules['vmid'].message" :show-error="rules['vmid'].error"
+                :placeholder="'Please enter VM ID'" />
               <div class="upload-file">
-                <m-input
-                  type="number"
-                  prop="bwlimit"
-                  label="Read Limit"
-                  labelWidth="100px"
-                  v-model="bwlimit"
-                  validateEvent
-                  @validate="validate"
-                  :error-msg="rules['bwlimit'].message"
-                  :show-error="rules['bwlimit'].error"
-                  :placeholder="'默认为目标存储恢复限制'"
-                />
+                <m-input type="number" prop="bwlimit" label="Read Limit" labelWidth="100px" v-model="bwlimit"
+                  validateEvent @validate="validate" :error-msg="rules['bwlimit'].message"
+                  :show-error="rules['bwlimit'].error" :placeholder="'Default is target storage restore limit'" />
                 <div class="upload-btn">MiB/s</div>
               </div>
-              <m-checkbox
-                label="唯一"
-                v-model="unique"
-                labelWidth="100px"
-              ></m-checkbox>
-              <m-checkbox
-                label="start after restore"
-                v-model="start"
-                labelWidth="100px"
-              ></m-checkbox>
-              <m-checkbox
-                label="Unprivileged container"
-                v-model="unprivileged"
-                v-if="vmtype === 'lxc'"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-checkbox label="Unique" v-model="unique" labelWidth="100px"></m-checkbox>
+              <m-checkbox label="Start after restore" v-model="start" labelWidth="100px"></m-checkbox>
+              <m-checkbox label="Unprivileged container" v-model="unprivileged" v-if="vmtype === 'lxc'"
+                labelWidth="100px"></m-checkbox>
             </dd>
           </dl>
         </div>
       </div>
     </div>
     <template slot="footer">
-      <m-button class="create-btn" type="primary" @on-click="confirm()"
-        >恢复</m-button
-      >
+      <m-button class="create-btn" type="primary" @on-click="confirm()">Restore</m-button>
     </template>
   </m-dialog>
 </template>
@@ -240,7 +164,7 @@ export default {
   methods: {
     dateFormat,
     byteToSize,
-    // //请求磁盘
+    // Request disk
     async __init__() {
       let _this = this;
       _this.volid = _this.param.volid;
@@ -251,40 +175,40 @@ export default {
       });
       _this.queryStorage({ format: 1, content: "images" });
     },
-    //选择磁盘
+    // Select disk
     handleStorageSelect(value) {
       this.storage = value;
     },
-    //关闭弹框
+    // Close dialog
     close() {
       this.$emit("close");
     },
-    //校验表单
+    // Validate form
     validate(prop) {
       let value = String(this[prop]).trim();
       this.rules[prop].error = false;
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
       if (prop === "vmid") {
         if (value < this.nextid) {
           this.rules[prop].error = true;
-          this.rules[prop].message = `id不能小于${this.nextid}`;
+          this.rules[prop].message = `ID cannot be less than ${this.nextid}`;
           return;
         }
       }
     },
-    //整体校验表单
+    // Validate entire form
     validateAll() {
       let props = ["vmid"];
       if (this.vmtype === "qemu") props.push("storage");
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
     },
-    //确定添加
+    // Confirm add
     confirm() {
       let _this = this,
         params = {
@@ -322,7 +246,7 @@ export default {
         params.archive = _this.volid;
         msg = format_task_description("qmrestore", params.vmid);
       } else {
-        throw "unknown VM type";
+        throw "Unknown VM type";
       }
 
       if (_this.vmid) {
@@ -370,16 +294,18 @@ export default {
           });
       }
     },
-    //切换tab
+    // Switch tab
     handleTabChange(value) {
       this.tab = value;
     },
+    // Stop task
     stopTask1() {
       this.stopTask(
         this.db.addClusterStatusObj.node,
         this.db.addClusterStatusObj.upid
       );
     },
+    // Close task window
     closeLog() {
       this.$emit("close");
     },
@@ -408,9 +334,11 @@ export default {
   display: inline-block;
   line-height: 43px;
 }
+
 .upload-file {
   display: inline-flex;
 }
+
 .file-input {
   width: 100%;
   height: 100%;
@@ -419,6 +347,7 @@ export default {
   left: 0px;
   top: 0px;
 }
+
 .upload-btn {
   position: relative;
   margin-left: -10px;

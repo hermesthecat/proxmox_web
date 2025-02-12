@@ -10,7 +10,7 @@
       <div class="m-form__content">
         <div class="m-form__section" v-if="modalType === 'editUser'">
           <m-input
-            label="用户"
+            label="User"
             prop="ciuser"
             v-model="ciuser"
             labelWidth="110px"
@@ -18,7 +18,7 @@
         </div>
         <div class="m-form__section" v-if="modalType === 'editPassword'">
           <m-input
-            label="密码"
+            label="Password"
             prop="cipassword"
             type="password"
             v-model="cipassword"
@@ -30,13 +30,13 @@
           v-if="modalType === 'editDnsDomain' || modalType === 'editDnsServer'"
         >
           <m-input
-            label="DNS域"
+            label="DNS Domain"
             prop="searchdomain"
             v-model="searchdomain"
             labelWidth="110px"
           />
           <m-input
-            label="DNS服务器"
+            label="DNS Server"
             prop="nameserver"
             v-model="nameserver"
             labelWidth="110px"
@@ -48,7 +48,7 @@
             v-model="sshkeys"
             type="textarea"
             prop="sshkeys"
-            label="SSH公钥"
+            label="SSH Public Key"
             :rows="10"
             labelWidth="100px"
             validateEvent
@@ -57,7 +57,7 @@
             :error-msg="rules['sshkeys'].message"
             @validate="validate"
             :__conStyle="{ width: '300px' }"
-            placeholder="请输入ssh公钥"
+            placeholder="Please enter SSH public key"
           />
           <m-button type="primary" style="position: relative">
             <input
@@ -66,14 +66,14 @@
               @change="uploadSsh"
               class="upload-input"
             />
-            加载SSH秘钥文件
+            Load SSH Key File
           </m-button>
         </div>
         <div class="m-form__section" v-if="modalType === 'editDriveId'">
           <m-input
             style="width: 100%"
             v-model="ipconfig"
-            label="网络设备"
+            label="Network Device"
             labelWidth="100px"
             :disabled="true"
           />
@@ -89,7 +89,7 @@
                     v-model="ip4type"
                   />
                   <div></div>
-                  <span>静态</span>
+                  <span>Static</span>
                 </label>
                 <label class="m-input__radio">
                   <input
@@ -125,12 +125,12 @@
               <m-input
                 v-model="gw"
                 prop="gw"
-                label="网关(IPv4)"
+                label="Gateway (IPv4)"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
                 required
-                placeholder="形如：10.10.10.0"
+                placeholder="Example: 10.10.10.0"
                 :show-error="rules['gw'].error"
                 :disabled="ip4type !== 'static'"
                 :error-msg="rules['gw'].message"
@@ -150,7 +150,7 @@
                     v-model="ip6type"
                   />
                   <div></div>
-                  <span>静态</span>
+                  <span>Static</span>
                 </label>
                 <label class="m-input__radio">
                   <input
@@ -186,13 +186,13 @@
               <m-input
                 v-model="gw6"
                 prop="gw6"
-                label="网关(IPv6)"
+                label="Gateway (IPv6)"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
                 required
                 :show-error="rules['gw6'].error"
-                placeholder="形如：2001:DB8::42"
+                placeholder="Example: 2001:DB8::42"
                 :disabled="ip6type !== 'static'"
                 :error-msg="rules['gw6'].message"
               />
@@ -278,7 +278,7 @@ export default {
     this.__init__();
   },
   methods: {
-    //校验ssh
+    //Validate SSH
     validate(prop) {
       let value = String(this[prop]).trim();
       this.rules[prop].error = false;
@@ -286,14 +286,14 @@ export default {
       if (value && prop === "sshkeys") {
         if (!parseSSHKey(this.sshkeys)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = `公钥格式不正确!`;
+          this.rules[prop].message = `Invalid public key format!`;
           return;
         }
       }
       if (value && prop === "ip") {
         if (!IP4_cidr_match.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "IPv4/CIDR格式不正确!";
+          this.rules[prop].message = "Invalid IPv4/CIDR format!";
           return;
         }
       }
@@ -301,21 +301,21 @@ export default {
         if (!IP6_cidr_match.test(value)) {
           this.rules[prop].error = true;
           this.rules[prop].message =
-            "IPv6/CIDR格式不正确! 示例：2001:DB8::42/64";
+            "Invalid IPv6/CIDR format! Example: 2001:DB8::42/64";
           return;
         }
       }
       if (value && prop === "gw") {
         if (!IP4_match.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "网关格式不正确! 示例： 2001:DB8::42";
+          this.rules[prop].message = "Invalid gateway format! Example: 2001:DB8::42";
           return;
         }
       }
       if (value && prop === "gw6") {
         if (!IP6_match.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "网关格式不正确!";
+          this.rules[prop].message = "Invalid gateway format!";
           return;
         }
       }
@@ -329,7 +329,7 @@ export default {
       return props.some((prop) => this.rules[prop].error === true);
     },
     /**
-     * 上传ssh
+     * Upload SSH
      */
     uploadSsh() {
       let file = this.$refs.uploadFile.files[0],
@@ -341,7 +341,7 @@ export default {
       };
       rs.readAsText(file);
     },
-    //初始化操作
+    //Initialize operation
     __init__() {
       let _this = this;
       _this.queryConfig({ _dc: new Date().getTime() }).then((res) => {
@@ -397,11 +397,11 @@ export default {
           });
       });
     },
-    //关闭修改弹框
+    //Close edit dialog
     close() {
       this.$emit("close");
     },
-    //点击确认按钮触发回调
+    //Click confirm button callback
     confirm() {
       if (this.validateAll()) return;
       let param = {};

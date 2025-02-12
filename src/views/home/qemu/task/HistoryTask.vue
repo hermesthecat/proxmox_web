@@ -1,60 +1,32 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button
-        type="primary"
-        @on-click="showModal()"
-        icon="el-icon-view"
-        :disabled="selectedList.length !== 1"
-        >查看</m-button
-      >
+      <m-button type="primary" @on-click="showModal()" icon="el-icon-view"
+        :disabled="selectedList.length !== 1">View</m-button>
     </div>
     <div slot="toolbar-right" style="text-align: right">
-      <m-input
-        type="text"
-        prop="user"
-        labelWidth="80px"
-        label="用户名"
-        v-model="user"
-        @input="throttle(filter('user'), 1000)"
-        placeholder="请输入用户名"
-      >
+      <m-input type="text" prop="user" labelWidth="80px" label="Username" v-model="user"
+        @input="throttle(filter('user'), 1000)" placeholder="Please enter username">
         <i slot="prefix" class="el-icon-search"></i>
       </m-input>
-      <m-checkbox
-        label="仅错误"
-        v-model="error"
-        labelWidth="100px"
-        @change="filter('error')"
-      ></m-checkbox>
+      <m-checkbox label="Errors Only" v-model="error" labelWidth="100px" @change="filter('error')"></m-checkbox>
     </div>
     <div slot="page-content">
-      <el-table
-        :data="chunkDataList"
-        ref="dataTable"
-        :row-key="setRowKeys"
-        :expand-row-keys="expands"
-        @expand-change="expandChange"
-        :row-class-name="setRoleCalssName"
-        @selection-change="handleSelect"
-        @sort-change="handleSort"
-      >
+      <el-table :data="chunkDataList" ref="dataTable" :row-key="setRowKeys" :expand-row-keys="expands"
+        @expand-change="expandChange" :row-class-name="setRoleCalssName" @selection-change="handleSelect"
+        @sort-change="handleSort">
         <el-table-column type="expand">
           <template slot-scope="props">
-            <table-info-state
-              :content="props.row.status && props.row.status"
-              :state="
-                props.row.status &&
+            <table-info-state :content="props.row.status && props.row.status" :state="props.row.status &&
                 props.row.status &&
                 props.row.status === 'OK'
-                  ? 'actived'
-                  : 'dead'
-              "
-            ></table-info-state>
+                ? 'actived'
+                : 'dead'
+              "></table-info-state>
           </template>
         </el-table-column>
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="开始" prop="starttime" sortable>
+        <el-table-column label="Start" prop="starttime" sortable>
           <template slot-scope="scope">
             {{
               dateFormat(
@@ -64,7 +36,7 @@
             }}
           </template>
         </el-table-column>
-        <el-table-column label="结束时间" prop="endtime" sortable>
+        <el-table-column label="End Time" prop="endtime" sortable>
           <template slot-scope="scope">
             {{
               dateFormat(
@@ -74,87 +46,55 @@
             }}
           </template>
         </el-table-column>
-        <el-table-column label="节点" prop="node"></el-table-column>
-        <el-table-column label="用户名" prop="user"></el-table-column>
-        <el-table-column label="描述" prop="type">
+        <el-table-column label="Node" prop="node"></el-table-column>
+        <el-table-column label="Username" prop="user"></el-table-column>
+        <el-table-column label="Description" prop="type">
           <template slot-scope="scope">
             {{ render_upid(scope.row.pid, null, scope.row) }}
           </template>
         </el-table-column>
-        <el-table-column label="状态" prop="disable" show-overflow-tooltip>
+        <el-table-column label="Status" prop="disable" show-overflow-tooltip>
           <template slot-scope="scope">
-            <table-info-state
-              :content="scope.row.status && scope.row.status"
-              :state="
-                scope.row.status &&
+            <table-info-state :content="scope.row.status && scope.row.status" :state="scope.row.status &&
                 scope.row.status &&
                 scope.row.status === 'OK'
-                  ? 'actived'
-                  : 'dead'
-              "
-            ></table-info-state>
+                ? 'actived'
+                : 'dead'
+              "></table-info-state>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        class="page-table-pagination"
-        @size-change="
-          (val) => {
-            pageSize = val;
-            chunks();
-          }
-        "
-        @current-change="
-          (val) => {
+      <el-pagination class="page-table-pagination" @size-change="(val) => {
+          pageSize = val;
+          chunks();
+        }
+        " @current-change="(val) => {
             currentPage = val;
             chunks();
           }
-        "
-        :current-page="currentPage"
-        :page-sizes="[10, 20, 30, 40, 50]"
-        :page-size="pageSize"
-        :total="qemuTaskList.length"
-        layout="total, sizes, prev, pager, next, jumper"
-      >
+          " :current-page="currentPage" :page-sizes="[10, 20, 30, 40, 50]" :page-size="pageSize"
+        :total="qemuTaskList.length" layout="total, sizes, prev, pager, next, jumper">
       </el-pagination>
-      <Dialog
-        :visible="showLog"
-        @close="closeLog"
-        :_style="{
-          width: '800px',
-        }"
-        :title="title"
-      >
+      <Dialog :visible="showLog" @close="closeLog" :_style="{
+        width: '800px',
+      }" :title="title">
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
-            <m-tab-panel label="输出" name="log"></m-tab-panel>
-            <m-tab-panel label="状态" name="status"></m-tab-panel>
+            <m-tab-panel label="Output" name="log"></m-tab-panel>
+            <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
-          <m-button
-            class="create-btn m-margin-top-10"
-            type="primary"
-            @on-click="stopTask1"
-            :disabled="db.addClusterStatusObj.status !== 'running'"
-            >停止</m-button
-          >
+          <m-button class="create-btn m-margin-top-10" type="primary" @on-click="stopTask1"
+            :disabled="db.addClusterStatusObj.status !== 'running'">Stop</m-button>
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
               <div class="table" v-if="tab === 'log'">
-                <div
-                  class="table-tr"
-                  v-for="item in db.addClusterLogList"
-                  :key="item.n"
-                >
+                <div class="table-tr" v-for="item in db.addClusterLogList" :key="item.n">
                   {{ item.t }}
                 </div>
               </div>
               <div class="table" v-if="tab === 'status'">
                 <template v-for="(item, key) in db.addClusterStatusObj">
-                  <div
-                    class="table-tr"
-                    v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-                    :key="key"
-                  >
+                  <div class="table-tr" v-if="!['exitstatus', 'id', 'pstart'].includes(key)" :key="key">
                     <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
                     <div class="table-td" v-if="key === 'starttime'">
                       {{
@@ -199,7 +139,7 @@ export default {
     return {
       type: "create",
       visible: false,
-      title: "创建：复制作业",
+      title: "Create: Replication Job",
       selectedList: [],
       isCreate: true,
       param: {},
@@ -224,7 +164,7 @@ export default {
     render_upid,
     throttle,
     chunkData,
-    //初始化查找
+    //Initialize search
     __init__() {
       let _this = this;
       this.queryTask().then((res) => {
@@ -232,10 +172,10 @@ export default {
         _this.chunks();
       });
     },
-    //是否展示弹框
+    //Show modal dialog
     async showModal() {
       if (this.selectedList.length !== 1) return;
-      this.title = `查看： ${this.render_upid(
+      this.title = `View: ${this.render_upid(
         null,
         null,
         this.selectedList[0]
@@ -248,11 +188,11 @@ export default {
       }, 3000);
       this.showLog = true;
     },
-    //按钮是否可点击
+    //Check if button is clickable
     inStatus() {
       return this.selectedList.length <= 0;
     },
-    //选择
+    //Selection
     handleSelect(row) {
       if (row) this.selectedList = row;
     },
@@ -276,13 +216,13 @@ export default {
     handleDelete(type) {
       this.$confirm
         .confirm({
-          msg: `你确定你要删除已选择项吗？`,
+          msg: `Are you sure you want to delete the selected items?`,
           type: "info",
         })
         .then(() => {
           this.delete(type);
         })
-        .catch(() => {});
+        .catch(() => { });
     },
     expandChange(row, expandedRows) {
       var that = this;
@@ -298,7 +238,7 @@ export default {
     setRowKeys(row) {
       return row.upid;
     },
-    //设置row className
+    //Set row className
     setRoleCalssName({ row, rowIndex }) {
       if (row.status !== "OK") {
         return "run-error";
@@ -324,7 +264,7 @@ export default {
       }
       this.chunks();
     },
-    //排序
+    //Sort
     handleSort({ colume, prop, order }) {
       let _this = this;
       if (order !== null)
@@ -350,26 +290,32 @@ export default {
   padding: 10px 0px;
   border-top: 1px solid #c4d6ec;
   border-bottom: 1px solid #c4d6ec;
+
   &__item {
     flex: 1 1 auto;
     display: flex;
   }
+
   &__title {
     flex: 1 1 auto;
     display: inline-flex;
   }
+
   &__desc {
     flex: 1 1 auto;
     display: inline-flex;
   }
 }
+
 /deep/.run-error {
   background: #f3d6d7 !important;
   color: #fff !important;
+
   &:hover {
     color: #606266 !important;
   }
 }
+
 /deep/.tool-bar-right {
   flex: 2;
 }

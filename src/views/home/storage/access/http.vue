@@ -115,7 +115,7 @@ export default {
       });
       return Promise.all(tasks);
     },
-    //查询domain
+    //Query domain
     queryDomain() {
       this.$http.get("json/access/domains").then((res) => {
         if (res.data) {
@@ -133,7 +133,7 @@ export default {
         }
       });
     },
-    //创建用户
+    //Create user
     createAccessUser(param) {
       let event = this.createEvent("action.access.user.create");
       return this.$http

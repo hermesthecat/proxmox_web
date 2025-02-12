@@ -1,116 +1,69 @@
 <template>
   <page-template v-loading="loading" :element-loading-text="loadingText">
     <div slot="toolbar-left">
-      <m-button
-        type="primary"
-        @on-click="showModal('create')"
-        icon="fa fa-retweet"
-        >添加</m-button
-      >
-      <m-button
-        type="primary"
-        @on-click="showModal('edit')"
-        icon="el-icon-edit"
-        :disabled="selectedList.length !== 1"
-        >编辑</m-button
-      >
-      <m-button
-        type="danger"
-        @on-click="handleDelete()"
-        icon="el-icon-delete"
-        :disabled="selectedList.length !== 1"
-        >删除</m-button
-      >
-      <m-button
-        type="info"
-        @on-click="showModal('log')"
-        icon="el-icon-date"
-        :disabled="selectedList.length !== 1"
-        >日志</m-button
-      >
-      <m-button
-        type="info"
-        @on-click="() => handleImmidiateSchedule()"
-        icon="el-icon-video-play"
-        :disabled="selectedList.length !== 1"
-        >立即安排</m-button
-      >
+      <m-button type="primary" @on-click="showModal('create')" icon="fa fa-retweet">Add</m-button>
+      <m-button type="primary" @on-click="showModal('edit')" icon="el-icon-edit"
+        :disabled="selectedList.length !== 1">Edit</m-button>
+      <m-button type="danger" @on-click="handleDelete()" icon="el-icon-delete"
+        :disabled="selectedList.length !== 1">Delete</m-button>
+      <m-button type="info" @on-click="showModal('log')" icon="el-icon-date"
+        :disabled="selectedList.length !== 1">Logs</m-button>
+      <m-button type="info" @on-click="() => handleImmidiateSchedule()" icon="el-icon-video-play"
+        :disabled="selectedList.length !== 1">Schedule Now</m-button>
     </div>
     <div slot="page-content">
-      <el-table
-        :data="qemuReplicationList"
-        ref="dataTable"
-        @selection-change="handleSelect"
-        @sort-change="handleSort"
-      >
+      <el-table :data="qemuReplicationList" ref="dataTable" @selection-change="handleSelect" @sort-change="handleSort">
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="访客" prop="guest" sortable></el-table-column>
-        <el-table-column label="作业" prop="jobnum" sortable></el-table-column>
-        <el-table-column label="目标" prop="target" sortable></el-table-column>
-        <el-table-column label="状态" prop="error" show-overflow-tooltip>
+        <el-table-column label="Guest" prop="guest" sortable></el-table-column>
+        <el-table-column label="Job" prop="jobnum" sortable></el-table-column>
+        <el-table-column label="Target" prop="target" sortable></el-table-column>
+        <el-table-column label="Status" prop="error" show-overflow-tooltip>
           <template slot-scope="scope">
-            <table-info-state
-              :content="
-                scope.row.failCount === 0 || !scope.row.error
-                  ? 'OK'
-                  : scope.row.error
-              "
-              :state="
-                scope.row.failCount === 0 || !scope.row.error
+            <table-info-state :content="scope.row.failCount === 0 || !scope.row.error
+                ? 'OK'
+                : scope.row.error
+              " :state="scope.row.failCount === 0 || !scope.row.error
                   ? 'actived'
                   : 'dead'
-              "
-            ></table-info-state>
+                "></table-info-state>
           </template>
         </el-table-column>
-        <el-table-column label="已启用" prop="disable">
+        <el-table-column label="Enabled" prop="disable">
           <template slot-scope="scope">
-            <table-info-state
-              :content="
-                scope.row.disable && scope.row.disable === 1 ? '否' : '是'
-              "
-              :state="
-                scope.row.disable && scope.row.disable === 1
+            <table-info-state :content="scope.row.disable && scope.row.disable === 1 ? 'No' : 'Yes'
+              " :state="scope.row.disable && scope.row.disable === 1
                   ? 'unActived'
                   : 'actived'
-              "
-            ></table-info-state>
+                "></table-info-state>
           </template>
         </el-table-column>
-        <el-table-column label="上次同步" prop="last_sync" sortable>
+        <el-table-column label="Last Sync" prop="last_sync" sortable>
           <template slot-scope="scope">
             {{ renderSync(scope.row.last_sync, "last", scope.row) }}
           </template>
         </el-table-column>
-        <el-table-column label="持续" prop="duration">
+        <el-table-column label="Duration" prop="duration">
           <template slot-scope="scope">
             {{ render_duration(scope.row.duration) }}
           </template>
         </el-table-column>
-        <el-table-column label="下次同步" prop="next_sync" sortable>
+        <el-table-column label="Next Sync" prop="next_sync" sortable>
           <template slot-scope="scope">
             {{ renderSync(scope.row.next_sync, "next", scope.row) }}
           </template>
         </el-table-column>
-        <el-table-column label="安排" prop="schedule">
+        <el-table-column label="Schedule" prop="schedule">
           <template slot-scope="scope">
             <span>{{ scope.row.schedule ? scope.row.schedule : "*/15" }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="备注" prop="comment" sortable></el-table-column>
+        <el-table-column label="Notes" prop="comment" sortable></el-table-column>
       </el-table>
-      <replication-create-modal
-        :visible="visible"
-        v-if="visible"
-        :title="title"
-        :param="param"
-        :isCreate="isCreate"
-        :modalType="modalType"
-        @close="
+      <replication-create-modal :visible="visible" v-if="visible" :title="title" :param="param" :isCreate="isCreate"
+        :modalType="modalType" @close="
           visible = false;
-          __init__();
-        "
-      ></replication-create-modal>
+        __init__();
+        "></replication-create-modal>
     </div>
   </page-template>
 </template>
@@ -160,7 +113,7 @@ export default {
     dateFormat,
     byteToSize,
     throttle,
-    //初始化查找
+    //Initialize search
     async __init__() {
       let _this = this;
       await _this
@@ -197,21 +150,21 @@ export default {
         });
       }, 10000);
     },
-    //按钮是否可点击
+    //Button click state
     inStatus() {
       return this.selectedList.length <= 0;
     },
-    //选择
+    //Selection
     handleSelect(row) {
       this.selectedList = row;
     },
     /**
-     * 删除备份任务
+     * Delete backup task
      */
     handleDelete() {
       this.$confirm
         .confirm({
-          msg: `你确定你要删除改项${this.selectedList[0].volid}吗？`,
+          msg: `Are you sure you want to delete ${this.selectedList[0].volid}?`,
           type: "info",
           icon: "icon-warning",
         })
@@ -226,9 +179,9 @@ export default {
               });
             });
         })
-        .catch(() => {});
+        .catch(() => { });
     },
-    //排序
+    //Sort
     handleSort({ colume, prop, order }) {
       let _this = this;
       if (order !== null)
@@ -239,7 +192,7 @@ export default {
         );
     },
     /**
-     * 弹框
+     * Modal
      */
     showModal(type) {
       this.modalType = type;
@@ -249,23 +202,23 @@ export default {
       this.visible = true;
     },
     /**
-     * 设置标题 @param type 'backup', 'config', 'restore'
+     * Set title @param type 'backup', 'config', 'restore'
      */
     setTitle(type) {
       switch (type) {
         case "create":
-          this.title = `创建: 复制作业`;
+          this.title = `Create: Replication Job`;
           break;
         case "edit":
-          this.title = `编辑： 复制作业`;
+          this.title = `Edit: Replication Job`;
           break;
         case "log":
-          this.title = `查看: 日志`;
+          this.title = `View: Logs`;
           break;
       }
     },
     /**
-     * render同步
+     * Render sync
      */
     renderSync(value, type, record) {
       if (!value) {
@@ -285,7 +238,7 @@ export default {
       return dateFormat(new Date(value * 1000), "yyyy-MM-dd hh:mm:ss");
     },
     /**
-     * 持续时间
+     * Duration
      */
     render_duration(value) {
       if (value === undefined) {
@@ -310,22 +263,27 @@ export default {
   padding: 10px 0px;
   border-top: 1px solid #c4d6ec;
   border-bottom: 1px solid #c4d6ec;
+
   &__item {
     flex: 1 1 auto;
     display: flex;
   }
+
   &__title {
     flex: 1 1 auto;
     display: inline-flex;
   }
+
   &__desc {
     flex: 1 1 auto;
     display: inline-flex;
   }
 }
+
 /deep/.run-error {
   background: #f3d6d7 !important;
   color: #fff !important;
+
   &:hover {
     color: #606266 !important;
   }

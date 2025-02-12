@@ -3,7 +3,7 @@
     <div class="ceph-config-right">
       <div class="ceph-config-right_config">
         <overview-card>
-          <div slot="title">配置</div>
+          <div slot="title">Configuration</div>
           <div slot="content" class="card-content">
             <ace-editor
               v-model="config"
@@ -15,7 +15,7 @@
       </div>
       <div class="ceph-config-right_configdb">
         <overview-card>
-          <div slot="title">配置数据库</div>
+          <div slot="title">Configuration Database</div>
           <div slot="content" class="card-content">
             <el-table :data="configdb">
               <el-table-column label="WHO" prop=""></el-table-column>

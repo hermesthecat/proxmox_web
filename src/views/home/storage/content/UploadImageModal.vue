@@ -1,89 +1,40 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @cancel="close"
-    @confirm="confirm"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" @cancel="close" @confirm="confirm" :title="title" :_style="{ width: '956px' }"
+    @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
-              <m-select
-                prop="content"
-                label="内容"
-                labelWidth="100px"
-                @on-change="handleContentSelect"
-                v-model="content"
-                validateEvent
-                @validate="validate"
-                :error-msg="rules['content'].message"
-                :show-error="rules['content'].error"
-                :readonly="false"
-                :disabled="status === 'uploading'"
-                placeholder="请选择磁盘"
-              >
-                <m-option
-                  v-for="item in contentItems"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-select prop="content" label="Content" labelWidth="100px" @on-change="handleContentSelect"
+                v-model="content" validateEvent @validate="validate" :error-msg="rules['content'].message"
+                :show-error="rules['content'].error" :readonly="false" :disabled="status === 'uploading'"
+                placeholder="Please select disk">
+                <m-option v-for="item in contentItems" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
               <div class="upload-file">
-                <m-input
-                  type="text"
-                  prop="filename"
-                  v-model="filename"
-                  validateEvent
-                  @validate="validate"
-                  :error-msg="rules['filename'].message"
-                  :show-error="rules['filename'].error"
-                  :placeholder="'请输入名称'"
-                  :disabled="status === 'uploading'"
-                />
+                <m-input type="text" prop="filename" v-model="filename" validateEvent @validate="validate"
+                  :error-msg="rules['filename'].message" :show-error="rules['filename'].error"
+                  :placeholder="'Please enter name'" :disabled="status === 'uploading'" />
                 <m-button type="primary" class="upload-btn">
-                  <input
-                    class="file-input"
-                    type="file"
-                    accept=".img, .iso"
-                    value="选择文件"
-                    ref="file"
-                    :disabled="status === 'uploading'"
-                    @change="fileChange"
-                  />
-                  选择文件
+                  <input class="file-input" type="file" accept=".img, .iso" value="Select File" ref="file"
+                    :disabled="status === 'uploading'" @change="fileChange" />
+                  Select File
                 </m-button>
               </div>
-              <LinePercentChart
-                :value="(percentComplete * 100).toFixed(2)"
-                :title="text"
-              ></LinePercentChart>
+              <LinePercentChart :value="(percentComplete * 100).toFixed(2)" :title="text"></LinePercentChart>
             </dd>
           </dl>
         </div>
       </div>
     </div>
     <template slot="footer">
-      <m-button
-        class="create-btn"
-        type="primary"
-        @on-click="pause()"
-        :disabled="status !== 'uploading'"
-        >暂停</m-button
-      >
-      <m-button
-        class="create-btn"
-        type="primary"
-        @on-click="confirm()"
-        :disabled="status === 'uploading'"
-        >上传</m-button
-      >
+      <m-button class="create-btn" type="primary" @on-click="pause()"
+        :disabled="status !== 'uploading'">Pause</m-button>
+      <m-button class="create-btn" type="primary" @on-click="confirm()"
+        :disabled="status === 'uploading'">Upload</m-button>
     </template>
   </Dialog>
 </template>
@@ -141,56 +92,56 @@ export default {
     this.__init__();
   },
   methods: {
-    // //请求磁盘
+    // // Request disk
     async __init__() {
       let _this = this;
       this.contentItems = this.contents.map((item) => {
         if (item === "iso") {
           return {
-            label: "ISO镜像",
+            label: "ISO Image",
             value: "iso",
           };
         }
         if (item === "vztmpl") {
           return {
-            label: "容器模板",
+            label: "Container Template",
             value: "vztmpl",
           };
         }
       });
       //this.queryListNodeDiskList({type: 'unused'});
     },
-    //选择磁盘
+    // Select disk
     handleContentSelect(value) {
       this.content = value;
     },
-    //关闭弹框
+    // Close dialog
     close() {
       this.$emit("close");
     },
-    //校验表单
+    // Validate form
     validate(prop) {
       let value = String(this[prop]).trim();
       this.rules[prop].error = false;
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
     },
-    //整体校验表单
+    // Validate entire form
     validateAll() {
       let props = ["name", "device"];
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
     },
-    //确定添加
+    // Confirm add
     confirm() {
       let file = this.$refs.file.files[0];
       if (!/(\.(iso|img))$/.test(file.name)) {
         this.rules["filename"].error = true;
-        this.rules["filename"].message = "文件格式必须为.iso或者img";
+        this.rules["filename"].message = "File format must be .iso or .img";
       } else {
         this.rules["filename"].error = false;
         this.rules["filename"].message = "";
@@ -212,7 +163,7 @@ export default {
             .then(() => this.close());
         });
     },
-    //上传文件回调
+    // Upload file callback
     uploadCallback(e, xhr, bytes) {
       this.xhr = xhr;
       console.log(e);
@@ -246,19 +197,19 @@ export default {
         }
       }
     },
-    //上传前读取文件路径
+    // Read file path before upload
     fileChange() {
       this.filename = this.$refs.file.value;
       let file = this.$refs.file.files[0];
       if (!/(\.(iso|img))$/.test(file.name)) {
         this.rules["filename"].error = true;
-        this.rules["filename"].message = "文件格式必须为.iso或者img";
+        this.rules["filename"].message = "File format must be .iso or .img";
       } else {
         this.rules["filename"].error = false;
         this.rules["filename"].message = "";
       }
     },
-    //暂停
+    // Pause
     pause() {
       this.xhr.abort();
       this.close();
@@ -282,9 +233,11 @@ export default {
   display: inline-block;
   line-height: 43px;
 }
+
 .upload-file {
   display: inline-flex;
 }
+
 .file-input {
   width: 100%;
   height: 100%;
@@ -293,6 +246,7 @@ export default {
   left: 0px;
   top: 0px;
 }
+
 .upload-btn {
   position: relative;
   margin-left: -10px;

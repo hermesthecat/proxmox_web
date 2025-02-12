@@ -11,12 +11,12 @@
       <div class="m-form__content" v-if="modalType === 'create'">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-input
                 type="text"
                 prop="name"
-                label="名称"
+                label="Name"
                 labelWidth="100px"
                 v-model="name"
                 validateEvent
@@ -24,11 +24,11 @@
                 required
                 :error-msg="rules['name'].message"
                 :show-error="rules['name'].error"
-                :placeholder="'请输入名称'"
+                :placeholder="'Please enter name'"
               />
               <m-select
                 prop="raidlevel"
-                label="RAID级别"
+                label="RAID Level"
                 labelWidth="100px"
                 @on-change="handleDestSelect"
                 v-model="raidlevel"
@@ -38,7 +38,7 @@
                 :error-msg="rules['raidlevel'].message"
                 :show-error="rules['raidlevel'].error"
                 :readonly="true"
-                placeholder="请选择磁盘"
+                placeholder="Please select disk"
               >
                 <m-option
                   v-for="item in comboItems"
@@ -50,7 +50,7 @@
               </m-select>
               <m-select
                 prop="compression"
-                label="压缩"
+                label="Compression"
                 labelWidth="100px"
                 @on-change="handleCompressSelect"
                 v-model="compression"
@@ -59,7 +59,7 @@
                 required
                 :error-msg="rules['compression'].message"
                 :show-error="rules['compression'].error"
-                placeholder="请选择磁盘"
+                placeholder="Please select disk"
               >
                 <m-option
                   v-for="item in compressionItems"
@@ -70,7 +70,7 @@
                 </m-option>
               </m-select>
               <m-checkbox
-                label="添加存储"
+                label="Add Storage"
                 v-model="add_storage"
                 labelWidth="100px"
               ></m-checkbox>
@@ -81,12 +81,12 @@
                 labelWidth="100px"
                 v-model="ashift"
                 :min="12"
-                :placeholder="'请输入ashift'"
+                :placeholder="'Please enter ashift'"
               />
             </dd>
           </dl>
           <dl>
-            <dt>设备</dt>
+            <dt>Devices</dt>
             <dd>
               <el-table
                 :data="db.nodeDiskList"
@@ -99,15 +99,15 @@
                   prop="pos"
                 ></el-table-column>
                 <el-table-column width="55" prop="pos"></el-table-column>
-                <el-table-column label="设备" prop="devpath"></el-table-column>
-                <el-table-column label="大小" prop="size">
+                <el-table-column label="Device" prop="devpath"></el-table-column>
+                <el-table-column label="Size" prop="size">
                   <template slot-scope="scope">
                     {{
                       scope.row && scope.row.size && byteToSize(scope.row.size)
                     }}
                   </template>
                 </el-table-column>
-                <el-table-column label="串行" prop="serial"></el-table-column>
+                <el-table-column label="Serial" prop="serial"></el-table-column>
                 <el-table-column label="Order" prop="order"></el-table-column>
               </el-table>
             </dd>
@@ -117,12 +117,12 @@
       <div v-if="modalType === 'detail'">
         <div slot="toolbar-left">
           <m-button type="primary" @on-click="__init__()" icon="el-icon-refresh"
-            >重载</m-button
+            >Reload</m-button
           >
         </div>
         <div slot="page-content">
           <single-line
-            title="扫描"
+            title="Scan"
             :desc="`${
               (db.nodeDiskSdaObj &&
                 db.nodeDiskSdaObj.scan &&
@@ -131,7 +131,7 @@
             }`"
           />
           <single-line
-            title="错误"
+            title="Errors"
             :desc="`${
               (db.nodeDiskSdaObj &&
                 db.nodeDiskSdaObj.errors &&
@@ -140,7 +140,7 @@
             }`"
           />
           <overview-card style="width: 100%">
-            <div slot="title">设备</div>
+            <div slot="title">Devices</div>
             <template slot="content">
               <el-table
                 :data="[db.nodeDiskSdaObj]"
@@ -148,8 +148,8 @@
                 :expand-row-keys="expands"
                 :tree-props="{ children: 'children' }"
                 >>
-                <el-table-column label="名称" prop="name"></el-table-column>
-                <el-table-column label="健康" prop="state">
+                <el-table-column label="Name" prop="name"></el-table-column>
+                <el-table-column label="Health" prop="state">
                   <template slot-scope="scope">
                     <table-info-state
                       :content="scope.row.state"
@@ -160,7 +160,7 @@
                 <el-table-column label="READ" prop="read"></el-table-column>
                 <el-table-column label="WRITE" prop="write"></el-table-column>
                 <el-table-column label="CKSUM" prop="cksum"></el-table-column>
-                <el-table-column label="消息" prop="msg"></el-table-column>
+                <el-table-column label="Message" prop="msg"></el-table-column>
               </el-table>
             </template>
           </overview-card>
@@ -173,7 +173,7 @@
         type="primary"
         @on-click="confirm"
         v-if="modalType === 'create'"
-        >创建</m-button
+        >Create</m-button
       >
       <div v-else></div>
     </template>
@@ -227,7 +227,7 @@ export default {
       selectedList: [],
       expands: [],
       comboItems: [
-        { value: "single", label: "单磁盘" },
+        { value: "single", label: "Single Disk" },
         { value: "mirror", label: "Mirror" },
         { value: "raid10", label: "RAID10" },
         { value: "raidz", label: "RAIDZ" },
@@ -267,7 +267,7 @@ export default {
   },
   methods: {
     byteToSize,
-    //请求磁盘
+    //Request disk
     async __init__() {
       let _this = this;
       if (_this.modalType === "create")
@@ -280,34 +280,34 @@ export default {
               _this.db.nodeDiskSdaObj.name && [_this.db.nodeDiskSdaObj.name];
           });
     },
-    //选择磁盘
+    //Select disk
     handleDestSelect(value) {
       this.device = value;
     },
-    //选择压缩
+    //Select compression
     handleCompressSelect(value) {
       this.compression = value;
     },
-    //选择设备
+    //Select device
     handleSelect(row) {
       this.selectedList = row.map((item) => item.devpath);
     },
-    //关闭弹框
+    //Close dialog
     close() {
       this.$emit("close");
     },
-    //校验表单
+    //Validate form
     validate(prop) {
       let value = String(this[prop]).trim();
       this.rules[prop].error = false;
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
     },
-    //整体校验表单
+    //Validate all form fields
     validateAll() {
       let props = ["name"];
       props.forEach((prop) => this.validate(prop));
@@ -316,11 +316,11 @@ export default {
           this.rules[prop].error === true || this.selectedList.length <= 0
       );
     },
-    //选择文件系统
+    //Select file system
     handleFsSelect(value) {
       this.filesystem = value;
     },
-    //确定添加
+    //Confirm add
     confirm() {
       if (this.validateAll()) return;
       let param = {
@@ -345,7 +345,7 @@ export default {
             .then(() => this.close());
         });
     },
-    //表格展开
+    //Expand table
     expandChange(row, expandedRows) {
       var that = this;
       if (expandedRows.length) {
@@ -357,7 +357,7 @@ export default {
         that.expands = [];
       }
     },
-    //设置行号
+    //Set row keys
     setRowKeys(row) {
       return row.name;
     },

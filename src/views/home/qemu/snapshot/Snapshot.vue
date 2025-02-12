@@ -2,82 +2,42 @@
   <page-template>
     <div slot="toolbar-right" style="text-align: right; padding-right: 10px">
       <span class="search-input">
-        <m-input placeholder="搜索" v-model="searchModel">
+        <m-input placeholder="Search" v-model="searchModel">
           <i slot="prefix" class="el-icon-search"></i>
         </m-input>
       </span>
     </div>
     <div slot="toolbar-left">
-      <m-button type="primary" @on-click="showModal('create')" icon="fa fa-save"
-        >添加</m-button
-      >
-      <m-button
-        type="primary"
-        @on-click="showModal('edit')"
-        icon="fa fa-retweet"
-        :disabled="inStatus()"
-        >编辑</m-button
-      >
-      <m-button
-        type="danger"
-        @on-click="handleDelete()"
-        icon="el-icon-delete"
-        :disabled="inStatus()"
-        >删除</m-button
-      >
-      <m-button
-        type="info"
-        @on-click="handleRollback"
-        icon="el-icon-view"
-        :disabled="inStatus()"
-        >回滚</m-button
-      >
-      <m-button
-        type="info"
-        @on-click="handleClone"
-        icon="el-icon-view"
-        :disabled="current === ''"
-        >克隆虚拟机</m-button
-      >
+      <m-button type="primary" @on-click="showModal('create')" icon="fa fa-save">Add</m-button>
+      <m-button type="primary" @on-click="showModal('edit')" icon="fa fa-retweet" :disabled="inStatus()">Edit</m-button>
+      <m-button type="danger" @on-click="handleDelete()" icon="el-icon-delete" :disabled="inStatus()">Delete</m-button>
+      <m-button type="info" @on-click="handleRollback" icon="el-icon-view" :disabled="inStatus()">Rollback</m-button>
+      <m-button type="info" @on-click="handleClone" icon="el-icon-view" :disabled="current === ''">Clone VM</m-button>
     </div>
-    <div
-      slot="page-content"
-      style="position: relative; top: 0; bottom: 0; left: 0; right: -20px"
-    >
+    <div slot="page-content" style="position: relative; top: 0; bottom: 0; left: 0; right: -20px">
       <div class="list">
         <div class="row-title">
-          <span id="common-name" class="name">名称</span>
-          <span id="common-size" class="size">内存</span>
-          <span id="common-createDate" class="date">日期</span>
-          <span id="common-createDate" class="description">描述</span>
+          <span id="common-name" class="name">Name</span>
+          <span id="common-size" class="size">Memory</span>
+          <span id="common-createDate" class="date">Date</span>
+          <span id="common-createDate" class="description">Description</span>
         </div>
-        <label
-          class="row"
-          v-for="it in chunkData(searchTable, pageSize)[currentPage - 1]"
-          :key="it.name"
-          :class="{ 'is-active': current === it.name }"
-        >
+        <label class="row" v-for="it in chunkData(searchTable, pageSize)[currentPage - 1]" :key="it.name"
+          :class="{ 'is-active': current === it.name }">
           <template>
-            <input
-              name="snapshot"
-              :id="it.name"
-              type="radio"
-              style="display: none; width: 0px"
-              @change="handleSelect"
-            />
+            <input name="snapshot" :id="it.name" type="radio" style="display: none; width: 0px"
+              @change="handleSelect" />
             <span class="root-name">{{ it.name && it.name }}</span>
             <span class="name">
-              <table-info-state
-                :state="it.vmstate === 1 ? 'actived' : 'unActived'"
-                :content="it.vmstate === 1 ? '是' : '否'"
-              ></table-info-state>
+              <table-info-state :state="it.vmstate === 1 ? 'actived' : 'unActived'"
+                :content="it.vmstate === 1 ? 'Yes' : 'No'"></table-info-state>
             </span>
             <span class="date">{{
               it.snaptime
                 ? dateFormat(
-                    new Date(it.snaptime * 1000),
-                    "yyyy-MM-dd hh:mm:ss"
-                  )
+                  new Date(it.snaptime * 1000),
+                  "yyyy-MM-dd hh:mm:ss"
+                )
                 : ""
             }}</span>
             <span class="description">{{
@@ -88,49 +48,27 @@
         <p v-if="searchTable.length <= 0" style="text-align: center">
           <img src="~@images/noata.png" />
         </p>
-        <el-pagination
-          class="page-table-pagination"
-          @size-change="
-            (val) => {
-              pageSize = val;
-              currentPage = 1;
-              __init__();
-              current = '';
-            }
-          "
-          @current-change="
-            (val) => {
+        <el-pagination class="page-table-pagination" @size-change="(val) => {
+            pageSize = val;
+            currentPage = 1;
+            __init__();
+            current = '';
+          }
+          " @current-change="(val) => {
               currentPage = val;
               __init__();
               current = '';
             }
-          "
-          :current-page="currentPage"
-          :page-sizes="[10, 20, 30, 40, 50]"
-          :page-size="pageSize"
-          :total="searchTable.length"
-          small
-          layout="total, sizes, prev, pager, next, jumper"
-        >
+            " :current-page="currentPage" :page-sizes="[10, 20, 30, 40, 50]" :page-size="pageSize"
+          :total="searchTable.length" small layout="total, sizes, prev, pager, next, jumper">
         </el-pagination>
       </div>
-      <add-snap-shot-modal
-        :visible="visible"
-        v-if="visible"
-        :title="title"
-        :param="param"
-        :isCreate="isCreate"
-        :modalType="modalType"
-        @close="
+      <add-snap-shot-modal :visible="visible" v-if="visible" :title="title" :param="param" :isCreate="isCreate"
+        :modalType="modalType" @close="
           visible = false;
-          __init__();
-        "
-      ></add-snap-shot-modal>
-      <m-dialog
-        :visible="showDeleteLog"
-        @close="closeDeleteLog"
-        title="任务进度"
-      >
+        __init__();
+        "></add-snap-shot-modal>
+      <m-dialog :visible="showDeleteLog" @close="closeDeleteLog" title="Task Progress">
         <template slot="content">
           <div class="progress" v-if="!done">
             <div class="progress-inner"></div>
@@ -141,15 +79,10 @@
         </template>
         <template slot="footer"><span></span></template>
       </m-dialog>
-      <operate-modal
-        :visible="visibleclone"
-        v-if="visibleclone"
-        :param="{ snapshotname: current }"
-        @close="
-          visibleclone = false;
-          __init__();
-        "
-      ></operate-modal>
+      <operate-modal :visible="visibleclone" v-if="visibleclone" :param="{ snapshotname: current }" @close="
+        visibleclone = false;
+      __init__();
+      "></operate-modal>
     </div>
   </page-template>
 </template>
@@ -190,7 +123,7 @@ export default {
       current: "",
       interVal: null,
       snapshotList: [],
-      showDeleteLog: false, //是否展示进度
+      showDeleteLog: false, //Show progress
       done: true,
       yMax: -1,
       xSpace: 48,
@@ -228,7 +161,7 @@ export default {
     dateFormat,
     byteToSize,
     chunkData,
-    //初始化查找
+    //Initialize search
     __init__() {
       let _this = this;
       _this.querySnapShotList({ _dc: new Date().getTime() }).then((res) => {
@@ -245,21 +178,21 @@ export default {
         //_this.snapshotList.push();
       });
     },
-    //按钮是否可点击
+    //Button click state
     inStatus() {
       return isEmpty(this.current) || this.current === "current";
     },
-    //选择
+    //Selection
     handleSelect(event) {
       this.current = event.target.id;
     },
     /**
-     * 删除备份任务
+     * Delete backup task
      */
     handleDelete(type) {
       this.$confirm
         .confirm({
-          msg: `你确定你要删除改项${this.current}吗？`,
+          msg: `Are you sure you want to delete ${this.current}?`,
           type: "info",
           icon: "icon-warning",
         })
@@ -274,9 +207,9 @@ export default {
               });
             });
         })
-        .catch(() => {});
+        .catch(() => { });
     },
-    //排序
+    //Sort
     handleSort({ colume, prop, order }) {
       let _this = this;
       if (order !== null)
@@ -287,7 +220,7 @@ export default {
         );
     },
     /**
-     * 弹框
+     * Modal
      */
     showModal(type) {
       this.modalType = type;
@@ -300,20 +233,20 @@ export default {
       this.visible = true;
     },
     /**
-     * 设置标题 @param type 'backup', 'config', 'restore'
+     * Set title @param type 'backup', 'config', 'restore'
      */
     setTitle(type) {
       switch (type) {
         case "create":
-          this.title = `创建: 快照`;
+          this.title = `Create: Snapshot`;
           break;
         case "edit":
-          this.title = `编辑： 快照`;
+          this.title = `Edit: Snapshot`;
           break;
       }
     },
     /**
-     * render同步
+     * Render sync
      */
     renderSync(value, type, recode) {
       if (!value) {
@@ -333,7 +266,7 @@ export default {
       return dateFormat(new Date(value * 1000), "yyyy-MM-dd hh:mm:ss");
     },
     /**
-     * 持续时间
+     * Duration
      */
     render_duration(value) {
       if (value === undefined) {
@@ -349,11 +282,11 @@ export default {
         this.interVal = null;
       }
     },
-    //回滚
+    //Rollback
     handleRollback() {
       this.$confirm
         .confirm({
-          msg: `确定要回滚${this.current}?`,
+          msg: `Are you sure you want to rollback ${this.current}?`,
           icon: "icon-question",
         })
         .then((res) => {
@@ -364,7 +297,7 @@ export default {
           });
         });
     },
-    //克隆虚拟机
+    //Clone VM
     handleClone() {
       this.visibleclone = true;
     },
@@ -386,10 +319,12 @@ export default {
   width: 16px;
   background-repeat: no-repeat;
 }
+
 .is-active {
   background: #1989fa;
   color: #fff;
 }
+
 .progress {
   width: 90%;
   position: relative;
@@ -399,6 +334,7 @@ export default {
   padding: 0px 10px;
   margin: 90px 0px;
   text-align: center;
+
   &-inner {
     position: absolute;
     height: 30px;
@@ -412,15 +348,19 @@ export default {
   0% {
     width: 0%;
   }
+
   25% {
     width: 25%;
   }
+
   50% {
     width: 50%;
   }
+
   75% {
     width: 75%;
   }
+
   100% {
     width: 100%;
   }
@@ -467,10 +407,12 @@ export default {
   display: inline-block;
   width: 24%;
 }
+
 .list .row-title .description {
   display: inline-block;
   width: 24%;
 }
+
 .list .row .name {
   display: inline-block;
   width: 24%;
@@ -519,11 +461,13 @@ export default {
   line-height: 48px;
   vertical-align: top;
 }
+
 .snapshot.link {
   fill: none !important;
   stroke: #5e6978 !important;
   stroke-width: 1px !important;
 }
+
 .hidden {
   display: none !important;
 }

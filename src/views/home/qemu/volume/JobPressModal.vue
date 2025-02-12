@@ -36,7 +36,7 @@ export default {
         return newVal;
       }
     },
-    //任务进度信息完成之后显示done!
+    // Show "Done!" after task progress information is completed
     msg: function (newVal, oldVal) {
       if (newVal !== oldVal) {
         return newVal;
@@ -52,12 +52,12 @@ export default {
   padding: 20px 50px;
   background: #f6f6f6;
   position: relative;
+
   &-inner {
     position: absolute;
     top: 0;
     left: 0;
-    -webkit-animation: progress-animation-data-v-16dab862 0ms linear 0.5s
-      infinite;
+    -webkit-animation: progress-animation-data-v-16dab862 0ms linear 0.5s infinite;
     animation: progress-animation-data-v-16dab862 0ms linear 0.5s infinite;
     height: 100%;
     line-height: 40px;
@@ -69,9 +69,11 @@ export default {
   0% {
     width: 0%;
   }
+
   50% {
     width: 50%;
   }
+
   100% {
     width: 100%;
   }

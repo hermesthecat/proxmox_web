@@ -20,7 +20,7 @@
         }"
       >
         <overview-card>
-          <div slot="title">状态</div>
+          <div slot="title">Status</div>
           <div
             slot="content"
             class="card-content"
@@ -29,22 +29,22 @@
           >
             <div class="card-item">
               <single-line
-                title="状态"
+                title="Status"
                 icon="fa fa-info"
                 :desc="db.qemuObj && db.qemuObj.status && db.qemuObj.status"
               />
               <single-line
                 icon="fa fa-heartbeat"
-                title="HA状态"
+                title="HA Status"
                 :desc="
                   db.qemuObj && db.qemuObj.ha && db.qemuObj.ha.status
                     ? db.qemuObj.ha.status
-                    : '无'
+                    : 'None'
                 "
               />
               <single-line
                 icon="fa fa-building"
-                title="节点"
+                title="Node"
                 :desc="node && node.parent && node.parent"
               />
               <line-percent-chart
@@ -62,7 +62,7 @@
                     ? db.qemuObj.cpu / db.qemuObj.cpus
                     : 0) * 100
                 "
-                title="CPU使用率"
+                title="CPU Usage"
               />
               <line-percent-chart
                 name="icon-ram"
@@ -81,11 +81,11 @@
                     ? db.qemuObj.mem / db.qemuObj.maxmem
                     : 0) * 100
                 "
-                title="内存使用率"
+                title="Memory Usage"
               />
               <single-line
                 icon="fa fa-hdd-o"
-                title="节点"
+                title="Node"
                 :desc="
                   db.qemuObj &&
                   db.qemuObj.maxdisk &&
@@ -95,13 +95,13 @@
               <single-line
                 icon="fa fa-exchange"
                 title="IPs"
-                :desc="'Guset Agent'"
+                :desc="'Guest Agent'"
               />
             </div>
           </div>
         </overview-card>
         <overview-card>
-          <div slot="title">备注</div>
+          <div slot="title">Notes</div>
           <div
             slot="operate"
             class="m-tool-img"
@@ -119,7 +119,7 @@
       </div>
       <div class="overview-content__top_right" v-if="!isTempalte">
         <overview-card>
-          <div slot="title">CPU利用率</div>
+          <div slot="title">CPU Usage</div>
           <template slot="content">
             <line-graph :param="cpu" v-loading="rrdLoading"></line-graph>
           </template>
@@ -129,7 +129,7 @@
     <div class="overview-content__center" v-if="!isTempalte">
       <div class="overview-content__center_left">
         <overview-card>
-          <div slot="title">内存利用率</div>
+          <div slot="title">Memory Usage</div>
           <template slot="content">
             <line-graph :param="memory" v-loading="rrdLoading"></line-graph>
           </template>
@@ -137,7 +137,7 @@
       </div>
       <div class="overview-content__center_right">
         <overview-card>
-          <div slot="title">网络流量</div>
+          <div slot="title">Network Traffic</div>
           <template slot="content">
             <line-graph :param="network" v-loading="rrdLoading"></line-graph>
           </template>
@@ -145,7 +145,7 @@
       </div>
     </div>
     <overview-card v-if="!isTempalte">
-      <div slot="title">磁盘IO</div>
+      <div slot="title">Disk I/O</div>
       <template slot="content">
         <line-graph :param="disk" v-loading="rrdLoading"></line-graph>
       </template>
@@ -155,11 +155,11 @@
       @close="showComment = false"
       @confirm="confirm"
       @cancel="cancel"
-      cancelText="重置"
+      cancelText="Reset"
       :_style="{
         width: '800px',
       }"
-      title="备注"
+      title="Notes"
     >
       <div slot="content" ref="content">
         <ace-editor v-model="comment" ref="ace-editor"></ace-editor>
@@ -200,43 +200,43 @@ export default {
       rrdLoading: false,
       intervalList: [
         {
-          label: "小时（平均）",
+          label: "Hour (Average)",
           value: "hour(AVERAGE)",
         },
         {
-          label: "小时（最大）",
+          label: "Hour (Maximum)",
           value: "hour(MAX)",
         },
         {
-          label: "天（平均）",
+          label: "Day (Average)", 
           value: "day(AVERAGE)",
         },
         {
-          label: "天（最大）",
+          label: "Day (Maximum)",
           value: "day(MAX)",
         },
         {
-          label: "周（平均）",
+          label: "Week (Average)",
           value: "week(AVERAGE)",
         },
         {
-          label: "周（最大）",
+          label: "Week (Maximum)",
           value: "week(MAX)",
         },
         {
-          label: "月（平均）",
+          label: "Month (Average)",
           value: "month(AVERAGE)",
         },
         {
-          label: "月（最大）",
+          label: "Month (Maximum)",
           value: "month(MAX)",
         },
         {
-          label: "年（平均）",
+          label: "Year (Average)",
           value: "year(AVERAGE)",
         },
         {
-          label: "年（最大）",
+          label: "Year (Maximum)",
           value: "year(MAX)",
         },
       ],
@@ -288,15 +288,15 @@ export default {
       ],
       cpu: {
         value: [],
-        label: ["CPU使用率", "IO延迟"],
+        label: ["CPU Usage", "I/O Delay"],
       },
       loadavg: {
         value: [],
-        label: ["平均负荷"],
+        label: ["Average Load"],
       },
       memory: {
         value: [],
-        label: ["总额", "内存使用率"],
+        label: ["Total", "Memory Usage"],
       },
       network: {
         value: [],
@@ -355,8 +355,8 @@ export default {
     cancel() {
       this.comment = "";
     },
-    /***
-     * 当弹框高度变化是计算弹框高度
+    /**
+     * Calculate dialog height when dialog height changes
      */
     updateAceEditorHeight() {
       let _this = this;
@@ -365,7 +365,7 @@ export default {
     },
   },
   /**
-   * 初始化请求
+   * Initialize request
    */
   mounted() {
     let _this = this;

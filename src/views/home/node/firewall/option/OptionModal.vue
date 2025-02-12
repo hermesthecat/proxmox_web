@@ -30,7 +30,7 @@
           <dl>
             <dd>
               <m-checkbox
-                label="SMURFS过滤"
+                label="SMURFS Filter"
                 v-model="nosmurfs"
                 labelWidth="100px"
               ></m-checkbox>
@@ -45,7 +45,7 @@
           <dl>
             <dd>
               <m-checkbox
-                label="TCP标志过滤器"
+                label="TCP Flags Filter"
                 v-model="tcpflags"
                 labelWidth="100px"
               ></m-checkbox>
@@ -80,7 +80,7 @@
                 :min="32768"
                 type="number"
                 v-model="nf_conntrack_max"
-                placeholder="请输入nf_conntrack_max"
+                placeholder="Please enter nf_conntrack_max"
               />
             </dd>
           </dl>
@@ -101,7 +101,7 @@
                 type="number"
                 :min="32768"
                 v-model="nf_conntrack_tcp_timeout_established"
-                placeholder="请输入nf_conntrack_tcp_timeout_established"
+                placeholder="Please enter nf_conntrack_tcp_timeout_established"
               />
             </dd>
           </dl>
@@ -118,7 +118,7 @@
                 label="log_level_in"
                 @on-change="handleUnitSelect"
                 v-model="log_level_in"
-                placeholder="请选操作"
+                placeholder="Please select operation"
               >
                 <m-option
                   v-for="item in logsOptions"
@@ -143,7 +143,7 @@
                 label="log_level_out"
                 @on-change="handleUnitSelect"
                 v-model="log_level_out"
-                placeholder="请选操作"
+                placeholder="Please select operation"
               >
                 <m-option
                   v-for="item in logsOptions"
@@ -168,7 +168,7 @@
                 label="tcp_flags_log_level"
                 @on-change="handleUnitSelect"
                 v-model="tcp_flags_log_level"
-                placeholder="请选操作"
+                placeholder="Please select operation"
               >
                 <m-option
                   v-for="item in logsOptions"
@@ -193,7 +193,7 @@
                 label="smurf_log_level"
                 @on-change="handleUnitSelect"
                 v-model="smurf_log_level"
-                placeholder="请选操作"
+                placeholder="Please select operation"
               >
                 <m-option
                   v-for="item in logsOptions"
@@ -211,10 +211,10 @@
     <template slot="footer">
       <template>
         <m-button class="create-btn" type="primary" @on-click="close()"
-          >取消</m-button
+          >Cancel</m-button
         >
         <m-button class="create-btn" type="primary" @on-click="confirm()"
-          >确定</m-button
+          >Confirm</m-button
         >
       </template>
     </template>
@@ -239,12 +239,12 @@ export default {
     MButton,
   },
   props: {
-    //配置弹框是否可见
+    //Dialog visibility
     visible: {
       type: Boolean,
       default: false,
     },
-    //根据不同的type来显示相应的配置
+    //Show corresponding configuration based on different types
     type: {
       type: String,
       default: "",
@@ -277,7 +277,7 @@ export default {
         { label: "info", value: "info" },
         { label: "debug", value: "debug" },
       ],
-      //校验规则
+      //Validation rules
       rules: {
         http_proxy: {
           error: false,
@@ -296,7 +296,7 @@ export default {
   },
   async mounted() {
     await this.queryNodeFireWallOption({ _dc: new Date().getTime() });
-    //设置默认选中或输入
+    //Set default selection or input
     if (["enable", "ndp", "nosmurfs", "tcpflags"].includes(this.type)) {
       this[this.type] =
         this.db.nodeFireWallOptionObj &&
@@ -312,15 +312,15 @@ export default {
     }
   },
   methods: {
-    //关闭弹框
+    //Close dialog
     close() {
       this.$emit("close");
     },
-    //选择不同选项
+    //Select different options
     handleCommand(prop) {
       this[this.type] = prop;
     },
-    //确定修改
+    //Confirm modification
     confirm() {
       let param = {};
       if (["enable", "ndp", "nosmurfs", "tcpflags"].includes(this.type)) {
@@ -347,7 +347,7 @@ export default {
             });
         });
     },
-    //选择单位
+    //Select unit
     handleUnitSelect(value) {
       this.$data[this.type] = value;
     },

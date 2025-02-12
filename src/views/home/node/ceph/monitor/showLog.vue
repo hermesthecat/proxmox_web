@@ -6,7 +6,7 @@
           <m-input
             prop="expire"
             labelWidth="60px"
-            label="选择日期"
+            label="Select Date"
             style="vertical-align: top"
             :__conStyle="{ width: '355px' }"
           >
@@ -16,7 +16,7 @@
                 type="daterange"
                 format="yyyy-MM-dd hh:mm"
                 value-format="yyyy-MM-dd hh:mm"
-                placeholder="选择日期"
+                placeholder="Select Date"
               >
               </el-date-picker>
             </template>
@@ -26,7 +26,7 @@
             style="vertical-align: middle"
             @on-click="__init__()"
             icon="el-icon-refresh"
-            >更新</m-button
+            >Refresh</m-button
           >
         </div>
         <div slot="page-content">

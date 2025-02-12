@@ -1,24 +1,14 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @close="close()"
-    :drag="false"
-    :title="title"
-    :_style="{
-      height: '300px',
-      width: '900px',
-    }"
-  >
+  <Dialog :visible="visible" @close="close()" :drag="false" :title="title" :_style="{
+    height: '300px',
+    width: '900px',
+  }">
     <template slot="content" v-if="type === 'firewall'">
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-checkbox
-                label="enable"
-                v-model="enable"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-checkbox label="Enable" v-model="enable" labelWidth="100px"></m-checkbox>
             </dd>
           </dl>
         </div>
@@ -29,11 +19,7 @@
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-checkbox
-                label="ebtables"
-                v-model="ebtables"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-checkbox label="ebtables" v-model="ebtables" labelWidth="100px"></m-checkbox>
             </dd>
           </dl>
         </div>
@@ -44,46 +30,18 @@
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-checkbox
-                label="启用"
-                v-model="enable"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-checkbox label="Enable" v-model="enable" labelWidth="100px"></m-checkbox>
               <div>
-                <m-input
-                  type="number"
-                  prop="rate"
-                  label="Log速率限制"
-                  labelWidth="100px"
-                  v-model="rate"
-                  min="1"
-                  :placeholder="'请输入接口'"
-                />
+                <m-input type="number" prop="rate" label="Log Rate Limit" labelWidth="100px" v-model="rate" min="1"
+                  :placeholder="'Enter interface'" />
                 /
-                <m-select
-                  prop="unit"
-                  @on-change="handleUnitSelect"
-                  v-model="unit"
-                  placeholder="请选操作"
-                >
-                  <m-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  >
+                <m-select prop="unit" @on-change="handleUnitSelect" v-model="unit" placeholder="Select operation">
+                  <m-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                   </m-option>
                 </m-select>
               </div>
-              <m-input
-                type="number"
-                prop="burst"
-                min="1"
-                label="Log burst limit"
-                labelWidth="100px"
-                v-model="burst"
-                :placeholder="'请输入接口'"
-              />
+              <m-input type="number" prop="burst" min="1" label="Log burst limit" labelWidth="100px" v-model="burst"
+                :placeholder="'Enter interface'" />
             </dd>
           </dl>
         </div>
@@ -94,20 +52,9 @@
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-select
-                prop="policy_in"
-                label="输入策略"
-                labelWidth="77px"
-                @on-change="handlePolicyInSelect"
-                v-model="policy_in"
-                placeholder="请选操作"
-              >
-                <m-option
-                  v-for="item in actionOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-select prop="policy_in" label="Input Policy" labelWidth="77px" @on-change="handlePolicyInSelect"
+                v-model="policy_in" placeholder="Select operation">
+                <m-option v-for="item in actionOptions" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
             </dd>
@@ -120,20 +67,9 @@
         <div class="m-form__section">
           <dl>
             <dd>
-              <m-select
-                prop="policy_out"
-                label="输出策略"
-                labelWidth="77px"
-                @on-change="handlePolicyOutSelect"
-                v-model="policy_out"
-                placeholder="请选操作"
-              >
-                <m-option
-                  v-for="item in actionOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-select prop="policy_out" label="Output Policy" labelWidth="77px" @on-change="handlePolicyOutSelect"
+                v-model="policy_out" placeholder="Select operation">
+                <m-option v-for="item in actionOptions" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
             </dd>
@@ -143,12 +79,8 @@
     </template>
     <template slot="footer">
       <template>
-        <m-button class="create-btn" type="primary" @on-click="close()"
-          >取消</m-button
-        >
-        <m-button class="create-btn" type="primary" @on-click="confirm()"
-          >确定</m-button
-        >
+        <m-button class="create-btn" type="primary" @on-click="close()">Cancel</m-button>
+        <m-button class="create-btn" type="primary" @on-click="confirm()">OK</m-button>
       </template>
     </template>
   </Dialog>
@@ -172,12 +104,12 @@ export default {
     MButton,
   },
   props: {
-    //配置弹框是否可见
+    //Whether the configuration modal is visible
     visible: {
       type: Boolean,
       default: false,
     },
-    //根据不同的type来显示相应的配置
+    //Display corresponding configuration based on different types
     type: {
       type: String,
       default: "",
@@ -197,9 +129,9 @@ export default {
       rate: 1,
       burst: 1,
       actionOptions: [
-        { label: "接收", value: "ACCEPT" },
-        { label: "删除", value: "DROP" },
-        { label: "拒绝", value: "REJECT" },
+        { label: "Accept", value: "ACCEPT" },
+        { label: "Delete", value: "DROP" },
+        { label: "Reject", value: "REJECT" },
       ],
       options: [
         { label: "second", value: "second" },
@@ -207,7 +139,7 @@ export default {
         { label: "hour", value: "hour" },
         { label: "day", value: "day" },
       ],
-      //校验规则
+      //Validation rules
       rules: {
         http_proxy: {
           error: false,
@@ -226,7 +158,7 @@ export default {
   },
   async mounted() {
     await this.queryFireOptionList({ _dc: new Date().getTime() });
-    //设置默认选中或输入
+    //Set default selection or input
     switch (this.type) {
       case "firewall":
         this.enable =
@@ -252,15 +184,15 @@ export default {
     }
   },
   methods: {
-    //关闭弹框
+    //Close the modal
     close() {
       this.$emit("close");
     },
-    //选择不同选项
+    //Select different options
     handleCommand(prop) {
       this[this.type] = prop;
     },
-    //确定修改
+    //Confirm the modification
     confirm() {
       let param = {};
       switch (this.type) {
@@ -286,9 +218,8 @@ export default {
           break;
         case "log_ratelimit":
           param = {
-            log_ratelimit: `burst=${this.burst},enable=${
-              this.enable ? 1 : 0
-            },rate=${this.rate}/${this.unit}`,
+            log_ratelimit: `burst=${this.burst},enable=${this.enable ? 1 : 0
+              },rate=${this.rate}/${this.unit}`,
           };
           break;
       }
@@ -307,7 +238,7 @@ export default {
             });
         });
     },
-    //解析log速率
+    //Parse log rate
     parseLog_rate() {
       if (this.db.optionObj && this.db.optionObj.log_ratelimit) {
         let obj = `{${this.db.optionObj.log_ratelimit.replace(
@@ -326,15 +257,15 @@ export default {
         this.unit = "second";
       }
     },
-    //选择单位
+    //Select unit
     handleUnitSelect(value) {
       this.unit = value;
     },
-    //选择入方向
+    //Select input direction
     handlePolicyInSelect(value) {
       this.policy_in = value;
     },
-    //选择出方向
+    //Select output direction
     handlePolicyOutSelect(value) {
       this.policy_out = value;
     },
@@ -348,15 +279,18 @@ export default {
     display: flex;
     height: 35px;
     line-height: 35px;
+
     label {
       flex: 1 1 auto;
     }
   }
+
   &-item {
     flex: 1 1 auto;
     width: 200px;
   }
 }
+
 .create-btn {
   width: 100px;
   height: 42px;

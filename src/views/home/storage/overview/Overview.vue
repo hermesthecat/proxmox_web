@@ -2,12 +2,7 @@
   <div class="overview chart-content">
     <div class="overview-select">
       <m-select @on-change="handleIntervalChange" v-model="timeframe">
-        <m-option
-          v-for="item of intervalList"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
+        <m-option v-for="item of intervalList" :key="item.value" :label="item.label" :value="item.value">
         </m-option>
       </m-select>
     </div>
@@ -15,65 +10,43 @@
       <div slot="title">Status</div>
       <div slot="content" class="card-content">
         <div class="card-item">
-          <single-line
-            :desc="
-              db.storageObj &&
+          <single-line :desc="db.storageObj &&
               db.storageObj.enabled &&
               db.storageObj.enabled === 1
-                ? 'Yes'
-                : 'No'
-            "
-          />
-          <single-line
-            title="Active"
-            :desc="
-              db.storageObj &&
+              ? 'Yes'
+              : 'No'
+            " />
+          <single-line title="Active" :desc="db.storageObj &&
               db.storageObj.active &&
               db.storageObj.active === 1
-                ? 'Yes'
-                : 'No'
-            "
-          />
-          <single-line
-            title="Content"
-            :desc="
-              db.storageObj && db.storageObj.content && db.storageObj.content
-            "
-          />
-          <single-line
-            title="Category"
-            :desc="
-              db.storageObj &&
-              db.storageObj.type &&
-              $t(`storage.${db.storageObj.type}`)
-            "
-          />
-          <line-percent-chart
-            :desc="`${Number(
+              ? 'Yes'
+              : 'No'
+            " />
+          <single-line title="Content" :desc="db.storageObj && db.storageObj.content && db.storageObj.content
+            " />
+          <single-line title="Category" :desc="db.storageObj &&
+            db.storageObj.type &&
+            $t(`storage.${db.storageObj.type}`)
+            " />
+          <line-percent-chart :desc="`${Number(
+            (db.storageObj && db.storageObj.total && db.storageObj.used
+              ? db.storageObj.used / db.storageObj.total
+              : 0) * 100
+          ).toFixed(2)}%
+                                (${(db.storageObj &&
+              db.storageObj.used &&
+              byteToSize(db.storageObj.used)) ||
+            0
+            } of ${(db.storageObj &&
+              db.storageObj.total &&
+              byteToSize(db.storageObj.total)) ||
+            0
+            })`" :value="Number(
               (db.storageObj && db.storageObj.total && db.storageObj.used
                 ? db.storageObj.used / db.storageObj.total
                 : 0) * 100
-            ).toFixed(2)}%
-                                (${
-                                  (db.storageObj &&
-                                    db.storageObj.used &&
-                                    byteToSize(db.storageObj.used)) ||
-                                  0
-                                } of ${
-              (db.storageObj &&
-                db.storageObj.total &&
-                byteToSize(db.storageObj.total)) ||
-              0
-            })`"
-            :value="
-              Number(
-                (db.storageObj && db.storageObj.total && db.storageObj.used
-                  ? db.storageObj.used / db.storageObj.total
-                  : 0) * 100
-              )
-            "
-            title="Usage"
-          />
+            )
+              " title="Usage" />
         </div>
       </div>
     </overview-card>
@@ -221,8 +194,7 @@ export default {
     this.interval = setInterval(() => this.__init__(), 60 * 1000);
   },
   /***
-   *
-   * 路由跳转之前清除定时任务
+   * Clear timer task before route change
    */
   beforeDestroy() {
     if (this.interval) {

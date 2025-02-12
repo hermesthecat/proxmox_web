@@ -65,6 +65,40 @@ export default {
         this.querySubscriptionInfo();
       });
     },
+    filter(type) {
+      if (type === "user") {
+        if (this.user) {
+          this.qemuTaskList = this.db.nodeTaskList.filter((item) => {
+            return item.user === this.user;
+          });
+        } else {
+          this.__init__();
+        }
+      } else if (type === "error") {
+        if (this.error) {
+          this.qemuTaskList = this.db.nodeTaskList.filter((item) => {
+            return item.status !== "OK";
+          });
+        } else {
+          this.__init__();
+        }
+      }
+      this.chunks();
+    },
+    handleSort({ colume, prop, order }) {
+      let _this = this;
+      if (order !== null)
+        _this.qemuTaskList = quickSort(
+          _this.db.nodeTaskList,
+          prop,
+          order === "ascending" ? "+" : "-"
+        );
+    },
+    chunks() {
+      this.chunkDataList = chunkData(this.qemuTaskList, this.pageSize)[
+        this.currentPage - 1
+      ];
+    },
   },
 };
 </script>

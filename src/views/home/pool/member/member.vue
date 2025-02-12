@@ -17,14 +17,14 @@
             type="primary"
             style="position: absolute; left: -1px; top: -1px; right: -1px"
             icon="el-icon-plus"
-            >添加</m-button
+            >Add</m-button
           >
         </span>
         <m-dropdown-item command="qemu" icon="fa fa-desktop"
-          >虚拟机</m-dropdown-item
+          >Virtual Machine</m-dropdown-item
         >
         <m-dropdown-item command="storage" icon="fa fa-database"
-          >存储</m-dropdown-item
+          >Storage</m-dropdown-item
         >
       </m-dropdown>
       <m-button
@@ -32,11 +32,11 @@
         icon="el-icon-delete"
         :disabled="selectedList.length <= 0"
         v-confirm="{
-          msg: '确定要删除所选择项吗?',
+          msg: 'Are you sure you want to delete selected items?',
           icon: 'icon-warning',
           ok: deleteResourceToPool,
         }"
-        >删除</m-button
+        >Delete</m-button
       >
     </div>
     <div slot="page-content">
@@ -46,13 +46,13 @@
         @sort-change="handleSort"
       >
         <el-table-column type="selection" width="55px"></el-table-column>
-        <el-table-column label="类别" sortable prop="type">
+        <el-table-column label="Category" sortable prop="type">
           <template slot-scope="scope">
             <i :class="setCls(scope.row)" class="m-icon-custom"></i>
             <span>{{ scope.row.type }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="描述" prop="name">
+        <el-table-column label="Description" prop="name">
           <template slot-scope="scope">
             {{
               scope.row.type === "qemu" || scope.row.type === "lxc"
@@ -61,7 +61,7 @@
             }}
           </template>
         </el-table-column>
-        <el-table-column label="磁盘使用率">
+        <el-table-column label="Disk Usage">
           <template slot-scope="scope">
             <line-charts
               :value="
@@ -74,7 +74,7 @@
             ></line-charts>
           </template>
         </el-table-column>
-        <el-table-column label="内存使用率">
+        <el-table-column label="Memory Usage">
           <template slot-scope="scope">
             <line-charts
               :value="
@@ -87,7 +87,7 @@
             ></line-charts>
           </template>
         </el-table-column>
-        <el-table-column label="Cpu使用率">
+        <el-table-column label="CPU Usage">
           <template slot-scope="scope">
             <line-charts
               :value="
@@ -99,7 +99,7 @@
             ></line-charts>
           </template>
         </el-table-column>
-        <el-table-column label="运行时间">
+        <el-table-column label="Uptime">
           <template slot-scope="scope">
             <span style="font-size: 12px">{{
               scope.row.uptime ? render_uptime(scope.row.uptime) : "-"
@@ -129,14 +129,14 @@ import PoolsHttp from "@src/views/home/pool/http";
 import AddPoolModal from "./AddPoolModal";
 export default {
   name: "member",
-  mixins: [PoolsHttp], //混入请求
+  mixins: [PoolsHttp], //HTTP requests mixin
   components: {
     PageTemplate,
     "line-charts": LineCharts,
     AddPoolModal,
   },
   mounted() {
-    //初始化请求
+    //Initialize request
     this.__init__();
   },
   data() {
@@ -170,13 +170,13 @@ export default {
   },
   methods: {
     render_uptime,
-    //初始化操作查看资源池成员
+    //Initialize request
     __init__() {
       this.queryPoolList().then(() => {
         this.members = quickSort(this.db.poolsObj.members, "type", "+");
       });
     },
-    //排序
+    //Sort
     handleSort({ sort, prop }) {
       if (!prop) return;
       this.members = quickSort(
@@ -185,22 +185,22 @@ export default {
         sort === "decreasing" ? "-" : "+"
       );
     },
-    //多选
+    //Multiple selection
     handleSelect(row) {
       this.selectedList = row;
     },
-    //资源池中添加资源
+    //Add resources to resource pool
     handleCommand(command) {
       switch (command) {
         case "qemu":
           this.visible = true;
           this.modalType = command;
-          this.title = "虚拟机";
+          this.title = "Virtual Machine";
           break;
         case "storage":
           this.visible = true;
           this.modalType = command;
-          this.title = "存储";
+          this.title = "Storage";
           break;
       }
     },

@@ -45,7 +45,7 @@ export default {
           return Promise.reject(res);
         });
     },
-    //网络的删除、还原、
+    //Network delete, restore
     resume() {
       let event = this.createEvent(`action.node.network.resume`);
       return this.$http
@@ -59,7 +59,7 @@ export default {
           return Promise.reject(res);
         });
     },
-    //更新网络
+    //Update network
     updateNetWork(iface, param) {
       debugger;
       let event = this.createEvent(`action.node.network.update`);
@@ -77,7 +77,7 @@ export default {
           return Promise.reject(res);
         });
     },
-    //删除网络
+    //Delete network
     deleteNetWork() {
       let event = this.createEvent(`action.node.network.delete`),
         tasks = [],
@@ -99,7 +99,7 @@ export default {
       });
       return Promise.all(tasks);
     },
-    //应用配置
+    //Apply configuration
     netWorkConfig() {
       let event = this.createEvent(`action.node.network.update`);
       return this.$http

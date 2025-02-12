@@ -1,43 +1,22 @@
 <template>
-  <m-dialog
-    title="添加磁盘"
-    :visible="visible"
-    v-if="visible"
-    @confirm="confirm"
-    @cancel="close"
-    :_style="{
-      width: '946px',
-    }"
-    @close="close"
-  >
+  <m-dialog title="Add Disk" :visible="visible" v-if="visible" @confirm="confirm" @cancel="close" :_style="{
+    width: '946px',
+  }" @close="close">
     <div slot="content" style="max-height: 400px; overflow: auto">
       <div class="m-form__section">
         <dl>
-          <dt>基本信息</dt>
+          <dt>Basic Information</dt>
           <dd>
-            <m-select
-              prop="storage"
-              label="存储"
-              labelWidth="100px"
-              @on-change="handleStorageSelect"
-              v-model="storage"
-              validateEvent
-              @validate="validate"
-              :readonly="true"
-              placeholder="请选缓存"
-            >
+            <m-select prop="storage" label="Storage" labelWidth="100px" @on-change="handleStorageSelect" v-model="storage"
+              validateEvent @validate="validate" :readonly="true" placeholder="Please select storage">
               <div class="table">
-                <m-option
-                  v-for="(item, index) in db.storageList"
-                  :key="item.storage"
-                  :value="item.storage"
-                  :label="item.storage"
-                >
+                <m-option v-for="(item, index) in db.storageList" :key="item.storage" :value="item.storage"
+                  :label="item.storage">
                   <div v-if="index === 0" class="table-tr">
-                    <div class="table-td">名称</div>
-                    <div class="table-td">类别</div>
-                    <div class="table-td">可用</div>
-                    <div class="table-td">容量</div>
+                    <div class="table-td">Name</div>
+                    <div class="table-td">Type</div>
+                    <div class="table-td">Available</div>
+                    <div class="table-td">Capacity</div>
                   </div>
                   <div class="table-tr">
                     <div class="table-td" :title="item.storage">
@@ -56,38 +35,20 @@
                 </m-option>
               </div>
             </m-select>
-            <m-select
-              prop="format"
-              label="格式"
-              labelWidth="100px"
-              @on-change="handleFormatSelect"
-              v-model="format"
-              :readonly="false"
-              :disabled="!storageType || storageType !== 'dir'"
-              placeholder="请选格式"
-            >
-              <m-option
-                v-for="(item, index) in formatList"
-                :key="index"
-                :value="item.value"
-                :label="item.label"
-              >
+            <m-select prop="format" label="Format" labelWidth="100px" @on-change="handleFormatSelect" v-model="format"
+              :readonly="false" :disabled="!storageType || storageType !== 'dir'" placeholder="Please select format">
+              <m-option v-for="(item, index) in formatList" :key="index" :value="item.value" :label="item.label">
               </m-option>
             </m-select>
             <p class="warning">
-              警告：虚拟机当前不使用“ OVMF（UEFI）”作为BIOS。
+              Warning: The virtual machine is not currently using "OVMF (UEFI)" as BIOS.
             </p>
           </dd>
         </dl>
       </div>
     </div>
     <template slot="footer">
-      <m-button
-        type="primary"
-        style="height: 40px; line-height: 40px; width: 100px"
-        @on-click="confirm()"
-        >确定</m-button
-      >
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px" @on-click="confirm()">Confirm</m-button>
     </template>
   </m-dialog>
 </template>
@@ -117,15 +78,15 @@ export default {
       storageType: "",
       formatList: [
         {
-          label: "Raw磁盘映像（raw）",
+          label: "Raw Disk Image (raw)",
           value: "raw",
         },
         {
-          label: "VMware映像格式（vmdk）",
+          label: "VMware Image Format (vmdk)",
           value: "vmdk",
         },
         {
-          label: "QEMU映像格式（qcow2）",
+          label: "QEMU Image Format (qcow2)",
           value: "qcow2",
         },
       ],
@@ -168,7 +129,7 @@ export default {
     close() {
       this.$emit("close");
     },
-    validate() {},
+    validate() { },
     handleStorageSelect(value) {
       this.storage = value;
       this.storageType = this.db.storageList.filter(
@@ -183,7 +144,7 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
     },

@@ -15,7 +15,7 @@
           <dl>
             <dd>
               <m-checkbox
-                label="防火墙"
+                label="Firewall"
                 v-model="enable"
                 labelWidth="100px"
               ></m-checkbox>
@@ -45,7 +45,7 @@
           <dl>
             <dd>
               <m-checkbox
-                label="MAC过滤器"
+                label="MAC Filter"
                 v-model="macfilter"
                 labelWidth="100px"
               ></m-checkbox>
@@ -60,7 +60,7 @@
           <dl>
             <dd>
               <m-checkbox
-                label="IP过滤器"
+                label="IP Filter"
                 v-model="ipfilter"
                 labelWidth="100px"
               ></m-checkbox>
@@ -90,7 +90,7 @@
           <dl>
             <dd>
               <m-checkbox
-                label="路由器广播"
+                label="Router Advertisement"
                 v-model="radv"
                 labelWidth="100px"
               ></m-checkbox>
@@ -109,7 +109,7 @@
                 label="log_level_in"
                 @on-change="handleUnitSelect"
                 v-model="log_level_in"
-                placeholder="请选操作"
+                placeholder="Please select operation"
               >
                 <m-option
                   v-for="item in logsOptions"
@@ -134,7 +134,7 @@
                 label="log_level_out"
                 @on-change="handleUnitSelect"
                 v-model="log_level_out"
-                placeholder="请选操作"
+                placeholder="Please select operation"
               >
                 <m-option
                   v-for="item in logsOptions"
@@ -156,10 +156,10 @@
             <dd>
               <m-select
                 prop="policy_in"
-                label="输入策略"
+                label="Input Policy"
                 @on-change="(value) => (policy_in = value)"
                 v-model="policy_in"
-                placeholder="请选输入策略"
+                placeholder="Please select input policy"
               >
                 <m-option
                   v-for="item in policyItems"
@@ -181,10 +181,10 @@
             <dd>
               <m-select
                 prop="policy_out"
-                label="输出策略"
+                label="Output Policy"
                 @on-change="(value) => (policy_out = value)"
                 v-model="policy_out"
-                placeholder="请选输出策略"
+                placeholder="Please select output policy"
               >
                 <m-option
                   v-for="item in policyItems"
@@ -202,10 +202,10 @@
     <template slot="footer">
       <template>
         <m-button class="create-btn" type="danger" @on-click="close()"
-          >取消</m-button
+          >Cancel</m-button
         >
         <m-button class="create-btn" type="primary" @on-click="confirm()"
-          >确定</m-button
+          >Confirm</m-button
         >
       </template>
     </template>
@@ -230,12 +230,12 @@ export default {
     MButton,
   },
   props: {
-    //配置弹框是否可见
+    //Whether the configuration dialog is visible
     visible: {
       type: Boolean,
       default: false,
     },
-    //根据不同的type来显示相应的配置
+    //Display corresponding configuration based on different types
     type: {
       type: String,
       default: "",
@@ -273,7 +273,7 @@ export default {
         { label: "ACCEPT", value: "ACCEPT" },
         { label: "DROP", value: "DROP" },
       ],
-      //校验规则
+      //Validation rules
       rules: {
         http_proxy: {
           error: false,
@@ -292,7 +292,7 @@ export default {
   },
   async mounted() {
     await this.queryQemuOption({ _dc: new Date().getTime() });
-    //设置默认选中或输入
+    //Set default selection or input
     if (
       ["enable", "ndp", "dhcp", "radv", "macfilter", "ipfilter"].includes(
         this.type
@@ -312,15 +312,15 @@ export default {
     }
   },
   methods: {
-    //关闭弹框
+    //Close dialog
     close() {
       this.$emit("close");
     },
-    //选择不同选项
+    //Select different options
     handleCommand(prop) {
       this[this.type] = prop;
     },
-    //确定修改
+    //Confirm modification
     confirm() {
       let param = {};
       if (
@@ -351,7 +351,7 @@ export default {
             });
         });
     },
-    //选择单位
+    //Select unit
     handleUnitSelect(value) {
       this.$data[this.type] = value;
     },

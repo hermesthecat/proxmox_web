@@ -13,14 +13,14 @@
       <div class="m-form__section">
         <template v-if="modalType === 'backup'">
           <dl>
-            <dt>基本操作</dt>
+            <dt>Basic Operations</dt>
             <dd>
               <m-select
                 v-model="storage"
                 @on-change="(value) => (storage = value)"
                 validateEvent
                 @validate="validate"
-                label="存储"
+                label="Storage"
                 labelWidth="100px"
                 prop="storage"
                 required
@@ -34,10 +34,10 @@
                   :label="item.storage"
                 >
                   <div class="table-tr" v-if="index === 0">
-                    <div class="table-td">名称</div>
-                    <div class="table-td">类别</div>
-                    <div class="table-td">可用</div>
-                    <div class="table-td">容量</div>
+                    <div class="table-td">Name</div>
+                    <div class="table-td">Category</div>
+                    <div class="table-td">Available</div>
+                    <div class="table-td">Capacity</div>
                   </div>
                   <div class="table-tr">
                     <div class="table-td" :title="item.storage">
@@ -64,7 +64,7 @@
               <m-select
                 v-model="mode"
                 @on-change="(value) => (mode = value)"
-                label="模式"
+                label="Mode"
                 labelWidth="100px"
                 prop="mode"
               >
@@ -79,7 +79,7 @@
               <m-select
                 v-model="compress"
                 @on-change="(value) => (compress = value)"
-                label="压缩"
+                label="Compression"
                 labelWidth="100px"
                 prop="compress"
               >
@@ -95,7 +95,7 @@
                 v-model="emailto"
                 validateEvent
                 prop="emailto"
-                label="发送邮箱至"
+                label="Send Email To"
                 labelWidth="100px"
                 @validate="validate"
                 :show-error="rules['emailto'].error"
@@ -106,9 +106,9 @@
         </template>
         <template v-if="modalType === 'restore'">
           <dl>
-            <dt>基本操作</dt>
+            <dt>Basic Operations</dt>
             <dd>
-              <m-input :disabled="true" label="源" labelWidth="100px">
+              <m-input :disabled="true" label="Source" labelWidth="100px">
                 <div
                   slot="other"
                   class="disabled ellipsis"
@@ -127,7 +127,7 @@
                 @on-change="(value) => (storage = value)"
                 validateEvent
                 @validate="validate"
-                label="存储"
+                label="Storage"
                 labelWidth="100px"
                 prop="storage"
                 required
@@ -142,10 +142,10 @@
                   :label="item.storage"
                 >
                   <div class="table-tr" v-if="index === 0">
-                    <div class="table-td">名称</div>
-                    <div class="table-td">类别</div>
-                    <div class="table-td">可用</div>
-                    <div class="table-td">容量</div>
+                    <div class="table-td">Name</div>
+                    <div class="table-td">Category</div>
+                    <div class="table-td">Available</div>
+                    <div class="table-td">Capacity</div>
                   </div>
                   <div class="table-tr">
                     <div class="table-td" :title="item.storage">
@@ -189,7 +189,7 @@
                   :show-error="rules['bwlimit'].error"
                   :error-msg="rules['bwlimit'].message"
                 />Mib
-                <div class="warning">使用"0"禁用所有带宽限制</div>
+                <div class="warning">Use "0" to disable all bandwidth limits</div>
               </div>
               <m-checkbox
                 v-model="start"
@@ -220,19 +220,19 @@
         :_style="{
           width: '800px',
         }"
-        title="查看：备份任务进度"
+        title="View: Backup Task Progress"
       >
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
-            <m-tab-panel label="输出" name="log"></m-tab-panel>
-            <m-tab-panel label="状态" name="status"></m-tab-panel>
+            <m-tab-panel label="Output" name="log"></m-tab-panel>
+            <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
           <m-button
             class="create-btn m-margin-top-10"
             type="primary"
             @on-click="stopTask1"
             :disabled="db.addClusterStatusObj.status !== 'running'"
-            >停止</m-button
+            >Stop</m-button
           >
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
@@ -277,7 +277,7 @@
         class="create-btn"
         icon="fa fa-save"
         @on-click="confirm"
-        >备份</m-button
+        >Backup</m-button
       >
       <m-button
         v-if="modalType === 'restore'"
@@ -285,7 +285,7 @@
         class="create-btn"
         @on-click="confirm"
         icon="fa fa-retweet"
-        >恢复</m-button
+        >Restore</m-button
       >
       <span v-show="modalType === 'config'"></span>
     </template>
@@ -310,17 +310,17 @@ export default {
   mixins: [QemuBackUpHttp],
   props: {
     title: {
-      //弹框标题
+      //Modal title
       type: String,
       default: "",
     },
     modalType: {
-      //弹框类型backup备份，restore恢复，watch查看
+      //Modal type: backup for backup, restore for restore, watch for view
       type: String,
       default: "",
     },
     visible: {
-      //弹框显示隐藏
+      //Modal show/hide
       type: Boolean,
       default: false,
     },
@@ -331,34 +331,34 @@ export default {
       },
     },
   },
-  //初始化状态
+  //Initialize state
   data() {
     return {
-      storage: "", //存储
-      compress: "zstd", //压缩方式
-      mode: "snapshot", //备份模式,
-      emailto: "", //发送邮箱至
+      storage: "", //Storage
+      compress: "zstd", //Compression method
+      mode: "snapshot", //Backup mode
+      emailto: "", //Send email to
       qemuStorageList: [],
-      showLog: false, //是否展示任务进度
-      tab: "log", //默认展示log
-      interVal: null, //定时器ID
-      bwlimit: "", //读取限制
+      showLog: false, //Show task progress
+      tab: "log", //Default show log
+      interVal: null, //Timer ID
+      bwlimit: "", //Read limit
       start: false,
       unprivileged: true,
       configContent: "",
       modeItems: [
-        { value: "snapshot", label: "快照" },
-        { value: "suspend", label: "挂起" },
-        { value: "stop", label: "停止" },
+        { value: "snapshot", label: "Snapshot" },
+        { value: "suspend", label: "Suspend" },
+        { value: "stop", label: "Stop" },
       ],
       compressItems: [
         {
           value: "0",
-          label: "无",
+          label: "None",
         },
-        { value: "lzo", label: "LZO (快速)" },
-        { value: "gzip", label: "GZIP (很好)" },
-        { value: "zstd", label: "ZSTD (fast and good)" },
+        { value: "lzo", label: "LZO (Fast)" },
+        { value: "gzip", label: "GZIP (Good)" },
+        { value: "zstd", label: "ZSTD (Fast and Good)" },
       ],
       rules: {
         storage: {
@@ -384,7 +384,7 @@ export default {
     byteToSize,
     quickSort,
     throttle,
-    //初始化请求
+    //Initialize request
     async __init__() {
       let _this = this;
       await _this
@@ -416,7 +416,7 @@ export default {
         _this.$el.parentElement.clientHeight - 100 + "px";
     },
     /**
-     * 停止运行中的任务
+     * Stop running task
      */
     stopTask1() {
       this.stopTask(
@@ -431,7 +431,7 @@ export default {
       this.tab = tab;
     },
     /**
-     * 关闭日志弹框
+     * Close log dialog
      */
     closeLog() {
       if (this.interVal) {
@@ -441,27 +441,27 @@ export default {
       this.showLog = false;
       this.close();
     },
-    //单个校验
+    //Single validation
     validate(prop) {
       let value = String(this[prop]).trim();
       this.rules[prop].error = false;
       this.rules[prop].message = "";
       if (/^\s*$/.test(value) && prop !== "emailto" && prop !== "bwlimit") {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空!";
+        this.rules[prop].message = "Cannot be empty!";
         return;
       }
       if (prop === "emailto" && value && !/\w+@(\w+)\.(\w+)$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "邮箱格式不正确!";
+        this.rules[prop].message = "Invalid email format!";
         return;
       }
     },
-    //关闭弹框
+    //Close dialog
     close() {
       this.$emit("close");
     },
-    //整体校验
+    //Overall validation
     validateAll() {
       let _this = this,
         props = [];
@@ -474,7 +474,7 @@ export default {
       props.forEach((prop) => _this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
     },
-    //确定
+    //Confirm
     confirm() {
       if (this.validateAll()) return;
       if (this.modalType === "backup") {

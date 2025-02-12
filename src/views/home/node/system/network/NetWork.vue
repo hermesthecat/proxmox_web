@@ -16,7 +16,7 @@
             type="primary"
             style="position: absolute; left: -1px; top: -1px; right: -1px"
             icon="el-icon-plus"
-            >创建</m-button
+            >Create</m-button
           >
         </span>
         <m-dropdown-item
@@ -31,27 +31,27 @@
         @on-click="handleResume()"
         icon="el-icon-edit"
         :disabled="!changes"
-        >还原</m-button
+        >Reset</m-button
       >
       <m-button
         type="warning"
         @on-click="handleCommand('edit')"
         icon="el-icon-video-play"
         :disabled="selectedList.length !== 1"
-        >编辑</m-button
+        >Edit</m-button
       >
       <m-button
         type="info"
         @on-click="handleDelete()"
         icon="el-icon-view"
         :disabled="selectedList.length !== 1"
-        >删除</m-button
+        >Delete</m-button
       >
       <m-button
         type="info"
         @on-click="handleConfig()"
         icon="el-icon-edit-outline"
-        >应用配置</m-button
+        >Apply Configuration</m-button
       >
     </div>
     <div slot="page-content">
@@ -62,13 +62,13 @@
         :default-sort="{ prop: 'iface', order: 'ascending' }"
       >
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="名称" prop="iface" sortable></el-table-column>
-        <el-table-column label="类别" prop="type" sortable></el-table-column>
-        <el-table-column label="活动" prop="active">
+        <el-table-column label="Name" prop="iface" sortable></el-table-column>
+        <el-table-column label="Category" prop="type" sortable></el-table-column>
+        <el-table-column label="Active" prop="active">
           <template slot-scope="scope">
             <table-info-state
               :content="
-                scope.row.active && scope.row.active === 1 ? '是' : '否'
+                scope.row.active && scope.row.active === 1 ? 'Yes' : 'No'
               "
               :state="
                 scope.row.active && scope.row.active === 1
@@ -78,11 +78,11 @@
             ></table-info-state>
           </template>
         </el-table-column>
-        <el-table-column label="自动启动" prop="autostart">
+        <el-table-column label="Auto Start" prop="autostart">
           <template slot-scope="scope">
             <table-info-state
               :content="
-                scope.row.autostart && scope.row.autostart === 1 ? '是' : '否'
+                scope.row.autostart && scope.row.autostart === 1 ? 'Yes' : 'No'
               "
               :state="
                 scope.row.autostart && scope.row.autostart === 1
@@ -92,13 +92,13 @@
             ></table-info-state>
           </template>
         </el-table-column>
-        <el-table-column label="VLAN感知" prop="bridge_vlan_aware">
+        <el-table-column label="VLAN Aware" prop="bridge_vlan_aware">
           <template slot-scope="scope">
             <table-info-state
               :content="
                 scope.row.bridge_vlan_aware && scope.row.bridge_vlan_aware === 1
-                  ? '是'
-                  : '否'
+                  ? 'Yes'
+                  : 'No'
               "
               :state="
                 scope.row.bridge_vlan_aware && scope.row.bridge_vlan_aware === 1
@@ -109,18 +109,18 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="端口/从属"
+          label="Ports/Slaves"
           prop="bridge_ports"
           sortable
         ></el-table-column>
         <el-table-column
-          label="Bond模式"
+          label="Bond Mode"
           prop="bond_mode"
           sortable
         ></el-table-column>
         <el-table-column label="CIDR" prop="cidr" sortable></el-table-column>
-        <el-table-column label="网关" prop="gateway" sortable></el-table-column>
-        <el-table-column label="备注" prop="comments"></el-table-column>
+        <el-table-column label="Gateway" prop="gateway" sortable></el-table-column>
+        <el-table-column label="Comments" prop="comments"></el-table-column>
       </el-table>
       <create-network-modal
         :visible="visible"
@@ -136,7 +136,7 @@
       ></create-network-modal>
       <overview-card class="m-margin-top-10" v-if="changes" style="width: 100%">
         <div slot="title">
-          待更改 (重新启动或使用“应用配置”（需要ifupdown2）激活)
+          Pending Changes (Activate by rebooting or using "Apply Configuration" (requires ifupdown2))
         </div>
         <template slot="content">
           {{ changes }}
@@ -168,7 +168,7 @@ export default {
   data() {
     return {
       visible: false,
-      title: "创建：复制作业",
+      title: "Create: Copy Job",
       selectedList: [],
       isCreate: true,
       param: {},
@@ -198,7 +198,7 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化查找
+    //Initialize search
     __init__() {
       let _this = this;
       _this.menu_items = [];
@@ -238,15 +238,15 @@ export default {
       }
       _this.queryNetWorkList({ _dc: new Date().getTime() });
     },
-    //是否展示弹框
+    //Show modal dialog
     showModal(type) {
       this.type = type;
       this.isCreate = type === "create";
-      this.title = type === "create" ? "创建：复制作业" : "编辑：复制作业";
+      this.title = type === "create" ? "Create: Copy Job" : "Edit: Copy Job";
       this.param = type === "create" ? {} : this.selectedList[0];
       this.visible = true;
     },
-    //按钮是否可点击
+    //Check if button is clickable
     inStatus() {
       if (this.selectedList.length !== 1) return false;
       let states = [];
@@ -257,7 +257,7 @@ export default {
         states.some((state) => it.state === state)
       );
     },
-    //选择
+    //Selection
     handleSelect(row) {
       this.selectedList = row;
     },
@@ -299,7 +299,7 @@ export default {
       this.showLog = false;
       this.__init__();
     },
-    //选择哪种方式创建
+    //Choose creation method
     handleCommand(type) {
       let _this = this;
       _this.iftype = type === "edit" ? _this.selectedList[0].type : type;
@@ -312,20 +312,20 @@ export default {
         }
       });
       _this.title =
-        (type !== "edit" ? "创建：" : "编辑：") +
-        (!isEmpty(textList) ? textList[0].text : "网络设备");
+        (type !== "edit" ? "Create: " : "Edit: ") +
+        (!isEmpty(textList) ? textList[0].text : "Network Device");
       _this.param = type !== "edit" ? {} : _this.selectedList[0];
       _this.visible = true;
     },
-    //还原网络
+    //Reset network
     handleResume() {
       this.resume();
     },
-    //删除网络
+    //Delete network
     handleDelete() {
       this.$confirm
         .info({
-          msg: "确定要删除以下网络？",
+          msg: "Are you sure you want to delete the following network?",
         })
         .then(() => {
           this.deleteNetWork()
@@ -339,7 +339,7 @@ export default {
             });
         });
     },
-    //应用配置
+    //Apply configuration
     handleConfig() {
       this.$confirm
         .info({

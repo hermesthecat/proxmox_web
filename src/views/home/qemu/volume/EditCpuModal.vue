@@ -1,51 +1,23 @@
 <template>
-  <m-dialog
-    :title="modalType !== 'edit' ? '添加: 内存' : '编辑: 内存'"
-    :visible="visible"
-    v-if="visible"
-    @confirm="confirm"
-    @cancel="close"
-    :_style="{
+  <m-dialog :title="modalType !== 'edit' ? 'Add: Memory' : 'Edit: Memory'" :visible="visible" v-if="visible" @confirm="confirm"
+    @cancel="close" :_style="{
       width: '946px',
-    }"
-    @close="close"
-  >
+    }" @close="close">
     <div slot="content" style="max-height: 400px; overflow: auto">
       <div class="m-form__section">
         <dl>
-          <dt>基本信息</dt>
+          <dt>Basic Information</dt>
           <dd>
-            <m-input
-              type="number"
-              labelWidth="100px"
-              label="Sockets"
-              v-model="sockets"
-              validateEvent
-              @validate="validate"
-              required
-              prop="sockets"
-              :min="1"
-              :error-msg="rules['sockets'].message"
-              :show-error="rules['sockets'].error"
-            />
-            <m-select
-              labelWidth="100px"
-              label="类别"
-              v-model="cpu"
-              prop="cpu"
-              @on-change="handleCpuChange"
-            >
-              <m-option
-                v-for="(item, index) in cpuList"
-                :key="item.value"
-                :value="item.value"
-                :label="item.label"
-              >
+            <m-input type="number" labelWidth="100px" label="Sockets" v-model="sockets" validateEvent
+              @validate="validate" required prop="sockets" :min="1" :error-msg="rules['sockets'].message"
+              :show-error="rules['sockets'].error" />
+            <m-select labelWidth="100px" label="Category" v-model="cpu" prop="cpu" @on-change="handleCpuChange">
+              <m-option v-for="(item, index) in cpuList" :key="item.value" :value="item.value" :label="item.label">
                 <div class="table">
                   <template v-if="index === 0">
                     <div class="table-tr">
-                      <div class="table-td">模型</div>
-                      <div class="table-td">供应商</div>
+                      <div class="table-td">Model</div>
+                      <div class="table-td">Vendor</div>
                     </div>
                   </template>
 
@@ -60,88 +32,33 @@
                 </div>
               </m-option>
             </m-select>
-            <m-input
-              type="number"
-              labelWidth="100px"
-              label="核"
-              v-model="cores"
-              validateEvent
-              @validate="validate"
-              prop="cores"
-              :min="1"
-              required
-              :error-msg="rules['cores'].message"
-              :show-error="rules['cores'].error"
-            />
-            <m-input
-              type="number"
-              labelWidth="100px"
-              label="核总数"
-              v-model="cores"
-              prop="cores"
-              :min="1"
-              :disabled="true"
-            />
+            <m-input type="number" labelWidth="100px" label="Cores" v-model="cores" validateEvent @validate="validate"
+              prop="cores" :min="1" required :error-msg="rules['cores'].message" :show-error="rules['cores'].error" />
+            <m-input type="number" labelWidth="100px" label="Total Cores" v-model="cores" prop="cores" :min="1"
+              :disabled="true" />
           </dd>
         </dl>
       </div>
       <div class="m-margin-top-10 m-form__section" v-if="isAdvice">
-        <dt>高级</dt>
+        <dt>Advanced</dt>
         <dd>
-          <m-input
-            type="number"
-            labelWidth="100px"
-            label="VCPUs"
-            v-model="vcpus"
-            validateEvent
-            @validate="validate"
-            prop="vcpus"
-            :min="1"
-            required
-            :error-msg="rules['vcpus'].message"
-            :show-error="rules['vcpus'].error"
-          />
-          <m-input
-            type="number"
-            labelWidth="100px"
-            label="Cpu权重"
-            v-model="cpuunits"
-            prop="cpuunits"
-            validateEvent
-            @validate="validate"
-            required
-            :error-msg="rules['cpuunits'].message"
-            :show-error="rules['cpuunits'].error"
-            :min="8"
-            placeholder="默认1000"
-          />
-          <m-input
-            type="number"
-            labelWidth="100px"
-            label="Cpu限制"
-            v-model="cpulimit"
-            prop="cpulimit"
-            :min="1"
-          />
-          <m-checkbox v-model="numa" label="启用NUMA"></m-checkbox>
+          <m-input type="number" labelWidth="100px" label="VCPUs" v-model="vcpus" validateEvent @validate="validate"
+            prop="vcpus" :min="1" required :error-msg="rules['vcpus'].message" :show-error="rules['vcpus'].error" />
+          <m-input type="number" labelWidth="100px" label="CPU Weight" v-model="cpuunits" prop="cpuunits" validateEvent
+            @validate="validate" required :error-msg="rules['cpuunits'].message" :show-error="rules['cpuunits'].error"
+            :min="8" placeholder="Default 1000" />
+          <m-input type="number" labelWidth="100px" label="CPU Limit" v-model="cpulimit" prop="cpulimit" :min="1" />
+          <m-checkbox v-model="numa" label="Enable NUMA"></m-checkbox>
           <div>
             <el-table :data="vmCpuFlagItems">
-              <el-table-column label="操作" width="120px;">
+              <el-table-column label="Action" width="120px;">
                 <div slot-scope="scope" class="cpu-check">
-                  <label class="cpu-label">{{ flags[scope.row.flag] }}</label
-                  >-<m-switch
-                    :name="scope.row.flag"
-                    v-model="flags[scope.row.flag]"
-                  ></m-switch
-                  >+
+                  <label class="cpu-label">{{ flags[scope.row.flag] }}</label>-<m-switch :name="scope.row.flag"
+                    v-model="flags[scope.row.flag]"></m-switch>+
                 </div>
               </el-table-column>
-              <el-table-column
-                label="flag"
-                prop="flag"
-                width="80px"
-              ></el-table-column>
-              <el-table-column label="描述" prop="desc"></el-table-column>
+              <el-table-column label="Flag" prop="flag" width="80px"></el-table-column>
+              <el-table-column label="Description" prop="desc"></el-table-column>
             </el-table>
           </div>
         </dd>
@@ -151,15 +68,10 @@
       <div class="label_box">
         <label>
           <input type="checkbox" v-model="isAdvice" />
-          <div>高级</div>
+          <div>Advanced</div>
         </label>
       </div>
-      <m-button
-        type="primary"
-        style="height: 40px; line-height: 40px; width: 100px"
-        @on-click="confirm()"
-        >确定</m-button
-      >
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px" @on-click="confirm()">Confirm</m-button>
     </template>
   </m-dialog>
 </template>
@@ -306,22 +218,20 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
       if (value && prop === "vcpus") {
         if (this.sockets <= value) {
           this.rules[prop].error = true;
-          this.rules[prop].message = `vcpus不能小于${
-            this.sockets ? this.sockets : 0
-          }`;
+          this.rules[prop].message = `VCPUs cannot be less than ${this.sockets ? this.sockets : 0}`;
           return;
         }
       }
       if (value && prop === "cpuunits") {
         if (value < 8) {
           this.rules[prop].error = true;
-          this.rules[prop].message = `cpu权重不能小于8`;
+          this.rules[prop].message = `CPU weight cannot be less than 8`;
           return;
         }
       }
@@ -352,10 +262,12 @@ export default {
 /deep/.el-table__body {
   font-size: 12px;
 }
+
 .cpu-check {
   width: 100%;
   white-space: nowrap;
 }
+
 .cpu-label {
   width: 55px;
   display: inline-block;

@@ -1,126 +1,55 @@
 <template>
-  <m-dialog
-    :visible="visible"
-    title="克隆虚拟机"
-    @close="close"
-    @confirm="confirm"
-  >
+  <m-dialog :visible="visible" title="Clone Virtual Machine" @close="close" @confirm="confirm">
     <div slot="content">
       <dl>
         <dt></dt>
         <dd>
-          <m-select
-            prop="nodename"
-            label="目标节点"
-            labelWidth="100px"
-            validateEvent
-            @validate="validate"
-            :show-error="rules.nodename.error"
-            :error-msg="rules.nodename.message"
-            required
-            @on-change="
-              (value) => {
+          <m-select prop="nodename" label="Target Node" labelWidth="100px" validateEvent @validate="validate"
+            :show-error="rules.nodename.error" :error-msg="rules.nodename.message" required @on-change="(value) => {
                 nodename = value;
                 queryTargetStorage();
               }
-            "
-            v-model="nodename"
-            placeholder="请选择节点"
-          >
-            <m-option
-              v-for="(item, index) in nodeList"
-              :key="item.node"
-              :label="item.node"
-              :value="item.node"
-            >
+              " v-model="nodename" placeholder="Please select node">
+            <m-option v-for="(item, index) in nodeList" :key="item.node" :label="item.node" :value="item.node">
               <div v-if="index === 0" class="table-tr">
-                <div class="table-td">节点</div>
-                <div class="table-td">内存使用率</div>
-                <div class="table-td">CPU使用率</div>
+                <div class="table-td">Node</div>
+                <div class="table-td">Memory Usage</div>
+                <div class="table-td">CPU Usage</div>
               </div>
               <div class="table-tr">
                 <span class="table-td" :title="item.node">{{ item.node }}</span>
-                <span
-                  class="table-td"
-                  :title="percentToFixed(item.mem / item.maxmem, 3)"
-                  >{{ percentToFixed(item.mem / item.maxmem, 3) }}</span
-                >
-                <span
-                  class="table-td"
-                  :title="`${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`"
-                  >{{
-                    `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
-                  }}</span
-                >
+                <span class="table-td" :title="percentToFixed(item.mem / item.maxmem, 3)">{{ percentToFixed(item.mem /
+                  item.maxmem, 3) }}</span>
+                <span class="table-td" :title="`${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`">{{
+                  `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
+                }}</span>
               </div>
             </m-option>
           </m-select>
 
-          <m-select
-            prop="clonemode"
-            label="克隆模式"
-            labelWidth="100px"
-            :readonly="true"
-            @on-change="
-              (value) => {
-                clonemode = value;
-                storage = '';
-              }
-            "
-            v-model="clonemode"
-            placeholder="请选择克隆模式"
-          >
-            <m-option
-              v-for="item in modeList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
+          <m-select prop="clonemode" label="Clone Mode" labelWidth="100px" :readonly="true" @on-change="(value) => {
+              clonemode = value;
+              storage = '';
+            }
+            " v-model="clonemode" placeholder="Please select clone mode">
+            <m-option v-for="item in modeList" :key="item.value" :label="item.label" :value="item.value">
             </m-option>
           </m-select>
 
-          <m-input
-            prop="snapshotname"
-            label="快照"
-            labelWidth="100px"
-            :readonly="true"
-            v-model="snapshotname"
-            disabled
-            placeholder="请输入快照名称"
-          ></m-input>
+          <m-input prop="snapshotname" label="Snapshot" labelWidth="100px" :readonly="true" v-model="snapshotname" disabled
+            placeholder="Please enter snapshot name"></m-input>
 
-          <m-input
-            label="VM ID"
-            labelWidth="100px"
-            prop="vmid"
-            v-model="vmid"
-            validateEvent
-            @validate="validate"
-            :show-error="rules['vmid'].error"
-            :error-msg="rules['vmid'].message"
-          />
+          <m-input label="VM ID" labelWidth="100px" prop="vmid" v-model="vmid" validateEvent @validate="validate"
+            :show-error="rules['vmid'].error" :error-msg="rules['vmid'].message" />
 
-          <m-select
-            prop="storage"
-            label="目标存储"
-            labelWidth="100px"
-            :readonly="true"
-            @on-change="handleTargetStorageSel"
-            v-model="storage"
-            placeholder="与来源相同"
-            :disabled="clonemode && clonemode === 'clone' && !isTemplate"
-          >
-            <m-option
-              v-for="(item, index) in storageList"
-              :key="index"
-              :label="item.storage"
-              :value="item.storage"
-            >
+          <m-select prop="storage" label="Target Storage" labelWidth="100px" :readonly="true" @on-change="handleTargetStorageSel"
+            v-model="storage" placeholder="Same as source" :disabled="clonemode && clonemode === 'clone' && !isTemplate">
+            <m-option v-for="(item, index) in storageList" :key="index" :label="item.storage" :value="item.storage">
               <div v-if="index === 0" class="table-tr">
-                <div class="table-td">名称</div>
-                <div class="table-td">类别</div>
-                <div class="table-td">可用</div>
-                <div class="table-td">容量</div>
+                <div class="table-td">Name</div>
+                <div class="table-td">Type</div>
+                <div class="table-td">Available</div>
+                <div class="table-td">Capacity</div>
               </div>
               <div class="table-tr">
                 <span class="table-td" :title="item.storage">{{
@@ -137,35 +66,15 @@
             </m-option>
           </m-select>
 
-          <m-input
-            label="名称"
-            labelWidth="100px"
-            prop="name"
-            validateEvent
-            @validate="validate"
-            :show-error="rules['name'].error"
-            :error-msg="rules['name'].message"
-            v-model="name"
-          />
+          <m-input label="Name" labelWidth="100px" prop="name" validateEvent @validate="validate"
+            :show-error="rules['name'].error" :error-msg="rules['name'].message" v-model="name" />
 
-          <m-select
-            prop="pool"
-            label="资源池"
-            labelWidth="100px"
-            :readonly="true"
-            @on-change="(value) => (pool = value)"
-            v-model="pool"
-            placeholder="请选择资源池"
-          >
-            <m-option
-              v-for="(item, index) in poolList"
-              :key="item.poolid"
-              :label="item.poolid"
-              :value="item.poolid"
-            >
+          <m-select prop="pool" label="Resource Pool" labelWidth="100px" :readonly="true" @on-change="(value) => (pool = value)"
+            v-model="pool" placeholder="Please select resource pool">
+            <m-option v-for="(item, index) in poolList" :key="item.poolid" :label="item.poolid" :value="item.poolid">
               <div v-if="index === 0" class="table-tr">
-                <div class="table-td">资源池</div>
-                <div class="table-td">备注</div>
+                <div class="table-td">Resource Pool</div>
+                <div class="table-td">Notes</div>
               </div>
               <div class="table-tr">
                 <span class="table-td" :title="item.poolid">{{
@@ -178,65 +87,33 @@
             </m-option>
           </m-select>
 
-          <m-select
-            prop="format"
-            label="格式"
-            labelWidth="100px"
-            @on-change="(value) => (format = value)"
-            v-model="format"
-            :readonly="false"
-            :disabled="!storageType || storageType !== 'dir'"
-            placeholder="请选格式"
-          >
-            <m-option
-              v-for="(item, index) in formatList"
-              :key="index"
-              :value="item.value"
-              :label="item.label"
-            >
+          <m-select prop="format" label="Format" labelWidth="100px" @on-change="(value) => (format = value)"
+            v-model="format" :readonly="false" :disabled="!storageType || storageType !== 'dir'" placeholder="Please select format">
+            <m-option v-for="(item, index) in formatList" :key="index" :value="item.value" :label="item.label">
             </m-option>
           </m-select>
         </dd>
       </dl>
-      <m-dialog
-        :visible="showLog"
-        @close="closeLog"
-        v-if="showLog"
-        :_style="{
-          width: '800px',
-        }"
-        :title="extraTitle"
-      >
+      <m-dialog :visible="showLog" @close="closeLog" v-if="showLog" :_style="{
+        width: '800px',
+      }" :title="extraTitle">
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
-            <m-tab-panel label="输出" name="log"></m-tab-panel>
-            <m-tab-panel label="状态" name="status"></m-tab-panel>
+            <m-tab-panel label="Output" name="log"></m-tab-panel>
+            <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
-          <m-button
-            class="create-btn m-margin-top-10"
-            type="primary"
-            @on-click="stopTask1"
-            :disabled="db.addClusterStatusObj.status !== 'running'"
-            >停止</m-button
-          >
+          <m-button class="create-btn m-margin-top-10" type="primary" @on-click="stopTask1"
+            :disabled="db.addClusterStatusObj.status !== 'running'">Stop</m-button>
           <el-scrollbar style="height: 100%" id="taskModal">
             <div class="taskmodal-content" ref="taskmodal-content">
               <div class="table" v-if="tab === 'log'">
-                <div
-                  class="table-tr"
-                  v-for="item in db.addClusterLogList"
-                  :key="item.n"
-                >
+                <div class="table-tr" v-for="item in db.addClusterLogList" :key="item.n">
                   {{ item.t }}
                 </div>
               </div>
               <div class="table" v-if="tab === 'status'">
                 <template v-for="(item, key) in db.addClusterStatusObj">
-                  <div
-                    class="table-tr"
-                    v-if="!['exitstatus', 'id', 'pstart'].includes(key)"
-                    :key="key"
-                  >
+                  <div class="table-tr" v-if="!['exitstatus', 'id', 'pstart'].includes(key)" :key="key">
                     <div class="table-td">{{ $t(`clusterStatus.${key}`) }}</div>
                     <div class="table-td" v-if="key === 'starttime'">
                       {{
@@ -256,9 +133,7 @@
       </m-dialog>
     </div>
     <div slot="footer">
-      <m-button type="primary" class="create-btn" @on-click="confirm"
-        >克隆</m-button
-      >
+      <m-button type="primary" class="create-btn" @on-click="confirm">Clone</m-button>
     </div>
   </m-dialog>
 </template>
@@ -311,15 +186,15 @@ export default {
       tab: "log",
       formatList: [
         {
-          label: "Raw磁盘映像（raw）",
+          label: "Raw Disk Image (raw)",
           value: "raw",
         },
         {
-          label: "VMware映像格式（vmdk）",
+          label: "VMware Image Format (vmdk)",
           value: "vmdk",
         },
         {
-          label: "QEMU映像格式（qcow2）",
+          label: "QEMU Image Format (qcow2)",
           value: "qcow2",
         },
       ],
@@ -354,7 +229,7 @@ export default {
   mounted() {
     let last = window.localStorage.getItem("lastsel") || "[]";
     this.qemu = (JSON.parse(last) && JSON.parse(last)) || "";
-    //初始化请求
+    //Initialize request
     this.__init__();
   },
   methods: {
@@ -422,7 +297,7 @@ export default {
       _this
         .clone(params)
         .then((res) => {
-          _this.extraTitle = "克隆进度";
+          _this.extraTitle = "Clone Progress";
           _this.showLog = true;
           this.updateTable({
             tableName: "addClusterLogList",
@@ -451,25 +326,25 @@ export default {
       this.rules[prop].message = "";
       this.rules[prop].error = false;
       if (prop !== "name" && /^\s*$/.test(value)) {
-        this.rules[prop].message = "不能为空!";
+        this.rules[prop].message = "Cannot be empty!";
         this.rules[prop].error = true;
         return;
       }
       if (prop === "nodename") {
         if (this.qemu.type === "qemu" && this.nodename !== this.qemu.node) {
-          this.rules[prop].message = `${this.nodename}不允许此操作!`;
+          this.rules[prop].message = `${this.nodename} operation not allowed!`;
           this.rules[prop].error = true;
           return;
         }
       }
       if (prop === "name" && /^[^a-zA-Z0-9]|[\u4e00-\u9fa5]/.test(this.name)) {
-        this.rules[prop].message = `名称不合法!`;
+        this.rules[prop].message = `Invalid name!`;
         this.rules[prop].error = true;
         return;
       }
     },
-    /***
-     * 选择存储
+    /**
+     * Select storage
      */
     handleTargetStorageSel(val) {
       this.storageType = this.storageList.filter(
@@ -504,14 +379,14 @@ export default {
       });
     },
     /**
-     * 关闭任务窗口
+     * Close task window
      */
     closeLog() {
       if (this.interval) {
         clearInterval(this.interval);
         this.interval = null;
         /**
-         * 防止异步操作出现的错误
+         * Prevent errors from asynchronous operations
          */
         this.showLog = false;
         this.$nextTick(() => {
@@ -523,13 +398,13 @@ export default {
       }
     },
     /**
-     * 切换tab
+     * Switch tab
      */
     handleTabChange(tab) {
       this.tab = tab;
     },
     /**
-     * 取消运行中的任务
+     * Cancel running task
      */
     stopTask1() {
       this.stopTask(

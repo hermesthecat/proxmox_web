@@ -2,7 +2,7 @@
   <page-template>
     <div slot="toolbar-left">
       <m-button type="primary" @on-click="showModal('edit')" icon="el-icon-edit"
-        >编辑</m-button
+        >Edit</m-button
       >
     </div>
     <template slot="page-content">
@@ -43,7 +43,7 @@ export default {
     return {
       type: "create",
       visible: false,
-      title: "创建：复制作业",
+      title: "Create: Copy Job",
       selectedList: [],
       isCreate: true,
       param: {},
@@ -59,7 +59,7 @@ export default {
     window.addEventListener("resize", _this.updateAceEditorHeight, false);
   },
   methods: {
-    //初始化查找
+    //Initialize search
     __init__() {
       let last = window.localStorage.getItem("lastsel") || "[]",
         _this = this;
@@ -71,15 +71,15 @@ export default {
             : "";
       });
     },
-    //更新编辑器高度
+    //Update editor height
     updateAceEditorHeight() {
       let _this = this;
       _this.$refs[`ace-editor`].$el.style.height =
         _this.$el.parentElement.clientHeight - 100 + "px";
     },
-    //是否展示弹框
+    //Show dialog
     showModal() {
-      this.title = "编辑";
+      this.title = "Edit";
       this.param = {
         node: this.node,
         content: this.db.nodeNotesObj.description
@@ -89,19 +89,19 @@ export default {
       };
       this.visible = true;
     },
-    //按钮是否可点击
+    //Check if button is clickable
     inStatus() {
       return this.selectedList.length <= 0;
     },
-    //选择
+    //Select
     handleSelect(row) {
       this.selectedList = row;
     },
-    //删除备注
+    //Delete notes
     handleDelete(type) {
       this.$confirm
         .confirm({
-          msg: `你确定你要删除已选择项吗？`,
+          msg: `Are you sure you want to delete the selected items?`,
           type: "info",
         })
         .then(() => {

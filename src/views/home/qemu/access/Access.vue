@@ -17,17 +17,17 @@
             type="primary"
             style="position: absolute; left: -1px; top: -1px; right: -1px"
             icon="el-icon-plus"
-            >添加</m-button
+            >Add</m-button
           >
         </span>
         <m-dropdown-item icon="fa fa-users" command="group"
-          >权限组</m-dropdown-item
+          >Permission Group</m-dropdown-item
         >
         <m-dropdown-item icon="fa fa-user" command="user"
-          >用户权限</m-dropdown-item
+          >User Permission</m-dropdown-item
         >
         <m-dropdown-item icon="fa fa-user-o" command="apiToken"
-          >Api Token Permission</m-dropdown-item
+          >API Token Permission</m-dropdown-item
         >
       </m-dropdown>
       <m-button
@@ -35,7 +35,7 @@
         @on-click="handleDelete"
         icon="el-icon-delete"
         :disabled="selectedList.length <= 0"
-        >删除</m-button
+        >Delete</m-button
       >
     </div>
     <div slot="page-content">
@@ -46,10 +46,10 @@
       >
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column
-          label="用户/组/API ToKen"
+          label="User/Group/API Token"
           prop="ugid"
         ></el-table-column>
-        <el-table-column label="角色" prop="roleid"></el-table-column>
+        <el-table-column label="Role" prop="roleid"></el-table-column>
       </el-table>
       <create-access-modal
         :title="title"
@@ -83,7 +83,7 @@ export default {
     return {
       type: "create",
       visible: false,
-      title: "创建：复制作业",
+      title: "Create: Copy Job",
       selectedList: [],
       isCreate: true,
       param: {},
@@ -94,7 +94,7 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化查找
+    //Initialize search
     __init__() {
       let _this = this;
       _this.queryAccessList().then(() => {
@@ -111,26 +111,26 @@ export default {
         }
       });
     },
-    //是否展示弹框
+    //Show modal dialog
     showModal(type) {
       this.type = type;
       this.isCreate = type === "create";
-      this.title = type === "create" ? "创建：复制作业" : "编辑：复制作业";
+      this.title = type === "create" ? "Create: Copy Job" : "Edit: Copy Job";
       this.param = type === "create" ? {} : this.selectedList[0];
       this.visible = true;
     },
-    //按钮是否可点击
+    //Check if button is clickable
     inStatus() {
       return this.selectedList.length <= 0;
     },
-    //选择
+    //Selection
     handleSelect(row) {
       this.selectedList = row;
     },
     handleDelete(type) {
       this.$confirm
         .confirm({
-          msg: `你确定你要删除已选择项吗？`,
+          msg: `Are you sure you want to delete selected items?`,
           type: "info",
         })
         .then(() => {

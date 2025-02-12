@@ -6,19 +6,19 @@
       :_style="{
         width: '800px',
       }"
-      title="Task Viewer: 加入集群"
+      title="Task Viewer: Join Cluster"
     >
       <template slot="content">
         <m-tab v-model="tab" @tab-click="handleTabChange">
-          <m-tab-panel label="输出" name="log"></m-tab-panel>
-          <m-tab-panel label="状态" name="status"></m-tab-panel>
+          <m-tab-panel label="Output" name="log"></m-tab-panel>
+          <m-tab-panel label="Status" name="status"></m-tab-panel>
         </m-tab>
         <m-button
           type="primary"
           @on-click="stopTask1"
           class="m-margin-top-10"
           :disabled="db.addClusterStatusObj.status !== 'running'"
-          >停止</m-button
+          >Stop</m-button
         >
         <el-scrollbar style="height: 100%">
           <div class="taskmodal-content">
@@ -54,7 +54,7 @@
       </template>
     </Dialog>
     <overview-card>
-      <div slot="title">证书</div>
+      <div slot="title">Certificates</div>
       <div
         slot="operate"
         :class="{ 'm-tool-collpise': !showStatus }"
@@ -69,21 +69,21 @@
                 type="primary"
                 @on-click="showModal('create')"
                 icon="el-icon-plus"
-                >上传自定义证书</m-button
+                >Upload Custom Certificate</m-button
               >
               <m-button
                 type="danger"
                 @on-click="deleteCertificates"
                 icon="el-icon-delete"
                 :disabled="!inStatus('pveproxy-ssl.pem')"
-                >删除自定义证书</m-button
+                >Delete Custom Certificate</m-button
               >
               <m-button
                 type="info"
                 @on-click="showModal('edit')"
                 icon="el-icon-view"
                 :disabled="selectedList.length !== 1"
-                >查看自定义证书</m-button
+                >View Custom Certificate</m-button
               >
             </div>
             <div slot="page-content">
@@ -94,21 +94,21 @@
               >
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column
-                  label="文件"
+                  label="File"
                   prop="filename"
                   show-overflow-tooltip
                 ></el-table-column>
                 <el-table-column
-                  label="发行者"
+                  label="Issuer"
                   prop="issuer"
                   show-overflow-tooltip
                 ></el-table-column>
                 <el-table-column
-                  label="主题"
+                  label="Subject"
                   prop="subject"
                   show-overflow-tooltip
                 ></el-table-column>
-                <el-table-column label="有效期自" prop="notbefore">
+                <el-table-column label="Valid From" prop="notbefore">
                   <template slot-scope="scope">
                     <span>{{
                       dateFormat(
@@ -118,7 +118,7 @@
                     }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="有效期至" prop="notafter">
+                <el-table-column label="Valid Until" prop="notafter">
                   <template slot-scope="scope">
                     <span>{{
                       dateFormat(
@@ -128,7 +128,7 @@
                     }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="主题名称代替" prop="name">
+                <el-table-column label="Subject Alternative Name" prop="name">
                   <template slot-scope="scope">
                     <span v-for="(item, index) in scope.row.san" :key="index">{{
                       item
@@ -157,25 +157,25 @@
                 type="primary"
                 @on-click="showAcmeModal('create', 'domains')"
                 icon="el-icon-plus"
-                >添加</m-button
+                >Add</m-button
               >
               <m-button
                 type="info"
                 @on-click="showAcmeModal('edit', 'domains')"
                 icon="el-icon-edit"
                 :disabled="selectedAcmeList.length !== 1"
-                >编辑</m-button
+                >Edit</m-button
               >
               <m-button
                 type="danger"
                 v-confirm="{
-                  msg: '确认要删除已选择项?',
+                  msg: 'Are you sure you want to delete selected items?',
                   icon: 'icon-question',
                   ok: () => handleAcmeDelete(),
                 }"
                 icon="el-icon-delete"
                 :disabled="selectedAcmeList.length <= 0"
-                >删除</m-button
+                >Delete</m-button
               >
               <m-button
                 type="danger"
@@ -185,16 +185,16 @@
                 >Order Certificates Now</m-button
               >
               <span v-if="!isEdit && db.acmeAccountList.length > 0"
-                >使用账户&nbsp;:&nbsp;{{ account }}</span
+                >Using Account&nbsp;:&nbsp;{{ account }}</span
               >
               <m-select
                 prop="account"
-                label="账户"
+                label="Account"
                 labelWidth="30px"
                 v-model="account"
                 @on-change="handleAccountSelect"
                 v-else-if="isEdit && db.acmeAccountList.length > 0"
-                placeholder="请选择账户"
+                placeholder="Please select account"
               >
                 <m-option
                   v-for="item in db.acmeAccountList"
@@ -204,7 +204,7 @@
                 >
                 </m-option>
               </m-select>
-              <span v-else class="no-account">没有可用的账户</span>
+              <span v-else class="no-account">No available accounts</span>
               <span
                 v-if="db.acmeAccountList.length > 0"
                 class="edit"
@@ -216,7 +216,7 @@
                 @on-click="showAcmeModal('create', 'account')"
                 v-if="db.acmeAccountList.length <= 0"
                 icon="el-icon-plus"
-                >添加ACME账户</m-button
+                >Add ACME Account</m-button
               >
             </div>
             <div slot="page-content">
@@ -226,8 +226,8 @@
                 @selection-change="handleAcmeSelect"
               >
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column label="域名" prop="domain"></el-table-column>
-                <el-table-column label="类别" prop="type"></el-table-column>
+                <el-table-column label="Domain" prop="domain"></el-table-column>
+                <el-table-column label="Type" prop="type"></el-table-column>
                 <el-table-column label="plugin" prop="plugin"></el-table-column>
               </el-table>
             </div>
@@ -285,7 +285,7 @@ export default {
     return {
       type: "create",
       visible: false,
-      title: "创建：复制作业",
+      title: "Create: Copy Job",
       selectedList: [],
       isCreate: true,
       isEdit: false,
@@ -296,7 +296,7 @@ export default {
       selectedAcmeList: [],
       acmeType: "domains",
       acmeVisible: false,
-      acmeTitle: "创建：复制作业",
+      acmeTitle: "Create: ACME DNS Plugin",
       acmeIsCreate: true,
       acmeParam: {},
       acmePluginList: [],
@@ -312,7 +312,7 @@ export default {
   },
   methods: {
     dateFormat,
-    //初始化查找
+    //Initialize search
     __init__() {
       this.acmeList = [];
       return Promise.all([
@@ -336,15 +336,15 @@ export default {
         }),
       ]);
     },
-    //是否展示弹框
+    //Show modal dialog
     showModal(type) {
       this.type = type;
       this.isCreate = type === "create";
-      this.title = type === "create" ? "上传自定义证书" : "查看自定义证书";
+      this.title = type === "create" ? "Upload Custom Certificate" : "View Custom Certificate";
       this.param = type === "create" ? {} : this.selectedList[0];
       this.visible = true;
     },
-    //按钮是否可点击
+    //Check if button is clickable
     inStatus() {
       let status = [];
       for (let i in arguments) {
@@ -354,14 +354,14 @@ export default {
         status.some((state) => state === it.filename)
       );
     },
-    //选择
+    //Selection
     handleAccountSelect(value) {
       this.account = value;
     },
     handlePluginDelete() {
       this.$confirm
         .confirm({
-          msg: `你确定你要删除已选择项吗？`,
+          msg: `Are you sure you want to delete selected items?`,
           type: "info",
         })
         .then(() => {
@@ -374,11 +374,11 @@ export default {
         })
         .catch(() => {});
     },
-    //删除证书
+    //Delete certificate
     handleDelete() {
       this.$confirm
         .confirm({
-          msg: `你确定你要删除已选择项吗？`,
+          msg: `Are you sure you want to delete selected items?`,
           type: "info",
         })
         .then(() => {
@@ -461,7 +461,7 @@ export default {
       this.acmeType = modalType;
       this.acmeIsCreate = type === "create";
       this.acmeTitle =
-        type === "create" ? "创建：ACME DNS Plugin" : "编辑：ACME DNS Plugin";
+        type === "create" ? "Create: ACME DNS Plugin" : "Edit: ACME DNS Plugin";
       this.acmeParam =
         type === "create"
           ? { acme: this.db.certificatesConfigObj.acme }

@@ -348,7 +348,7 @@ const MODELLIST = [
 ]
 
 const KVM_KEYMAPS = {
-	'__default__': '默认',
+	'__default__': 'Default',
 	//ar: 'Arabic',
 	da: 'Danish',
 	de: 'German',
@@ -385,14 +385,14 @@ const KVM_KEYMAPS = {
 }
 
 const CONSOLE_Map = {
-	'__default__': '默认' + ' (xterm.js)',
+	'__default__': 'Default' + ' (xterm.js)',
 	'vv': 'SPICE (remote-viewer)',
 	'html5': 'HTML5 (noVNC)',
 	'xtermjs': 'xterm.js'
 }
 
 const KVM_HA_Map = {
-	'__default__': '默认' + ' (conditional)',
+	'__default__': 'Default' + ' (conditional)',
 	'freeze': 'freeze',
 	'failover': 'failover',
 	'conditional': 'conditional'
@@ -400,7 +400,7 @@ const KVM_HA_Map = {
 
 const STORAGESCHEMA = {
 	dir: {
-		name: '目录',
+		name: 'Directory',
 		ipanel: 'DirInputPanel',
 		faIcon: 'folder'
 	},

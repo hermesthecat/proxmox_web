@@ -8,7 +8,7 @@
       <input
         @keyup.enter="updateCotnent"
         v-model="command"
-        placeholder="请输入命令"
+        placeholder="Enter command"
       />
     </div>
   </div>
@@ -29,7 +29,7 @@ export default {
   },
   mounted() {
     let _this = this;
-    //获得当前节点对象
+    //Get current node object
     let last = window.localStorage.getItem("lastsel") || "[]";
     _this.node = (JSON.parse(last) && JSON.parse(last)) || "";
     _this.$refs[`ace-editor`].$el.style.height =

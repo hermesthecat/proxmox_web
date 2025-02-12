@@ -6,16 +6,16 @@
           class="tab-item"
           :class="{ 'is-active': livemode }"
           type="livemode"
-          >Live模式</span
+          >Live Mode</span
         >
         <span class="tab-item" :class="{ 'is-active': !livemode }" type="time"
-          >选择时间范围</span
+          >Select Time Range</span
         >
       </span>
       <m-input
         prop="expire"
         labelWidth="60px"
-        label="选择日期"
+        label="Select Date"
         style="vertical-align: top"
         :__conStyle="{ width: '355px' }"
       >
@@ -25,7 +25,7 @@
             type="daterange"
             format="yyyy-MM-dd"
             value-format="yyyy-MM-dd"
-            placeholder="选择日期"
+            placeholder="Select Date"
             :disabled="livemode"
           >
           </el-date-picker>
@@ -37,7 +37,7 @@
         @on-click="handleUpdate()"
         icon="el-icon-refresh"
         :disabled="livemode"
-        >更新</m-button
+        >Update</m-button
       >
     </div>
     <div slot="page-content">
@@ -158,7 +158,7 @@ export default {
         _this.$el.parentElement.clientHeight - 100 + "px";
     },
     changeTab(e) {
-      this.livemode = e.target.innerText === "Live模式";
+      this.livemode = e.target.innerText === "Live Mode";
       if (this.livemode) {
         this.__init__();
       } else {

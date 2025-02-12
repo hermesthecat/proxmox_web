@@ -30,7 +30,7 @@ export default {
     },
   },
   beforeDestroy() {
-    //移除事件监听
+    //Remove event listener
     window.removeEventListener("resize", this.setShellHeight, false);
   },
 };

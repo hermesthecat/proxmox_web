@@ -11,11 +11,11 @@
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-select
                 prop="groups"
-                label="组"
+                label="Group"
                 labelWidth="100px"
                 @on-change="handleGroupSelect"
                 v-model="groups"
@@ -26,7 +26,7 @@
                 required
                 v-if="modalType === 'group'"
                 :readonly="false"
-                placeholder="请选择组"
+                placeholder="Please select group"
               >
                 <m-option
                   v-for="(item, index) in db.groupsList"
@@ -37,9 +37,9 @@
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
-                        <span class="table-td">组</span>
-                        <span class="table-td">备注</span>
-                        <span class="table-td">用户</span>
+                        <span class="table-td">Group</span>
+                        <span class="table-td">Comments</span>
+                        <span class="table-td">Users</span>
                       </div>
                     </template>
                     <div class="table-tr">
@@ -58,7 +58,7 @@
               </m-select>
               <m-select
                 prop="users"
-                label="用户"
+                label="User"
                 labelWidth="100px"
                 @on-change="handleGroupSelect"
                 v-model="users"
@@ -69,7 +69,7 @@
                 required
                 :readonly="false"
                 v-if="modalType === 'user'"
-                placeholder="请选择用户"
+                placeholder="Please select user"
               >
                 <m-option
                   v-for="(item, index) in db.usersList"
@@ -80,9 +80,9 @@
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
-                        <span class="table-td">用户</span>
-                        <span class="table-td">名称</span>
-                        <span class="table-td">备注</span>
+                        <span class="table-td">User</span>
+                        <span class="table-td">Name</span>
+                        <span class="table-td">Comments</span>
                       </div>
                     </template>
                     <div class="table-tr">
@@ -109,7 +109,7 @@
               </m-select>
               <m-select
                 prop="tokens"
-                label="Api Token"
+                label="API Token"
                 labelWidth="100px"
                 @on-change="handleGroupSelect"
                 v-model="tokens"
@@ -120,7 +120,7 @@
                 required
                 :readonly="false"
                 v-if="modalType === 'apiToken'"
-                placeholder="请选择Api Token"
+                placeholder="Please select API Token"
               >
                 <m-option
                   v-for="(item, index) in tokenList"
@@ -131,8 +131,8 @@
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
-                        <span class="table-td">Api Token</span>
-                        <span class="table-td">备注</span>
+                        <span class="table-td">API Token</span>
+                        <span class="table-td">Comments</span>
                       </div>
                     </template>
                     <div class="table-tr">
@@ -148,11 +148,11 @@
               </m-select>
               <m-select
                 prop="roles"
-                label="角色"
+                label="Role"
                 labelWidth="100px"
                 @on-change="handleRoleSelect"
                 v-model="roles"
-                placeholder="请选择角色"
+                placeholder="Please select role"
               >
                 <m-option
                   v-for="item in db.rolesList"
@@ -282,7 +282,7 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
     },

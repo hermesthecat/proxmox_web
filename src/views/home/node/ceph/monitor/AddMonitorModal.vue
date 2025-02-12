@@ -18,15 +18,15 @@
         @validate="validate"
         :show-error="rules['nodename'].error"
         :error-msg="rules['nodename'].message"
-        label="主机"
+        label="Host"
         labelWidth="100px"
       >
-        <template v-for="(item, index) in nodeList">
-          <m-option :label="item.node" :key="item.node" :value="item.node">
+        <template v-for="(item, index) in nodeList" :key="item.node">
+          <m-option :label="item.node" :value="item.node">
             <div class="table-tr" v-show="index === 0">
-              <div class="table-td">名称</div>
-              <div class="table-td">使用率</div>
-              <div class="table-td">cpu</div>
+              <div class="table-td">Name</div>
+              <div class="table-td">Usage</div>
+              <div class="table-td">CPU</div>
             </div>
             <div class="table-tr">
               <div class="table-td">{{ item.node }}</div>
@@ -55,15 +55,15 @@
       <m-dialog :visible="showLog">
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
-            <m-tab-panel label="输出" name="log"></m-tab-panel>
-            <m-tab-panel label="状态" name="status"></m-tab-panel>
+            <m-tab-panel label="Output" name="log"></m-tab-panel>
+            <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
           <m-button
             class="create-btn"
             type="primary"
             @on-click="stopTask1"
             :disabled="db.addClusterStatusObj.status !== 'running'"
-            >停止</m-button
+            >Stop</m-button
           >
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
@@ -140,20 +140,20 @@ export default {
     dateFormat,
     __init__() {
       let _this = this;
-      //当为虚拟机是过滤为添加的虚拟机
-      //请求存储
+      //Filter for added virtual machines when it is a virtual machine
+      //Request storage
       _this.queryNodes().then((res) => {
         _this.nodeList = quickSort(this.db.nodeList, "node", "+");
       });
     },
-    //关闭弹框
+    //Close dialog
     close() {
       this.$emit("close");
     },
-    //确定添加
+    //Confirm add
     confirm() {
       if (this.modalType === "mon") {
-        //添加监控
+        //Add monitoring
         this.createMonitor("mon", this.nodename).then((res) => {
           this.showLog = true;
           this.interVal = setInterval(() => {
@@ -166,24 +166,24 @@ export default {
       } else {
         this.validate("nodename");
         if (this.rules.nodename.error) return;
-        //更新池
+        //Update pool
         this.createMonitor("mgr", this.nodename).then((res) => {
           this.close();
         });
       }
     },
-    //校验
+    //Validate
     validate(prop) {
       let value = String(this[prop]).trim();
       this.rules[prop].error = false;
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空!";
+        this.rules[prop].message = "Cannot be empty!";
         return;
       }
     },
-    //停止任务
+    //Stop task
     stopTask1() {
       this.stopTask(
         this.db.addClusterStatusObj.node,

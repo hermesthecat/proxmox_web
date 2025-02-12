@@ -1,44 +1,20 @@
 <template>
-  <m-dialog
-    title="添加磁盘"
-    :visible="visible"
-    v-if="visible"
-    @confirm="confirm"
-    @cancel="close"
-    :_style="{
-      width: '946px',
-    }"
-    @close="close"
-  >
+  <m-dialog title="Add Serial Device" :visible="visible" v-if="visible" @confirm="confirm" @cancel="close" :_style="{
+    width: '946px',
+  }" @close="close">
     <div slot="content" style="max-height: 400px; overflow: auto">
       <div class="m-form__section">
         <dl>
-          <dt>基本信息</dt>
+          <dt>Basic Information</dt>
           <dd>
-            <m-input
-              type="number"
-              label="总线"
-              v-model="serial"
-              labelWidth="100px"
-              min="0"
-              max="3"
-              prop="serial"
-              @validate="validate"
-              required
-              :error-msg="rules['serial'].message"
-              :show-error="rules['serial'].error"
-            />
+            <m-input type="number" label="Bus" v-model="serial" labelWidth="100px" min="0" max="3" prop="serial"
+              @validate="validate" required :error-msg="rules['serial'].message" :show-error="rules['serial'].error" />
           </dd>
         </dl>
       </div>
     </div>
     <template slot="footer">
-      <m-button
-        type="primary"
-        style="height: 40px; line-height: 40px; width: 100px"
-        @on-click="confirm()"
-        >确定</m-button
-      >
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px" @on-click="confirm()">Confirm</m-button>
     </template>
   </m-dialog>
 </template>
@@ -119,12 +95,12 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
       if (value && (value < 0 || value > 3)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "值应该在0~3之间";
+        this.rules[prop].message = "Value should be between 0 and 3";
         return;
       }
     },

@@ -1,7 +1,7 @@
 <template>
   <page-template
     v-loading="!isCi"
-    element-loading-text="未找到Cloud Init驱动器"
+    element-loading-text="Cloud Init drive not found"
   >
     <div slot="toolbar-left">
       <m-button
@@ -9,7 +9,7 @@
         @on-click="handleCommand"
         icon="el-icon-video-play"
         :disabled="!current"
-        >编辑</m-button
+        >Edit</m-button
       >
       <m-button
         type="danger"
@@ -20,10 +20,10 @@
           (currentObj.type !== 'cipassword' &&
             !/ciDriveId/.test(currentObj.type))
         "
-        >{{ "删除" }}</m-button
+        >{{ "Delete" }}</m-button
       >
       <m-button type="info" @on-click="getCdRom" icon="el-icon-edit-outline"
-        >重生成映像</m-button
+        >Regenerate Image</m-button
       >
     </div>
     <div slot="page-content">
@@ -40,7 +40,7 @@
             >
           </template>
         </el-table-column>
-        <el-table-column label="名称" prop="name" width="200px">
+        <el-table-column label="Name" prop="name" width="200px">
           <template slot-scope="scope">
             <div>
               <base-icon
@@ -53,7 +53,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="值" prop="value">
+        <el-table-column label="Value" prop="value">
           <template slot-scope="scope">
             <div>
               {{ scope.row && scope.row.render && scope.row.render(false) }}
@@ -129,11 +129,11 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化请求
+    //Initialize request
     async __init__() {
       let _this = this;
       _this.queryResource().then(async (res) => {
-        //装配数据得到格式为{key: value}的数据以便后期数据处理
+        //Assemble data to get data in {key: value} format for later data processing
         _this.store = await _this.db.volumeList.reduce((target, source) => {
           if (!target.hasOwnProperty(source.key)) {
             target[source.key] = {
@@ -147,15 +147,15 @@ export default {
             return _this.isCloudInit(item);
           }
         });
-        //表格数据
+        //Table data
         this.hardwareList = [
           {
-            name: "用户", //名称
-            type: "ciuser", //数据类型
-            icon: "fa fa-user", //icon
-            itemId: "editUser", //添加弹框id
+            name: "User", //Name
+            type: "ciuser", //Data type
+            icon: "fa fa-user", //Icon
+            itemId: "editUser", //Add dialog id
             render: function (pending) {
-              //渲染值
+              //Render value
               if (pending) {
                 return (
                   (_this.store &&
@@ -170,12 +170,12 @@ export default {
                   _this.store["ciuser"] &&
                   _this.store["ciuser"].data &&
                   _this.store["ciuser"].data.value) ||
-                "默认"
+                "Default"
               );
             },
           },
           {
-            name: "密码",
+            name: "Password",
             type: "cipassword",
             itemId: "editPassword",
             icon: "fa fa-unlock",
@@ -194,12 +194,12 @@ export default {
                   _this.store["cipassword"] &&
                   _this.store["cipassword"].data &&
                   _this.store["cipassword"].data.value) ||
-                "无"
+                "None"
               );
             },
           },
           {
-            name: "DNS域",
+            name: "DNS Domain",
             type: "searchdomain",
             itemId: "editDnsDomain",
             icon: "fa-desktop",
@@ -218,12 +218,12 @@ export default {
                   _this.store["searchdomain"] &&
                   _this.store["searchdomain"].data &&
                   _this.store["searchdomain"].data.value) ||
-                "使用主机设置"
+                "Use host settings"
               );
             },
           },
           {
-            name: "DNS服务器",
+            name: "DNS Server",
             type: "nameserver",
             itemId: "editDnsServer",
             icon: "fa-desktop",
@@ -242,12 +242,12 @@ export default {
                   _this.store["nameserver"] &&
                   _this.store["nameserver"].data &&
                   _this.store["nameserver"].data.value) ||
-                "使用主机设置"
+                "Use host settings"
               );
             },
           },
           {
-            name: "SSH公钥",
+            name: "SSH Public Key",
             type: "sshkeys",
             icon: "fa-cogs",
             itemId: "editSsh",
@@ -266,14 +266,14 @@ export default {
                   _this.store["sshkeys"] &&
                   _this.store["sshkeys"].data &&
                   _this.store["sshkeys"].data.value) ||
-                "无"
+                "None"
               );
             },
           },
         ];
         if (this.ciDriveId) {
           this.hardwareList.push({
-            name: `IP配置(${this.ciDriveId.replace(/ide/, "net")})`,
+            name: `IP Configuration(${this.ciDriveId.replace(/ide/, "net")})`,
             type: "ciDriveId",
             icon: "fa fa-exchange",
             itemId: "editDriveId",
@@ -318,7 +318,7 @@ export default {
     handleDelete() {
       this.$confirm
         .confirm({
-          msg: `你确定你要删除该项${this.currentObj.name}?`,
+          msg: `Are you sure you want to delete this ${this.currentObj.name}?`,
           icon: "icon-question",
         })
         .then((res) => {
@@ -381,11 +381,11 @@ export default {
       }, {});
     },
     render_qemu_machine(value) {
-      return value || "默认" + " (i440fx)";
+      return value || "Default" + " (i440fx)";
     },
     render_scsihw: function (value) {
       if (!value) {
-        return "默认" + " (LSI 53C895A)";
+        return "Default" + " (LSI 53C895A)";
       } else if (value === "lsi") {
         return "LSI 53C895A";
       } else if (value === "lsi53c810") {
@@ -426,15 +426,15 @@ export default {
       }
       return defaultValue;
     },
-    //添加硬盘等
+    //Add disk etc.
     handleCommand() {
-      //创建或者编辑
+      //Create or edit
       this.modalType = this.currentObj.itemId;
       this.param = this.currentObj || {};
-      this.title = "编辑：" + this.currentObj.name;
+      this.title = "Edit: " + this.currentObj.name;
       this.visible = true;
     },
-    //改变磁盘大小
+    //Change disk size
     getCdRom() {
       let disk = parseQemuDrive(this.ciDriveId, this.ciDrive),
         storage = "",

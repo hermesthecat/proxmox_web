@@ -2,10 +2,10 @@
   <page-template>
     <div slot="toolbar-left">
       <m-button type="primary" @on-click="refresh" icon="el-icon-refresh"
-        >重载</m-button
+        >Reload</m-button
       >
       <m-button type="primary" @on-click="showModal()" icon="el-icon-plus"
-        >创建：Directory</m-button
+        >Create: Directory</m-button
       >
     </div>
     <div slot="page-content">
@@ -14,10 +14,10 @@
         ref="dataTable"
         v-loading="loading"
       >
-        <el-table-column label="路径" prop="path"></el-table-column>
-        <el-table-column label="设备" prop="device"></el-table-column>
-        <el-table-column label="类别" prop="type"></el-table-column>
-        <el-table-column label="选项" prop="options"></el-table-column>
+        <el-table-column label="Path" prop="path"></el-table-column>
+        <el-table-column label="Device" prop="device"></el-table-column>
+        <el-table-column label="Type" prop="type"></el-table-column>
+        <el-table-column label="Options" prop="options"></el-table-column>
       </el-table>
       <create-directory-modal
         :title="title"
@@ -50,7 +50,7 @@ export default {
   data() {
     return {
       visible: false,
-      title: "创建：Lvm Directory",
+      title: "Create: Lvm Directory",
       loading: false,
     };
   },
@@ -60,16 +60,16 @@ export default {
   methods: {
     percentToFixed,
     byteToSize,
-    //初始化查找
+    //Initialize search
     __init__() {
       this.queryDiskDirectory();
     },
     refresh: debounce(function () {
       this.__init__();
     }, 500),
-    //是否展示弹框
+    //Show dialog
     showModal() {
-      this.title = "创建：Lvm Directory";
+      this.title = "Create: Lvm Directory";
       this.visible = true;
     },
   },

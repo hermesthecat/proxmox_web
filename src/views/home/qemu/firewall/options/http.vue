@@ -24,7 +24,7 @@ export default {
           }
         });
     },
-    //编辑Option
+    //Edit Option
     modifyOptions(param) {
       let event = this.createEvent("action.firewall.update");
       return this.$http

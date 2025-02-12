@@ -1,5 +1,5 @@
 <template>
-  <m-dialog :visible="visible" title="配置" @close="$emit('close')">
+  <m-dialog :visible="visible" title="Configuration" @close="$emit('close')">
     <template slot="header"></template>
     <template slot="content">
       <div class="config">

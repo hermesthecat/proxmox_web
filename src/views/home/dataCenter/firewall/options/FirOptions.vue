@@ -1,164 +1,91 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-button
-        type="primary"
-        :disabled="option === ''"
-        @on-click="showModal(option)"
-        >编辑</m-button
-      >
+      <m-button type="primary" :disabled="option === ''" @on-click="showModal(option)">Edit</m-button>
     </div>
     <div slot="page-content">
       <div class="table">
-        <div
-          class="table-tr"
-          @click="handleClick"
-          id="firewall"
-          :class="{ 'single-selected': option === 'firewall' }"
-        >
+        <div class="table-tr" @click="handleClick" id="firewall" :class="{ 'single-selected': option === 'firewall' }">
           <div class="table-td table-radio">
             <label class="m-input__radio">
-              <input
-                type="radio"
-                value="enable"
-                name="option"
-                v-model="option"
-              />
+              <input type="radio" value="enable" name="option" v-model="option" />
               <div></div>
             </label>
           </div>
-          <div class="table-td">防火墙</div>
+          <div class="table-td">Firewall</div>
           <div class="table-td">
-            {{ db.optionObj && db.optionObj.enable == 1 ? "是" : "否" }}
-            <i
-              class="el-icon-edit edit-icon"
-              @click="showModal('firewall')"
-            ></i>
+            {{ db.optionObj && db.optionObj.enable == 1 ? "Yes" : "No" }}
+            <i class="el-icon-edit edit-icon" @click="showModal('firewall')"></i>
           </div>
         </div>
-        <div
-          class="table-tr"
-          @click="handleClick"
-          id="ebtables"
-          :class="{ 'single-selected': option === 'ebtables' }"
-        >
+        <div class="table-tr" @click="handleClick" id="ebtables" :class="{ 'single-selected': option === 'ebtables' }">
           <div class="table-td table-radio">
             <label class="m-input__radio">
-              <input
-                type="radio"
-                value="ebtables"
-                name="option"
-                v-model="option"
-              />
+              <input type="radio" value="ebtables" name="option" v-model="option" />
               <div></div>
             </label>
           </div>
           <div class="table-td">ebtables</div>
           <div class="table-td">
-            {{ db.optionObj && db.optionObj.ebtables === 1 ? "是" : "否" }}
-            <i
-              class="el-icon-edit edit-icon"
-              @click="showModal('ebtables')"
-            ></i>
+            {{ db.optionObj && db.optionObj.ebtables === 1 ? "Yes" : "No" }}
+            <i class="el-icon-edit edit-icon" @click="showModal('ebtables')"></i>
           </div>
         </div>
-        <div
-          class="table-tr"
-          @click="handleClick"
-          id="log_ratelimit"
-          :class="{ 'single-selected': option === 'log_ratelimit' }"
-        >
+        <div class="table-tr" @click="handleClick" id="log_ratelimit"
+          :class="{ 'single-selected': option === 'log_ratelimit' }">
           <div class="table-td table-radio">
             <label class="m-input__radio">
-              <input
-                type="radio"
-                value="log_ratelimit"
-                name="option"
-                v-model="option"
-              />
+              <input type="radio" value="log_ratelimit" name="option" v-model="option" />
               <div></div>
             </label>
           </div>
-          <div class="table-td">Log速率限制</div>
+          <div class="table-td">Log Rate Limit</div>
           <div class="table-td">
             {{ db.optionObj && render_kvm_console(db.optionObj.log_ratelimit) }}
-            <i
-              class="el-icon-edit edit-icon"
-              @click="showModal('log_ratelimit')"
-            ></i>
+            <i class="el-icon-edit edit-icon" @click="showModal('log_ratelimit')"></i>
           </div>
         </div>
-        <div
-          class="table-tr"
-          @click="handleClick"
-          id="policy_in"
-          :class="{ 'single-selected': option === 'policy_in' }"
-        >
+        <div class="table-tr" @click="handleClick" id="policy_in"
+          :class="{ 'single-selected': option === 'policy_in' }">
           <div class="table-td table-radio">
             <label class="m-input__radio">
-              <input
-                type="radio"
-                value="policy_in"
-                name="option"
-                v-model="option"
-              />
+              <input type="radio" value="policy_in" name="option" v-model="option" />
               <div></div>
             </label>
           </div>
-          <div class="table-td">输入策略</div>
+          <div class="table-td">Input Policy</div>
           <div class="table-td">
             {{
               db.optionObj && db.optionObj.policy_in
                 ? db.optionObj.policy_in
                 : "root@$hostname"
             }}
-            <i
-              class="el-icon-edit edit-icon"
-              @click="showModal('policy_in')"
-            ></i>
+            <i class="el-icon-edit edit-icon" @click="showModal('policy_in')"></i>
           </div>
         </div>
-        <div
-          class="table-tr"
-          @click="handleClick"
-          id="policy_out"
-          :class="{ 'single-selected': option === 'policy_out' }"
-        >
+        <div class="table-tr" @click="handleClick" id="policy_out"
+          :class="{ 'single-selected': option === 'policy_out' }">
           <div class="table-td table-radio">
             <label class="m-input__radio">
-              <input
-                type="radio"
-                value="policy_out"
-                name="option"
-                v-model="option"
-              />
+              <input type="radio" value="policy_out" name="option" v-model="option" />
               <div></div>
             </label>
           </div>
-          <div class="table-td">输出策略</div>
+          <div class="table-td">Output Policy</div>
           <div class="table-td">
             {{
               db.optionObj && db.optionObj.policy_out
                 ? db.optionObj.policy_out
-                : "无"
+                : "None"
             }}
-            <i
-              class="el-icon-edit edit-icon"
-              @click="showModal('policy_out')"
-            ></i>
+            <i class="el-icon-edit edit-icon" @click="showModal('policy_out')"></i>
           </div>
         </div>
       </div>
-      <OptionModal
-        :visible="visible"
-        v-if="visible"
-        :title="title"
-        @close="
-          visible = false;
-          __init__();
-        "
-        :type="type"
-      ></OptionModal>
+      <OptionModal :visible="visible" v-if="visible" :title="title" @close="
+        visible = false;
+      __init__();
+      " :type="type"></OptionModal>
     </div>
   </page-template>
 </template>
@@ -189,18 +116,18 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化查找
+    //Initialize search
     __init__() {
       this.queryFireOptionList();
     },
-    //点击表格行触发事件
+    //Click event triggered when clicking table row
     handleClick(event) {
       this.option = event.target.parentElement.id;
     },
-    //渲染键盘语言
+    //Render keyboard language
     render_kvm_language(value) {
       if (!value || value === "__default__") {
-        return "默认";
+        return "Default";
       }
       var text = KVM_KEYMAPS[value];
       if (text) {
@@ -208,10 +135,10 @@ export default {
       }
       return value;
     },
-    //渲染控制台
+    //Render console
     render_kvm_console(value) {
       if (!value || value === "__default__") {
-        return "默认";
+        return "Default";
       }
       var text = CONSOLE_Map[value];
       if (text) {
@@ -219,35 +146,35 @@ export default {
       }
       return value;
     },
-    //渲染高可用
+    //Render high availability
     render_dc_ha_opts: function (value) {
       if (!value) {
-        return "默认";
+        return "Default";
       } else {
         return printPropertyString(value);
       }
     },
-    //渲染网络
+    //Render network
     render_as_property_string: function (value) {
-      return !value ? "默认" : printPropertyString(value);
+      return !value ? "Default" : printPropertyString(value);
     },
     showModal(key) {
       this.type = key;
       switch (key) {
         case "firewall":
-          this.title = "编辑：防火墙";
+          this.title = "Edit: Firewall";
           break;
         case "ebtables":
-          this.title = "编辑：ebtables";
+          this.title = "Edit: ebtables";
           break;
         case "log_ratelimit":
-          this.title = "编辑：Log速率限制";
+          this.title = "Edit: Log Rate Limit";
           break;
         case "policy_in":
-          this.title = "编辑：输入方向";
+          this.title = "Edit: Input Direction";
           break;
         case "policy_out":
-          this.title = "编辑：输出方向";
+          this.title = "Edit: Output Direction";
           break;
       }
       this.visible = true;
@@ -263,19 +190,23 @@ export default {
   padding: 10px 0px;
   border-top: 1px solid #c4d6ec;
   border-bottom: 1px solid #c4d6ec;
+
   &__item {
     flex: 1 1 auto;
     display: flex;
   }
+
   &__title {
     flex: 1 1 auto;
     display: inline-flex;
   }
+
   &__desc {
     flex: 1 1 auto;
     display: inline-flex;
   }
 }
+
 .table {
   &-tr {
     height: 35px;
@@ -283,11 +214,13 @@ export default {
     width: 100%;
     cursor: pointer;
   }
+
   &-td {
     height: 35px;
     line-height: 35px;
     width: 50%;
   }
+
   &-radio {
     width: 50px;
     padding-right: 20px;

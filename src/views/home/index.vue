@@ -24,14 +24,14 @@ import MCheckBox from "@src/components/checkbox/Checkbox";
 import Dropdown from "@src/components/dropdown/dropdown";
 import DropdownItem from "@src/components/dropdown/dropdownItem";
 import SplitLine from "@src/components/split/SplitLine";
-//注册全局组件
-Vue.component(ToastManager); //提示框组件
-Vue.component("table-info-state", TableInfoState); //表格状态组件
-Vue.component("m-select", MSelect); //下拉选择框组件
-Vue.component("m-option", Option); //下拉选择框选项组件
-Vue.component("m-checkbox", MCheckBox); //多选框组件
-Vue.component("m-dropdown", Dropdown); //dropdown组件
-Vue.component("m-dropdown-item", DropdownItem); //dropdown选项组件
+//Register global components
+Vue.component(ToastManager); //Toast component
+Vue.component("table-info-state", TableInfoState); //Table state component
+Vue.component("m-select", MSelect); //Dropdown select component
+Vue.component("m-option", Option); //Dropdown option component
+Vue.component("m-checkbox", MCheckBox); //Checkbox component
+Vue.component("m-dropdown", Dropdown); //Dropdown component
+Vue.component("m-dropdown-item", DropdownItem); //Dropdown item component
 export default {
   name: "HomeIndex",
   components: {
@@ -46,6 +46,7 @@ export default {
 <style scoped lang="less">
 .main {
   height: 100%;
+
   &-content {
     position: absolute;
     top: 60px;

@@ -11,7 +11,7 @@ export default {
     this.node = (JSON.parse(last).node && JSON.parse(last).node) || "";
   },
   methods: {
-    //查询磁盘
+    //Query disk
     queryDiskLvm(param) {
       this.loading = true;
       return this.$http
@@ -29,7 +29,7 @@ export default {
           this.loading = false;
         });
     },
-    //查询节点磁盘列表
+    //Query node disk list
     queryListNodeDiskList(param) {
       return this.$http
         .get(`json/nodes/${this.node}/disks/list`, param)
@@ -42,7 +42,7 @@ export default {
           }
         });
     },
-    //创建云盘组
+    //Create volume group
     createVolumeGroup(param) {
       let event = this.createEvent(`action.node.disk.lvm.create`);
       return this.$http

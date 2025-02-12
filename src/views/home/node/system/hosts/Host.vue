@@ -6,14 +6,14 @@
         @on-click="updateHost"
         icon="el-icon-edit"
         :disabled="oldContent === hostContent"
-        >保存</m-button
+        >Save</m-button
       >
       <m-button
         type="primary"
         @on-click="hostContent = oldContent"
         icon="el-icon-edit"
         :disabled="oldContent === hostContent"
-        >还原</m-button
+        >Reset</m-button
       >
     </div>
     <div slot="page-content">

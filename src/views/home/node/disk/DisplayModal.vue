@@ -10,13 +10,13 @@
     <div slot="content" style="max-height: 500px" v-if="param.health !== 'OK'">
       <el-table v-loading="loading" :element-loading-text="loadingText">
         <el-table-column label="ID"></el-table-column>
-        <el-table-column label="属性"></el-table-column>
-        <el-table-column label="值"></el-table-column>
-        <el-table-column label="标准化"></el-table-column>
-        <el-table-column label="阈值"></el-table-column>
-        <el-table-column label="最差"></el-table-column>
-        <el-table-column label="标记"></el-table-column>
-        <el-table-column label="失败"></el-table-column>
+        <el-table-column label="Attribute"></el-table-column>
+        <el-table-column label="Value"></el-table-column>
+        <el-table-column label="Normalized"></el-table-column>
+        <el-table-column label="Threshold"></el-table-column>
+        <el-table-column label="Worst"></el-table-column>
+        <el-table-column label="Flag"></el-table-column>
+        <el-table-column label="Failed"></el-table-column>
       </el-table>
     </div>
     <div slot="content" style="max-height: 500px" v-if="param.health === 'OK'">
@@ -28,10 +28,10 @@
     </div>
     <template slot="footer">
       <m-button class="create-btn" type="danger" @on-click="close"
-        >取消</m-button
+        >Cancel</m-button
       >
       <m-button class="create-btn" type="primary" @on-click="confirm"
-        >重载</m-button
+        >Reload</m-button
       >
     </template>
   </Dialog>

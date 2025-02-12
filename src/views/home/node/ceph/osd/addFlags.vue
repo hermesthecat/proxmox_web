@@ -1,7 +1,7 @@
 <template>
   <m-dialog
     :visible="visible"
-    title="管理 Global OSD Flags"
+    title="Manage Global OSD Flags"
     @close="close"
     @cancel="close"
     @confirm="confirm"
@@ -16,13 +16,13 @@
               @selection-change="(rows) => (selectedList = rows)"
             >
               <el-table-column
-                label="启用"
+                label="Enable"
                 type="selection"
                 width="55px"
               ></el-table-column>
-              <el-table-column label="名称" prop="name"></el-table-column>
+              <el-table-column label="Name" prop="name"></el-table-column>
               <el-table-column
-                label="描述"
+                label="Description"
                 prop="description"
               ></el-table-column>
             </el-table>
@@ -50,7 +50,7 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化请求
+    //Initialize request
     __init__() {
       let _this = this;
       _this.queryFlags({ _dc: new Date().getTime() }).then((res) => {
@@ -64,11 +64,11 @@ export default {
         });
       });
     },
-    //关闭弹框
+    //Close dialog
     close() {
       this.$emit("close");
     },
-    //确定添加
+    //Confirm add
     confirm() {
       let param = {};
       for (let i = 0; i < this.flagList.length; i++) {

@@ -5,7 +5,7 @@
         type="primary"
         :disabled="option === ''"
         @on-click="showModal(option)"
-        >编辑</m-button
+        >Edit</m-button
       >
     </div>
     <div slot="page-content">
@@ -46,8 +46,8 @@
             {{
               db.qemuFireWallOptionsObj &&
               db.qemuFireWallOptionsObj[item.value] == 1
-                ? "是"
-                : "否"
+                ? "Yes"
+                : "No"
             }}
             <i
               class="el-icon-edit edit-icon"
@@ -58,7 +58,7 @@
             {{
               db.qemuFireWallOptionsObj && db.qemuFireWallOptionsObj[item.value]
                 ? db.qemuFireWallOptionsObj[item.value]
-                : "默认"
+                : "Default"
             }}
             <i
               class="el-icon-edit edit-icon"
@@ -102,7 +102,7 @@ export default {
       options: [
         {
           value: "enable",
-          label: "防火墙",
+          label: "Firewall",
         },
         {
           value: "dhcp",
@@ -114,15 +114,15 @@ export default {
         },
         {
           value: "radv",
-          label: "路由器广播",
+          label: "Router Advertisement",
         },
         {
           value: "macfilter",
-          label: "MAC过滤",
+          label: "MAC Filter",
         },
         {
           value: "ipfilter",
-          label: "IP过滤",
+          label: "IP Filter",
         },
         {
           value: "log_level_in",
@@ -134,11 +134,11 @@ export default {
         },
         {
           value: "policy_in",
-          label: "输入策略",
+          label: "Input Policy",
         },
         {
           value: "policy_out",
-          label: "输出策略",
+          label: "Output Policy",
         },
       ],
     };
@@ -147,11 +147,11 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化查找
+    //Initialize search
     __init__() {
       this.queryQemuOption();
     },
-    //点击表格行触发事件
+    //Click table row event
     handleClick(event) {
       this.option = event.target.parentElement.id;
     },
@@ -159,34 +159,34 @@ export default {
       this.type = key;
       switch (key) {
         case "enable":
-          this.title = "编辑：防火墙";
+          this.title = "Edit: Firewall";
           break;
         case "dhcp":
-          this.title = "编辑：DHCP";
+          this.title = "Edit: DHCP";
           break;
         case "policy_in":
-          this.title = "编辑：输入策略";
+          this.title = "Edit: Input Policy";
           break;
         case "ndp":
-          this.title = "编辑：NDP";
+          this.title = "Edit: NDP";
           break;
         case "plicy_out":
-          this.title = "编辑：输出策略";
+          this.title = "Edit: Output Policy";
           break;
         case "ipfilter":
-          this.title = "编辑：IP过滤器";
+          this.title = "Edit: IP Filter";
           break;
         case "log_level_in":
-          this.title = "编辑：log_level_in";
+          this.title = "Edit: log_level_in";
           break;
         case "log_level_out":
-          this.title = "编辑：log_level_out";
+          this.title = "Edit: log_level_out";
           break;
         case "macfilter":
-          this.title = "编辑：MAC过滤器";
+          this.title = "Edit: MAC Filter";
           break;
         case "radv":
-          this.title = "编辑：路由器广播";
+          this.title = "Edit: Router Advertisement";
           break;
       }
       this.visible = true;

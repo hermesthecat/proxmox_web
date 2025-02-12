@@ -6,7 +6,7 @@
         @on-click="showModal('backup')"
         icon="fa fa-save"
         v-if="!showOperate"
-        >立即备份</m-button
+        >Backup Now</m-button
       >
       <m-button
         type="primary"
@@ -14,7 +14,7 @@
         icon="fa fa-retweet"
         v-if="!showOperate"
         :disabled="selectedList.length !== 1"
-        >恢复</m-button
+        >Restore</m-button
       >
       <m-button
         type="danger"
@@ -22,7 +22,7 @@
         icon="el-icon-delete"
         v-if="!showOperate"
         :disabled="selectedList.length !== 1"
-        >删除</m-button
+        >Delete</m-button
       >
       <m-button
         type="info"
@@ -30,7 +30,7 @@
         icon="el-icon-view"
         v-if="!showOperate"
         :disabled="selectedList.length !== 1"
-        >显示配置</m-button
+        >Show Configuration</m-button
       >
       <m-dropdown
         trigger="click"
@@ -48,12 +48,11 @@
             type="primary"
             style="position: absolute; left: -1px; top: -1px; right: -1px"
             icon="el-icon-plus"
-            >操作</m-button
+            >Operations</m-button
           >
         </span>
-        <template v-for="item in operateItems">
+        <template v-for="item in operateItems" :key="item.value">
           <m-dropdown-item
-            :key="item.value"
             :command="item.value"
             :icon="item.icon"
             :disabled="
@@ -67,7 +66,7 @@
     <div slot="toolbar-right" style="text-align: right">
       <m-select
         v-model="storage"
-        label="存储"
+        label="Storage"
         prop="storage"
         @on-change="
           (value) => {
@@ -83,10 +82,10 @@
           :value="item.storage"
         >
           <div class="table-tr" v-if="index === 0">
-            <div class="table-td">名称</div>
-            <div class="table-td">类别</div>
-            <div class="table-td">可用</div>
-            <div class="table-td">容量</div>
+            <div class="table-td">Name</div>
+            <div class="table-td">Category</div>
+            <div class="table-td">Available</div>
+            <div class="table-td">Capacity</div>
           </div>
           <div class="table-tr">
             <div class="table-td" :title="item.storage">{{ item.storage }}</div>
@@ -110,10 +109,10 @@
         type="text"
         prop="search"
         labelWidth="53px"
-        label="搜索名称"
+        label="Search Name"
         v-model="search"
         @input="throttle(filter('volid'), 1000)"
-        placeholder="请输入名称"
+        placeholder="Please enter name"
       >
         <i slot="prefix" class="el-icon-search"></i>
       </m-input>
@@ -126,14 +125,14 @@
         @sort-change="handleSort"
       >
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="名称" prop="volid" sortable width="400px">
+        <el-table-column label="Name" prop="volid" sortable width="400px">
           <template slot-scope="scope">
             {{
               scope.row.volid ? scope.row.volid.replace(/([\s\S]*)\//, "") : ""
             }}
           </template>
         </el-table-column>
-        <el-table-column label="日期" prop="ctime" sortable>
+        <el-table-column label="Date" prop="ctime" sortable>
           <template slot-scope="scope">
             {{
               dateFormat(
@@ -143,8 +142,8 @@
             }}
           </template>
         </el-table-column>
-        <el-table-column label="格式" prop="format"></el-table-column>
-        <el-table-column label="大小" prop="size">
+        <el-table-column label="Format" prop="format"></el-table-column>
+        <el-table-column label="Size" prop="size">
           <template slot-scope="scope">
             {{ byteToSize(scope.row.size) }}
           </template>
@@ -196,22 +195,22 @@ export default {
       showOperate: false,
       operateItems: [
         {
-          label: "立即备份",
+          label: "Backup Now",
           value: "backup",
           icon: "fa fa-save",
         },
         {
-          label: "恢复",
+          label: "Restore",
           value: "restore",
           icon: "fa fa-retweet",
         },
         {
-          label: "显示配置",
+          label: "Show Configuration",
           value: "config",
           icon: "el-icon-view",
         },
         {
-          label: "删除",
+          label: "Delete",
           value: "delete",
           icon: "el-icon-delete",
         },
@@ -237,7 +236,7 @@ export default {
         this.showOperate = true;
       }
     },
-    //初始化查找
+    //Initialize search
     async __init__() {
       let _this = this;
       await _this
@@ -260,7 +259,7 @@ export default {
         ).filter((item) => item.vmid === _this.node.vmid);
       });
     },
-    //切换storage查询
+    //Switch storage query
     async handleChangeStorage() {
       let _this = this;
       this.queryQemuBackUpList({ content: "backup" }).then((res) => {
@@ -271,21 +270,21 @@ export default {
         ).filter((item) => item.vmid === _this.node.vmid);
       });
     },
-    //按钮是否可点击
+    //Check if button is clickable
     inStatus() {
       return this.selectedList.length <= 0;
     },
-    //选择
+    //Selection
     handleSelect(row) {
       this.selectedList = row;
     },
     /**
-     * 删除备份任务
+     * Delete backup task
      */
     handleDelete(type) {
       this.$confirm
         .confirm({
-          msg: `你确定你要删除改项${this.selectedList[0].volid}吗？`,
+          msg: `Are you sure you want to delete ${this.selectedList[0].volid}?`,
           type: "info",
           icon: "icon-warning",
         })
@@ -303,7 +302,7 @@ export default {
         .catch(() => {});
     },
     /**
-     * 搜索
+     * Search
      */
     filter(type) {
       if (this.search) {
@@ -317,7 +316,7 @@ export default {
         this.handleChangeStorage();
       }
     },
-    //排序
+    //Sort
     handleSort({ colume, prop, order }) {
       let _this = this;
       if (order !== null)
@@ -328,7 +327,7 @@ export default {
         );
     },
     /**
-     * 弹框
+     * Modal dialog
      */
     showModal(type) {
       debugger;
@@ -342,18 +341,18 @@ export default {
       }
     },
     /**
-     * 设置标题 @param type 'backup', 'config', 'restore'
+     * Set title @param type 'backup', 'config', 'restore'
      */
     setTitle(type) {
       switch (type) {
         case "backup":
-          this.title = `备份: ${this.node.text}`;
+          this.title = `Backup: ${this.node.text}`;
           break;
         case "config":
-          this.title = `配置`;
+          this.title = `Configuration`;
           break;
         case "restore":
-          this.title = `恢复: ${this.node.text}`;
+          this.title = `Restore: ${this.node.text}`;
           break;
       }
     },

@@ -17,15 +17,15 @@
           required
           :show-error="rules['nodename'].error"
           :error-msg="rules['nodename'].message"
-          label="主机"
+          label="Host"
           labelWidth="100px"
         >
           <template v-for="(item, index) in nodeList" :key="item.node">
             <m-option :label="item.node" :value="item.node">
               <div class="table-tr" v-show="index === 0">
-                <div class="table-td">名称</div>
-                <div class="table-td">使用率</div>
-                <div class="table-td">cpu</div>
+                <div class="table-td">Name</div>
+                <div class="table-td">Usage</div>
+                <div class="table-td">CPU</div>
               </div>
               <div class="table-tr">
                 <div class="table-td">{{ item.node }}</div>
@@ -55,7 +55,7 @@
       <template v-if="modalType === 'cephfs'">
         <m-input
           v-model="name"
-          label="名称"
+          label="Name"
           labelWidth="110px"
           @validate="validate"
           :validateEvent="true"
@@ -77,17 +77,17 @@
         />
         <m-checkbox
           v-model="add_storage"
-          label="添加存储"
+          label="Add Storage"
           labelWidth="110px"
         ></m-checkbox>
-        <div class="warning">将行的CephFs添加到集群存储配置</div>
+        <div class="warning">Add CephFs to cluster storage configuration</div>
       </template>
       <template v-if="modalType === 'log'">
         <div slot="toolbar-right" style="flex: 2 1 auto">
           <m-input
             prop="expire"
             labelWidth="60px"
-            label="选择日期"
+            label="Select Date"
             style="vertical-align: top"
             :__conStyle="{ width: '355px' }"
           >
@@ -97,7 +97,7 @@
                 type="daterange"
                 format="yyyy-MM-dd hh:mm"
                 value-format="yyyy-MM-dd hh:mm"
-                placeholder="选择日期"
+                placeholder="Select Date"
               >
               </el-date-picker>
             </template>
@@ -107,7 +107,7 @@
             style="vertical-align: middle"
             @on-click="__init__()"
             icon="el-icon-refresh"
-            >更新</m-button
+            >Refresh</m-button
           >
         </div>
         <div slot="page-content">
@@ -124,19 +124,19 @@
         :_style="{
           width: '800px',
         }"
-        title="Task Viewer: 任务进度"
+        title="Task Viewer: Task Progress"
       >
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
-            <m-tab-panel label="输出" name="log"></m-tab-panel>
-            <m-tab-panel label="状态" name="status"></m-tab-panel>
+            <m-tab-panel label="Output" name="log"></m-tab-panel>
+            <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
           <m-button
             class="create-btn m-margin-top-10"
             type="primary"
             @on-click="stopTask1"
             :disabled="db.addClusterStatusObj.status !== 'running'"
-            >停止</m-button
+            >Stop</m-button
           >
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
@@ -239,8 +239,8 @@ export default {
     dateFormat,
     __init__() {
       let _this = this;
-      //当为虚拟机是过滤为添加的虚拟机
-      //请求存储
+      //Filter for added virtual machines when it is a virtual machine
+      //Request storage
       _this.queryNodes().then((res) => {
         _this.nodeList = quickSort(this.db.nodeList, "node", "+");
         _this.nodename = _this.nodeList ? _this.nodeList[0].node : "";
@@ -284,11 +284,11 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空!";
+        this.rules[prop].message = "Cannot be empty!";
         return;
       }
     },
-    //校验所有
+    //Validate all
     validateAll() {
       let props = [];
       if (this.modalType === "metadata") {
@@ -300,11 +300,11 @@ export default {
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
     },
-    //关闭弹框
+    //Close dialog
     close() {
       this.$emit("close");
     },
-    //确定添加
+    //Confirm add
     confirm() {
       if (this.validateAll()) return;
       if (this.modalType === "metadata") {

@@ -114,7 +114,7 @@ export default {
           }
         });
     },
-    //查询MDev
+    // Query MDev
     queryMDev(pciid) {
       return this.$http
         .get(`json/nodes/${this.node.node}/hardware/pci/${pciid}/mdev`)
@@ -127,7 +127,7 @@ export default {
           }
         });
     },
-    //添加硬件
+    // Add Hardware
     createHardWare(param) {
       let event = this.createEvent("action.qemu.hardware.create");
       return this.$http
@@ -144,7 +144,7 @@ export default {
           return Promise.reject(res);
         });
     },
-    //添加硬件
+    // Add LXC Resource
     createLxcRs(param) {
       let event = this.createEvent("action.qemu.lxc.resource.create");
       return this.$http
@@ -161,7 +161,7 @@ export default {
           return Promise.reject(res);
         });
     },
-    //编辑时触发的http请求
+    // HTTP request triggered when editing
     updateHardWare(param) {
       let event = this.createEvent("action.qemu.hardware.update");
       return this.$http
@@ -178,7 +178,7 @@ export default {
           return Promise.reject(res);
         });
     },
-    //删除配置
+    // Delete Configuration
     deleteHareWare(param) {
       let event = this.createEvent(`action.qemu.hardware.delete`);
       return this.$http
@@ -206,7 +206,7 @@ export default {
           return Promise.reject(res);
         });
     },
-    //查询状态
+    // Query Status
     queryStatus(upid) {
       return this.$http
         .get(`json/nodes/${this.node.node}/tasks/${upid}/status`)
@@ -242,7 +242,7 @@ export default {
           });
         });
     },
-    //增加磁盘大小
+    // Increase Disk Size
     updateHardWareSize(param) {
       let event = this.createEvent("action.qemu.hardware.size.update");
       return this.$http
@@ -260,7 +260,7 @@ export default {
           return Promise.reject(res);
         });
     },
-    //移动磁盘
+    // Move Disk
     removeDisk(param, url) {
       let event = this.createEvent("action.qemu.hardware.remove.disk");
       return this.$http
@@ -278,7 +278,7 @@ export default {
           return Promise.reject(res);
         });
     },
-    //查询当前虚拟机状态
+    // Query Current VM Status
     queryCurrentStatus() {
       return this.$http
         .get(`json/nodes/${this.node.node}/${this.node.id}/status/current`)

@@ -6,14 +6,8 @@
         <div class="pve-login_content__form">
           <h1 class="pve-login_content__form-title">{{ $t("login.title") }}</h1>
           <div class="pve-login_content__form-item">
-            <input
-              :placeholder="$t('login.username.placeholder')"
-              type="text"
-              @blur="validate('username')"
-              @input="validate('username')"
-              :class="{ 'error-input': emptyusername }"
-              v-model="username"
-            />
+            <input :placeholder="$t('login.username.placeholder')" type="text" @blur="validate('username')"
+              @input="validate('username')" :class="{ 'error-input': emptyusername }" v-model="username" />
             <span class="icon icon-user"></span>
             <div class="error error-msg" v-if="emptyusername">
               {{ $t("login.username.empty") }}
@@ -23,14 +17,8 @@
             </div>
           </div>
           <div class="pve-login_content__form-item">
-            <input
-              :placeholder="$t('login.password.placeholder')"
-              type="password"
-              @blur="validate('password')"
-              @input="validate('password')"
-              :class="{ 'error-input': emptypassword }"
-              v-model="password"
-            />
+            <input :placeholder="$t('login.password.placeholder')" type="password" @blur="validate('password')"
+              @input="validate('password')" :class="{ 'error-input': emptypassword }" v-model="password" />
             <span class="icon icon-password"></span>
             <div class="error error-msg" v-if="emptypassword">
               {{ $t("login.password.empty") }}
@@ -42,11 +30,7 @@
           <div class="pve-login_content__form-select">
             <div class="pv-form-select-wrapper width-12">
               <select class="pv-form-input" v-model="realm">
-                <option
-                  v-for="item of realmList"
-                  :key="item.realm"
-                  :value="item.realm"
-                >
+                <option v-for="item of realmList" :key="item.realm" :value="item.realm">
                   {{ item.comment }}
                 </option>
               </select>
@@ -55,11 +39,7 @@
           <div class="pve-login_content__form-select">
             <div class="pv-form-select-wrapper width-12">
               <select class="pv-form-input" v-model="lang" @change="changeLang">
-                <option
-                  v-for="item of langList"
-                  :key="item.value"
-                  :value="item.value"
-                >
+                <option v-for="item of langList" :key="item.value" :value="item.value">
                   {{ item.label }}
                 </option>
               </select>

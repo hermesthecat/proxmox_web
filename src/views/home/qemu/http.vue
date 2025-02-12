@@ -4,7 +4,7 @@ export default {
   name: "QemuHttpIndex",
   methods: {
     /**
-     * 删除虚拟机，lxc
+     * Delete virtual machine, lxc
      */
     deleteQemu(param) {
       let event = this.createEvent("qemu.action.delete", this.qemu.name);
@@ -23,7 +23,7 @@ export default {
           return Promise.reject(res);
         });
     },
-    //查询状态
+    // Query status
     queryStatus(upid) {
       let _this = this;
       return this.$http
@@ -37,7 +37,7 @@ export default {
             });
             if (res.data.status === "stopped") {
               /**
-               * 删除之后将不存在此资源当跳转至首页
+               * After deletion, this resource will no longer exist, redirect to homepage
                */
               if (
                 res.data.exitstatus &&
@@ -66,7 +66,7 @@ export default {
         });
     },
     /**
-     * 查询任务日志
+     * Query task logs
      */
     queryLog(node, pid) {
       return this.$http
@@ -83,7 +83,7 @@ export default {
         });
     },
     /**
-     * 关闭lxc 虚拟机
+     * Shutdown lxc virtual machine
      */
     offQemu() {
       let event = this.createEvent(`action.qemu.off`, this.qemu.name);
@@ -109,7 +109,7 @@ export default {
         });
     },
     /**
-     * 查询资源
+     * Query resources
      */
     async queryResource() {
       let last = window.localStorage.getItem("lastsel") || "[]";
@@ -126,7 +126,7 @@ export default {
         });
     },
     /**
-     * 停止lxc 虚拟机
+     * Pause lxc virtual machine
      */
     pausedQemu(params) {
       let event = this.createEvent(
@@ -155,7 +155,7 @@ export default {
         });
     },
     /**
-     * 停止lxc 虚拟机
+     * Stop lxc virtual machine
      */
     stopQemu(param) {
       let event = this.createEvent(`action.qemu.stop`, this.qemu.name);
@@ -182,7 +182,7 @@ export default {
         });
     },
     /**
-     * 重置lxc 虚拟机
+     * Reset lxc virtual machine
      */
     resetQemu() {
       let event = this.createEvent(`action.qemu.reset`, this.qemu.name);
@@ -208,7 +208,7 @@ export default {
         });
     },
     /**
-     * 重启lxc
+     * Reboot lxc
      */
     rebootLxc() {
       let event = this.createEvent(`action.lxc.reboot`, this.qemu.name);
@@ -234,7 +234,7 @@ export default {
         });
     },
     /**
-     * 查询节点
+     * Query nodes
      */
     queryNodeList() {
       return this.$http.get("/json/nodes").then((res) => {
@@ -244,7 +244,7 @@ export default {
       });
     },
     /**
-     * 查询存储
+     * Query storage
      */
     queryStorageList(nodename, param) {
       return this.$http
@@ -256,7 +256,7 @@ export default {
         });
     },
     /**
-     * 查询migrate
+     * Query migrate
      */
     queryMigrate(param) {
       return this.$http
@@ -268,7 +268,7 @@ export default {
         });
     },
     /**
-     * 迁移虚拟机、lxc
+     * Migrate virtual machine, lxc
      */
     migreate(params) {
       return this.$http
@@ -292,7 +292,7 @@ export default {
         });
     },
     /**
-     * 查询快照列表
+     * Query snapshot list
      */
     querySnapShot(param) {
       return this.$http
@@ -304,7 +304,7 @@ export default {
         });
     },
     /**
-     * 查询下一个vmid
+     * Query next vmid
      */
     queryNextVmid(param) {
       return this.$http.get(`json/cluster/nextid`, param).then((res) => {
@@ -314,7 +314,7 @@ export default {
       });
     },
     /**
-     * 查询资源池列表
+     * Query resource pool list
      */
     queryPool(param) {
       return this.$http.get(`json/pools`, param).then((res) => {
@@ -324,7 +324,7 @@ export default {
       });
     },
     /**
-     * clone
+     * Clone
      */
     clone(params) {
       return this.$http
@@ -348,7 +348,7 @@ export default {
         });
     },
     /**
-     * 制作模板
+     * Create template
      */
     makeTemplate() {
       let event = this.createEvent("action.template.translate", this.qemu.vmid);
@@ -371,7 +371,7 @@ export default {
         });
     },
     /**
-     * 获得ha groups
+     * Get ha groups
      */
     getGroups() {
       return this.$http.get(`json/cluster/ha/groups`).then((res) => {
@@ -381,7 +381,7 @@ export default {
       });
     },
     /**
-     * 查询ha资源
+     * Query ha resources
      */
     queryHaResource(vmid, param) {
       return this.$http
@@ -391,7 +391,7 @@ export default {
         });
     },
     /**
-     * 管理ha
+     * Manage ha
      */
     mangeHa(param) {
       let event = this.createEvent("action.ha.manage");
@@ -409,8 +409,8 @@ export default {
           return Promise.reject(res);
         });
     },
-    /***
-     * 修改ha
+    /**
+     * Update ha
      */
     updateHa(vmid, param) {
       let event = this.createEvent("action.ha.manage.update");

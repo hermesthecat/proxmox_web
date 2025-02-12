@@ -12,9 +12,9 @@
     <div slot="content">
       <div class="m-form__section">
         <dl>
-          <dt>基本操作</dt>
+          <dt>Basic Operations</dt>
           <dd>
-            <!--名称-->
+            <!--Name-->
             <template v-if="modalType === 'editname'">
               <m-input
                 type="text"
@@ -27,19 +27,19 @@
                 :show-error="rules['name'].error"
                 :error-msg="rules['name'].message"
                 @on-change="(value) => (name = value)"
-                label="名称"
+                label="Name"
               />
             </template>
-            <!--开机自启动-->
+            <!--Auto Start-->
             <template v-if="modalType === 'editboot'">
               <m-checkbox
                 v-model="onboot"
                 labelWidth="100px"
-                label="开机自启动"
+                label="Auto Start"
               >
               </m-checkbox>
             </template>
-            <!--启动/关机顺序-->
+            <!--Start/Shutdown Order-->
             <template v-if="modalType === 'editstartup'">
               <m-input
                 type="text"
@@ -48,7 +48,7 @@
                 labelWidth="100px"
                 @on-change="(value) => (order = value)"
                 placeholer="any"
-                label="启动/关机顺序"
+                label="Start/Shutdown Order"
               />
 
               <m-input
@@ -58,7 +58,7 @@
                 labelWidth="100px"
                 @on-change="(value) => (up = value)"
                 placeholder="any"
-                label="启动延时"
+                label="Start Delay"
               />
 
               <m-input
@@ -67,14 +67,14 @@
                 labelWidth="100px"
                 v-model="down"
                 @on-change="(value) => (down = value)"
-                label="关机超时"
+                label="Shutdown Timeout"
               />
             </template>
-            <!--OS类型-->
+            <!--OS Type-->
             <template v-if="modalType === 'editostype'">
               <m-select
                 prop="ostype"
-                label="类别"
+                label="Type"
                 labelWidth="100px"
                 @on-change="handleOsTypeChange"
                 v-model="ostype"
@@ -90,7 +90,7 @@
 
               <m-select
                 prop="version"
-                label="版本"
+                label="Version"
                 labelWidth="100px"
                 @on-change="(value) => (version = value)"
                 v-model="version"
@@ -104,10 +104,10 @@
                 </m-option>
               </m-select>
             </template>
-            <!--引导顺序-->
+            <!--Boot Order-->
             <template v-if="modalType === 'editorder'">
               <!--<m-select prop="bd1"-->
-              <!--label="引导设备1"-->
+              <!--label="Boot Device 1"-->
               <!--labelWidth="100px"-->
               <!--@on-change="(value) => { bd1 = value}"-->
               <!--v-model="bd1">-->
@@ -119,7 +119,7 @@
               <!--</m-select>-->
 
               <!--<m-select prop="bd2"-->
-              <!--label="引导设备2"-->
+              <!--label="Boot Device 2"-->
               <!--labelWidth="100px"-->
               <!--@on-change="(value) => { bd2 = value}"-->
               <!--v-model="bd2">-->
@@ -131,7 +131,7 @@
               <!--</m-select>-->
 
               <!--<m-select prop="bd3"-->
-              <!--label="引导设备3"-->
+              <!--label="Boot Device 3"-->
               <!--labelWidth="100px"-->
               <!--@on-change="(value) => { bd3 = value}"-->
               <!--v-model="bd3">-->
@@ -147,69 +147,69 @@
                     <i class="fa fa-fw fa-reorder cursor-move"></i>
                   </template>
                 </el-table-column>
-                <el-table-column label="已启用" prop="enabled">
+                <el-table-column label="Enabled" prop="enabled">
                   <template slot-scope="scope">
                     <m-checkbox v-model="scope.row.enabled"></m-checkbox>
                   </template>
                 </el-table-column>
-                <el-table-column label="设备" prop="name"></el-table-column>
+                <el-table-column label="Device" prop="name"></el-table-column>
                 <el-table-column
-                  label="描述"
+                  label="Description"
                   prop="desc"
                   show-overflow-tooltip
                 ></el-table-column>
               </el-table>
             </template>
-            <!--使用平板指针-->
+            <!--Use Tablet Pointer-->
             <template v-if="modalType === 'edittablet'">
-              <m-checkbox v-model="tablet" labelWidth="100px" label="已启用">
+              <m-checkbox v-model="tablet" labelWidth="100px" label="Enabled">
               </m-checkbox>
             </template>
-            <!--热拔插-->
+            <!--Hot Plug-->
             <template v-if="modalType === 'edithotplug'">
-              <m-checkbox v-model="disk" labelWidth="100px"> 磁盘 </m-checkbox>
+              <m-checkbox v-model="disk" labelWidth="100px"> Disk </m-checkbox>
 
               <m-checkbox v-model="network" labelWidth="100px">
-                网络
+                Network
               </m-checkbox>
 
-              <m-checkbox v-model="usb" labelWidth="100px"> usb </m-checkbox>
+              <m-checkbox v-model="usb" labelWidth="100px"> USB </m-checkbox>
 
               <m-checkbox v-model="memory" labelWidth="100px">
-                内存
+                Memory
               </m-checkbox>
 
-              <m-checkbox v-model="cpu" labelWidth="100px"> cpu </m-checkbox>
+              <m-checkbox v-model="cpu" labelWidth="100px"> CPU </m-checkbox>
             </template>
-            <!--APCI支持-->
+            <!--ACPI Support-->
             <template v-if="modalType === 'editacpi'">
-              <m-checkbox v-model="acpi" labelWidth="100px" label="已启用">
+              <m-checkbox v-model="acpi" labelWidth="100px" label="Enabled">
               </m-checkbox>
             </template>
-            <!--KVM虚拟化硬件-->
+            <!--KVM Hardware Virtualization-->
             <template v-if="modalType === 'editkvm'">
-              <m-checkbox v-model="kvm" label="已启用" labelWidth="100px">
+              <m-checkbox v-model="kvm" label="Enabled" labelWidth="100px">
               </m-checkbox>
             </template>
-            <!--启动时冻结cpu-->
+            <!--Freeze CPU at Startup-->
             <template v-if="modalType === 'editfreeze'">
               <m-checkbox
                 v-model="freeze"
-                label="启动时冻结CPU"
+                label="Freeze CPU at Startup"
                 labelWidth="100px"
               >
               </m-checkbox>
             </template>
-            <!--使用本地时间进行RTC-->
+            <!--Use Local Time for RTC-->
             <template v-if="modalType === 'editlocaltime'">
               <m-checkbox
                 v-model="localtime"
-                label="使用本地时间进行RTC"
+                label="Use Local Time for RTC"
                 labelWidth="100px"
               >
               </m-checkbox>
             </template>
-            <!--RTC开始时间-->
+            <!--RTC Start Time-->
             <template v-if="modalType === 'editstartdate'">
               <m-input
                 type="text"
@@ -221,11 +221,11 @@
                 :show-error="rules['startdate'].error"
                 :error-msg="rules['startdate'].message"
                 @on-change="(value) => (startdate = value)"
-                placeholder="值为now或者为空"
-                label="RTC开始时间"
+                placeholder="Value should be 'now' or empty"
+                label="RTC Start Time"
               />
             </template>
-            <!--SIMBOS-->
+            <!--SMBIOS-->
             <template v-if="modalType === 'editsmbios1'">
               <m-input
                 type="text"
@@ -245,7 +245,7 @@
                 labelWidth="100px"
                 v-model="manufacturer"
                 @on-change="(value) => (manufacturer = value)"
-                label="生产厂商"
+                label="Manufacturer"
               />
               <m-input
                 type="text"
@@ -253,7 +253,7 @@
                 labelWidth="100px"
                 v-model="product"
                 @on-change="(value) => (product = value)"
-                label="产品"
+                label="Product"
               />
               <m-input
                 type="text"
@@ -261,7 +261,7 @@
                 labelWidth="100px"
                 v-model="sversion"
                 @on-change="(value) => (sversion = value)"
-                label="版本"
+                label="Version"
               />
               <m-input
                 type="text"
@@ -269,7 +269,7 @@
                 labelWidth="100px"
                 v-model="serial"
                 @on-change="(value) => (serial = value)"
-                label="串行"
+                label="Serial"
               />
               <m-input
                 type="text"
@@ -285,10 +285,10 @@
                 labelWidth="100px"
                 v-model="family"
                 @on-change="(value) => (family = value)"
-                label="家族"
+                label="Family"
               />
             </template>
-            <!--Qemu代理-->
+            <!--QEMU Agent-->
             <template v-if="modalType === 'editagent'">
               <m-checkbox
                 v-model="agent"
@@ -299,19 +299,19 @@
               <m-checkbox
                 v-model="fstrim_cloned_disks"
                 :disabled="!agent"
-                label="克隆磁盘后运行guest-trim"
+                label="Run guest-trim after cloning disks"
                 labelWidth="100px"
               >
               </m-checkbox>
               <div class="warning" v-show="agent">
-                确保在虚拟机中安装了QEMU Guest Agent。
+                Make sure QEMU Guest Agent is installed in the VM.
               </div>
             </template>
-            <!--保护-->
+            <!--Protection-->
             <template v-if="modalType === 'editprotection'">
               <m-checkbox
                 v-model="protection"
-                label="已启用"
+                label="Enabled"
                 labelWidth="100px"
               >
               </m-checkbox>
@@ -339,11 +339,11 @@
                 >
                 </m-option>
               </m-select>
-              <div class="warinig" v-show="foldersharing">
-                确保在虚拟机中安装了SPICE WebDav守护程序。
+              <div class="warning" v-show="foldersharing">
+                Make sure SPICE WebDav daemon is installed in the VM.
               </div>
             </template>
-            <!--Vm State-->
+            <!--VM State-->
             <template v-if="modalType === 'editvmstatestorage'">
               <m-select
                 prop="vmstatestorage"
@@ -359,10 +359,10 @@
                   :value="item.storage"
                 >
                   <div class="table-tr" v-if="index === 0">
-                    <div class="table-td">名称</div>
-                    <div class="table-td">类别</div>
-                    <div class="table-td">可用</div>
-                    <div class="table-td">容量</div>
+                    <div class="table-td">Name</div>
+                    <div class="table-td">Type</div>
+                    <div class="table-td">Available</div>
+                    <div class="table-td">Capacity</div>
                   </div>
                   <div class="table-tr">
                     <div class="table-td" :title="item.storage">
@@ -381,7 +381,7 @@
                 </m-option>
               </m-select>
             </template>
-            <!--console-->
+            <!--Console-->
             <template v-if="modalType === 'editconsole'">
               <m-checkbox
                 v-model="console"
@@ -390,7 +390,7 @@
               >
               </m-checkbox>
             </template>
-            <!--tty-->
+            <!--TTY-->
             <template v-if="modalType === 'edittty'">
               <m-input
                 type="number"
@@ -398,14 +398,14 @@
                 labelWidth="100px"
                 v-model="tty"
                 @on-change="(value) => (tty = value)"
-                label="tty"
+                label="TTY"
               />
             </template>
-            <!--tty-->
+            <!--Console Mode-->
             <template v-if="modalType === 'editcmode'">
               <m-select
                 prop="cmode"
-                label="控制台模式"
+                label="Console Mode"
                 labelWidth="100px"
                 @on-change="(value) => (cmode = value)"
                 v-model="cmode"
@@ -419,7 +419,7 @@
                 </m-option>
               </m-select>
             </template>
-            <!--editfeatures-->
+            <!--Features-->
             <template v-if="modalType === 'editfeatures'">
               <m-checkbox
                 v-model="keyctl"
@@ -428,7 +428,7 @@
                 labelWidth="100px"
               >
               </m-checkbox>
-              <m-checkbox v-model="nesting" label="嵌套" labelWidth="100px">
+              <m-checkbox v-model="nesting" label="Nesting" labelWidth="100px">
               </m-checkbox>
               <m-checkbox
                 v-model="nfs"
@@ -439,7 +439,7 @@
               </m-checkbox>
               <m-checkbox
                 v-model="cifs"
-                label="cifs"
+                label="CIFS"
                 :disabled="unprivileged"
                 labelWidth="100px"
               >
@@ -457,10 +457,10 @@
           </dd>
         </dl>
       </div>
-      <!--Qemu代理-->
+      <!--Advanced-->
       <div class="m-form__section" v-show="isAdvice">
         <dl>
-          <dt>高级</dt>
+          <dt>Advanced</dt>
           <dd>
             <m-select
               prop="type"
@@ -482,18 +482,18 @@
       </div>
     </div>
     <template slot="footer">
-      <!--高级当type为editagent时展示-->
+      <!--Advanced shown when type is editagent-->
       <div class="label_box" v-show="modalType === 'editagent'">
         <label>
           <input type="checkbox" v-model="isAdvice" />
-          <div>高级</div>
+          <div>Advanced</div>
         </label>
       </div>
       <m-button class="create-btn" @on-click="close()" type="danger"
-        >取消</m-button
+        >Cancel</m-button
       >
       <m-button class="create-btn" @on-click="confirm()" type="primary"
-        >确定</m-button
+        >Confirm</m-button
       >
     </template>
   </m-dialog>
@@ -513,29 +513,29 @@ export default {
   },
   props: {
     title: {
-      //弹框标题
+      //Modal title
       type: String,
       default: "",
     },
     visible: {
-      //是否展示
+      //Show or hide
       type: Boolean,
       default: false,
     },
     param: {
-      //携带参数
+      //Parameters
       type: Object,
       default: () => {
         return {};
       },
     },
     title: {
-      //弹框标题
+      //Modal title
       type: String,
       default: "",
     },
     modalType: {
-      //编辑类型
+      //Edit type
       type: String,
       default: "",
     },
@@ -594,7 +594,7 @@ export default {
       orderList: [],
       cmodeItems: [
         {
-          label: "默认 (tty)",
+          label: "Default (tty)",
           value: "__none__",
         },
         {
@@ -612,7 +612,7 @@ export default {
       ],
       typeItems: [
         {
-          label: "默认 (VirtIO)",
+          label: "Default (VirtIO)",
           value: "none",
         },
         {
@@ -683,12 +683,12 @@ export default {
     };
   },
   mounted() {
-    //初始化操作
+    //Initialize
     this.__init__();
   },
   methods: {
     byteToSize,
-    //初始化操作
+    //Initialize
     async __init__() {
       let _this = this;
       await _this.queryVmConfig({ _dc: new Date().getTime() }).then(() => {
@@ -886,7 +886,7 @@ export default {
         (/^usb\d+/.test(dev) && !/spice/.test(value))
       );
     },
-    //通过os版本得到ostype
+    //Get OS type from OS version
     getOsTypeByVersion(version) {
       let _this = this;
       if (["126", "l24"].includes(version)) {
@@ -901,7 +901,7 @@ export default {
         _this.ostype = "other";
       }
     },
-    //解析agent
+    //Parse agent
     parseAgent(prop) {
       let _this = this;
       _this.db.qemuObj[prop].split(",").forEach((item) => {
@@ -918,10 +918,10 @@ export default {
         }
       });
     },
-    //解析值形如： key=value,的值
+    //Parse values in format: key=value,
     parseValue(prop) {
       let _this = this;
-      //判断是否存在改属性值没有则默认
+      //Check if property exists, if not use default
       if (!isEmpty(_this.db.qemuObj[prop])) {
         let values = _this.db.qemuObj[prop];
         values.split(",").forEach((item) => {
@@ -940,7 +940,7 @@ export default {
         });
       }
     },
-    //解析spice
+    //Parse spice
     parseSpiceValue(prop) {
       let _this = this;
       if (!isEmpty(_this.db.qemuObj[prop])) {
@@ -1026,12 +1026,12 @@ export default {
           break;
       }
     },
-    //关闭弹框操作
+    //Close modal
     close() {
       let _this = this;
       _this.$emit("close");
     },
-    //确定操作
+    //Confirm operation
     confirm() {
       let _this = this,
         param = {};
@@ -1172,20 +1172,20 @@ export default {
           });
         });
     },
-    //单个表单操作
+    //Single form validation
     validate(prop) {
       let _this = this;
-      //防止出现number 为0时判断为空的现象
-      value = String(_this[props]).trim();
+      //Prevent empty validation when number is 0
+      value = String(_this[prop]).trim();
       if (!/\s\S*/.test(value)) {
         _this.rules[prop].error = true;
-        _this.rules[prop].message = "不能为空!";
+        _this.rules[prop].message = "Cannot be empty!";
         return;
       }
     },
-    //整体校验
+    //Validate all
     validateAll() {},
-    //设置启动顺序
+    //Set boot order
     setVMConfig(vmconfig) {
       let _this = this;
       _this.vmconfig = vmconfig;
@@ -1208,7 +1208,7 @@ export default {
         _this.bd3 = values[2];
       }, 0);
     },
-    //判断是否启动云盘
+    //Check if boot disk
     isBootDisk(value) {
       return /^(ide|sata|virtio|scsi)\d+$/.test(value);
     },

@@ -1,7 +1,7 @@
 <template>
   <m-dialog
     :title="
-      modalType !== 'edit' ? '添加: SCSI控制器类型' : '编辑: SCSI控制器类型'
+      modalType !== 'edit' ? 'Add: SCSI Controller Type' : 'Edit: SCSI Controller Type'
     "
     :visible="visible"
     v-if="visible"
@@ -15,11 +15,11 @@
     <div slot="content" style="max-height: 400px; overflow: auto">
       <div class="m-form__section">
         <dl>
-          <dt>基本信息</dt>
+          <dt>Basic Information</dt>
           <dd>
             <m-select
               labelWidth="100px"
-              label="类别"
+              label="Category"
               v-model="scsihw"
               prop="cpu"
               @on-change="handleScsiChange"
@@ -41,7 +41,7 @@
         type="primary"
         style="height: 40px; line-height: 40px; width: 100px"
         @on-click="confirm()"
-        >确定</m-button
+        >Confirm</m-button
       >
     </template>
   </m-dialog>

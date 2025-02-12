@@ -13,7 +13,7 @@ export default {
   },
   methods: {
     /**
-     * 查询IPSET
+     * Query IPSET
      */
     queryIpSetList() {
       return this.$http
@@ -28,7 +28,7 @@ export default {
         });
     },
     /**
-     * 查询IPSET cidr
+     * Query IPSET CIDR
      */
     queryIpSetCidrList(ipset) {
       return this.$http
@@ -45,7 +45,7 @@ export default {
         });
     },
     /**
-     * 创建IPSET cidr
+     * Create IPSET CIDR
      */
     createIPSet(param) {
       let event = this.createEvent("action.firewall.ipset.create");
@@ -68,7 +68,7 @@ export default {
         });
     },
     /**
-     * 更新IPSET cidr
+     * Update IPSET CIDR
      */
     updateIPSet(param) {
       let event = this.createEvent("action.firewall.ipset.update");
@@ -91,7 +91,7 @@ export default {
         });
     },
     /**
-     * 删除IPSET
+     * Delete IPSET
      */
     deleteIpset() {
       let event = this.createEvent("action.firewall.ipset.delete");
@@ -117,7 +117,7 @@ export default {
       return Promise.all(tasks);
     },
     /**
-     * 删除IPSET cidr
+     * Delete IPSET CIDR
      */
     deleteIpsetCidr(name) {
       let event = this.createEvent("action.firewall.ipset.cidr.delete");
@@ -142,7 +142,9 @@ export default {
       });
       return Promise.all(tasks);
     },
-    //创建IPSetcidr
+    /**
+     * Create IPSET CIDR
+     */
     createIPSetCidr(name, param) {
       let event = this.createEvent(`action.firewallipset.cidr.create`);
       return this.$http
@@ -163,7 +165,9 @@ export default {
           return Promise.reject(res);
         });
     },
-    //编辑更新IPSetCidr
+    /**
+     * Update IPSET CIDR
+     */
     updateIPSetCidr(ipset, param) {
       let event = this.createEvent("action.firewall.ipset.cidr.update"),
         params = deepCopy(param);

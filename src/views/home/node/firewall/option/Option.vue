@@ -5,7 +5,7 @@
         type="primary"
         :disabled="option === ''"
         @on-click="showModal(option)"
-        >编辑</m-button
+        >Edit</m-button
       >
     </div>
     <div slot="page-content">
@@ -39,8 +39,8 @@
             {{
               db.nodeFireWallOptionObj &&
               db.nodeFireWallOptionObj[item.value] == 1
-                ? "是"
-                : "否"
+                ? "Yes"
+                : "No"
             }}
             <i
               class="el-icon-edit edit-icon"
@@ -51,7 +51,7 @@
             {{
               db.nodeFireWallOptionObj && db.nodeFireWallOptionObj[item.value]
                 ? db.nodeFireWallOptionObj[item.value]
-                : "默认"
+                : "Default"
             }}
             <i
               class="el-icon-edit edit-icon"
@@ -95,15 +95,15 @@ export default {
       options: [
         {
           value: "enable",
-          label: "防火墙",
+          label: "Firewall",
         },
         {
           value: "nosmurfs",
-          label: "SMURFS过滤",
+          label: "SMURFS Filter",
         },
         {
           value: "tcpflags",
-          label: "TCP标志过滤器",
+          label: "TCP Flags Filter",
         },
         {
           value: "ndp",
@@ -140,11 +140,11 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化查找
+    //Initialize search
     __init__() {
       this.queryNodeFireWallOption();
     },
-    //点击表格行触发事件
+    //Click event for table row
     handleClick(event) {
       this.option = event.target.parentElement.id;
     },
@@ -152,34 +152,34 @@ export default {
       this.type = key;
       switch (key) {
         case "enable":
-          this.title = "编辑：防火墙";
+          this.title = "Edit: Firewall";
           break;
         case "nosmurfs":
-          this.title = "编辑：SMURFS过滤";
+          this.title = "Edit: SMURFS Filter";
           break;
         case "tcpflags":
-          this.title = "编辑：TCP标志过滤器";
+          this.title = "Edit: TCP Flags Filter";
           break;
         case "ndp":
-          this.title = "编辑：NDP";
+          this.title = "Edit: NDP";
           break;
         case "nf_conntrack_max":
-          this.title = "编辑：nf_conntrack_max";
+          this.title = "Edit: nf_conntrack_max";
           break;
         case "nf_conntrack_tcp_timeout_established":
-          this.title = "编辑：nf_conntrack_tcp_timeout_established";
+          this.title = "Edit: nf_conntrack_tcp_timeout_established";
           break;
         case "log_level_in":
-          this.title = "编辑：log_level_in";
+          this.title = "Edit: log_level_in";
           break;
         case "log_level_out":
-          this.title = "编辑：log_level_out";
+          this.title = "Edit: log_level_out";
           break;
         case "tcp_flags_log_level":
-          this.title = "编辑：tcp_flags_log_level";
+          this.title = "Edit: tcp_flags_log_level";
           break;
         case "smurf_log_level":
-          this.title = "编辑：smurf_log_level";
+          this.title = "Edit: smurf_log_level";
           break;
       }
       this.visible = true;

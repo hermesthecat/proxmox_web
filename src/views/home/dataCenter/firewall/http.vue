@@ -15,8 +15,8 @@ export default {
     },
     handleEnable(param) {
       let event = this.createEvent(
-          `action.firewall.${param.enable === 0 ? "enable" : "stop"}`
-        ),
+        `action.firewall.${param.enable === 0 ? "enable" : "stop"}`
+      ),
         params = deepCopy(param);
       delete params.pos;
       delete params.ipversion;
@@ -179,8 +179,8 @@ export default {
     },
     handleGroupEnable(group, param) {
       let event = this.createEvent(
-          `action.firewall.${param.enable === 0 ? "enable" : "stop"}`
-        ),
+        `action.firewall.${param.enable === 0 ? "enable" : "stop"}`
+      ),
         params = deepCopy(param);
       delete params.pos;
       params.enable = params.enable === 0 ? 1 : 0;

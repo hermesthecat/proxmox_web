@@ -1,6 +1,6 @@
 <template>
   <m-dialog
-    :title="modalType !== 'edit' ? '添加: 显示' : '编辑: 显示'"
+    :title="modalType !== 'edit' ? 'Add: Display' : 'Edit: Display'"
     :visible="visible"
     v-if="visible"
     @confirm="confirm"
@@ -13,11 +13,11 @@
     <div slot="content" style="max-height: 400px; overflow: auto">
       <div class="m-form__section">
         <dl>
-          <dt>基本信息</dt>
+          <dt>Basic Information</dt>
           <dd>
             <m-select
               labelWidth="100px"
-              label="类别"
+              label="Category"
               v-model="vga"
               prop="cpu"
               @on-change="handleVgaChange"
@@ -33,7 +33,7 @@
             <m-input
               type="number"
               labelWidth="100px"
-              label="内存"
+              label="Memory"
               v-model="memory"
               validateEvent
               @validate="validate"
@@ -51,7 +51,7 @@
         type="primary"
         style="height: 40px; line-height: 40px; width: 100px"
         @on-click="confirm()"
-        >确定</m-button
+        >Confirm</m-button
       >
     </template>
   </m-dialog>
@@ -132,13 +132,13 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value) && prop !== "memory") {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
       if (value && prop === "memory") {
         if (this.memory < 4) {
           this.rules[prop].error = true;
-          this.rules[prop].message = `内存不能小于4`;
+          this.rules[prop].message = `Memory cannot be less than 4`;
           return;
         }
       }

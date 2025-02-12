@@ -2,10 +2,10 @@
   <page-template>
     <div slot="toolbar-left">
       <m-button type="primary" @on-click="refresh" icon="el-icon-refresh"
-        >重载</m-button
+        >Reload</m-button
       >
       <m-button type="primary" @on-click="showModal()" icon="el-icon-plus"
-        >创建：Volume Group</m-button
+        >Create: Volume Group</m-button
       >
     </div>
     <div slot="page-content">
@@ -18,7 +18,7 @@
         :tree-props="{ children: 'children' }"
       >
         >
-        <el-table-column label="名称" prop="name">
+        <el-table-column label="Name" prop="name">
           <template slot-scope="scope">
             <i
               :class="
@@ -30,8 +30,8 @@
             <span>{{ scope.row && scope.row.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Lvs数" prop="lvcount"></el-table-column>
-        <el-table-column label="使用率" prop="used">
+        <el-table-column label="Lvs Count" prop="lvcount"></el-table-column>
+        <el-table-column label="Usage" prop="used">
           <template slot-scope="scope">
             <LinePercentChart
               :value="
@@ -50,12 +50,12 @@
             ></LinePercentChart>
           </template>
         </el-table-column>
-        <el-table-column label="大小" prop="size">
+        <el-table-column label="Size" prop="size">
           <template slot-scope="scope">
             {{ scope.row && scope.row.size && byteToSize(scope.row.size) }}
           </template>
         </el-table-column>
-        <el-table-column label="空闲" prop="free">
+        <el-table-column label="Free" prop="free">
           <template slot-scope="scope">
             {{ scope.row && scope.row.free && byteToSize(scope.row.free) }}
           </template>
@@ -92,7 +92,7 @@ export default {
   data() {
     return {
       visible: false,
-      title: "创建：Lvm Volume Group",
+      title: "Create: Lvm Volume Group",
       selectedList: [],
       expands: [],
       loading: false,
@@ -107,16 +107,16 @@ export default {
     refresh: debounce(function () {
       this.__init__();
     }, 500),
-    //初始化查找
+    //Initialize search
     __init__() {
       this.queryDiskLvm({ _dc: new Date().getTime() });
     },
-    //是否展示弹框
+    //Show dialog
     showModal() {
-      this.title = "创建：Lvm Volume Group";
+      this.title = "Create: Lvm Volume Group";
       this.visible = true;
     },
-    //按钮是否可点击
+    //Check if button is clickable
     inStatus() {
       return this.selectedList.length !== 1;
     },

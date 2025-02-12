@@ -1,56 +1,27 @@
 <template>
-  <m-dialog
-    :title="modalType !== 'edit' ? '添加: 磁盘大小' : '编辑: 内存'"
-    :visible="visible"
-    v-if="visible"
-    @confirm="confirm"
-    @cancel="close"
-    :_style="{
+  <m-dialog :title="modalType !== 'edit' ? 'Add: Disk Size' : 'Edit: Memory'" :visible="visible" v-if="visible" @confirm="confirm"
+    @cancel="close" :_style="{
       width: '946px',
-    }"
-    @close="close"
-  >
+    }" @close="close">
     <div slot="content" style="max-height: 400px; overflow: auto">
       <div class="m-form__section">
         <dl>
-          <dt>基本信息</dt>
+          <dt>Basic Information</dt>
           <dd>
-            <m-input
-              type=""
-              labelWidth="100px"
-              label="Sockets"
-              v-model="disk"
-              prop="磁盘"
-              :disabled="true"
-            >
+            <m-input type="" labelWidth="100px" label="Sockets" v-model="disk" prop="Disk" :disabled="true">
               <div style="padding-left: 5px; height: 28px; line-height: 28px">
                 {{ disk }}
               </div>
             </m-input>
-            <m-input
-              type="number"
-              labelWidth="100px"
-              label="增量大小"
-              v-model="size"
-              :max="131072"
-              validateEvent
-              @validate="validate"
-              prop="size"
-              :min="1"
-              :error-msg="rules['size'].message"
-              :show-error="rules['size'].error"
-            />
+            <m-input type="number" labelWidth="100px" label="Increment Size" v-model="size" :max="131072" validateEvent
+              @validate="validate" prop="size" :min="1" :error-msg="rules['size'].message"
+              :show-error="rules['size'].error" />
           </dd>
         </dl>
       </div>
     </div>
     <template slot="footer">
-      <m-button
-        type="primary"
-        style="height: 40px; line-height: 40px; width: 100px"
-        @on-click="confirm()"
-        >确定</m-button
-      >
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px" @on-click="confirm()">Confirm</m-button>
     </template>
   </m-dialog>
 </template>
@@ -126,12 +97,12 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
       if (value && (value <= 0 || value >= 131072)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = `增量不能于大于131072`;
+        this.rules[prop].message = `Increment cannot be greater than 131072`;
         return;
       }
     },
@@ -155,10 +126,12 @@ export default {
 /deep/.el-table__body {
   font-size: 12px;
 }
+
 .cpu-check {
   width: 100%;
   white-space: nowrap;
 }
+
 .cpu-label {
   width: 55px;
   display: inline-block;

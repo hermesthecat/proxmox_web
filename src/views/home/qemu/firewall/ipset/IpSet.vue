@@ -5,21 +5,21 @@
         type="primary"
         @on-click="showModal('create')"
         icon="el-icon-plus"
-        >创建</m-button
+        >Create</m-button
       >
       <m-button
         type="danger"
         @on-click="handleDelete"
         icon="el-icon-delete"
         :disabled="selectedList.length <= 0"
-        >删除</m-button
+        >Delete</m-button
       >
       <m-button
         type="info"
         icon="el-icon-edit"
         :disabled="selectedList.length !== 1"
         @on-click="showModal('edit')"
-        >编辑</m-button
+        >Edit</m-button
       >
     </div>
     <div slot="page-content">
@@ -39,21 +39,21 @@
                   type="primary"
                   @on-click="showCidrModal('create')"
                   icon="el-icon-plus"
-                  >添加</m-button
+                  >Add</m-button
                 >
                 <m-button
                   type="danger"
                   @on-click="handleCidrDelete"
                   icon="el-icon-delete"
                   :disabled="selectedCidrList.length <= 0"
-                  >删除</m-button
+                  >Delete</m-button
                 >
                 <m-button
                   type="info"
                   icon="el-icon-edit"
                   :disabled="selectedCidrList.length !== 1"
                   @on-click="showCidrModal('edit')"
-                  >编辑</m-button
+                  >Edit</m-button
                 >
               </div>
               <div slot="page-content">
@@ -70,10 +70,10 @@
                     prop="cidr"
                   ></el-table-column>
                   <el-table-column
-                    label="备注"
+                    label="Comment"
                     prop="comment"
                   ></el-table-column>
-                  <el-table-column label="错误信息">
+                  <el-table-column label="Error Message">
                     <template slot-scope="scope">
                       <span>{{
                         scope.row.errors &&
@@ -82,13 +82,13 @@
                       }}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column label="匹配">
+                  <el-table-column label="Match">
                     <template slot-scope="scope">
                       <table-info-state
                         :content="
                           scope.row.nomatch && scope.row.nomatch === 1
-                            ? '是'
-                            : '否'
+                            ? 'Yes'
+                            : 'No'
                         "
                         :state="
                           scope.row.nomatch && scope.row.nomatch === 1
@@ -105,7 +105,7 @@
         </el-table-column>
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="IPSet" prop="name"></el-table-column>
-        <el-table-column label="备注" prop="comment"></el-table-column>
+        <el-table-column label="Comment" prop="comment"></el-table-column>
       </el-table>
       <create-ipset-cidr-modal
         :title="cidrTitle"
@@ -154,12 +154,12 @@ export default {
     return {
       type: "create",
       visible: false,
-      title: "创建：IPSet",
+      title: "Create: IPSet",
       selectedList: [],
       selectedCidrList: [],
       cidrParam: {},
       isCidrCreate: true,
-      cidrTitle: "添加：规则",
+      cidrTitle: "Add: Rule",
       cidrType: "create",
       cidrVisible: false,
       isCreate: true,
@@ -172,30 +172,30 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化查找
+    //Initialize search
     __init__() {
       this.queryIpSetList();
     },
-    //是否展示弹框
+    //Show modal dialog
     showModal(type) {
       this.type = type;
       this.isCreate = type === "create";
-      this.title = type === "create" ? "创建：IPSet" : "编辑：IPSet";
+      this.title = type === "create" ? "Create: IPSet" : "Edit: IPSet";
       this.param = type === "create" ? {} : this.selectedList[0];
       this.visible = true;
     },
-    //按钮是否可点击
+    //Check if button is clickable
     inStatus() {
       return this.selectedList.length !== 1;
     },
-    //选择
+    //Selection
     handleSelect(row) {
       this.selectedList = row;
     },
     handleDelete(type) {
       this.$confirm
         .confirm({
-          msg: `你确定你要删除已选择项吗？`,
+          msg: `Are you sure you want to delete selected items?`,
           type: "info",
         })
         .then(() => {
@@ -209,7 +209,7 @@ export default {
     handleCidrDelete() {
       this.$confirm
         .confirm({
-          msg: `你确定你要删除已选择项吗？`,
+          msg: `Are you sure you want to delete selected items?`,
           type: "info",
         })
         .then(() => {
@@ -217,7 +217,7 @@ export default {
         })
         .catch(() => {});
     },
-    //保证每一行只能展开一列
+    //Ensure only one row can be expanded at a time
     expandChange(row, expandedRows) {
       let that = this;
       if (expandedRows.length) {
@@ -240,7 +240,7 @@ export default {
     showCidrModal(type) {
       this.cidrType = type;
       this.isCidrCreate = type === "create";
-      this.cidrTitle = type === "create" ? "创建：复制作业" : "编辑：复制作业";
+      this.cidrTitle = type === "create" ? "Create: Copy Job" : "Edit: Copy Job";
       this.cidrParam = type === "create" ? {} : this.selectedCidrList[0];
       this.cidrVisible = true;
     },

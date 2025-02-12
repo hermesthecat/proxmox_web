@@ -1,130 +1,57 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @cancel="close"
-    @confirm="confirm"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" @cancel="close" @confirm="confirm" :title="title" :_style="{ width: '956px' }"
+    @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
       <div class="m-form__content" v-if="modalType !== 'log'">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
-              <m-input
-                type="number"
-                prop="id"
-                label="CT/VM ID"
-                labelWidth="100px"
-                min="100"
-                validateEvent
-                @validate="validate"
-                required
-                :show-error="rules.id.error"
-                :error-msg="rules.id.message"
-                v-model="id"
-                :disabled="true"
-                placeholder="请输入CT/VM ID"
-              />
-              <m-select
-                type="multiple"
-                prop="target"
-                label="目标"
-                labelWidth="100px"
-                validateEvent
-                :disabled="!isCreate"
-                @validate="validate"
-                required
-                :show-error="rules.target.error"
-                :error-msg="rules.target.message"
-                :readonly="false"
-                @on-change="handleNodeSelect"
-                v-model="target"
-                placeholder="请选择目标"
-              >
-                <m-option
-                  v-for="(item, index) in nodeList"
-                  :key="item.node"
-                  :label="item.node"
-                  :value="item.node"
-                >
+              <m-input type="number" prop="id" label="CT/VM ID" labelWidth="100px" min="100" validateEvent
+                @validate="validate" required :show-error="rules.id.error" :error-msg="rules.id.message" v-model="id"
+                :disabled="true" placeholder="Please enter CT/VM ID" />
+              <m-select type="multiple" prop="target" label="Target" labelWidth="100px" validateEvent :disabled="!isCreate"
+                @validate="validate" required :show-error="rules.target.error" :error-msg="rules.target.message"
+                :readonly="false" @on-change="handleNodeSelect" v-model="target" placeholder="Please select target">
+                <m-option v-for="(item, index) in nodeList" :key="item.node" :label="item.node" :value="item.node">
                   <div class="table-tr" v-if="index === 0">
-                    <div class="table-td">节点</div>
-                    <div class="table-td">内存</div>
+                    <div class="table-td">Node</div>
+                    <div class="table-td">Memory</div>
                     <div class="table-td">CPU</div>
                   </div>
                   <div class="table-tr">
                     <span class="table-td" :title="item.node">{{
                       item.node
                     }}</span>
-                    <span
-                      class="table-td"
-                      :title="
+                    <span class="table-td" :title="item.mum && item.maxmem
+                        ? percentToFixed(item.mem / item.maxmem, 3)
+                        : 0
+                      ">{{
                         item.mum && item.maxmem
                           ? percentToFixed(item.mem / item.maxmem, 3)
                           : 0
-                      "
-                      >{{
-                        item.mum && item.maxmem
-                          ? percentToFixed(item.mem / item.maxmem, 3)
-                          : 0
-                      }}</span
-                    >
-                    <span
-                      class="table-td"
-                      :title="
-                        item.cpu && item.maxcpu
-                          ? `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
-                          : ''
-                      "
-                      >{{
+                      }}</span>
+                    <span class="table-td" :title="item.cpu && item.maxcpu
+                        ? `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
+                        : ''
+                      ">{{
                         item.cpu && item.maxcpu
                           ? `${percentToFixed(item.cpu, 3)} of ${item.maxcpu}`
                           : ""
-                      }}</span
-                    >
+                      }}</span>
                   </div>
                 </m-option>
               </m-select>
-              <m-select
-                prop="schedule"
-                label="安排"
-                labelWidth="100px"
-                @on-change="handleScheduleSelect"
-                v-model="schedule"
-                placeholder="*/15 - 每15分钟"
-              >
-                <m-option
-                  v-for="item in scheduleList"
-                  :key="item.value"
-                  :label="item.text"
-                  :value="item.value"
-                >
+              <m-select prop="schedule" label="Schedule" labelWidth="100px" @on-change="handleScheduleSelect"
+                v-model="schedule" placeholder="*/15 - Every 15 minutes">
+                <m-option v-for="item in scheduleList" :key="item.value" :label="item.text" :value="item.value">
                 </m-option>
               </m-select>
-              <m-input
-                type="number"
-                prop="rate"
-                label="速率限制（MB/s）"
-                labelWidth="100px"
-                v-model="rate"
-                placeholder="请输入速率"
-              />
-              <m-input
-                type="textarea"
-                prop="comment"
-                labelWidth="100px"
-                label="备注"
-                v-model="comment"
-                placeholder="请输入备注"
-              />
-              <m-checkbox
-                label="启用"
-                v-model="disable"
-                labelWidth="100px"
-              ></m-checkbox>
+              <m-input type="number" prop="rate" label="Rate Limit (MB/s)" labelWidth="100px" v-model="rate"
+                placeholder="Please enter rate" />
+              <m-input type="textarea" prop="comment" labelWidth="100px" label="Notes" v-model="comment"
+                placeholder="Please enter notes" />
+              <m-checkbox label="Enable" v-model="disable" labelWidth="100px"></m-checkbox>
             </dd>
           </dl>
         </div>
@@ -186,12 +113,12 @@ export default {
       nodeList: [],
       logContent: "",
       scheduleList: [
-        { value: "*/30", text: "每30分钟" },
-        { value: "*/2:00", text: "每两小时" },
-        { value: "2,22:30", text: "每天 02:30, 22:30" },
-        { value: "mon..fri", text: "周一到周五 00:00" },
-        { value: "mon..fri */1:00", text: "周一到周五每小时" },
-        { value: "sun 01:00", text: "周日 01:00" },
+        { value: "*/30", text: "Every 30 minutes" },
+        { value: "*/2:00", text: "Every 2 hours" },
+        { value: "2,22:30", text: "Daily at 02:30, 22:30" },
+        { value: "mon..fri", text: "Monday to Friday at 00:00" },
+        { value: "mon..fri */1:00", text: "Every hour Monday to Friday" },
+        { value: "sun 01:00", text: "Sunday at 01:00" },
       ],
       rules: {
         id: {
@@ -290,7 +217,7 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
     },
@@ -359,12 +286,14 @@ export default {
     border-bottom: 1px solid #ebeef5;
     cursor: pointer;
   }
+
   &-td {
     display: table-cell;
     height: 35px;
     line-height: 35px;
     max-width: 100px;
   }
+
   &-radio {
     width: 50px;
     padding-right: 20px;

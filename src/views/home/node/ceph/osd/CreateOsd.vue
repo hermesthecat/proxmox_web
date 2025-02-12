@@ -7,23 +7,22 @@
             v-model="dev"
             labelWidth="100px"
             prop="dev"
-            label="磁盘"
+            label="Disk"
             @on-change="(value) => (dev = value)"
             validateEvent
             @validate="validate"
             :show-error="rules['dev'].error"
             :error-msg="rules['dev'].message"
           >
-            <template v-for="(item, index) in unusedStorageList">
+            <template v-for="(item, index) in unusedStorageList" :key="item.devpath">
               <m-option
-                :key="item.devpath"
                 :label="item.devpath"
                 :value="item.devpath"
               >
                 <div v-if="index === 0" class="table-tr">
-                  <div class="table-td">设备</div>
-                  <div class="table-td">大小</div>
-                  <div class="table-td">串行</div>
+                  <div class="table-td">Device</div>
+                  <div class="table-td">Size</div>
+                  <div class="table-td">Serial</div>
                 </div>
                 <div class="table-tr">
                   <div class="table-td">{{ item.devpath }}</div>
@@ -38,19 +37,18 @@
             v-model="db_dev"
             labelWidth="100px"
             prop="db_dev"
-            label="数据库磁盘"
+            label="Database Disk"
             @on-change="(value) => (db_dev = value)"
           >
-            <template v-for="(item, index) in journalStorageList">
+            <template v-for="(item, index) in journalStorageList" :key="item.devpath">
               <m-option
-                :key="item.devpath"
                 :label="item.devpath"
                 :value="item.devpath"
               >
                 <div v-if="index === 0" class="table-tr">
-                  <div class="table-td">设备</div>
-                  <div class="table-td">大小</div>
-                  <div class="table-td">串行</div>
+                  <div class="table-td">Device</div>
+                  <div class="table-td">Size</div>
+                  <div class="table-td">Serial</div>
                 </div>
                 <div class="table-tr">
                   <div class="table-td">{{ item.devpath }}</div>
@@ -66,7 +64,7 @@
             type="number"
             labelWidth="100px"
             prop="db_size"
-            label="数据库大小（Gib）"
+            label="Database Size (GiB)"
             min="0"
             :disabled="!db_dev"
           />
@@ -74,7 +72,7 @@
           <template v-if="isAdvice">
             <m-checkbox
               labelWidth="100px"
-              label="加密OSD"
+              label="Encrypt OSD"
               v-model="encrypted"
             ></m-checkbox>
 
@@ -82,19 +80,18 @@
               v-model="wal_dev"
               labelWidth="100px"
               porp="wal_dev"
-              label="WAL磁盘"
+              label="WAL Disk"
               @on-change="(value) => (wal_dev = value)"
             >
-              <template v-for="(item, index) in journalStorageList">
+              <template v-for="(item, index) in journalStorageList" :key="item.devpath">
                 <m-option
-                  :key="item.devpath"
                   :label="item.devpath"
                   :value="item.devpath"
                 >
                   <div v-if="index === 0" class="table-tr">
-                    <div class="table-td">设备</div>
-                    <div class="table-td">大小</div>
-                    <div class="table-td">串行</div>
+                    <div class="table-td">Device</div>
+                    <div class="table-td">Size</div>
+                    <div class="table-td">Serial</div>
                   </div>
                   <div class="table-tr">
                     <div class="table-td">{{ item.devpath }}</div>
@@ -110,7 +107,7 @@
               type="number"
               labelWidth="100px"
               porp="wal_size"
-              label="WAL磁盘大小（Gib）"
+              label="WAL Disk Size (GiB)"
               min="0"
               :disabled="!wal_dev"
             />
@@ -122,11 +119,11 @@
       <div class="label_box">
         <label>
           <input type="checkbox" v-model="isAdvice" />
-          <div>高级</div>
+          <div>Advanced</div>
         </label>
       </div>
       <m-button class="create-btn" type="primary" @on-click="confirm"
-        >创建</m-button
+        >Create</m-button
       >
     </template>
   </m-dialog>
@@ -178,18 +175,18 @@ export default {
         this.journalStorageList = quickSort(res, "devpath", "+");
       });
     },
-    //校验创建osd
+    //Validate create osd
     validate(prop) {
       let value = String(this[prop]).trim();
       this.rules[prop].error = false;
       this.rules[prop].message = "";
       if (/^\s*$/.test(value) && prop === "dev") {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空!";
+        this.rules[prop].message = "Cannot be empty!";
         return;
       }
     },
-    //整体校验
+    //Validate all
     validateAll() {
       let props = ["dev"];
       props.forEach((prop) => this.validate(prop));
@@ -198,16 +195,16 @@ export default {
     close() {
       this.$emit("close");
     },
-    //确定添加Osd
+    //Confirm add OSD
     confirm() {
       if (this.validateAll()) return;
-      //请求参数
+      //Request parameters
       let param = {
         dev: this.dev,
         db_dev: this.db_dev,
         db_size: this.db_size,
       };
-      //如果是高级的话
+      //If advanced
       if (this.isAdvice) {
         param = Object.assign(param, {
           encrypted: this.encrypted ? 1 : 0,

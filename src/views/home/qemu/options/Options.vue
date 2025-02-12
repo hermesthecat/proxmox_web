@@ -6,14 +6,14 @@
         @on-click="handleCommand('', 'edit')"
         icon="el-icon-edit"
         :disabled="canDisabled()"
-        >编辑</m-button
+        >Edit</m-button
       >
       <m-button
         type="primary"
         @on-click="handleResume()"
         icon="el-icon-refresh"
         :disabled="!canResume()"
-        >还原</m-button
+        >Restore</m-button
       >
     </div>
     <div slot="page-content">
@@ -42,14 +42,14 @@
               >
             </template>
           </el-table-column>
-          <el-table-column label="名称" prop="name" width="200px">
+          <el-table-column label="Name" prop="name" width="200px">
             <template slot-scope="scope">
               <div>
                 <span>{{ scope.row.name }}</span>
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="值" prop="value">
+          <el-table-column label="Value" prop="value">
             <template slot-scope="scope">
               <div>
                 {{ scope.row && scope.row.render && scope.row.render(false) }}
@@ -75,14 +75,14 @@
               >
             </template>
           </el-table-column>
-          <el-table-column label="名称" prop="name" width="200px">
+          <el-table-column label="Name" prop="name" width="200px">
             <template slot-scope="scope">
               <div>
                 <span>{{ scope.row.name }}</span>
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="值" prop="value">
+          <el-table-column label="Value" prop="value">
             <template slot-scope="scope">
               <div>
                 {{ scope.row && scope.row.render && scope.row.render(false) }}
@@ -138,12 +138,12 @@ export default {
       type: "",
       modalType: "create",
       param: {},
-      jobText: "删除中...",
+      jobText: "Deleting...",
       statusObj: {},
       jobVisible: "",
       jobTitle: "",
       title: "",
-      //可以添加的硬盘配置
+      //Configurable disk settings
       hardware_counts: {
         net: 32,
         usb: 5,
@@ -159,11 +159,11 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化请求
+    //Initialize request
     __init__() {
       let _this = this;
       _this.queryResource().then((res) => {
-        //装配数据得到格式为{key: value}的数据以便后期数据处理
+        //Assemble data to get {key: value} format for later processing
         _this.store = _this.db.volumeList.reduce((target, source) => {
           if (!target.hasOwnProperty(source.key)) {
             target[source.key] = {
@@ -172,14 +172,14 @@ export default {
           }
           return target;
         }, {});
-        //表格数据
+        //Table data
         _this.hardwareList = [
           {
-            name: gettext("Name"), //名称
-            type: "name", //数据类型
-            itemId: "editname", //添加弹框id
+            name: gettext("Name"), //Name
+            type: "name", //Data type
+            itemId: "editname", //Add modal id
             render: function (pending) {
-              //渲染值
+              //Render value
               if (!pending)
                 return _this.store.name &&
                   _this.store.name.data &&
@@ -194,7 +194,7 @@ export default {
                   : "";
             },
           },
-          //开机
+          //Boot
           {
             name: gettext("Start at boot"),
             type: "onboot",
@@ -208,9 +208,9 @@ export default {
                 );
             },
           },
-          //启动
+          //Start
           {
-            name: "开机启动顺序",
+            name: gettext("Start/Boot Order"),
             type: "startup",
             itemId: "editstartup",
             render: function (pending) {
@@ -248,7 +248,7 @@ export default {
                     _this.store.ostype.data &&
                     !isEmpty(_this.store.ostype.data.value)
                     ? render_kvm_ostype(_this.store.ostype.data.value)
-                    : "默认";
+                    : "Default";
                 }
               } else {
                 if (pending) return "";
@@ -257,7 +257,7 @@ export default {
             },
           },
           {
-            //引导顺序
+            //Boot order
             name: gettext("Boot Order"),
             type: "boot",
             itemId: "editorder",
@@ -348,7 +348,7 @@ export default {
                   _this.store.tablet.data.value &&
                   _this.store.tablet.data.value
                   ? _this.format_boolean(_this.store.tablet.data.value)
-                  : "是";
+                  : "Yes";
             },
           },
           {
@@ -371,7 +371,7 @@ export default {
                   _this.store.hotplug.data &&
                   _this.store.hotplug.data.value
                   ? render_hotplug_features(_this.store.hotplug.data.value)
-                  : "磁盘，网络，usb";
+                  : "Disk, Network, USB";
             },
           },
           {
@@ -393,7 +393,7 @@ export default {
                   _this.store.acpi.data.value &&
                   _this.store.acpi.data.value
                   ? _this.format_boolean(_this.store.acpi.data.value)
-                  : "是";
+                  : "Yes";
               }
             },
           },
@@ -416,7 +416,7 @@ export default {
                   _this.store.kvm.data.value &&
                   _this.store.kvm.data.value
                   ? _this.format_boolean(_this.store.kvm.data.value)
-                  : "是";
+                  : "Yes";
               }
             },
           },
@@ -582,7 +582,7 @@ export default {
                     _this.store.vmstatestorage &&
                     _this.store.vmstatestorage.data &&
                     _this.store.vmstatestorage.data.value) ||
-                  "自动"
+                  "Auto"
                 );
             },
           },
@@ -603,9 +603,9 @@ export default {
                 );
             },
           },
-          //启动
+          //Start
           {
-            name: "开机启动顺序",
+            name: gettext("Start/Boot Order"),
             type: "startup",
             itemId: "editstartup",
             render: function (pending) {
@@ -659,15 +659,15 @@ export default {
                 return _this.store.console &&
                   _this.store.console.data &&
                   _this.store.console.data.value === 1
-                  ? "已启用"
-                  : "已启用";
+                  ? "Enabled"
+                  : "Enabled";
               else
                 return _this.store.console &&
                   _this.store.console.data &&
                   _this.store.console.data.pending
                   ? _this.store.console.data.pending === 1
-                    ? "已启用"
-                    : "已禁用"
+                    ? "Enabled"
+                    : "Disabled"
                   : "";
             },
           },
@@ -738,8 +738,8 @@ export default {
                 _this.store.unprivileged &&
                 _this.store.unprivileged.data &&
                 _this.store.unprivileged.data.value === 1
-                ? "是"
-                : "否";
+                ? "Yes"
+                : "No";
             },
           },
           {
@@ -753,7 +753,7 @@ export default {
                     _this.store.features &&
                     _this.store.features.data &&
                     _this.store.features.data.value) ||
-                  "无"
+                  "None"
                 );
               else
                 return (
@@ -770,9 +770,9 @@ export default {
       });
     },
     format_boolean: function (value) {
-      return value ? "是" : "否";
+      return value ? "Yes" : "No";
     },
-    //渲染启动
+    //Render startup
     render_kvm_startup: function (value) {
       let startup = parseStartup(value);
 
@@ -794,7 +794,7 @@ export default {
     handleDelete() {
       this.$confirm
         .confirm({
-          msg: `你确定你要删除该项${this.currentObj.name}?`,
+          msg: `Are you sure you want to delete ${this.currentObj.name}?`,
           icon: "icon-question",
         })
         .then((res) => {
@@ -832,80 +832,80 @@ export default {
       }
       return defaultValue;
     },
-    //添加硬盘等
+    //Add disk etc.
     handleCommand(type) {
-      //弹框类型
+      //Modal type
       this.modalType = this.currentObj.itemId;
       this.param = this.currentObj;
       this.setTitle(this.modalType);
       this.visible = true;
     },
-    //设置标题
+    //Set title
     setTitle(type) {
       let _this = this;
       switch (type) {
         case "editname":
-          _this.title = "编辑：名称";
+          _this.title = "Edit: Name";
           break;
         case "editboot":
-          _this.title = "编辑：开机自启动";
+          _this.title = "Edit: Auto Start";
           break;
         case "editorder":
-          _this.title = "编辑：引导顺序";
+          _this.title = "Edit: Boot Order";
           break;
         case "editstartup":
-          _this.title = "编辑：开机启动数据";
+          _this.title = "Edit: Startup Data";
           break;
         case "editostype":
-          _this.title = "编辑：OS类型";
+          _this.title = "Edit: OS Type";
           break;
         case "edittablet":
-          _this.title = "编辑： 使用平板指针";
+          _this.title = "Edit: Use Tablet Pointer";
           break;
         case "edithotplug":
-          _this.title = "编辑：热拔插";
+          _this.title = "Edit: Hot Plug";
           break;
         case "editacpi":
-          _this.title = "编辑：ACPI支持";
+          _this.title = "Edit: ACPI Support";
           break;
         case "editkvm":
-          _this.title = "编辑：KVM硬件虚拟化";
+          _this.title = "Edit: KVM Hardware Virtualization";
           break;
         case "editfreeze":
-          _this.title = "编辑：启动时冻结CPU";
+          _this.title = "Edit: Freeze CPU at Startup";
           break;
         case "editlocaltime":
-          _this.title = "编辑：使用本地时间进行RTC";
+          _this.title = "Edit: Use Local Time for RTC";
           break;
         case "editstartdate":
-          _this.title = "编辑：RTC开始时间";
+          _this.title = "Edit: RTC Start Time";
           break;
         case "editsmbios1":
-          _this.title = "编辑：SMBIOS设置（type1）";
+          _this.title = "Edit: SMBIOS Settings (type1)";
           break;
         case "editprotection":
-          _this.title = "编辑：保护";
+          _this.title = "Edit: Protection";
           break;
         case "editspice_enhancements":
-          _this.title = "编辑：Spice Enhancements";
+          _this.title = "Edit: Spice Enhancements";
           break;
         case "editvmstatestorage":
-          _this.title = "编辑：VM Sate Storage";
+          _this.title = "Edit: VM State Storage";
           break;
         case "editagent":
-          _this.title = "编辑：QEMU Guest Agent";
+          _this.title = "Edit: QEMU Guest Agent";
           break;
         case "editconsole":
-          _this.title = "编辑：/dev/console";
+          _this.title = "Edit: /dev/console";
           break;
         case "edittty":
-          _this.title = "编辑：TTY技术器";
+          _this.title = "Edit: TTY Counter";
           break;
         case "editcmode":
-          _this.title = "编辑：控制台模式";
+          _this.title = "Edit: Console Mode";
           break;
         case "editfeatures":
-          _this.title = "编辑：特权";
+          _this.title = "Edit: Features";
           break;
       }
     },
@@ -930,11 +930,11 @@ export default {
         this.__init__();
       });
     },
-    //移动磁盘
+    //Move disk
     handleMoveDisk() {
-      //硬盘类型如果modalType存在证明是添加
+      //Disk type if modalType exists means adding
       this.type = "migratedisk";
-      //创建或者编辑
+      //Create or edit
       this.modalType = "create";
       this.param = this.currentObj;
       this.visible = true;
@@ -966,17 +966,17 @@ export default {
       });
     },
     canResume() {
-      //由于js将0视为false所以转化为'0'做判断
+      //Since JS treats 0 as false, convert to '0' for comparison
       return (this.store[this.current] &&
-      this.store[this.current].data &&
-      !isEmpty(
-        this.store[this.current].data.pending ||
-          this.store[this.current].data === 0
-          ? String(this.store[this.current].data.pending)
-          : undefined
-      )
-        ? true
-        : false) ||
+        this.store[this.current].data &&
+        !isEmpty(
+          this.store[this.current].data.pending ||
+            this.store[this.current].data === 0
+            ? String(this.store[this.current].data.pending)
+            : undefined
+        )
+          ? true
+          : false) ||
         (this.store[this.current] &&
           this.store[this.current].data &&
           this.store[this.current].data.delete)

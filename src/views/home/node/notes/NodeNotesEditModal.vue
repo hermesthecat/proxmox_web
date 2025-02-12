@@ -8,7 +8,7 @@
       width: '800px',
       height: '500px',
     }"
-    title="编辑备注"
+    title="Edit Notes"
   >
     <div slot="content" ref="content">
       <ace-editor v-model="f_NewsContent" ref="ace-editor"></ace-editor>
@@ -54,11 +54,11 @@ export default {
     window.addEventListener("resize", _this.updateAceEditorHeight, false);
   },
   methods: {
-    //关闭弹框
+    //Close dialog
     close() {
       this.$emit("close");
     },
-    //更新ace编辑器
+    //Update ace editor
     updateAceEditorHeight() {
       let _this = this;
       _this.$refs[`ace-editor`].$el.style.height =
@@ -79,7 +79,7 @@ export default {
         });
     },
   },
-  //销毁时间监听
+  //Remove event listener on destroy
   beforeDestroy() {
     window.removeEventListener("resize", this.updateAceEditorHeight, false);
   },

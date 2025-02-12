@@ -2,20 +2,20 @@
   <page-template>
     <div slot="toolbar-left">
       <m-button type="primary" @on-click="refresh" icon="el-icon-refresh"
-        >重载</m-button
+        >Reload</m-button
       >
       <m-button
         type="primary"
         @on-click="showModal('create')"
         icon="el-icon-plus"
-        >创建：ZFS</m-button
+        >Create: ZFS</m-button
       >
       <m-button
         type="primary"
         @on-click="showModal('detail')"
         :disabled="selectedList.length !== 1"
         icon="el-icon-plus"
-        >详情</m-button
+        >Details</m-button
       >
     </div>
     <div slot="page-content">
@@ -26,23 +26,23 @@
         v-loading="loading"
       >
         <el-table-column type="selection" width="55px"></el-table-column>
-        <el-table-column label="名称" prop="name"></el-table-column>
-        <el-table-column label="大小" prop="size">
+        <el-table-column label="Name" prop="name"></el-table-column>
+        <el-table-column label="Size" prop="size">
           <template slot-scope="scope">
             {{ scope.row.size && byteToSize(scope.row.size) }}
           </template>
         </el-table-column>
-        <el-table-column label="空闲" prop="free">
+        <el-table-column label="Free" prop="free">
           <template slot-scope="scope">
             {{ scope.row.size && byteToSize(scope.row.free) }}
           </template>
         </el-table-column>
-        <el-table-column label="已分配" prop="alloc">
+        <el-table-column label="Allocated" prop="alloc">
           <template slot-scope="scope">
             {{ scope.row.size && byteToSize(scope.row.alloc) }}
           </template>
         </el-table-column>
-        <el-table-column label="碎片" prop="frag">
+        <el-table-column label="Fragmentation" prop="frag">
           <template slot-scope="scope">
             <LinePercentChart
               :value="scope.row.frag && scope.row.frag ? scope.row.frag : 0"
@@ -54,7 +54,7 @@
             ></LinePercentChart>
           </template>
         </el-table-column>
-        <el-table-column label="健康" prop="health">
+        <el-table-column label="Health" prop="health">
           <template slot-scope="scope">
             <table-info-state
               :content="scope.row.health"
@@ -96,7 +96,7 @@ export default {
   data() {
     return {
       visible: false,
-      title: "创建：Lvm Directory",
+      title: "Create: Lvm Directory",
       type: "",
       param: {},
       selectedList: [],
@@ -109,24 +109,24 @@ export default {
   methods: {
     percentToFixed,
     byteToSize,
-    //刷新zfs存储，利用防抖实现避免多次触发
+    //Refresh ZFS storage using debounce to avoid multiple triggers
     refresh: debounce(function () {
       this.__init__();
     }, 500),
-    //初始化查找
+    //Initialize search
     __init__() {
       this.queryDiskZfs();
     },
-    //选择
+    //Select
     handleSelect(row) {
       this.selectedList = row;
     },
-    //是否展示弹框
+    //Show dialog
     showModal(type) {
-      this.title = type === "create" ? "创建：Lvm Directory" : "详情";
+      this.title = type === "create" ? "Create: Lvm Directory" : "Details";
       this.type = type;
       this.visible = true;
-      this.param = type === "detail" ? this.selectedList[0] : {}; //如果是detail时param为当前选中的值，否则为空
+      this.param = type === "detail" ? this.selectedList[0] : {}; //If detail, param is current selected value, otherwise empty
     },
   },
 };

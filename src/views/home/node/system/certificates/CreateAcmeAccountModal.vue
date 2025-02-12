@@ -13,19 +13,19 @@
         :_style="{
           width: '800px',
         }"
-        title="Task Viewer: 加入集群"
+        title="Task Viewer: Join Cluster"
       >
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
-            <m-tab-panel label="输出" name="log"></m-tab-panel>
-            <m-tab-panel label="状态" name="status"></m-tab-panel>
+            <m-tab-panel label="Output" name="log"></m-tab-panel>
+            <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
           <m-button
             type="primary"
             @on-click="stopTask1"
             class="stop-task"
             :disabled="db.addClusterStatusObj.status !== 'running'"
-            >停止</m-button
+            >Stop</m-button
           >
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
@@ -65,7 +65,7 @@
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-select
                 prop="ovs_bridge"
@@ -73,7 +73,7 @@
                 labelWidth="100px"
                 v-model="type"
                 @on-change="handleTypeSelect"
-                placeholder="请选择Challenge type"
+                placeholder="Please select Challenge type"
                 v-if="modalType === 'domains'"
               >
                 <m-option label="HTTP" value="http">HTTP</m-option>
@@ -82,7 +82,7 @@
               <m-input
                 type="text"
                 prop="domains"
-                label="域名"
+                label="Domain"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
@@ -90,7 +90,7 @@
                 :error-msg="rules.domains.message"
                 v-model="domains"
                 v-if="modalType === 'domains'"
-                placeholder="请输入域名"
+                placeholder="Please enter domain"
               />
               <m-select
                 prop="plugin"
@@ -102,7 +102,7 @@
                 @validate="validate"
                 :show-error="rules.plugin.error"
                 :error-msg="rules.plugin.message"
-                placeholder="请选择Plugin"
+                placeholder="Please select Plugin"
                 v-if="modalType === 'domains' && type === 'dns'"
               >
                 <template v-for="item in db.acmePluginList">
@@ -119,7 +119,7 @@
               <m-input
                 type="text"
                 prop="name"
-                label="名称"
+                label="Name"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
@@ -127,15 +127,15 @@
                 :error-msg="rules.name.message"
                 v-model="name"
                 v-if="modalType === 'account'"
-                placeholder="请输入名称"
+                placeholder="Please enter name"
               />
               <m-select
                 prop="directory"
-                label="ACME目录"
+                label="ACME Directory"
                 labelWidth="100px"
                 v-model="directory"
                 @on-change="handleDirectorySelect"
-                placeholder="请选择ACME目录"
+                placeholder="Please select ACME directory"
                 v-if="modalType === 'account'"
               >
                 <m-option
@@ -146,7 +146,7 @@
                 >
                   <template v-if="index === 0">
                     <div class="table-tr">
-                      <div class="table-td">名称</div>
+                      <div class="table-td">Name</div>
                       <div class="table-td">URL</div>
                     </div>
                   </template>
@@ -161,10 +161,10 @@
               <m-input
                 type="slot"
                 prop="tos_url"
-                label="服务条款"
+                label="Terms of Service"
                 labelWidth="100px"
                 v-model="tos_url"
-                placeholder="请输入名称"
+                placeholder="Please enter name"
                 :__conStyle="{
                   border: 'none',
                   width: 'calc(100% - 105px)',
@@ -176,7 +176,7 @@
               <m-input
                 type="text"
                 prop="contact"
-                label="邮箱"
+                label="Email"
                 labelWidth="100px"
                 validateEvent
                 @validate="validate"
@@ -184,10 +184,10 @@
                 :show-error="rules.contact.error"
                 :error-msg="rules.contact.message"
                 v-model="contact"
-                placeholder="请输入邮箱"
+                placeholder="Please enter email"
               />
               <m-checkbox
-                label="接受TOS"
+                label="Accept TOS"
                 v-model="reacived"
                 labelWidth="100px"
                 v-if="modalType === 'account'"
@@ -201,7 +201,7 @@
     <template slot="footer">
       <template>
         <m-button class="create-btn" type="primary" @on-click="create"
-          >创建</m-button
+          >Create</m-button
         >
       </template>
     </template>
@@ -359,7 +359,7 @@ export default {
     handleTypeSelect(value) {
       this.type = value;
     },
-    //下拉选择框，选择目录
+    //Dropdown selection box, select directory
     handleDirectorySelect(value) {
       this.directory = value;
       this.queryAcmeTos(value);
@@ -377,31 +377,31 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value) && ["name", "domains", "plugin"].includes(prop)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
       if (value && prop === "contact" && this.modalType === "account") {
-        //正则表达式匹配邮箱
+        //Email format validation
         if (!/^\w+@[a-zA-Z0-9]{2,10}(?:\.[a-z]{2,4}){1,3}$/.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "邮箱格式不正确";
+          this.rules[prop].message = "Invalid email format";
           return;
         }
       }
-      //校验域名格式
+      //Domain format validation
       if (value && prop === "domains" && this.modalType === "domains") {
         if (!/^\w+(?:\.[a-zA-Z0-9]{2,})$/.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "域名格式不正确";
+          this.rules[prop].message = "Invalid domain format";
           return;
         }
       }
     },
-    //打开帮助文档
+    //Open help document
     openTos() {
       window.open(this.tos_url);
     },
-    //整体校验
+    //Overall validation
     validateAll() {
       let props = [];
       if (this.modalType === "domains") {
@@ -416,14 +416,14 @@ export default {
       props.forEach((prop) => this.validate(prop));
       return props.some((prop) => this.rules[prop].error === true);
     },
-    //停止任务
+    //Stop task
     stopTask1() {
       this.stopTask(
         this.db.addClusterStatusObj.node,
         this.db.addClusterStatusObj.upid
       );
     },
-    //关闭日志
+    //Close log
     closeLog() {
       this.showLog = false;
       this.close();

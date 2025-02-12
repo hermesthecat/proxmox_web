@@ -100,7 +100,7 @@ export default {
         });
     },
     /**
-     * 查询资源
+     * Query resources
      */
     queryResource() {
       this.loading = true;

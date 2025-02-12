@@ -1,56 +1,23 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @cancel="close"
-    @confirm="confirm"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" @cancel="close" @confirm="confirm" :title="title" :_style="{ width: '956px' }"
+    @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
             <dt>Basic Information</dt>
             <dd>
-              <m-select
-                prop="type"
-                label="Direction"
-                labelWidth="100px"
-                validateEvent
-                @on-change="handleTypeSelect"
-                v-model="type"
-                v-show="modalType !== 'rule' && !isGroup"
-                placeholder="Please select direction"
-              >
-                <m-option
-                  v-for="item in typeOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-select prop="type" label="Direction" labelWidth="100px" validateEvent @on-change="handleTypeSelect"
+                v-model="type" v-show="modalType !== 'rule' && !isGroup" placeholder="Please select direction">
+                <m-option v-for="item in typeOptions" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
-              <m-select
-                prop="action"
-                label="Security Group"
-                labelWidth="100px"
-                validateEvent
-                @on-change="handleGroupSelect"
-                v-model="action"
-                @validate="validate('action')"
-                :show-error="rules['action'].error"
-                :error-msg="rules['action'].message"
-                required
-                v-show="modalType === 'rule' || isGroup"
-                placeholder="Please select security group"
-              >
-                <m-option
-                  v-for="(item, index) in db.fireWallGroupList"
-                  :key="item.group"
-                  :label="item.group"
-                  :value="item.group"
-                >
+              <m-select prop="action" label="Security Group" labelWidth="100px" validateEvent
+                @on-change="handleGroupSelect" v-model="action" @validate="validate('action')"
+                :show-error="rules['action'].error" :error-msg="rules['action'].message" required
+                v-show="modalType === 'rule' || isGroup" placeholder="Please select security group">
+                <m-option v-for="(item, index) in db.fireWallGroupList" :key="item.group" :label="item.group"
+                  :value="item.group">
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
@@ -69,45 +36,16 @@
                   </div>
                 </m-option>
               </m-select>
-              <m-checkbox
-                label="Enable"
-                v-model="enable"
-                labelWidth="100px"
-              ></m-checkbox>
-              <m-select
-                prop="action"
-                label="Action"
-                labelWidth="100px"
-                @on-change="handleActionSelect"
-                v-model="action"
-                :readonly="false"
-                v-show="modalType !== 'rule' && !isGroup"
-                placeholder="Please select action"
-              >
-                <m-option
-                  v-for="item in actionOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-checkbox label="Enable" v-model="enable" labelWidth="100px"></m-checkbox>
+              <m-select prop="action" label="Action" labelWidth="100px" @on-change="handleActionSelect" v-model="action"
+                :readonly="false" v-show="modalType !== 'rule' && !isGroup" placeholder="Please select action">
+                <m-option v-for="item in actionOptions" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
-              <m-select
-                prop="macro"
-                label="Macro"
-                labelWidth="100px"
-                @on-change="handleMacroSelect"
-                v-model="macro"
-                placeholder="Please select macro"
-                v-show="modalType !== 'rule' && !isGroup"
-                :readonly="false"
-              >
-                <m-option
-                  v-for="(item, index) in db.macrosList"
-                  :key="item.macro"
-                  :label="item.macro"
-                  :value="item.macro"
-                >
+              <m-select prop="macro" label="Macro" labelWidth="100px" @on-change="handleMacroSelect" v-model="macro"
+                placeholder="Please select macro" v-show="modalType !== 'rule' && !isGroup" :readonly="false">
+                <m-option v-for="(item, index) in db.macrosList" :key="item.macro" :label="item.macro"
+                  :value="item.macro">
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
@@ -126,31 +64,12 @@
                   </div>
                 </m-option>
               </m-select>
-              <m-input
-                type="text"
-                prop="iface"
-                label="Interface"
-                labelWidth="100px"
-                v-model="iface"
-                :placeholder="'Please enter interface'"
-              />
-              <m-select
-                prop="proto"
-                label="Protocol"
-                labelWidth="100px"
-                @on-change="handleProtoSelect"
-                v-model="proto"
-                :readonly="false"
-                :disabled="macro !== ''"
-                placeholder="Please select protocol"
-                v-show="modalType !== 'rule' && !isGroup"
-              >
-                <m-option
-                  v-for="(item, index) in portocalOptions"
-                  :key="item.p"
-                  :label="item.p"
-                  :value="item.p"
-                >
+              <m-input type="text" prop="iface" label="Interface" labelWidth="100px" v-model="iface"
+                :placeholder="'Please enter interface'" />
+              <m-select prop="proto" label="Protocol" labelWidth="100px" @on-change="handleProtoSelect" v-model="proto"
+                :readonly="false" :disabled="macro !== ''" placeholder="Please select protocol"
+                v-show="modalType !== 'rule' && !isGroup">
+                <m-option v-for="(item, index) in portocalOptions" :key="item.p" :label="item.p" :value="item.p">
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
@@ -167,22 +86,10 @@
                   </div>
                 </m-option>
               </m-select>
-              <m-select
-                prop="source"
-                label="Source"
-                labelWidth="100px"
-                @on-change="handleSourceSelect"
-                v-model="source"
-                :readonly="false"
-                placeholder="Please select source"
-                v-show="modalType !== 'rule' && !isGroup"
-              >
-                <m-option
-                  v-for="(item, index) in db.fireWallResfList"
-                  :key="item.name"
-                  :label="item.ref"
-                  :value="item.name"
-                >
+              <m-select prop="source" label="Source" labelWidth="100px" @on-change="handleSourceSelect" v-model="source"
+                :readonly="false" placeholder="Please select source" v-show="modalType !== 'rule' && !isGroup">
+                <m-option v-for="(item, index) in db.fireWallResfList" :key="item.name" :label="item.ref"
+                  :value="item.name">
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
@@ -205,32 +112,13 @@
                   </div>
                 </m-option>
               </m-select>
-              <m-input
-                type="number"
-                prop="sport"
-                label="Source Port"
-                labelWidth="100px"
-                v-model="sport"
-                :disabled="macro !== ''"
-                :placeholder="'Please enter source port'"
-                v-show="modalType !== 'rule' && !isGroup"
-              />
-              <m-select
-                prop="dest"
-                label="Destination"
-                labelWidth="100px"
-                @on-change="handleDestSelect"
-                v-model="dest"
-                :readonly="false"
-                placeholder="Please select destination"
-                v-show="modalType !== 'rule' && !isGroup"
-              >
-                <m-option
-                  v-for="(item, index) in db.fireWallResfList"
-                  :key="item.name"
-                  :label="item.ref"
-                  :value="item.name"
-                >
+              <m-input type="number" prop="sport" label="Source Port" labelWidth="100px" v-model="sport"
+                :disabled="macro !== ''" :placeholder="'Please enter source port'"
+                v-show="modalType !== 'rule' && !isGroup" />
+              <m-select prop="dest" label="Destination" labelWidth="100px" @on-change="handleDestSelect" v-model="dest"
+                :readonly="false" placeholder="Please select destination" v-show="modalType !== 'rule' && !isGroup">
+                <m-option v-for="(item, index) in db.fireWallResfList" :key="item.name" :label="item.ref"
+                  :value="item.name">
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
@@ -253,43 +141,19 @@
                   </div>
                 </m-option>
               </m-select>
-              <m-input
-                type="number"
-                prop="dport"
-                label="Destination Port"
-                labelWidth="100px"
-                :disabled="macro !== ''"
-                v-model="dport"
-                v-show="modalType !== 'rule' && !isGroup"
-                :placeholder="'Please enter destination port'"
-              />
-              <m-input
-                type="textarea"
-                prop="comment"
-                label="Comment"
-                labelWidth="100px"
-                v-model="comment"
-                placeholder="Please enter comment"
-              />
+              <m-input type="number" prop="dport" label="Destination Port" labelWidth="100px" :disabled="macro !== ''"
+                v-model="dport" v-show="modalType !== 'rule' && !isGroup"
+                :placeholder="'Please enter destination port'" />
+              <m-input type="textarea" prop="comment" label="Comment" labelWidth="100px" v-model="comment"
+                placeholder="Please enter comment" />
             </dd>
           </dl>
           <dl v-if="isAdvice && modalType !== 'rule' && !isGroup">
             <dt>Advanced</dt>
             <dd>
-              <m-select
-                prop="log"
-                label="Log Level"
-                labelWidth="100px"
-                @on-change="handleLogSelect"
-                v-model="log"
-                placeholder="Please select log level"
-              >
-                <m-option
-                  v-for="item in logsOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <m-select prop="log" label="Log Level" labelWidth="100px" @on-change="handleLogSelect" v-model="log"
+                placeholder="Please select log level">
+                <m-option v-for="item in logsOptions" :key="item.value" :label="item.label" :value="item.value">
                 </m-option>
               </m-select>
             </dd>

@@ -13,7 +13,7 @@ export default {
   },
   methods: {
     /**
-     * 查询备份列表
+     * Query backup list
      * @param param object {content: ''}
      */
     queryQemuBackUpList(param) {
@@ -32,7 +32,7 @@ export default {
         });
     },
     /**
-     * 查询存储列表
+     * Query storage list
      * param object {format:1,content:backup}
      */
     queryQemuStorageList(param) {

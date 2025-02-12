@@ -1,129 +1,63 @@
 <template>
   <page-template>
     <div slot="toolbar-left">
-      <m-dropdown
-        trigger="click"
-        @on-change="handleCommand"
-        style="
+      <m-dropdown trigger="click" @on-change="handleCommand" style="
           width: 8rem;
           height: 30px;
           line-height: 30px;
           color: #fff !important;
-        "
-      >
+        ">
         <span slot="label">
-          <m-button
-            type="primary"
-            style="position: absolute; left: -1px; top: -1px; right: -1px"
-            icon="el-icon-plus"
-            >添加</m-button
-          >
+          <m-button type="primary" style="position: absolute; left: -1px; top: -1px; right: -1px"
+            icon="el-icon-plus">Add</m-button>
         </span>
         <template v-for="item in menu_items">
-          <m-dropdown-item
-            v-if="/^fa/.test(item.iconCls)"
-            :key="item.itemId"
-            :command="item.itemId"
-            :icon="item.iconCls"
-            :disabled="item.disabled"
-            >{{ item.text }}</m-dropdown-item
-          >
-          <m-dropdown-item
-            v-else
-            :key="item.itemId"
-            :command="item.itemId"
-            :name="item.iconCls"
-            :disabled="item.disabled"
-            >{{ item.text }}</m-dropdown-item
-          >
+          <m-dropdown-item v-if="/^fa/.test(item.iconCls)" :key="item.itemId + '_fa'" :command="item.itemId"
+            :icon="item.iconCls" :disabled="item.disabled">{{ item.text }}</m-dropdown-item>
+          <m-dropdown-item v-else :key="item.itemId + '_other'" :command="item.itemId" :name="item.iconCls"
+            :disabled="item.disabled">{{ item.text }}</m-dropdown-item>
         </template>
       </m-dropdown>
-      <m-button
-        type="primary"
-        @on-click="handleResume()"
-        icon="el-icon-edit"
-        :disabled="!canResume()"
-        >还原</m-button
-      >
-      <m-button
-        type="warning"
-        @on-click="handleCommand('', 'edit')"
-        icon="el-icon-video-play"
-        :disabled="!inType('serial', 'efidisk') || !current"
-        >编辑</m-button
-      >
-      <m-button
-        type="danger"
-        @on-click="handleDelete()"
-        icon="el-icon-delete"
-        :disabled="
-          inType(
-            'scsi',
-            'ide',
-            'net',
-            'usb',
-            'serial',
-            'audio',
-            'efidisk',
-            'unused'
-          )
-        "
-        >{{ /(net|scsi)/.test(current) ? "分离" : "删除" }}</m-button
-      >
-      <m-button
-        type="info"
-        @on-click="handleCommand('resize', 'resize')"
-        icon="el-icon-edit-outline"
-        :disabled="inType('scsi') || canResume()"
-        >调整磁盘大小</m-button
-      >
-      <m-button
-        type="info"
-        @on-click="handleMoveDisk()"
-        icon="el-icon-edit-outline"
-        :disabled="inType('scsi') || canResume()"
-        >移动磁盘</m-button
-      >
+      <m-button type="primary" @on-click="handleResume()" icon="el-icon-edit" :disabled="!canResume()">Restore</m-button>
+      <m-button type="warning" @on-click="handleCommand('', 'edit')" icon="el-icon-video-play"
+        :disabled="!inType('serial', 'efidisk') || !current">Edit</m-button>
+      <m-button type="danger" @on-click="handleDelete()" icon="el-icon-delete" :disabled="inType(
+        'scsi',
+        'ide',
+        'net',
+        'usb',
+        'serial',
+        'audio',
+        'efidisk',
+        'unused'
+      )
+        ">{{ /(net|scsi)/.test(current) ? "Detach" : "Delete" }}</m-button>
+      <m-button type="info" @on-click="handleCommand('resize', 'resize')" icon="el-icon-edit-outline"
+        :disabled="inType('scsi') || canResume()">Adjust Disk Size</m-button>
+      <m-button type="info" @on-click="handleMoveDisk()" icon="el-icon-edit-outline"
+        :disabled="inType('scsi') || canResume()">Move Disk</m-button>
     </div>
     <div slot="page-content">
-      <hardware-add-modal
-        :visible="visible"
-        :type="type"
-        v-if="visible"
-        :modal-type="modalType"
-        :param="param"
-        @close="
-          visible = false;
-          __init__();
-        "
-      ></hardware-add-modal>
-      <el-table
-        :data="hardwareList"
-        :show-header="false"
-        highlight-current-row
-        @row-click="handleSingleSelect"
-      >
+      <hardware-add-modal :visible="visible" :type="type" v-if="visible" :modal-type="modalType" :param="param" @close="
+        visible = false;
+      __init__();
+      "></hardware-add-modal>
+      <el-table :data="hardwareList" :show-header="false" highlight-current-row @row-click="handleSingleSelect">
         <el-table-column width="55px">
           <template slot-scope="scope">
-            <el-radio :label="scope.row.type" v-model="current"
-              >&nbsp;</el-radio
-            >
+            <el-radio :label="scope.row.type" v-model="current">&nbsp;</el-radio>
           </template>
         </el-table-column>
-        <el-table-column label="名称" prop="name" width="200px">
+        <el-table-column label="Name" prop="name" width="200px">
           <template slot-scope="scope">
             <div>
-              <base-icon
-                class="hardware-icon"
-                :name="scope.row.icon"
-                v-if="!/^[fa]/.test(scope.row.icon)"
-              ></base-icon>
+              <base-icon class="hardware-icon" :name="scope.row.icon" v-if="!/^[fa]/.test(scope.row.icon)"></base-icon>
               <i v-else :class="scope.row.icon" class="fa"></i>
               <span>{{ scope.row.name }}</span>
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="值" prop="value">
+        <el-table-column label="Value" prop="value">
           <template slot-scope="scope">
             <div>
               {{
@@ -132,15 +66,10 @@
                 scope.row.render(false).replace(/(delete\:true)$/, "")
               }}
             </div>
-            <div
-              v-show="
-                scope.row &&
-                scope.row.render &&
-                scope.row.render(false).indexOf('delete:true') >= 0
-              "
-              class="pending"
-              style="text-decoration: line-through"
-            >
+            <div v-show="scope.row &&
+              scope.row.render &&
+              scope.row.render(false).indexOf('delete:true') >= 0
+              " class="pending" style="text-decoration: line-through">
               {{ scope.row.render(false).replace(/(delete\:true)$/, "") }}
             </div>
             <div class="pending">
@@ -149,16 +78,10 @@
           </template>
         </el-table-column>
       </el-table>
-      <job-press-modal
-        v-if="jobVisible"
-        :visible="jobVisible"
-        :title="jobTitle"
-        @close="
-          jobVisible = false;
-          __init__();
-        "
-        :msg="jobText"
-      ></job-press-modal>
+      <job-press-modal v-if="jobVisible" :visible="jobVisible" :title="jobTitle" @close="
+        jobVisible = false;
+      __init__();
+      " :msg="jobText"></job-press-modal>
     </div>
   </page-template>
 </template>
@@ -198,11 +121,11 @@ export default {
       type: "",
       modalType: "create",
       param: {},
-      jobText: "删除中...",
+      jobText: "Deleting...",
       statusObj: {},
       jobVisible: "",
       jobTitle: "",
-      //可以添加的硬盘配置
+      // Hardware configurations that can be added
       hardware_counts: {
         net: 32,
         usb: 5,
@@ -212,7 +135,7 @@ export default {
         serial: 4,
         rng: 1,
       },
-      //添加菜单
+      // Add menu
       menu_items: [
         {
           text: gettext("Hard Disk"),
@@ -291,11 +214,11 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化请求
+    // Initialize request
     __init__() {
       let _this = this;
       _this.queryResource().then((res) => {
-        //装配数据得到格式为{key: value}的数据以便后期数据处理
+        // Assemble data to get {key: value} format for later data processing
         _this.store = _this.db.volumeList.reduce((target, source) => {
           if (!target.hasOwnProperty(source.key)) {
             target[source.key] = {
@@ -304,15 +227,15 @@ export default {
           }
           return target;
         }, {});
-        //表格数据
+        // Table data
         this.hardwareList = [
           {
-            name: gettext("Memory"), //名称
-            type: "memory", //数据类型
-            icon: "icon-ram", //icon
-            itemId: "addmemory", //添加弹框id
+            name: gettext("Memory"), // Name
+            type: "memory", // Data type
+            icon: "icon-ram", // Icon
+            itemId: "addmemory", // Add modal ID
             render: function (pending) {
-              //渲染值
+              // Render value
               var res = "";
               var max = _this.getObjectValue("memory", 512, pending);
               var balloon = _this.getObjectValue("balloon", undefined, pending);
@@ -387,15 +310,15 @@ export default {
                   _this.store.bios.data &&
                   _this.store.bios.data.pending
                   ? render_qemu_bios(
-                      _this.store.bios.data && _this.store.bios.data.pending
-                    )
+                    _this.store.bios.data && _this.store.bios.data.pending
+                  )
                   : "";
               else
                 return _this.store.bios
                   ? render_qemu_bios(
-                      _this.store.bios.data && _this.store.bios.data.value
-                    )
-                  : "默认 (SeaBIOS)";
+                    _this.store.bios.data && _this.store.bios.data.value
+                  )
+                  : "Default (SeaBIOS)";
             },
           },
           {
@@ -415,7 +338,7 @@ export default {
                   _this.store.vga.data &&
                   !isEmpty(_this.store.vga.data.value)
                   ? render_kvm_vga_driver(_this.store.vga.data.value)
-                  : "默认";
+                  : "Default";
               }
             },
           },
@@ -438,11 +361,11 @@ export default {
               } else {
                 return _this.store.machine && _this.store.machine.data
                   ? _this.render_qemu_machine(
-                      !isEmpty(_this.store.machine.data.value)
-                        ? _this.store.machine.data.value
-                        : ""
-                    )
-                  : "默认(i440fx)";
+                    !isEmpty(_this.store.machine.data.value)
+                      ? _this.store.machine.data.value
+                      : ""
+                  )
+                  : "Default(i440fx)";
               }
             },
           },
@@ -485,19 +408,19 @@ export default {
               name: /scsi/.test(confid)
                 ? gettext("Hard Disk") + " (" + confid + ")"
                 : !_this.isCloudInit(confid)
-                ? gettext("CD/DVD Drive") + " (" + confid + ")"
-                : gettext("CloudInit Drive") + " (" + confid + ")",
+                  ? gettext("CD/DVD Drive") + " (" + confid + ")"
+                  : gettext("CloudInit Drive") + " (" + confid + ")",
               type: confid,
               itemId: /scsi/.test(confid)
                 ? "adddisk"
                 : !_this.isCloudInit(confid)
-                ? "addcdrom"
-                : "addci",
+                  ? "addcdrom"
+                  : "addci",
               icon: /scsi/.test(confid)
                 ? "fa-hdd-o"
                 : !_this.isCloudInit(confid)
-                ? "icon-cd"
-                : "icon-harddisk",
+                  ? "icon-cd"
+                  : "icon-harddisk",
               render: function (pending) {
                 if (pending) {
                   return _this.store[confid] &&
@@ -514,8 +437,8 @@ export default {
                     : _this.store[confid] &&
                       _this.store[confid].data &&
                       !isEmpty(_this.store[confid].data.value)
-                    ? _this.store[confid].data.value
-                    : "";
+                      ? _this.store[confid].data.value
+                      : "";
                 }
               },
             });
@@ -546,8 +469,8 @@ export default {
                     : _this.store[confid] &&
                       _this.store[confid].data &&
                       !isEmpty(_this.store[confid].data.value)
-                    ? _this.store[confid].data.value
-                    : "";
+                      ? _this.store[confid].data.value
+                      : "";
                 }
               },
             });
@@ -797,7 +720,7 @@ export default {
     handleDelete() {
       this.$confirm
         .confirm({
-          msg: `你确定你要删除该项${this.currentObj.name}?`,
+          msg: `Are you sure you want to delete this item ${this.currentObj.name}?`,
           icon: "icon-question",
         })
         .then((res) => {
@@ -858,11 +781,11 @@ export default {
       }, {});
     },
     render_qemu_machine(value) {
-      return value || "默认" + " (i440fx)";
+      return value || "Default" + " (i440fx)";
     },
     render_scsihw: function (value) {
       if (!value) {
-        return "默认" + " (LSI 53C895A)";
+        return "Default" + " (LSI 53C895A)";
       } else if (value === "lsi") {
         return "LSI 53C895A";
       } else if (value === "lsi53c810") {
@@ -903,26 +826,26 @@ export default {
       }
       return defaultValue;
     },
-    //添加硬盘等
+    // Add hardware etc.
     handleCommand(type, modaltype = "create") {
       debugger;
-      //硬盘类型如果modalType存在证明是添加
+      // If modalType exists for disk type, it means adding
       this.type =
         modaltype === "create" || modaltype === "resize"
           ? type
           : this.currentObj.itemId;
-      //创建或者编辑
+      // Create or edit
       this.modalType = modaltype !== "create" ? modaltype : "create";
       this.param = modaltype !== "create" ? this.currentObj : {};
       this.visible = true;
     },
-    //改变磁盘大小
-    handleRestSize() {},
-    //移动磁盘
+    // Change disk size
+    handleRestSize() { },
+    // Move disk
     handleMoveDisk() {
-      //硬盘类型如果modalType存在证明是添加
+      // If modalType exists for disk type, it means adding
       this.type = "migratedisk";
-      //创建或者编辑
+      // Create or edit
       this.modalType = "create";
       this.param = this.currentObj;
       this.visible = true;
@@ -1005,6 +928,7 @@ export default {
 .pending {
   color: #f87c7c;
 }
+
 .hardware-icon {
   width: 16px;
   vertical-align: middle;
@@ -1013,13 +937,16 @@ export default {
   margin-right: 5px;
   background-size: 16px;
 }
+
 /deep/.el-table td,
 .el-table th {
   padding: 0px;
 }
+
 /deep/.base-icon {
   background-size: 16px;
 }
+
 /deep/.tool-bar-left {
   flex: 2;
 }

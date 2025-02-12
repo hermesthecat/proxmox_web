@@ -5,7 +5,7 @@
         type="primary"
         @on-click="showModal('create')"
         icon="el-icon-plus"
-        >添加</m-button
+        >Add</m-button
       >
       <m-button
         type="warning"
@@ -15,28 +15,28 @@
           inStatus() ||
           (selectedList && selectedList[0] && selectedList[0].type === 'group')
         "
-        >拷贝</m-button
+        >Copy</m-button
       >
       <m-button
         type="primary"
         @on-click="showModal('rule')"
         icon="el-icon-folder-add"
         :disabled="inStatus()"
-        >插入：安全组</m-button
+        >Insert: Security Group</m-button
       >
       <m-button
         type="danger"
         @on-click="handleDelete"
         icon="el-icon-delete"
         :disabled="selectedList.length <= 0"
-        >删除</m-button
+        >Delete</m-button
       >
       <m-button
         type="info"
         icon="el-icon-edit"
         :disabled="selectedList.length !== 1"
         @on-click="showModal('edit')"
-        >编辑</m-button
+        >Edit</m-button
       >
     </div>
     <div slot="page-content">
@@ -51,11 +51,11 @@
           prop="pos"
         ></el-table-column>
         <el-table-column width="55" prop="pos"></el-table-column>
-        <el-table-column label="启用" prop="enable">
+        <el-table-column label="Enable" prop="enable">
           <template slot-scope="scope">
             <table-info-state
               :content="
-                scope.row.enable && scope.row.enable === 1 ? '是' : '否'
+                scope.row.enable && scope.row.enable === 1 ? 'Yes' : 'No'
               "
               :state="
                 scope.row.enable && scope.row.enable === 1
@@ -65,17 +65,17 @@
             ></table-info-state>
           </template>
         </el-table-column>
-        <el-table-column label="类别" prop="type"></el-table-column>
-        <el-table-column label="操作" prop="action"></el-table-column>
-        <el-table-column label="宏" prop="macro"> </el-table-column>
-        <el-table-column label="接口" prop="iface"></el-table-column>
-        <el-table-column label="源" prop="source"></el-table-column>
-        <el-table-column label="目标" prop="dest"></el-table-column>
-        <el-table-column label="协议" prop="proto"></el-table-column>
-        <el-table-column label="目标端口" prop="dport"></el-table-column>
-        <el-table-column label="源端口" prop="sport"></el-table-column>
-        <el-table-column label="Log级别" prop="log"></el-table-column>
-        <el-table-column label="备注" prop="comment"></el-table-column>
+        <el-table-column label="Type" prop="type"></el-table-column>
+        <el-table-column label="Action" prop="action"></el-table-column>
+        <el-table-column label="Macro" prop="macro"> </el-table-column>
+        <el-table-column label="Interface" prop="iface"></el-table-column>
+        <el-table-column label="Source" prop="source"></el-table-column>
+        <el-table-column label="Destination" prop="dest"></el-table-column>
+        <el-table-column label="Protocol" prop="proto"></el-table-column>
+        <el-table-column label="Destination Port" prop="dport"></el-table-column>
+        <el-table-column label="Source Port" prop="sport"></el-table-column>
+        <el-table-column label="Log Level" prop="log"></el-table-column>
+        <el-table-column label="Comment" prop="comment"></el-table-column>
         <el-table-column>
           <template slot-scope="scope">
             <m-button
@@ -86,7 +86,7 @@
                   : 'el-icon-video-pause'
               "
               @on-click="handleEnable(scope.row)"
-              >{{ scope.row.enable === 0 ? "启用" : "停用" }}</m-button
+              >{{ scope.row.enable === 0 ? "Enable" : "Disable" }}</m-button
             >
           </template>
         </el-table-column>
@@ -125,7 +125,7 @@ export default {
     return {
       type: "create",
       visible: false,
-      title: "创建：复制作业",
+      title: "Create: Copy Job",
       selectedList: [],
       isCreate: true,
       param: {},
@@ -137,7 +137,7 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化查找
+    //Initialize search
     __init__() {
       this.queryFireWallList().then((res) => {
         this.qemuLxcFireWallRuleList = quickSort(
@@ -147,36 +147,36 @@ export default {
         );
       });
     },
-    //是否展示弹框
+    //Show modal dialog
     showModal(type) {
       this.type = type;
       this.isCreate = type === "create";
       this.title =
         type === "create"
-          ? "添加：规则"
+          ? "Add: Rule"
           : type === "copy"
-          ? "复制：规则"
+          ? "Copy: Rule"
           : type === "edit"
-          ? "编辑：规则"
-          : "添加：安全组";
+          ? "Edit: Rule"
+          : "Add: Security Group";
       this.param = type === "create" ? {} : this.selectedList[0];
       this.visible = true;
       debugger;
       this.isGroup =
         this.selectedList[0] && this.selectedList[0].type === "group";
     },
-    //按钮是否可点击
+    //Check if button is clickable
     inStatus() {
       return this.selectedList.length !== 1;
     },
-    //选择
+    //Selection
     handleSelect(row) {
       this.selectedList = row;
     },
     handleDelete(type) {
       this.$confirm
         .confirm({
-          msg: `你确定你要删除已选择项吗？`,
+          msg: `Are you sure you want to delete selected items?`,
           type: "info",
         })
         .then(() => {

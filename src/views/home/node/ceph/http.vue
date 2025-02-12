@@ -12,7 +12,7 @@ export default {
     this.node = (JSON.parse(last).node && JSON.parse(last).node) || "";
   },
   methods: {
-    //查询配置
+    //Query configuration
     queryConfig(path, param) {
       return this.$http
         .get(`json/nodes/${this.node}/ceph/${path}`, param)
@@ -22,7 +22,7 @@ export default {
           }
         });
     },
-    //查询监控数据
+    //Query monitoring data
     queryMonitor(path, param) {
       return this.$http
         .get(`json/nodes/${this.node}/ceph/${path}`, param)
@@ -32,7 +32,7 @@ export default {
           }
         });
     },
-    //查询节点
+    //Query nodes
     queryNodes() {
       return this.$http.get(`json/nodes`).then((res) => {
         if (res.data) {
@@ -43,7 +43,7 @@ export default {
         }
       });
     },
-    //创建监视器
+    //Create monitor
     createMonitor(type, nodename) {
       let event = this.createEvent("action.create.monitor");
       return this.$http
@@ -61,7 +61,7 @@ export default {
           confirm.call(this, res, "error", "icon-error");
         });
     },
-    //查询日志
+    //Query log
     queryLog(node, pid) {
       return this.$http
         .get(`json/nodes/${node}/tasks/${pid}/log`, {
@@ -76,7 +76,7 @@ export default {
           });
         });
     },
-    //查询状态
+    //Query status
     queryStatus(node, pid) {
       return this.$http
         .get(`json/nodes/${node}/tasks/${pid}/status`)
@@ -97,13 +97,13 @@ export default {
           }
         });
     },
-    //停止任务
+    //Stop task
     stopTask(node, pid) {
       return this.$http.del(`json/nodes/${node}/tasks/${pid}`).then(() => {
         this.queryClusterList();
       });
     },
-    //操作ceph
+    //Operate ceph
     operateCeph(nodename, operate, param) {
       let event = this.createEvent("action.create.monitor");
       return this.$http
@@ -121,7 +121,7 @@ export default {
           confirm.call(this, res, "error", "icon-error");
         });
     },
-    //查询服务日志
+    //Query service log
     queryServiceLog(nodename, param) {
       return this.$http
         .get(`json/nodes/${nodename}/syslog`, param)
@@ -129,7 +129,7 @@ export default {
           if (res.data) return Promise.resolve(res.data);
         });
     },
-    //查询磁盘
+    //Query disk
     queryDisk(param) {
       return this.$http
         .get(`json/nodes/${this.node}/disks/list`, param)
@@ -139,7 +139,7 @@ export default {
           }
         });
     },
-    //创建osd
+    //Create OSD
     createOsd(param) {
       let event = this.createEvent("action.create.osd");
       return this.$http
@@ -157,7 +157,7 @@ export default {
           return Promise.reject();
         });
     },
-    //查询ceph日志
+    //Query ceph log
     queryCephLog(param) {
       return this.$http
         .get(`json/nodes/${this.node}/ceph/log`, param)
@@ -167,7 +167,7 @@ export default {
           }
         });
     },
-    //更新OSD出或者入
+    //Update OSD in or out
     updateOSDInOrOut(id, type, param) {
       let event = this.createEvent("action.update.osd");
       return this.$http
@@ -185,6 +185,7 @@ export default {
           return Promise.reject();
         });
     },
+    //Delete OSD
     deleteOSDInOrOut(id, param) {
       let event = this.createEvent("action.delete.osd");
       return this.$http
@@ -198,7 +199,7 @@ export default {
           return Promise.reject();
         });
     },
-    //删除Mds
+    //Delete Mds
     deleteMds(id, param) {
       let event = this.createEvent("action.delete.osd");
       return this.$http
@@ -213,7 +214,7 @@ export default {
           return Promise.reject();
         });
     },
-    //删除Mgr
+    //Delete Mgr
     deleteMgr(id, param) {
       let event = this.createEvent("action.delete.mgr");
       return this.$http
@@ -228,7 +229,7 @@ export default {
           return Promise.reject();
         });
     },
-    //查询osd flags
+    //Query OSD flags
     queryFlags(param) {
       return this.$http.get(`json/cluster/ceph/flags`, param).then((res) => {
         if (res.data) {
@@ -236,7 +237,7 @@ export default {
         }
       });
     },
-    //添加flags
+    //Add flags
     addFlags(param) {
       let event = this.createEvent("action.add.osd.flags");
       return this.$http
@@ -254,7 +255,7 @@ export default {
           return Promise.reject();
         });
     },
-    //添加mds
+    //Add MDS
     addMds(nodename, param) {
       let event = this.createEvent("action.add.mds");
       return this.$http
@@ -273,7 +274,7 @@ export default {
           return Promise.reject();
         });
     },
-    //添加mds
+    //Add CephFS
     addCephfs(fsname, param) {
       let event = this.createEvent("action.add.mds");
       return this.$http
@@ -292,7 +293,7 @@ export default {
           return Promise.reject();
         });
     },
-    //查询ceph池
+    //Query Ceph pools
     queryCephPools() {
       return this.$http
         .get(`json/nodes/${this.node}/ceph/pools`)
@@ -302,7 +303,7 @@ export default {
           }
         });
     },
-    //创建ceph池
+    //Create Ceph pool
     createPools(param) {
       let event = this.createEvent("action.add.pools");
       return this.$http
@@ -320,7 +321,7 @@ export default {
           return Promise.reject();
         });
     },
-    //查询规则
+    //Query rules
     queryRules() {
       return this.$http
         .get(`json/nodes/${this.node}/ceph/rules`)
@@ -330,7 +331,7 @@ export default {
           }
         });
     },
-    //查询fs
+    //Query filesystem
     queryFs() {
       return this.$http.get(`json/nodes/${this.node}/ceph/fs`).then((res) => {
         if (res.data) {
@@ -338,7 +339,7 @@ export default {
         }
       });
     },
-    //查询mds
+    //Query MDS
     queryMds() {
       return this.$http.get(`json/nodes/${this.node}/ceph/mds`).then((res) => {
         if (res.data) {
@@ -346,7 +347,7 @@ export default {
         }
       });
     },
-    //销毁存储池
+    //Destroy storage pool
     deleteCephPool(id) {
       return this.$http
         .del(`json/nodes/${this.node}/ceph/pools/${id}`, {

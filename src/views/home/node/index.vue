@@ -2,23 +2,23 @@
   <transition name="transition">
     <div class="content">
       <div class="m-operate">
-        <div class="m-operate-left">节点test</div>
+        <div class="m-operate-left">Node test</div>
         <div class="m-operate-right">
           <m-button
             icon="fa fa-undo"
             v-confirm="{
-              msg: `重启节点\'${node}\'？`,
+              msg: `Restart node '${node}'?`,
               ok: () => handleReset(),
             }"
-            >重启</m-button
+            >Restart</m-button
           >
           <m-button
             icon="fa fa-power-off"
             v-confirm="{
-              msg: `关闭节点\'${node}\'？`,
+              msg: `Shutdown node '${node}'?`,
               ok: () => handleClose(),
             }"
-            >关机</m-button
+            >Shutdown</m-button
           >
           <dropdown
             style="
@@ -56,16 +56,16 @@
               slot="label"
               style="border: none; height: 28px"
             >
-              批量操作
+              Batch Operations
             </m-button>
             <dropdown-item command="startall" icon="fa el-icon-video-play"
-              >批量启动</dropdown-item
+              >Batch Start</dropdown-item
             >
             <dropdown-item command="stopall" icon="fa el-icon-video-pause"
-              >批量停止</dropdown-item
+              >Batch Stop</dropdown-item
             >
             <dropdown-item command="migrateall" icon="fa fa-paper-plane-o"
-              >批量迁移</dropdown-item
+              >Batch Migrate</dropdown-item
             >
           </dropdown>
         </div>
@@ -124,8 +124,8 @@ export default {
       node: "",
       menuData: nodeMenuList,
       nodeModalParam: {},
-      visible: false, //是否展示批量操作框，
-      title: "批量启动",
+      visible: false, //Show batch operation dialog
+      title: "Batch Start",
       type: "",
     };
   },
@@ -217,10 +217,10 @@ export default {
       };
       this.title =
         operate === "stopall"
-          ? "批量停止"
+          ? "Batch Stop"
           : operate === "startall"
-          ? "批量启动"
-          : "批量迁移";
+          ? "Batch Start"
+          : "Batch Migrate";
       this.type = operate;
       this.visible = true;
       //this.beatchOperate(operate);

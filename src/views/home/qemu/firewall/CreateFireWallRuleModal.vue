@@ -11,17 +11,17 @@
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
               <m-select
                 prop="type"
-                label="方向"
+                label="Direction"
                 labelWidth="100px"
                 validateEvent
                 @on-change="handleTypeSelect"
                 v-model="type"
                 v-show="modalType !== 'rule' && !isGroup"
-                placeholder="请选择方向"
+                placeholder="Please select direction"
               >
                 <m-option
                   v-for="item in typeOptions"
@@ -33,7 +33,7 @@
               </m-select>
               <m-select
                 prop="action"
-                label="安全组"
+                label="Security Group"
                 labelWidth="100px"
                 validateEvent
                 @on-change="handleGroupSelect"
@@ -43,7 +43,7 @@
                 :error-msg="rules['action'].message"
                 required
                 v-show="modalType === 'rule' || isGroup"
-                placeholder="请选择安全组"
+                placeholder="Please select security group"
               >
                 <m-option
                   v-for="(item, index) in db.fireWallGroupList"
@@ -54,8 +54,8 @@
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
-                        <span class="table-td">安全组</span>
-                        <span class="table-td">备注</span>
+                        <span class="table-td">Security Group</span>
+                        <span class="table-td">Comment</span>
                       </div>
                     </template>
                     <div class="table-tr">
@@ -70,19 +70,19 @@
                 </m-option>
               </m-select>
               <m-checkbox
-                label="启用"
+                label="Enable"
                 v-model="enable"
                 labelWidth="100px"
               ></m-checkbox>
               <m-select
                 prop="action"
-                label="操作"
+                label="Action"
                 labelWidth="100px"
                 @on-change="handleActionSelect"
                 v-model="action"
                 :readonly="false"
                 v-show="modalType !== 'rule' && !isGroup"
-                placeholder="请选操作"
+                placeholder="Please select action"
               >
                 <m-option
                   v-for="item in actionOptions"
@@ -94,11 +94,11 @@
               </m-select>
               <m-select
                 prop="macro"
-                label="宏"
+                label="Macro"
                 labelWidth="100px"
                 @on-change="handleMacroSelect"
                 v-model="macro"
-                placeholder="请选择宏"
+                placeholder="Please select macro"
                 v-show="modalType !== 'rule' && !isGroup"
                 :readonly="false"
               >
@@ -111,8 +111,8 @@
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
-                        <span class="table-td">宏</span>
-                        <span class="table-td">描述</span>
+                        <span class="table-td">Macro</span>
+                        <span class="table-td">Description</span>
                       </div>
                     </template>
                     <div class="table-tr">
@@ -129,20 +129,20 @@
               <m-input
                 type="text"
                 prop="iface"
-                label="接口"
+                label="Interface"
                 labelWidth="100px"
                 v-model="iface"
-                :placeholder="'请输入接口'"
+                :placeholder="'Please enter interface'"
               />
               <m-select
                 prop="proto"
-                label="协议"
+                label="Protocol"
                 labelWidth="100px"
                 @on-change="handleProtoSelect"
                 v-model="proto"
                 :readonly="false"
                 :disabled="macro !== ''"
-                placeholder="请选择协议"
+                placeholder="Please select protocol"
                 v-show="modalType !== 'rule' && !isGroup"
               >
                 <m-option
@@ -154,9 +154,9 @@
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
-                        <span class="table-td">协议</span>
-                        <span class="table-td">数</span>
-                        <span class="table-td">描述</span>
+                        <span class="table-td">Protocol</span>
+                        <span class="table-td">Number</span>
+                        <span class="table-td">Description</span>
                       </div>
                     </template>
                     <div class="table-tr">
@@ -169,12 +169,12 @@
               </m-select>
               <m-select
                 prop="source"
-                label="源"
+                label="Source"
                 labelWidth="100px"
                 @on-change="handleSourceSelect"
                 v-model="source"
                 :readonly="false"
-                placeholder="请选择源"
+                placeholder="Please select source"
                 v-show="modalType !== 'rule' && !isGroup"
               >
                 <m-option
@@ -186,9 +186,9 @@
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
-                        <span class="table-td">类</span>
-                        <span class="table-td">名称</span>
-                        <span class="table-td">备注</span>
+                        <span class="table-td">Type</span>
+                        <span class="table-td">Name</span>
+                        <span class="table-td">Comment</span>
                       </div>
                     </template>
                     <div class="table-tr">
@@ -208,21 +208,21 @@
               <m-input
                 type="number"
                 prop="sport"
-                label="源端口"
+                label="Source Port"
                 labelWidth="100px"
                 v-model="sport"
                 :disabled="macro !== ''"
-                :placeholder="'请输入源端口'"
+                :placeholder="'Please enter source port'"
                 v-show="modalType !== 'rule' && !isGroup"
               />
               <m-select
                 prop="dest"
-                label="目标"
+                label="Destination"
                 labelWidth="100px"
                 @on-change="handleDestSelect"
                 v-model="dest"
                 :readonly="false"
-                placeholder="请选择目标"
+                placeholder="Please select destination"
                 v-show="modalType !== 'rule' && !isGroup"
               >
                 <m-option
@@ -234,9 +234,9 @@
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
-                        <span class="table-td">类</span>
-                        <span class="table-td">名称</span>
-                        <span class="table-td">备注</span>
+                        <span class="table-td">Type</span>
+                        <span class="table-td">Name</span>
+                        <span class="table-td">Comment</span>
                       </div>
                     </template>
                     <div class="table-tr">
@@ -256,33 +256,33 @@
               <m-input
                 type="number"
                 prop="dport"
-                label="目标端口"
+                label="Destination Port"
                 labelWidth="100px"
                 :disabled="macro !== ''"
                 v-model="dport"
                 v-show="modalType !== 'rule' && !isGroup"
-                :placeholder="'请输入目标端口'"
+                :placeholder="'Please enter destination port'"
               />
               <m-input
                 type="textarea"
                 prop="comment"
-                label="备注"
+                label="Comment"
                 labelWidth="100px"
                 v-model="comment"
-                placeholder="请输入备注"
+                placeholder="Please enter comment"
               />
             </dd>
           </dl>
           <dl v-if="isAdvice && modalType !== 'rule' && !isGroup">
-            <dt>高级</dt>
+            <dt>Advanced</dt>
             <dd>
               <m-select
                 prop="log"
-                label="日志级别"
+                label="Log Level"
                 labelWidth="100px"
                 @on-change="handleLogSelect"
                 v-model="log"
-                placeholder="请选择日志级别"
+                placeholder="Please select log level"
               >
                 <m-option
                   v-for="item in logsOptions"
@@ -301,11 +301,11 @@
       <div class="label_box" v-show="modalType !== 'rule' && !isGroup">
         <label>
           <input type="checkbox" v-model="isAdvice" />
-          <div>高级</div>
+          <div>Advanced</div>
         </label>
       </div>
       <m-button class="create-btn" type="primary" @on-click="confirm">{{
-        modalType === "eidt" ? "修改" : "添加"
+        modalType === "eidt" ? "Update" : "Add"
       }}</m-button>
     </template>
   </Dialog>
@@ -367,13 +367,13 @@ export default {
       portocalOptions: PORTOCOLIST,
       isAdvice: true,
       typeOptions: [
-        { label: "入", value: "in" },
-        { label: "出", value: "out" },
+        { label: "In", value: "in" },
+        { label: "Out", value: "out" },
       ],
       actionOptions: [
-        { label: "接收", value: "ACCEPT" },
-        { label: "删除", value: "DROP" },
-        { label: "拒绝", value: "REJECT" },
+        { label: "Accept", value: "ACCEPT" },
+        { label: "Drop", value: "DROP" },
+        { label: "Reject", value: "REJECT" },
       ],
       logsOptions: [
         { label: "nolog", value: "nolog" },
@@ -402,14 +402,12 @@ export default {
     byteToSize,
     async __init__() {
       let _this = this;
-      //创建安全组
+      //Create security group
       if (this.isCreate) {
-        //Object.assign(this.$data, this.$options.data());
         await this.queryMacrosList();
         await this.queryRefsList();
       } else if (this.modalType === "copy" && !_this.isGroup) {
-        //复制安全组当类型不为group时
-        //Object.assign(this.$data, this.$options.data());
+        //Copy security group when type is not group
         this.log = "";
         await this.queryMacrosList();
         await this.queryRefsList();
@@ -420,8 +418,7 @@ export default {
         this.log ? (this.isAdvice = true) : (this.isAdvice = false);
         this.log = "nolog";
       } else if (this.modalType === "edit" && !_this.isGroup) {
-        //当类型不为group时编辑安全组
-        //Object.assign(_this.$data, _this.$options.data());
+        //Edit security group when type is not group
         await _this.queryMacrosList();
         await _this.queryRefsList();
         this.log = "";
@@ -436,7 +433,7 @@ export default {
           });
         }
       } else if (this.modalType === "rule") {
-        //插入安全组
+        //Insert security group
         this.queryFireWallGroupList().then(() => {
           this.action =
             this.db.fireWallGroupList && this.db.fireWallGroupList.length > 0
@@ -444,7 +441,7 @@ export default {
               : "";
         });
       } else if (_this.isGroup && this.modalType === "edit") {
-        //当类型为group时编辑安全组
+        //Edit security group when type is group
         this.queryFireWallGroupList().then(() => {
           this.action = this.db.fireWallGroupList[0].group;
         });
@@ -493,7 +490,7 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
     },

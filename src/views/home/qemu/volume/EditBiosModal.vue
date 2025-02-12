@@ -1,33 +1,15 @@
 <template>
-  <m-dialog
-    :title="modalType !== 'edit' ? '添加: 内存' : '编辑: 内存'"
-    :visible="visible"
-    v-if="visible"
-    @confirm="confirm"
-    @cancel="close"
-    :_style="{
+  <m-dialog :title="modalType !== 'edit' ? 'Add: Memory' : 'Edit: Memory'" :visible="visible" v-if="visible" @confirm="confirm"
+    @cancel="close" :_style="{
       width: '946px',
-    }"
-    @close="close"
-  >
+    }" @close="close">
     <div slot="content" style="max-height: 400px; overflow: auto">
       <div class="m-form__section">
         <dl>
-          <dt>基本信息</dt>
+          <dt>Basic Information</dt>
           <dd>
-            <m-select
-              labelWidth="100px"
-              label="类别"
-              v-model="bios"
-              prop="cpu"
-              @on-change="handleBiosChange"
-            >
-              <m-option
-                v-for="item in biosItems"
-                :key="item.value"
-                :value="item.value"
-                :label="item.label"
-              >
+            <m-select labelWidth="100px" label="Category" v-model="bios" prop="cpu" @on-change="handleBiosChange">
+              <m-option v-for="item in biosItems" :key="item.value" :value="item.value" :label="item.label">
               </m-option>
             </m-select>
           </dd>
@@ -35,12 +17,7 @@
       </div>
     </div>
     <template slot="footer">
-      <m-button
-        type="primary"
-        style="height: 40px; line-height: 40px; width: 100px"
-        @on-click="confirm()"
-        >确定</m-button
-      >
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px" @on-click="confirm()">Confirm</m-button>
     </template>
   </m-dialog>
 </template>
@@ -71,7 +48,7 @@ export default {
           value: "seabios",
         },
         {
-          label: "OVMF（UEFI）",
+          label: "OVMF (UEFI)",
           value: "ovmf",
         },
       ],
@@ -126,10 +103,12 @@ export default {
 /deep/.el-table__body {
   font-size: 12px;
 }
+
 .cpu-check {
   width: 100%;
   white-space: nowrap;
 }
+
 .cpu-label {
   width: 55px;
   display: inline-block;

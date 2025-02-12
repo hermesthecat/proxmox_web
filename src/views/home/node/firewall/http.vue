@@ -90,7 +90,7 @@ export default {
           return Promise.reject(res);
         });
     },
-    //编辑更新防火墙
+    //Edit and update firewall
     updateFireWall(id, param) {
       let event = this.createEvent("action.firewall.update");
       return this.$http
@@ -107,7 +107,7 @@ export default {
           return Promise.reject(res);
         });
     },
-    //查询安全组
+    //Query security groups
     queryFireWallGroupList() {
       return this.$http.get(`json/cluster/firewall/groups`).then((res) => {
         if (res.data) {

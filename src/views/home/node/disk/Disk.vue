@@ -2,21 +2,21 @@
   <page-template>
     <div slot="toolbar-left">
       <m-button type="primary" @on-click="refresh" icon="el-icon-refresh"
-        >重载</m-button
+        >Reload</m-button
       >
       <m-button
         type="warning"
         @on-click="showModal()"
         icon="el-icon-view"
         :disabled="selectedList.length !== 1"
-        >显示S.M.A.R.T.值</m-button
+        >Show S.M.A.R.T. Values</m-button
       >
       <m-button
         type="primary"
         @on-click="updateGpt"
         icon="el-icon-refresh-left"
         :disabled="inStatus()"
-        >使用GPT初始化磁盘</m-button
+        >Initialize Disk with GPT</m-button
       >
     </div>
     <div slot="page-content">
@@ -32,18 +32,18 @@
           prop="pos"
         ></el-table-column>
         <el-table-column width="55" prop="pos"></el-table-column>
-        <el-table-column label="设备" prop="devpath"></el-table-column>
-        <el-table-column label="类别" prop="type">
+        <el-table-column label="Device" prop="devpath"></el-table-column>
+        <el-table-column label="Type" prop="type">
           <template slot-scope="scope">
             {{ renderType(scope.row.type) }}
           </template>
         </el-table-column>
-        <el-table-column label="使用率" prop="used">
+        <el-table-column label="Usage" prop="used">
           <template slot-scope="scope">
             {{ renderUsed(scope.row.used) }}
           </template>
         </el-table-column>
-        <el-table-column label="大小" prop="size">
+        <el-table-column label="Size" prop="size">
           <template slot-scope="scope">
             {{ scope.row && scope.row.size && byteToSize(scope.row.size) }}
           </template>
@@ -51,15 +51,15 @@
         <el-table-column label="GPT" prop="gpt">
           <template slot-scope="scope">
             <table-info-state
-              :content="scope.row.gpt && scope.row.gpt === 1 ? '是' : '否'"
+              :content="scope.row.gpt && scope.row.gpt === 1 ? 'Yes' : 'No'"
               :state="
                 scope.row.gpt && scope.row.gpt === 1 ? 'actived' : 'unActived'
               "
             ></table-info-state>
           </template>
         </el-table-column>
-        <el-table-column label="模型" prop="model"></el-table-column>
-        <el-table-column label="串行" prop="serial"></el-table-column>
+        <el-table-column label="Model" prop="model"></el-table-column>
+        <el-table-column label="Serial" prop="serial"></el-table-column>
         <el-table-column label="S.M.A.R.T." prop="health"></el-table-column>
         <el-table-column label="Wearout" prop="wearout">
           <template slot-scope="scope">
@@ -90,19 +90,19 @@
         :_style="{
           width: '800px',
         }"
-        title="Task Viewer: 初始化Gpt"
+        title="Task Viewer: Initialize GPT"
       >
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
-            <m-tab-panel label="输出" name="log"></m-tab-panel>
-            <m-tab-panel label="状态" name="status"></m-tab-panel>
+            <m-tab-panel label="Output" name="log"></m-tab-panel>
+            <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
           <m-button
             class="create-btn m-margin-top-10"
             type="primary"
             @on-click="stopTask1"
             :disabled="db.addClusterStatusObj.status !== 'running'"
-            >停止</m-button
+            >Stop</m-button
           >
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
@@ -160,7 +160,7 @@ export default {
     return {
       type: "create",
       visible: false,
-      title: "创建：复制作业",
+      title: "Create: Copy Job",
       selectedList: [],
       isCreate: true,
       param: {},
@@ -175,33 +175,33 @@ export default {
     this.__init__();
   },
   methods: {
-    //字节转化为M,T,G等
+    //Convert bytes to M, T, G etc.
     byteToSize,
     refresh: debounce(function () {
       this.__init__();
     }, 500),
-    //初始化查找
+    //Initialize search
     __init__() {
       this.queryListNodeDiskList();
     },
     isNumber(value) {
       return typeof value === "number";
     },
-    //是否展示弹框
+    //Show dialog
     showModal(type) {
       this.type = type;
-      this.title = "S.M.A.R.T值";
+      this.title = "S.M.A.R.T. Values";
       this.param = this.selectedList[0];
       this.visible = true;
     },
-    //按钮是否可点击
+    //Check if button is clickable
     inStatus() {
       return (
         this.selectedList.length !== 1 ||
         (this.selectedList.length == 1 && !!this.selectedList[0].used)
       );
     },
-    //选择
+    //Select
     handleSelect(row) {
       this.selectedList = row;
     },
@@ -245,7 +245,7 @@ export default {
         return "Ceph (" + types.join(", ") + ")";
       }
 
-      return value || "暂无数据";
+      return value || "No Data";
     },
     renderType(v) {
       if (v === "ssd") {
@@ -255,7 +255,7 @@ export default {
       } else if (v === "usb") {
         return "USB";
       } else {
-        return "未知";
+        return "Unknown";
       }
     },
     updateGpt() {

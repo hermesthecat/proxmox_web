@@ -1,59 +1,27 @@
 <template>
-  <m-dialog
-    title="添加磁盘"
-    :visible="visible"
-    v-if="visible"
-    @confirm="confirm"
-    @cancel="close"
-    :_style="{
-      width: '946px',
-    }"
-    @close="close"
-  >
+  <m-dialog title="Add Disk" :visible="visible" v-if="visible" @confirm="confirm" @cancel="close" :_style="{
+    width: '946px',
+  }" @close="close">
     <div slot="content" style="max-height: 400px; overflow: auto">
       <div class="m-form__section">
         <dl>
-          <dt>基本信息</dt>
+          <dt>Basic Information</dt>
           <dd>
-            <m-input
-              type="number"
-              label="总线"
-              v-model="deviceIndex"
-              labelWidth="100px"
-              min="0"
-              prop="deviceIndex"
-              :_style="{ paddingLeft: '115px' }"
-              @validate="validate"
-              required
-              :error-msg="rules['deviceIndex'].message"
-              :show-error="rules['deviceIndex'].error"
-            >
-              <div
-                slot="prefix"
-                style="
+            <m-input type="number" label="Bus" v-model="deviceIndex" labelWidth="100px" min="0" prop="deviceIndex"
+              :_style="{ paddingLeft: '115px' }" @validate="validate" required :error-msg="rules['deviceIndex'].message"
+              :show-error="rules['deviceIndex'].error">
+              <div slot="prefix" style="
                   display: inline-block;
                   position: absolute;
                   top: -16px;
                   left: -6px;
                   height: 100%;
-                "
-              >
-                <div
-                  class="m-margin-top-10 m-form__select"
-                  style="width: 115px"
-                >
-                  <select
-                    class="m-form__select_inner"
-                    v-model="device"
-                    style="width: 110px"
-                    @change="setDefaultDeviceIndex"
-                  >
+                ">
+                <div class="m-margin-top-10 m-form__select" style="width: 115px">
+                  <select class="m-form__select_inner" v-model="device" style="width: 110px"
+                    @change="setDefaultDeviceIndex">
                     <template v-for="item of deviceList">
-                      <option
-                        v-if="item.value !== 'virtio'"
-                        :key="item.value"
-                        :value="item.value"
-                      >
+                      <option v-if="item.value !== 'virtio'" :key="item.value" :value="item.value">
                         {{ item.label }}
                       </option>
                     </template>
@@ -61,32 +29,17 @@
                 </div>
               </div>
             </m-input>
-            <m-select
-              prop="storage"
-              label="存储"
-              labelWidth="100px"
-              @on-change="handleStorageSelect"
-              v-model="storage"
-              validateEvent
-              @validate="validate"
-              required
-              :show-error="rules['storage'].error"
-              :error-msg="rules['storage'].message"
-              :readonly="true"
-              placeholder="请选存储"
-            >
+            <m-select prop="storage" label="Storage" labelWidth="100px" @on-change="handleStorageSelect" v-model="storage"
+              validateEvent @validate="validate" required :show-error="rules['storage'].error"
+              :error-msg="rules['storage'].message" :readonly="true" placeholder="Please select storage">
               <div class="table">
-                <m-option
-                  v-for="(item, index) in db.storageList"
-                  :key="item.storage"
-                  :value="item.storage"
-                  :label="item.storage"
-                >
+                <m-option v-for="(item, index) in db.storageList" :key="item.storage" :value="item.storage"
+                  :label="item.storage">
                   <div v-if="index === 0" class="table-tr">
-                    <div class="table-td">名称</div>
-                    <div class="table-td">类别</div>
-                    <div class="table-td">可用</div>
-                    <div class="table-td">容量</div>
+                    <div class="table-td">Name</div>
+                    <div class="table-td">Type</div>
+                    <div class="table-td">Available</div>
+                    <div class="table-td">Capacity</div>
                   </div>
                   <div class="table-tr">
                     <div class="table-td" :title="item.storage">
@@ -105,22 +58,9 @@
                 </m-option>
               </div>
             </m-select>
-            <m-select
-              prop="format"
-              label="格式"
-              labelWidth="100px"
-              @on-change="handleFormatSelect"
-              v-model="format"
-              :readonly="false"
-              :disabled="!storageType || storageType !== 'dir'"
-              placeholder="请选格式"
-            >
-              <m-option
-                v-for="(item, index) in formatList"
-                :key="index"
-                :value="item.value"
-                :label="item.label"
-              >
+            <m-select prop="format" label="Format" labelWidth="100px" @on-change="handleFormatSelect" v-model="format"
+              :readonly="false" :disabled="!storageType || storageType !== 'dir'" placeholder="Please select format">
+              <m-option v-for="(item, index) in formatList" :key="index" :value="item.value" :label="item.label">
               </m-option>
             </m-select>
           </dd>
@@ -128,12 +68,7 @@
       </div>
     </div>
     <template slot="footer">
-      <m-button
-        type="primary"
-        style="height: 40px; line-height: 40px; width: 100px"
-        @on-click="confirm()"
-        >确定</m-button
-      >
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px" @on-click="confirm()">Confirm</m-button>
     </template>
   </m-dialog>
 </template>
@@ -169,15 +104,15 @@ export default {
       usedIDList: [],
       formatList: [
         {
-          label: "Raw磁盘映像（raw）",
+          label: "Raw Disk Image (raw)",
           value: "raw",
         },
         {
-          label: "VMware映像格式（vmdk）",
+          label: "VMware Image Format (vmdk)",
           value: "vmdk",
         },
         {
-          label: "QEMU映像格式（qcow2）",
+          label: "QEMU Image Format (qcow2)",
           value: "qcow2",
         },
       ],
@@ -204,7 +139,7 @@ export default {
     render_storage_content,
     byteToSize,
     __init__() {
-      //查找已用id
+      //Find used IDs
       this.usedIDList = Object.keys(this.db.qemuConfigObj)
         .filter((it) => {
           let regx = new RegExp(`\^\(${this.device}\)\\d\$`, "g");
@@ -214,13 +149,13 @@ export default {
           let regx = new RegExp(`\^\(${this.device}\)\(\\d\)\$`, "g");
           return Number(item.replace(regx, "$2"));
         });
-      //设置默认id
+      //Set default ID
       this.deviceIndex =
         this.usedIDList && this.usedIDList.length > 0
           ? Math.max(...this.usedIDList) + 1
           : 0;
       this.queryConfig({ _dc: new Date().getTime() });
-      //查询存储
+      //Query storage
       this.queryStorage({ format: 1, content: "images" });
     },
     confirm() {
@@ -266,12 +201,12 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
       if (value && this.usedIDList.includes(this.deviceIndex)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "该id已占用";
+        this.rules[prop].message = "This ID is already in use";
         return;
       }
     },

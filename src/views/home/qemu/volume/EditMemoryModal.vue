@@ -1,6 +1,6 @@
 <template>
   <m-dialog
-    :title="modalType !== 'edit' ? '添加: 内存' : '编辑: 内存'"
+    :title="modalType !== 'edit' ? 'Add: Memory' : 'Edit: Memory'"
     :visible="visible"
     v-if="visible"
     @confirm="confirm"
@@ -13,12 +13,12 @@
     <div slot="content" style="max-height: 400px; overflow: auto">
       <div class="m-form__section">
         <dl>
-          <dt>基本信息</dt>
+          <dt>Basic Information</dt>
           <dd>
             <m-input
               type="number"
               labelWidth="100px"
-              label="内存（MiB）"
+              label="Memory (MiB)"
               v-model="memory"
               validateEvent
               @validate="validate"
@@ -32,12 +32,12 @@
         </dl>
       </div>
       <div class="m-margin-top-10 m-form__section" v-if="isAdvice">
-        <dt>高级</dt>
+        <dt>Advanced</dt>
         <dd>
           <m-input
             type="number"
             labelWidth="100px"
-            label="最小内存（MiB）"
+            label="Minimum Memory (MiB)"
             v-model="balloon"
             validateEvent
             @validate="validate"
@@ -51,12 +51,12 @@
           <m-input
             type="number"
             labelWidth="100px"
-            label="共享内存（MiB）"
+            label="Shared Memory (MiB)"
             v-model="shares"
             prop="shares"
             :min="1"
             :disabled="memory <= balloon || !isBalloon"
-            placeholder="默认1000"
+            placeholder="Default 1000"
           />
           <m-checkbox v-model="isBalloon" label="Ballooning"></m-checkbox>
         </dd>
@@ -66,14 +66,14 @@
       <div class="label_box">
         <label>
           <input type="checkbox" v-model="isAdvice" />
-          <div>高级</div>
+          <div>Advanced</div>
         </label>
       </div>
       <m-button
         type="primary"
         style="height: 40px; line-height: 40px; width: 100px"
         @on-click="confirm()"
-        >确定</m-button
+        >Confirm</m-button
       >
     </template>
   </m-dialog>
@@ -165,7 +165,7 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
     },

@@ -2,7 +2,7 @@
 export default {
   name: "NotesHttp",
   methods: {
-    //查询notes
+    //Query notes
     queryNotes() {
       return this.$http
         .get(`json/nodes/${this.node}/config`, {
@@ -17,7 +17,7 @@ export default {
           }
         });
     },
-    //添加notes
+    //Add notes
     addNotes(node, content) {
       let event = this.createEvent("action.notes.add");
       return this.$http

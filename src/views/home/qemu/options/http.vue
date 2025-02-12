@@ -8,12 +8,12 @@ export default {
   },
 
   mounted() {
-    //获得当前节点对象
+    //Get current node object
     let last = window.localStorage.getItem("lastsel") || "[]";
     this.node = (JSON.parse(last) && JSON.parse(last)) || "";
   },
   methods: {
-    //查询虚拟机配置
+    //Query VM configuration
     queryVmConfig(param) {
       debugger;
       let _this = this;

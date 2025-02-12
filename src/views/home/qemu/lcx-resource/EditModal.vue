@@ -11,7 +11,7 @@
     <template slot="content">
       <div class="m-form__section">
         <dl>
-          <dt>基本信息</dt>
+          <dt>Basic Information</dt>
           <dd>
             <template v-if="modalType === 'editMemory'">
               <m-input
@@ -24,8 +24,8 @@
                 @validate="validate"
                 :show-error="rules['memory'].error"
                 :error-msg="rules['memory'].message"
-                placeholder="请输入内存"
-                label="内存（MiB）"
+                placeholder="Please enter memory"
+                label="Memory (MiB)"
                 labelWidth="100px"
               />
               <m-input
@@ -38,8 +38,8 @@
                 required
                 :show-error="rules['swap'].error"
                 :error-msg="rules['swap'].message"
-                placeholder="请输入交换分区"
-                label="交换分区（MiB）"
+                placeholder="Please enter swap"
+                label="Swap (MiB)"
                 labelWidth="100px"
               />
             </template>
@@ -55,8 +55,8 @@
                 required
                 :show-error="rules['cores'].error"
                 :error-msg="rules['cores'].message"
-                placeholder="请输入核数"
-                label="核"
+                placeholder="Please enter cores"
+                label="Cores"
                 labelWidth="100px"
               />
             </template>
@@ -71,8 +71,8 @@
                 required
                 :show-error="rules['disk'].error"
                 :error-msg="rules['disk'].message"
-                placeholder="请输入磁盘映像"
-                label="磁盘映像"
+                placeholder="Please enter disk image"
+                label="Disk Image"
                 :disabled="true"
                 labelWidth="100px"
               />
@@ -86,14 +86,14 @@
                 required
                 :show-error="rules['mp'].error"
                 :error-msg="rules['mp'].message"
-                placeholder="请输入路径"
-                label="路径"
+                placeholder="Please enter path"
+                label="Path"
                 labelWidth="100px"
               />
               <m-checkbox
                 v-show="!isRoot"
                 v-model="backup"
-                label="备份"
+                label="Backup"
                 labelWidth="100px"
               />
             </template>
@@ -103,14 +103,14 @@
                 type="text"
                 v-model="disk"
                 prop="disk"
-                placeholder="请输入挂载点"
-                label="挂载点"
+                placeholder="Please enter mount point"
+                label="Mount Point"
                 :disabled="true"
                 labelWidth="100px"
               />
               <m-select
                 prop="storage"
-                label="目标存储"
+                label="Target Storage"
                 labelWidth="100px"
                 @on-change="handleStorageSelect"
                 v-model="storage"
@@ -121,7 +121,7 @@
                 :error-msg="rules['storage'].message"
                 :show-error="rules['storage'].error"
                 :readonly="false"
-                placeholder="请选目标存储"
+                placeholder="Please select target storage"
               >
                 <div class="table">
                   <m-option
@@ -131,10 +131,10 @@
                     :label="item.storage"
                   >
                     <div v-if="index === 0" class="table-tr">
-                      <div class="table-td">名称</div>
-                      <div class="table-td">类别</div>
-                      <div class="table-td">可用</div>
-                      <div class="table-td">容量</div>
+                      <div class="table-td">Name</div>
+                      <div class="table-td">Type</div>
+                      <div class="table-td">Available</div>
+                      <div class="table-td">Capacity</div>
                     </div>
                     <div class="table-tr">
                       <div class="table-td" :title="item.storage">
@@ -155,14 +155,14 @@
               </m-select>
               <m-select
                 prop="format"
-                label="格式"
+                label="Format"
                 labelWidth="100px"
                 @on-change="(value) => (format = value)"
                 v-model="format"
                 :readonly="false"
                 v-show="modalType === 'create'"
                 :disabled="!storageType || storageType !== 'dir'"
-                placeholder="请选格式"
+                placeholder="Please select format"
               >
                 <m-option
                   v-for="(item, index) in formatList"
@@ -173,7 +173,7 @@
                 </m-option>
               </m-select>
               <m-checkbox
-                label="删除源"
+                label="Delete Source"
                 v-model="delete_origin"
                 labelWidth="100px"
               ></m-checkbox>
@@ -183,7 +183,7 @@
               <m-input
                 type=""
                 labelWidth="100px"
-                label="磁盘"
+                label="Disk"
                 v-model="disk"
                 prop="disk"
                 :disabled="true"
@@ -195,7 +195,7 @@
               <m-input
                 type="number"
                 labelWidth="100px"
-                label="增量大小"
+                label="Increment Size"
                 v-model="size"
                 :max="131072"
                 validateEvent
@@ -218,8 +218,8 @@
                 required
                 :show-error="rules['storageId'].error"
                 :error-msg="rules['storageId'].message"
-                placeholder="请输入挂载点id"
-                label="挂载点id"
+                placeholder="Please enter mount point ID"
+                label="Mount Point ID"
                 labelWidth="100px"
               />
               <m-input
@@ -233,12 +233,12 @@
                 :show-error="rules['mp'].error"
                 :error-msg="rules['mp'].message"
                 placeholder="/some/path"
-                label="路径"
+                label="Path"
                 labelWidth="100px"
               />
               <m-select
                 prop="storage"
-                label="存储"
+                label="Storage"
                 labelWidth="100px"
                 @on-change="handleStorageSelect"
                 v-model="storage"
@@ -249,7 +249,7 @@
                 :show-error="rules['storage'].error"
                 :readonly="false"
                 required
-                placeholder="请选存储"
+                placeholder="Please select storage"
               >
                 <div class="table">
                   <m-option
@@ -259,10 +259,10 @@
                     :label="item.storage"
                   >
                     <div v-if="index === 0" class="table-tr">
-                      <div class="table-td">名称</div>
-                      <div class="table-td">类别</div>
-                      <div class="table-td">可用</div>
-                      <div class="table-td">容量</div>
+                      <div class="table-td">Name</div>
+                      <div class="table-td">Type</div>
+                      <div class="table-td">Available</div>
+                      <div class="table-td">Capacity</div>
                     </div>
                     <div class="table-tr">
                       <div class="table-td" :title="item.storage">
@@ -284,7 +284,7 @@
               <m-input
                 type="number"
                 labelWidth="100px"
-                label="磁盘大小（GiB）"
+                label="Disk Size (GiB)"
                 v-model="size"
                 :max="131072"
                 validateEvent
@@ -298,14 +298,14 @@
               <m-checkbox
                 v-show="!isRoot"
                 v-model="backup"
-                label="备份"
+                label="Backup"
                 labelWidth="100px"
               />
             </template>
           </dd>
         </dl>
         <dl v-if="isAdvice">
-          <dt>高级</dt>
+          <dt>Advanced</dt>
           <dd>
             <template v-if="modalType === 'editCores'">
               <m-input
@@ -317,8 +317,8 @@
                 @validate="validate"
                 :show-error="rules['cpulimit'].error"
                 :error-msg="rules['cpulimit'].message"
-                placeholder="请输入CPU限制"
-                label="CPU限制"
+                placeholder="Please enter CPU limit"
+                label="CPU Limit"
                 required
                 labelWidth="100px"
               />
@@ -332,8 +332,8 @@
                 :show-error="rules['cpuunits'].error"
                 :error-msg="rules['cpuunits'].message"
                 required
-                placeholder="请输入CPU权重"
-                label="CPU权重"
+                placeholder="Please enter CPU weight"
+                label="CPU Weight"
                 labelWidth="100px"
               />
             </template>
@@ -342,7 +342,7 @@
             >
               <m-checkbox
                 v-model="quota"
-                label="启用配额"
+                label="Enable Quota"
                 :disabled="!isQuota()"
                 labelWidth="100px"
               />
@@ -350,7 +350,7 @@
                 v-model="acl"
                 prop="acl"
                 @on-change="(value) => (acl = value)"
-                placeholder="请输入磁盘映像"
+                placeholder="Please enter disk image"
                 label="ACLs"
                 labelWidth="100px"
               >
@@ -363,13 +363,13 @@
               </m-select>
               <m-checkbox
                 v-model="ro"
-                label="只读"
+                label="Read Only"
                 v-show="!isRoot"
                 labelWidth="100px"
               />
               <m-checkbox
                 v-model="replicate"
-                label="跳过复制"
+                label="Skip Replication"
                 labelWidth="100px"
               />
               <m-select
@@ -377,8 +377,8 @@
                 type="multiple"
                 prop="mountoptions"
                 @on-change="(value) => (mountoptions = value)"
-                placeholder="选择挂载选项"
-                label="挂载选项"
+                placeholder="Select mount options"
+                label="Mount Options"
                 labelWidth="100px"
               >
                 <m-option
@@ -400,19 +400,19 @@
         :_style="{
           width: '800px',
         }"
-        title="Task Viewer: 移动磁盘"
+        title="Task Viewer: Move Disk"
       >
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
-            <m-tab-panel label="输出" name="log"></m-tab-panel>
-            <m-tab-panel label="状态" name="status"></m-tab-panel>
+            <m-tab-panel label="Output" name="log"></m-tab-panel>
+            <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
           <m-button
             class="create-btn m-margin-top-10"
             type="primary"
             @on-click="stopTask1"
             :disabled="db.addClusterStatusObj.status !== 'running'"
-            >停止</m-button
+            >Stop</m-button
           >
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
@@ -461,11 +461,11 @@
       >
         <label>
           <input type="checkbox" v-model="isAdvice" />
-          <div>高级</div>
+          <div>Advanced</div>
         </label>
       </div>
       <m-button class="create-btn" type="primary" @on-click="confirm"
-        >创建</m-button
+        >Create</m-button
       >
     </template>
   </m-dialog>
@@ -525,15 +525,15 @@ export default {
       storageId: "",
       formatList: [
         {
-          label: "Raw磁盘映像（raw）",
+          label: "Raw Disk Image (raw)",
           value: "raw",
         },
         {
-          label: "VMware映像格式（vmdk）",
+          label: "VMware Image Format (vmdk)",
           value: "vmdk",
         },
         {
-          label: "QEMU映像格式（qcow2）",
+          label: "QEMU Image Format (qcow2)",
           value: "qcow2",
         },
       ],
@@ -544,9 +544,9 @@ export default {
         { label: "nosuid", value: "nosuid" },
       ],
       aclsItems: [
-        { value: "__default__", label: "默认" },
-        { value: "1", label: "已启用" },
-        { value: "0", label: "已禁用" },
+        { value: "__default__", label: "Default" },
+        { value: "1", label: "Enabled" },
+        { value: "0", label: "Disabled" },
       ],
       rules: {
         memory: {
@@ -757,11 +757,11 @@ export default {
         Object.keys(param).forEach((key) => {
           if (!param[key]) delete param[key];
         });
-        //确定迁移
+        //Confirm migration
         this.removeDisk(param, "move_volume")
           .then((res) => {
             this.showLog = true;
-            //相应成功之后展示任务进度日志
+            //Show task progress log after successful response
             this.interVal = setInterval(() => {
               this.queryStatus(this.db.addClusterStatusObj.upid);
               this.queryLog(
@@ -782,7 +782,7 @@ export default {
         this.updateHardWareSize(param)
           .then((res) => {
             this.showLog = true;
-            //相应成功之后展示任务进度日志
+            //Show task progress log after successful response
             this.interVal = setInterval(() => {
               this.queryStatus(this.db.addClusterStatusObj.upid);
               this.queryLog(
@@ -826,13 +826,13 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空!";
+        this.rules[prop].message = "Cannot be empty!";
         return;
       }
       if (prop === "cpuunits" && value) {
         if (value <= 8 || value >= 500000) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "值应该在8~500000!";
+          this.rules[prop].message = "Value should be between 8 and 500000!";
           return;
         }
       }
@@ -863,18 +863,18 @@ export default {
       this.showLog = false;
       this.close();
     },
-    //停止当前任务
+    //Stop current task
     stopTask1() {
       this.stopTask(
         this.db.addClusterStatusObj.node,
         this.db.addClusterStatusObj.upid
       );
     },
-    //切换tab @param type种类log日志、status状态
+    //Switch tab @param type log or status
     handleTabChange(value) {
       this.tab = value;
     },
-    //迁移到哪个存储
+    //Select target storage
     handleStorageSelect(value) {
       this.storage = value;
       this.storageType = this.db.storageList.filter(

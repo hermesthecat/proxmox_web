@@ -1,12 +1,12 @@
 <template>
   <div class="overview">
     <overview-card style="width: calc(100%)">
-      <div slot="title">状态</div>
+      <div slot="title">Status</div>
       <div slot="content" class="card-content">
         <div class="card-item">
           <single-line
             :desc="db.poolsObj && db.poolsObj.comment && db.poolsObj.comment"
-            title="备注"
+            title="Comments"
             :__style="{ whiteSpace: 'normal' }"
           />
         </div>

@@ -1,156 +1,61 @@
 <template>
-  <m-dialog
-    title="添加磁盘"
-    :visible="visible"
-    v-if="visible"
-    @confirm="confirm"
-    @cancel="close"
-    :_style="{
-      width: '946px',
-    }"
-    @close="close"
-  >
+  <m-dialog title="Add Disk" :visible="visible" v-if="visible" @confirm="confirm" @cancel="close" :_style="{
+    width: '946px',
+  }" @close="close">
     <div slot="content" style="max-height: 400px; overflow: auto">
       <div class="m-form__section">
         <dl>
-          <dt>基本信息</dt>
+          <dt>Basic Information</dt>
           <dd>
-            <m-input
-              type="number"
-              label="总线"
-              v-model="deviceIndex"
-              labelWidth="100px"
-              min="0"
-              prop="deviceIndex"
-              :_style="{ paddingLeft: '115px' }"
-              @validate="validate"
-              v-show="isShow()"
-              required
-              :error-msg="rules['deviceIndex'].message"
-              :show-error="rules['deviceIndex'].error"
-            >
-              <div
-                slot="prefix"
-                style="
+            <m-input type="number" label="Bus" v-model="deviceIndex" labelWidth="100px" min="0" prop="deviceIndex"
+              :_style="{ paddingLeft: '115px' }" @validate="validate" v-show="isShow()" required
+              :error-msg="rules['deviceIndex'].message" :show-error="rules['deviceIndex'].error">
+              <div slot="prefix" style="
                   display: inline-block;
                   position: absolute;
                   top: -16px;
                   left: -6px;
                   height: 100%;
-                "
-              >
-                <div
-                  class="m-margin-top-10 m-form__select"
-                  style="width: 115px"
-                >
-                  <select
-                    class="m-form__select_inner"
-                    v-model="device"
-                    style="width: 110px"
-                  >
-                    <option
-                      v-for="item of deviceList"
-                      :key="item.value"
-                      :value="item.value"
-                    >
+                ">
+                <div class="m-margin-top-10 m-form__select" style="width: 115px">
+                  <select class="m-form__select_inner" v-model="device" style="width: 110px">
+                    <option v-for="item of deviceList" :key="item.value" :value="item.value">
                       {{ item.label }}
                     </option>
                   </select>
                 </div>
               </div>
             </m-input>
-            <m-select
-              prop="cache"
-              label="缓存"
-              labelWidth="100px"
-              @on-change="handleCacheSelect"
-              v-model="cache"
-              :readonly="false"
-              v-show="isShow()"
-              placeholder="请选缓存"
-            >
-              <m-option
-                v-for="(item, index) in cacheList"
-                :key="index"
-                :value="item.value"
-                :label="item.label"
-              >
+            <m-select prop="cache" label="Cache" labelWidth="100px" @on-change="handleCacheSelect" v-model="cache"
+              :readonly="false" v-show="isShow()" placeholder="Please select cache">
+              <m-option v-for="(item, index) in cacheList" :key="index" :value="item.value" :label="item.label">
               </m-option>
             </m-select>
-            <m-input
-              type="slot"
-              v-show="isShow()"
-              v-if="device === 'scsi'"
-              label="SCSI控制器"
-              labelWidth="100px"
-              :disabled="true"
-            >
-              <div
-                slot="other"
-                class="disabled"
-                style="padding-left: 5px; height: 28px; line-height: 28px"
-              >
+            <m-input type="slot" v-show="isShow()" v-if="device === 'scsi'" label="SCSI Controller" labelWidth="100px"
+              :disabled="true">
+              <div slot="other" class="disabled" style="padding-left: 5px; height: 28px; line-height: 28px">
                 LSI 53C895A
               </div>
             </m-input>
-            <m-input
-              type="number"
-              labelWidth="100px"
-              label="磁盘大小"
-              v-model="disksize"
-              validateEvent
-              @validate="validate"
-              prop="disksize"
-              required
-              v-show="modalType === 'create'"
-              :error-msg="rules['disksize'].message"
-              :show-error="rules['disksize'].error"
-            />
-            <m-input
-              type="slot"
-              v-show="modalType === 'edit'"
-              labelWidth="100px"
-              label="磁盘映像"
-              :disabled="true"
-            >
-              <div
-                slot="other"
-                style="height: 28px; line-height: 28px; padding-left: 5px"
-                class="disabled"
-              >
+            <m-input type="number" labelWidth="100px" label="Disk Size" v-model="disksize" validateEvent @validate="validate"
+              prop="disksize" required v-show="modalType === 'create'" :error-msg="rules['disksize'].message"
+              :show-error="rules['disksize'].error" />
+            <m-input type="slot" v-show="modalType === 'edit'" labelWidth="100px" label="Disk Image" :disabled="true">
+              <div slot="other" style="height: 28px; line-height: 28px; padding-left: 5px" class="disabled">
                 {{ editStorage }}
               </div>
             </m-input>
-            <m-checkbox
-              label="丢弃"
-              v-model="discard"
-              labelWidth="100px"
-              :disabled="device === 'virtio'"
-            ></m-checkbox>
-            <m-select
-              prop="storage"
-              label="存储"
-              labelWidth="100px"
-              @on-change="handleStorageSelect"
-              v-model="storage"
-              validateEvent
-              v-show="modalType !== 'edit'"
-              @validate="validate"
-              :readonly="true"
-              placeholder="请选缓存"
-            >
+            <m-checkbox label="Discard" v-model="discard" labelWidth="100px" :disabled="device === 'virtio'"></m-checkbox>
+            <m-select prop="storage" label="Storage" labelWidth="100px" @on-change="handleStorageSelect" v-model="storage"
+              validateEvent v-show="modalType !== 'edit'" @validate="validate" :readonly="true" placeholder="Please select storage">
               <div class="table">
-                <m-option
-                  v-for="(item, index) in db.storageList"
-                  :key="item.storage"
-                  :value="item.storage"
-                  :label="item.storage"
-                >
+                <m-option v-for="(item, index) in db.storageList" :key="item.storage" :value="item.storage"
+                  :label="item.storage">
                   <div v-if="index === 0" class="table-tr">
-                    <div class="table-td">名称</div>
-                    <div class="table-td">类别</div>
-                    <div class="table-td">可用</div>
-                    <div class="table-td">容量</div>
+                    <div class="table-td">Name</div>
+                    <div class="table-td">Type</div>
+                    <div class="table-td">Available</div>
+                    <div class="table-td">Capacity</div>
                   </div>
                   <div class="table-tr">
                     <div class="table-td" :title="item.storage">
@@ -169,129 +74,43 @@
                 </m-option>
               </div>
             </m-select>
-            <m-select
-              prop="format"
-              label="格式"
-              labelWidth="100px"
-              @on-change="handleFormatSelect"
-              v-model="format"
-              :readonly="false"
-              v-show="modalType === 'create'"
-              :disabled="!storageType || storageType !== 'dir'"
-              placeholder="请选格式"
-            >
-              <m-option
-                v-for="(item, index) in formatList"
-                :key="index"
-                :value="item.value"
-                :label="item.label"
-              >
+            <m-select prop="format" label="Format" labelWidth="100px" @on-change="handleFormatSelect" v-model="format"
+              :readonly="false" v-show="modalType === 'create'" :disabled="!storageType || storageType !== 'dir'"
+              placeholder="Please select format">
+              <m-option v-for="(item, index) in formatList" :key="index" :value="item.value" :label="item.label">
               </m-option>
             </m-select>
           </dd>
         </dl>
       </div>
       <div class="m-margin-top-10 m-form__section" v-if="isAdvice">
-        <dt>高级</dt>
+        <dt>Advanced</dt>
         <dd>
-          <m-checkbox
-            v-model="ssd"
-            label="SSD仿真"
-            :disabled="device === 'virtio'"
-          ></m-checkbox>
-          <m-checkbox v-model="backup" label="没有备份"></m-checkbox>
-          <m-checkbox
-            v-model="iothread"
-            label="IO Thread"
-            :disabled="!(device === 'scsi' || device === 'virtio')"
-          ></m-checkbox>
-          <m-checkbox v-model="replicate" label="跳过复制"></m-checkbox>
-          <m-input
-            label="读取限制(MB/s)"
-            labelWidth="110px"
-            placeholder="无限"
-            type="number"
-            v-model="mbps_rd"
-            class="m-margin-top-10"
-          />
-          <m-input
-            label="写入限制(MB/s)"
-            labelWidth="110px"
-            placeholder="无限"
-            type="number"
-            v-model="mbps_wr"
-            class="m-margin-top-10"
-          />
-          <m-input
-            label="读取限制(ops/s)"
-            labelWidth="110px"
-            placeholder="无限"
-            type="number"
-            prop="iops_rd"
-            @validate="validate"
-            validateEvent
-            class="m-margin-top-10"
-            required
-            :show-error="rules['iops_rd'].error"
-            :error-msg="rules['iops_rd'].message"
-            v-model="iops_rd"
-          />
-          <m-input
-            label="写入限制(ops/s)"
-            labelWidth="110px"
-            placeholder="无限"
-            type="number"
-            prop="iops_wr"
-            class="m-margin-top-10"
-            @validate="validate"
-            validateEvent
-            :show-error="rules['iops_wr'].error"
-            :error-msg="rules['iops_wr'].message"
-            v-model="iops_wr"
-          />
-          <m-input
-            label="读取最大突发(MB)"
-            labelWidth="110px"
-            placeholder="默认"
-            type="number"
-            v-model="mbps_rd_max"
-            class="m-margin-top-10"
-          />
-          <m-input
-            label="写入最大突发(MB)"
-            labelWidth="110px"
-            placeholder="默认"
-            type="number"
-            v-model="mbps_wr_max"
-            class="m-margin-top-10"
-          />
-          <m-input
-            label="读取最大突发(ops)"
-            labelWidth="110px"
-            placeholder="默认"
-            type="number"
-            prop="iops_rd_max"
-            @validate="validate"
-            class="m-margin-top-10"
-            validateEvent
-            :show-error="rules['iops_rd_max'].error"
-            :error-msg="rules['iops_rd_max'].message"
-            v-model="iops_rd_max"
-          />
-          <m-input
-            label="写入最大突发(ops)"
-            labelWidth="110px"
-            placeholder="默认"
-            type="number"
-            prop="iops_wr_max"
-            @validate="validate"
-            class="m-margin-top-10"
-            validateEvent
-            required
-            :show-error="rules['iops_wr_max'].error"
-            :error-msg="rules['iops_wr_max'].message"
-            v-model="iops_wr_max"
-          />
+          <m-checkbox v-model="ssd" label="SSD Emulation" :disabled="device === 'virtio'"></m-checkbox>
+          <m-checkbox v-model="backup" label="No Backup"></m-checkbox>
+          <m-checkbox v-model="iothread" label="IO Thread"
+            :disabled="!(device === 'scsi' || device === 'virtio')"></m-checkbox>
+          <m-checkbox v-model="replicate" label="Skip Replication"></m-checkbox>
+          <m-input label="Read Limit (MB/s)" labelWidth="110px" placeholder="Unlimited" type="number" v-model="mbps_rd"
+            class="m-margin-top-10" />
+          <m-input label="Write Limit (MB/s)" labelWidth="110px" placeholder="Unlimited" type="number" v-model="mbps_wr"
+            class="m-margin-top-10" />
+          <m-input label="Read Limit (ops/s)" labelWidth="110px" placeholder="Unlimited" type="number" prop="iops_rd"
+            @validate="validate" validateEvent class="m-margin-top-10" required :show-error="rules['iops_rd'].error"
+            :error-msg="rules['iops_rd'].message" v-model="iops_rd" />
+          <m-input label="Write Limit (ops/s)" labelWidth="110px" placeholder="Unlimited" type="number" prop="iops_wr"
+            class="m-margin-top-10" @validate="validate" validateEvent :show-error="rules['iops_wr'].error"
+            :error-msg="rules['iops_wr'].message" v-model="iops_wr" />
+          <m-input label="Read Max Burst (MB)" labelWidth="110px" placeholder="Default" type="number" v-model="mbps_rd_max"
+            class="m-margin-top-10" />
+          <m-input label="Write Max Burst (MB)" labelWidth="110px" placeholder="Default" type="number" v-model="mbps_wr_max"
+            class="m-margin-top-10" />
+          <m-input label="Read Max Burst (ops)" labelWidth="110px" placeholder="Default" type="number" prop="iops_rd_max"
+            @validate="validate" class="m-margin-top-10" validateEvent :show-error="rules['iops_rd_max'].error"
+            :error-msg="rules['iops_rd_max'].message" v-model="iops_rd_max" />
+          <m-input label="Write Max Burst (ops)" labelWidth="110px" placeholder="Default" type="number" prop="iops_wr_max"
+            @validate="validate" class="m-margin-top-10" validateEvent required :show-error="rules['iops_wr_max'].error"
+            :error-msg="rules['iops_wr_max'].message" v-model="iops_wr_max" />
         </dd>
       </div>
     </div>
@@ -299,15 +118,10 @@
       <div class="label_box">
         <label>
           <input type="checkbox" v-model="isAdvice" />
-          <div>高级</div>
+          <div>Advanced</div>
         </label>
       </div>
-      <m-button
-        type="primary"
-        style="height: 40px; line-height: 40px; width: 100px"
-        @on-click="confirm()"
-        >确定</m-button
-      >
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px" @on-click="confirm()">Confirm</m-button>
     </template>
   </m-dialog>
 </template>
@@ -359,15 +173,15 @@ export default {
       editStorage: "",
       formatList: [
         {
-          label: "Raw磁盘映像（raw）",
+          label: "Raw Disk Image (raw)",
           value: "raw",
         },
         {
-          label: "VMware映像格式（vmdk）",
+          label: "VMware Image Format (vmdk)",
           value: "vmdk",
         },
         {
-          label: "QEMU映像格式（qcow2）",
+          label: "QEMU Image Format (qcow2)",
           value: "qcow2",
         },
       ],
@@ -555,7 +369,7 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
       if (
@@ -564,7 +378,7 @@ export default {
         Number(value) < 10
       ) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "值不能小于10";
+        this.rules[prop].message = "Value cannot be less than 10";
         return;
       }
     },
@@ -573,14 +387,14 @@ export default {
       if (this.modalType !== "edit") {
         this.isAdvice
           ? (props = [
-              "deviceIndex",
-              "disksize",
-              "iops_rd",
-              "iops_wr",
-              "iops_rd_max",
-              "iops_wr_max",
-              "storage",
-            ])
+            "deviceIndex",
+            "disksize",
+            "iops_rd",
+            "iops_wr",
+            "iops_rd_max",
+            "iops_wr_max",
+            "storage",
+          ])
           : (props = ["deviceIndex", "disksize", "storage"]);
       } else if (this.modalType === "edit" && this.isAdvice) {
         props = ["iops_rd", "iops_wr", "iops_rd_max", "iops_wr_max"];

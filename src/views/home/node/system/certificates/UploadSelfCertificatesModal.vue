@@ -11,7 +11,7 @@
         <div class="m-form__section">
           <m-input
             type="textarea"
-            label="私钥"
+            label="Private Key"
             v-model="key"
             validateEvent
             @validate="validate"
@@ -27,11 +27,11 @@
             type="primary"
             icon="el-icon-upload"
             style="position: relative"
-            >从文件上传
+            >Upload from file
             <input
               type="file"
               class="upload"
-              value="请选择文件"
+              value="Please select file"
               ref="key"
               @change="uplodFile('key')"
             />
@@ -42,7 +42,7 @@
         <div class="m-form__section">
           <m-input
             type="textarea"
-            label="证书链"
+            label="Certificate Chain"
             :_style="{ width: '100%' }"
             v-model="certificates"
             validateEvent
@@ -58,10 +58,10 @@
             type="primary"
             style="position: relative"
             icon="el-icon-upload"
-            >从文件上传<input
+            >Upload from file<input
               type="file"
               class="upload"
-              value="请选择文件"
+              value="Please select file"
               ref="certificates"
               @change="uplodFile('certificates')"
           /></m-button>
@@ -97,14 +97,14 @@
           type="primary"
           @on-click="create"
           v-if="isCreate"
-          >上传</m-button
+          >Upload</m-button
         >
         <m-button
           class="create-btn"
           type="primary"
           @on-click="close"
           v-if="!isCreate"
-          >取消</m-button
+          >Cancel</m-button
         >
       </template>
     </template>
@@ -185,7 +185,7 @@ export default {
     async __init__() {
       let _this = this;
     },
-    //上传文件
+    //Upload file
     uplodFile(key) {
       let file = this.$refs[key].files[0];
       uplodFile(file, (val) => {
@@ -201,10 +201,10 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
-      //校验自定义证书
+      //Validate custom certificate
       if (value && prop === "certificates") {
         if (
           !/^((\-){5}(BEGIN CERTIFICATE)(\-){5})([\s\S]*)((\-){5}(END CERTIFICATE)(\-){5})$/.test(
@@ -213,7 +213,7 @@ export default {
         ) {
           this.rules[prop].error = true;
           this.rules[prop].message =
-            "证书必须以-----BEGIN CERTIFICATE-----开头，以-----END CERTIFICATE-----结尾";
+            "Certificate must start with -----BEGIN CERTIFICATE----- and end with -----END CERTIFICATE-----";
           return;
         }
       }
@@ -225,7 +225,7 @@ export default {
         ) {
           this.rules[prop].error = true;
           this.rules[prop].message =
-            "私钥必须以-----BEGIN RSA PRIVATE KEY-----开头，以-----END RSA PRIVATE KEY-----结尾";
+            "Private key must start with -----BEGIN RSA PRIVATE KEY----- and end with -----END RSA PRIVATE KEY-----";
           return;
         }
       }

@@ -2,7 +2,7 @@
   <div class="ceph-monitor">
     <div class="ceph-monitor-monitor">
       <overview-card>
-        <div slot="title">配置</div>
+        <div slot="title">Configuration</div>
         <div slot="content" class="card-content">
           <page-template>
             <div slot="toolbar-left">
@@ -13,47 +13,47 @@
                   selectedList.length !== 1 || !inState('stopped', 'unknown')
                 "
                 @on-click="handleOperate('start')"
-                >启动</m-button
+                >Start</m-button
               >
               <m-button
                 icon="fa fa-stop"
                 type="danger"
                 :disabled="selectedList.length !== 1"
                 @on-click="handleOperate('stop')"
-                >停止</m-button
+                >Stop</m-button
               >
               <m-button
                 icon="fa fa-refresh"
                 type="primary"
                 :disabled="selectedList.length !== 1"
                 @on-click="handleOperate('restart')"
-                >重启</m-button
+                >Restart</m-button
               >
               <m-button
                 icon="el-icon-plus"
                 type="primary"
                 @on-click="showModal('mon')"
-                >创建</m-button
+                >Create</m-button
               >
               <m-button
                 icon="el-icon-delete"
                 type="danger"
                 :disabled="selectedList.length !== 1"
                 @on-click="handleOperate('restart')"
-                >销毁</m-button
+                >Destroy</m-button
               >
               <m-button
                 icon="el-icon-document"
                 type="info"
                 :disabled="selectedList.length !== 1"
                 @on-click="showMonitorLog('mon')"
-                >系统日志</m-button
+                >System Log</m-button
               >
               <m-button
                 icon="el-icon-refresh"
                 type="info"
                 @on-click="__init__()"
-                >刷新</m-button
+                >Refresh</m-button
               >
             </div>
             <div slot="page-content">
@@ -62,14 +62,14 @@
                   type="selection"
                   width="55px;"
                 ></el-table-column>
-                <el-table-column label="名称">
+                <el-table-column label="Name">
                   <template slot-scope="scope">
                     mon.{{ scope.row.name }}
                   </template>
                 </el-table-column>
-                <el-table-column label="主机" prop="host"></el-table-column>
-                <el-table-column label="地址" prop="addr"></el-table-column>
-                <el-table-column label="状态" prop="state">
+                <el-table-column label="Host" prop="host"></el-table-column>
+                <el-table-column label="Address" prop="addr"></el-table-column>
+                <el-table-column label="Status" prop="state">
                   <template slot-scope="scope">
                     <table-info-state
                       :state="scope.row.state"
@@ -78,14 +78,14 @@
                   </template>
                 </el-table-column>
                 <el-table-column
-                  label="版本"
+                  label="Version"
                   prop="ceph_version_short"
                 ></el-table-column>
-                <el-table-column label="法定" prop="quorum">
+                <el-table-column label="Quorum" prop="quorum">
                   <template slot-scope="scope">
                     <table-info-state
                       :state="scope.row.quorum == 1 ? 'actived' : 'unActived'"
-                      :content="scope.row.quorum == 1 ? '是' : '否'"
+                      :content="scope.row.quorum == 1 ? 'Yes' : 'No'"
                     ></table-info-state>
                   </template>
                 </el-table-column>
@@ -97,7 +97,7 @@
     </div>
     <div class="ceph-monitor-manager">
       <overview-card>
-        <div slot="title">配置</div>
+        <div slot="title">Configuration</div>
         <div slot="content" class="card-content">
           <page-template>
             <div slot="toolbar-left">
@@ -106,47 +106,47 @@
                 type="primary"
                 :disabled="mgrSelectedList.length !== 1 || !inState('stopped')"
                 @on-click="handleOperate('start')"
-                >启动</m-button
+                >Start</m-button
               >
               <m-button
                 icon="fa fa-stop"
                 type="danger"
                 :disabled="mgrSelectedList.length !== 1"
                 @on-click="handleOperate('stop')"
-                >停止</m-button
+                >Stop</m-button
               >
               <m-button
                 icon="fa fa-refresh"
                 type="primary"
                 :disabled="mgrSelectedList.length !== 1"
                 @on-click="handleOperate('restart')"
-                >重启</m-button
+                >Restart</m-button
               >
               <m-button
                 icon="el-icon-plus"
                 type="primary"
                 @on-click="showModal('mgr')"
-                >创建</m-button
+                >Create</m-button
               >
               <m-button
                 icon="el-icon-delete"
                 type="danger"
                 :disabled="mgrSelectedList.length !== 1"
                 @on-click="handleOperate('delete')"
-                >销毁</m-button
+                >Destroy</m-button
               >
               <m-button
                 icon="el-icon-document"
                 type="info"
                 :disabled="mgrSelectedList.length !== 1"
                 @on-click="showMonitorLog('mgr')"
-                >系统日志</m-button
+                >System Log</m-button
               >
               <m-button
                 icon="el-icon-refresh"
                 type="info"
                 @on-click="__init__()"
-                >刷新</m-button
+                >Refresh</m-button
               >
             </div>
             <div slot="page-content">
@@ -155,16 +155,16 @@
                   type="selection"
                   width="55px;"
                 ></el-table-column>
-                <el-table-column label="名称">
+                <el-table-column label="Name">
                   <template slot-scope="scope">
                     mgr.{{ scope.row.name }}
                   </template>
                 </el-table-column>
-                <el-table-column label="主机" prop="host"></el-table-column>
-                <el-table-column label="地址" prop="addr"></el-table-column>
-                <el-table-column label="状态" prop="state"></el-table-column>
+                <el-table-column label="Host" prop="host"></el-table-column>
+                <el-table-column label="Address" prop="addr"></el-table-column>
+                <el-table-column label="Status" prop="state"></el-table-column>
                 <el-table-column
-                  label="版本"
+                  label="Version"
                   prop="ceph_version_short"
                 ></el-table-column>
               </el-table>
@@ -200,19 +200,19 @@
       :_style="{
         width: '800px',
       }"
-      title="Task Viewer: 任务进度"
+      title="Task Viewer: Task Progress"
     >
       <template slot="content">
         <m-tab v-model="tab" @tab-click="handleTabChange">
-          <m-tab-panel label="输出" name="log"></m-tab-panel>
-          <m-tab-panel label="状态" name="status"></m-tab-panel>
+          <m-tab-panel label="Output" name="log"></m-tab-panel>
+          <m-tab-panel label="Status" name="status"></m-tab-panel>
         </m-tab>
         <m-button
           class="create-btn m-margin-top-10"
           type="primary"
           @on-click="stopTask1"
           :disabled="db.addClusterStatusObj.status !== 'running'"
-          >停止</m-button
+          >Stop</m-button
         >
         <el-scrollbar style="height: 100%">
           <div class="taskmodal-content">
@@ -285,7 +285,7 @@ export default {
     this.__init__();
   },
   methods: {
-    //格式化日期
+    //Format date
     dateFormat,
     __init__() {
       this.queryMonitor("mon").then((res) => {
@@ -295,10 +295,10 @@ export default {
         this.mgr = res;
       });
     },
-    //展示弹框
+    //Show dialog
     showModal(type) {
       this.modalType = type;
-      this.title = type === "mon" ? "创建：监视器" : "创建：管理员";
+      this.title = type === "mon" ? "Create: Monitor" : "Create: Manager";
       this.visible = true;
     },
     closeLog() {
@@ -311,31 +311,31 @@ export default {
         this.db.addClusterStatusObj.upid
       );
     },
-    //查看系统日志
+    //View system log
     showMonitorLog(type) {
       this.param =
         type === "mon" ? this.selectedList[0] : this.mgrSelectedList[0];
       this.modalType = type;
       this.title =
         type === "mon"
-          ? "查看：Cepn 监视器系统日志"
-          : "查看：Ceph 管理员系统日志";
+          ? "View: Ceph Monitor System Log"
+          : "View: Ceph Manager System Log";
       this.visibleLog = true;
     },
     handleTabChange(value) {
       this.tab = value;
     },
-    //选择mon
+    //Select mon
     handleSelect(row) {
       this.selectedList = row;
       this.modalType = "mon";
     },
-    //删除、重启、停止等操作
+    //Delete, restart, stop and other operations
     handleOperate(operate) {
       if (operate !== "delete") {
         this.$confirm
           .confirm({
-            msg: "确认要进行以下操作吗?",
+            msg: "Are you sure you want to perform this operation?",
             icon: "icon-warning",
           })
           .then((res) => {
@@ -362,7 +362,7 @@ export default {
       } else {
         this.$confirm
           .confirm({
-            msg: "确认要进行以下操作吗?",
+            msg: "Are you sure you want to perform this operation?",
             icon: "icon-warning",
           })
           .then((res) => {
@@ -386,12 +386,12 @@ export default {
           });
       }
     },
-    //选择mgr
+    //Select mgr
     handleMgrSelect(row) {
       this.mgrSelectedList = row;
       this.modalType = "mgr";
     },
-    //判断是否在某个状态下
+    //Check if in certain state
     inState() {
       let states = [],
         _this = this;

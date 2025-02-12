@@ -16,13 +16,13 @@
             type="primary"
             style="position: absolute; left: -1px; top: -1px; right: -1px"
             icon="el-icon-plus"
-            >添加</m-button
+            >Add</m-button
           >
         </span>
         <template v-for="item in menu_items">
           <m-dropdown-item
             v-if="/^fa/.test(item.iconCls)"
-            :key="item.itemId"
+            :key="item.itemId + '_fa'"
             :command="item.itemId"
             :icon="item.iconCls"
             :disabled="item.disabled"
@@ -30,7 +30,7 @@
           >
           <m-dropdown-item
             v-else
-            :key="item.itemId"
+            :key="item.itemId + '_other'"
             :command="item.itemId"
             :name="item.iconCls"
             :disabled="item.disabled"
@@ -43,14 +43,14 @@
         @on-click="handleResume()"
         icon="el-icon-edit"
         :disabled="!canResume()"
-        >还原</m-button
+        >Restore</m-button
       >
       <m-button
         type="warning"
         @on-click="handleCommand('', 'edit')"
         icon="el-icon-video-play"
         :disabled="!current"
-        >编辑</m-button
+        >Edit</m-button
       >
       <m-button
         type="danger"
@@ -61,21 +61,21 @@
           canResume() ||
           !current
         "
-        >删除</m-button
+        >Delete</m-button
       >
       <m-button
         type="info"
         @on-click="handleCommand('updatedisksize', 'updatedisksize')"
         icon="el-icon-edit-outline"
         :disabled="inType('rootfs', 'mp')"
-        >调整磁盘大小</m-button
+        >Resize Disk</m-button
       >
       <m-button
         type="info"
         @on-click="handleCommand('migrate', 'migrate')"
         icon="el-icon-edit-outline"
         :disabled="inType('rootfs', 'mp')"
-        >移动磁盘</m-button
+        >Move Disk</m-button
       >
     </div>
     <div slot="page-content">
@@ -104,7 +104,7 @@
             >
           </template>
         </el-table-column>
-        <el-table-column label="名称" prop="name" width="200px">
+        <el-table-column label="Name" prop="name" width="200px">
           <template slot-scope="scope">
             <div>
               <base-icon
@@ -117,7 +117,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="值" prop="value">
+        <el-table-column label="Value" prop="value">
           <template slot-scope="scope">
             <div>
               {{
@@ -182,12 +182,12 @@ export default {
       type: "",
       modalType: "create",
       param: {},
-      jobText: "删除中...",
+      jobText: "Deleting...",
       statusObj: {},
       jobVisible: "",
       jobTitle: "",
       title: "",
-      //可以添加的硬盘配置
+      //Configurable disk settings
       hardware_counts: {
         net: 32,
         usb: 5,
@@ -197,10 +197,10 @@ export default {
         serial: 4,
         rng: 1,
       },
-      //添加菜单
+      //Add menu
       menu_items: [
         {
-          text: "挂载点",
+          text: "Mount Point",
           iconCls: "fa fa-fw fa-hdd-o black",
           itemId: "adddisk",
           disabled:
@@ -213,11 +213,11 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化请求
+    //Initialize request
     __init__() {
       let _this = this;
       _this.queryResource().then((res) => {
-        //装配数据得到格式为{key: value}的数据以便后期数据处理
+        //Assemble data to get {key: value} format for later processing
         _this.store = _this.db.volumeList.reduce((target, source) => {
           if (!target.hasOwnProperty(source.key)) {
             target[source.key] = {
@@ -226,15 +226,14 @@ export default {
           }
           return target;
         }, {});
-        //表格数据
+        //Table data
         this.hardwareList = [
           {
-            name: gettext("Memory"), //名称
-            type: "memory", //数据类型
-            icon: "icon-ram", //icon
-            itemId: "editMemory", //添加弹框id
-            render: function (pending) {
-              //渲染值
+            name: gettext("Memory"), //Name
+            type: "memory", //Data type
+            icon: "icon-ram", //Icon
+            itemId: "editMemory", //Add modal id
+            render: function (pending) { //Render value
               if (pending) return;
               var res = "";
               var max = _this.getObjectValue("memory", 512, pending);
@@ -324,7 +323,7 @@ export default {
                   _this.store.rootfs.data &&
                   _this.store.rootfs.data.value
                   ? _this.store.rootfs.data.value
-                  : "默认";
+                  : "Default";
             },
           },
         ];
@@ -377,7 +376,7 @@ export default {
     handleDelete() {
       this.$confirm
         .confirm({
-          msg: `你确定你要删除该项${this.currentObj.name}?`,
+          msg: `Are you sure you want to delete this ${this.currentObj.name}?`,
           icon: "icon-question",
         })
         .then((res) => {
@@ -419,9 +418,9 @@ export default {
       }
       return defaultValue;
     },
-    //添加硬盘等
+    //Add disk etc.
     handleCommand(type, modaltype = "create") {
-      //硬盘类型如果modalType存在证明是添加
+      //If modalType exists, it means adding disk type
       this.modalType =
         modaltype === "migrate" ||
         modaltype === "updatedisksize" ||
@@ -432,34 +431,34 @@ export default {
       this.visible = true;
       this.setTitle(this.modalType);
     },
-    //设置弹框标题
+    //Set modal title
     setTitle(type) {
       switch (type) {
         case "editMemory":
-          this.title = "编辑：内存/交换分区";
+          this.title = "Edit: Memory/Swap";
           break;
         case "editCores":
-          this.title = "编辑：核";
+          this.title = "Edit: Cores";
           break;
         case "editDisk":
-          this.title = "编辑：磁盘";
+          this.title = "Edit: Disk";
           break;
         case "adddisk":
-          this.title = "添加：挂载点";
+          this.title = "Add: Mount Point";
           break;
         case "migrate":
-          this.title = "移动卷";
+          this.title = "Move Volume";
           break;
         case "updatedisksize":
-          this.title = "调整磁盘大小";
+          this.title = "Resize Disk";
           break;
       }
     },
-    //移动磁盘
+    //Move disk
     handleMoveDisk() {
-      //硬盘类型如果modalType存在证明是添加
+      //If modalType exists, it means adding disk type
       this.type = "migratedisk";
-      //创建或者编辑
+      //Create or edit
       this.modalType = "create";
       this.param = this.currentObj;
       this.visible = true;
@@ -487,7 +486,7 @@ export default {
         return regx.test(_this.current);
       });
     },
-    //当数据中存在pending或者delete时表明已经改变可以还原
+    //Can restore when data has pending or delete status
     canResume() {
       return (this.store[this.current] &&
         this.store[this.current].data &&
@@ -498,7 +497,7 @@ export default {
         ? true
         : false;
     },
-    //还原
+    //Restore
     handleResume() {
       let param = {};
       if (this.current === "memory") {

@@ -12,7 +12,7 @@
         <dd>
           <m-select
             prop="node"
-            label="节点"
+            label="Node"
             labelWidth="110px"
             validateEvent
             @on-change="handleNodeSelect"
@@ -21,7 +21,7 @@
             required
             :show-error="rules['node'].error"
             :error-msg="rules['node'].message"
-            placeholder="请选择节点"
+            placeholder="Please select node"
             v-if="modalType === 'migrateall'"
           >
             <m-option
@@ -33,9 +33,9 @@
               <div class="table">
                 <template v-if="index === 0">
                   <div class="table-header__tr">
-                    <span class="table-td">节点</span>
-                    <span class="table-td">内存使用率</span>
-                    <span class="table-td">CPU使用率</span>
+                    <span class="table-td">Node</span>
+                    <span class="table-td">Memory Usage</span>
+                    <span class="table-td">CPU Usage</span>
                   </div>
                 </template>
                 <div class="table-tr">
@@ -75,16 +75,16 @@
           <m-input
             type="number"
             prop="maxworkers"
-            label="并行作业"
+            label="Parallel Jobs"
             labelWidth="110px"
             v-model="maxworkers"
             min="1"
             max="100"
             v-if="modalType === 'migrateall'"
-            placeholder="请输入并行作业"
+            placeholder="Please enter parallel jobs"
           />
           <m-checkbox
-            label="允许本地磁盘迁移"
+            label="Allow Local Disk Migration"
             v-model="withLocalDisks"
             labelWidth="110px"
             v-if="modalType === 'migrateall'"
@@ -96,14 +96,14 @@
       <el-table :data="vmList" ref="dataTable" style="padding-left: 10px">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="ID" prop="vmid"></el-table-column>
-        <el-table-column label="节点" prop="node"></el-table-column>
-        <el-table-column label="状态" prop="status">
+        <el-table-column label="Node" prop="node"></el-table-column>
+        <el-table-column label="Status" prop="status">
           <template slot-scope="scope">
             <table-info-state
               :content="
                 scope.row.status && scope.row.status === 'running'
-                  ? '运行中'
-                  : '已停止'
+                  ? 'Running'
+                  : 'Stopped'
               "
               :state="
                 scope.row.status && scope.row.status === 'running'
@@ -113,16 +113,16 @@
             ></table-info-state>
           </template>
         </el-table-column>
-        <el-table-column label="名称" prop="name"></el-table-column>
-        <el-table-column label="资源池" prop="pool"></el-table-column>
-        <el-table-column label="类别" prop="type"></el-table-column>
-        <el-table-column label="HA状态" prop="hastate">
+        <el-table-column label="Name" prop="name"></el-table-column>
+        <el-table-column label="Resource Pool" prop="pool"></el-table-column>
+        <el-table-column label="Category" prop="type"></el-table-column>
+        <el-table-column label="HA Status" prop="hastate">
           <template slot-scope="scope">
             <table-info-state
               :content="
                 scope.row.status && scope.row.status === 'started'
-                  ? '运行中'
-                  : '已停止'
+                  ? 'Running'
+                  : 'Stopped'
               "
               :state="
                 scope.row.status && scope.row.status === 'started'
@@ -139,19 +139,19 @@
         :_style="{
           width: '800px',
         }"
-        title="Task Viewer: 任务进度"
+        title="Task Viewer: Task Progress"
       >
         <template slot="content">
           <m-tab v-model="tab" @tab-click="handleTabChange">
-            <m-tab-panel label="输出" name="log"></m-tab-panel>
-            <m-tab-panel label="状态" name="status"></m-tab-panel>
+            <m-tab-panel label="Output" name="log"></m-tab-panel>
+            <m-tab-panel label="Status" name="status"></m-tab-panel>
           </m-tab>
           <m-button
             class="create-btn m-margin-top-10"
             type="primary"
             @on-click="stopTask1"
             :disabled="db.addClusterStatusObj.status !== 'running'"
-            >停止</m-button
+            >Stop</m-button
           >
           <el-scrollbar style="height: 100%">
             <div class="taskmodal-content">
@@ -322,7 +322,7 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
     },

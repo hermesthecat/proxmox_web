@@ -12,17 +12,17 @@
     <template slot="content">
       <div class="m-form__section">
         <dl>
-          <dt>基本信息</dt>
+          <dt>Basic Information</dt>
           <dd>
             <m-input
               v-model="name"
               prop="name"
-              label="名称"
+              label="Name"
               labelWidth="100px"
               validateEvent
               required
               @validate="validate"
-              placeholder="形如：eth0"
+              placeholder="Example: eth0"
               :show-error="rules['name'].error"
               :error-msg="rules['name'].message"
             />
@@ -30,11 +30,11 @@
             <m-input
               v-model="hwaddr"
               prop="hwaddr"
-              label="MAC地址"
+              label="MAC Address"
               labelWidth="100px"
               validateEvent
               @validate="validate"
-              placeholder="形如：2A:75:78:42:45:37"
+              placeholder="Example: 2A:75:78:42:45:37"
               :show-error="rules['hwaddr'].error"
               :error-msg="rules['hwaddr'].message"
             />
@@ -42,7 +42,7 @@
             <m-select
               v-model="bridge"
               prop="bridge"
-              label="桥接"
+              label="Bridge"
               labelWidth="100px"
               validateEvent
               required
@@ -58,9 +58,9 @@
                 :value="item.iface"
               >
                 <div v-if="index === 0" class="table-tr">
-                  <div class="table-td">桥接</div>
-                  <div class="table-td">活动</div>
-                  <div class="table-td">备注</div>
+                  <div class="table-td">Bridge</div>
+                  <div class="table-td">Active</div>
+                  <div class="table-td">Comment</div>
                 </div>
                 <div class="table-tr">
                   <div class="table-td" :title="item.iface">
@@ -68,10 +68,10 @@
                   </div>
                   <div
                     class="table-td"
-                    :title="item.active && item.active === 1 ? '是' : '否'"
+                    :title="item.active && item.active === 1 ? 'Yes' : 'No'"
                   >
                     <table-info-state
-                      :content="item.active && item.active === 1 ? '是' : '否'"
+                      :content="item.active && item.active === 1 ? 'Yes' : 'No'"
                       :state="
                         item.active && item.active === 1
                           ? 'actived'
@@ -90,25 +90,25 @@
               v-model="tag"
               prop="tag"
               type="number"
-              label="VLAN标签"
+              label="VLAN Tag"
               labelWidth="100px"
-              placeholder="请输入VLAN标签"
+              placeholder="Please enter VLAN tag"
             />
 
             <m-input
               v-model="rate"
               type="number"
               prop="rate"
-              label="速率限制(MiB)"
+              label="Rate Limit (MiB)"
               labelWidth="100px"
               :min="0"
-              placeholder="请输入速率限制"
+              placeholder="Please enter rate limit"
             />
 
             <m-checkbox
               v-model="firewall"
               prop="firewall"
-              label="防火墙"
+              label="Firewall"
               labelWidth="100px"
             />
           </dd>
@@ -125,7 +125,7 @@
                   v-model="ip4type"
                 />
                 <div></div>
-                <span>静态</span>
+                <span>Static</span>
               </label>
               <label class="m-input__radio">
                 <input
@@ -160,11 +160,11 @@
             <m-input
               v-model="gw"
               prop="gw"
-              label="网关(IPv4)"
+              label="Gateway (IPv4)"
               labelWidth="100px"
               validateEvent
               @validate="validate"
-              placeholder="形如：10.10.10.0"
+              placeholder="Example: 10.10.10.0"
               :show-error="rules['gw'].error"
               :disabled="ip4type !== 'static'"
               :error-msg="rules['gw'].message"
@@ -184,7 +184,7 @@
                   v-model="ip6type"
                 />
                 <div></div>
-                <span>静态</span>
+                <span>Static</span>
               </label>
               <label class="m-input__radio">
                 <input
@@ -235,12 +235,12 @@
             <m-input
               v-model="gw6"
               prop="gw6"
-              label="网关(IPv6)"
+              label="Gateway (IPv6)"
               labelWidth="100px"
               validateEvent
               @validate="validate"
               :show-error="rules['gw6'].error"
-              placeholder="形如：2001:DB8::42"
+              placeholder="Example: 2001:DB8::42"
               :disabled="ip6type !== 'static'"
               :error-msg="rules['gw6'].message"
             />
@@ -312,7 +312,7 @@ export default {
     };
   },
   /**
-   * props接收父组件的属性
+   * Props received from parent component
    */
   props: {
     visible: {
@@ -339,7 +339,7 @@ export default {
   },
   methods: {
     /**
-     * 初始化查询
+     * Initialize query
      */
     __init__() {
       let _this = this;
@@ -382,13 +382,13 @@ export default {
       }
     },
     /**
-     * 关闭弹框
+     * Close modal
      */
     close() {
       this.$emit("close");
     },
     /***
-     * 确定时添加
+     * Add when confirmed
      */
     confirm() {
       if (this.validateAll()) return;
@@ -434,7 +434,7 @@ export default {
           });
         });
     },
-    //整体校验表单
+    //Validate entire form
     validateAll() {
       let props = ["name", "bridge", "ip", "ip6", "gw", "gw6", "hwaddr"];
       if (this.modalType === "edit") props.shift();
@@ -442,7 +442,7 @@ export default {
       return props.some((prop) => this.rules[prop].error === true);
     },
     /**
-     * 单个校验表单
+     * Validate single form field
      */
     validate(prop) {
       let value = String(this[prop]).trim();
@@ -450,48 +450,47 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value) && ["name", "bridge"].includes(prop)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空!";
+        this.rules[prop].message = "Cannot be empty!";
         return;
       }
       if (prop === "name") {
         let names = this.db.lxcNetWorkList.map((item) => item.name);
         if (names && names.includes(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "该名称已存在!";
+          this.rules[prop].message = "This name already exists!";
           return;
         }
         if (/[\u4e00-\u9fa5]/.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "名称中不能存在汉字!";
+          this.rules[prop].message = "Name cannot contain Chinese characters!";
           return;
         }
       }
       if (value && prop === "ip") {
         if (!IP4_cidr_match.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "IPv4/CIDR格式不正确!";
+          this.rules[prop].message = "Invalid IPv4/CIDR format!";
           return;
         }
       }
       if (value && prop === "ip6") {
         if (!IP6_cidr_match.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message =
-            "IPv6/CIDR格式不正确! 示例：2001:DB8::42/64";
+          this.rules[prop].message = "Invalid IPv6/CIDR format! Example: 2001:DB8::42/64";
           return;
         }
       }
       if (value && prop === "gw") {
         if (!IP4_match.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "网关格式不正确! 示例： 2001:DB8::42";
+          this.rules[prop].message = "Invalid gateway format! Example: 10.10.10.0";
           return;
         }
       }
       if (value && prop === "gw6") {
         if (!IP6_match.test(value)) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "网关格式不正确!";
+          this.rules[prop].message = "Invalid gateway format!";
           return;
         }
       }
@@ -502,7 +501,7 @@ export default {
           )
         ) {
           this.rules[prop].error = true;
-          this.rules[prop].message = "mac格式不正确!";
+          this.rules[prop].message = "Invalid MAC address format!";
           return;
         }
       }

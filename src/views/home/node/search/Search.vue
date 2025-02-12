@@ -2,7 +2,7 @@
   <div class="search">
     <div class="search-content">
       <span class="search-input">
-        <m-input placeholder="搜索" v-model="searchModel">
+        <m-input placeholder="Search" v-model="searchModel">
           <i slot="prefix" class="el-icon-search"></i>
         </m-input>
       </span>
@@ -12,7 +12,7 @@
       highlight-current-row
       @row-click="handleRowClick"
     >
-      <el-table-column prop="type" label="类别">
+      <el-table-column prop="type" label="Category">
         <template slot-scope="scope">
           <span>
             <i
@@ -40,7 +40,7 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column label="描述">
+      <el-table-column label="Description">
         <template slot-scope="scope">
           <span v-if="scope.row.type === 'pool'">pools</span>
           <span v-if="scope.row.type === 'qemu' || scope.row.type === 'lxc'">{{
@@ -53,7 +53,7 @@
           <span v-if="scope.row.type === 'node'">{{ scope.row.node }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="node" label="磁盘使用率">
+      <el-table-column prop="node" label="Disk Usage">
         <template slot-scope="scope">
           <line-charts
             :value="
@@ -66,7 +66,7 @@
           ></line-charts>
         </template>
       </el-table-column>
-      <el-table-column prop="pool" label="内存使用率">
+      <el-table-column prop="pool" label="Memory Usage">
         <template slot-scope="scope">
           <line-charts
             :value="
@@ -79,7 +79,7 @@
           ></line-charts>
         </template>
       </el-table-column>
-      <el-table-column prop="pool" label="CPU使用率">
+      <el-table-column prop="pool" label="CPU Usage">
         <template slot-scope="scope">
           <line-charts
             :value="
@@ -90,7 +90,7 @@
           ></line-charts>
         </template>
       </el-table-column>
-      <el-table-column prop="pool" label="运行时间">
+      <el-table-column prop="pool" label="Uptime">
         <template slot-scope="scope">
           {{ scope.row.uptime ? render_uptime(scope.row.uptime) : "-" }}
         </template>
@@ -158,23 +158,23 @@ export default {
   methods: {
     render_uptime,
     chunkData,
-    //点击行触发的
+    //Row click handler
     handleRowClick(row, columns, event) {
       this.updateSearchObj(row);
     },
     __init__() {
       this.queryResource();
     },
-    //设置状态class
+    //Set status class
     setStautsCls(record, type) {
       let status = "";
       let objType = type;
       if (record.template && this.isTemplate(record.template)) {
-        // 模板
+        // Template
         objType = "template";
         status = type;
       } else {
-        // 出其他以外的记录
+        // Other records
         status = record.status
           ? record.status + " ha-" + record.hastate
           : " ha-" + record.hastate;
@@ -191,7 +191,7 @@ export default {
         return false;
       }
     },
-    //查询资源
+    //Query resources
     queryResource() {
       this.$http.get("/json/cluster/resources").then((res) => {
         if (res.data) {

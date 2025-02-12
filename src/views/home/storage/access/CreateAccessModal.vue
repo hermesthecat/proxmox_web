@@ -1,44 +1,23 @@
 <template>
-  <Dialog
-    :visible="visible"
-    @cancel="close"
-    @confirm="confirm"
-    :title="title"
-    :_style="{ width: '956px' }"
-    @close="$emit('close')"
-  >
+  <Dialog :visible="visible" @cancel="close" @confirm="confirm" :title="title" :_style="{ width: '956px' }"
+    @close="$emit('close')">
     <div slot="content" style="max-height: 500px">
       <div class="m-form__content">
         <div class="m-form__section">
           <dl>
-            <dt>基本信息</dt>
+            <dt>Basic Information</dt>
             <dd>
-              <m-select
-                prop="groups"
-                label="组"
-                labelWidth="100px"
-                @on-change="handleGroupSelect"
-                v-model="groups"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.groups.error"
-                :error-msg="rules.groups.message"
-                v-if="modalType === 'group'"
-                :readonly="false"
-                placeholder="请选择组"
-              >
-                <m-option
-                  v-for="(item, index) in db.groupsList"
-                  :key="item.groupid"
-                  :label="item.groupid"
-                  :value="item.groupid"
-                >
+              <m-select prop="groups" label="Group" labelWidth="100px" @on-change="handleGroupSelect" v-model="groups"
+                validateEvent @validate="validate" :show-error="rules.groups.error" :error-msg="rules.groups.message"
+                v-if="modalType === 'group'" :readonly="false" placeholder="Please Select Group">
+                <m-option v-for="(item, index) in db.groupsList" :key="item.groupid" :label="item.groupid"
+                  :value="item.groupid">
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
-                        <span class="table-td">组</span>
-                        <span class="table-td">备注</span>
-                        <span class="table-td">用户</span>
+                        <span class="table-td">Group</span>
+                        <span class="table-td">Note</span>
+                        <span class="table-td">Users</span>
                       </div>
                     </template>
                     <div class="table-tr">
@@ -55,49 +34,28 @@
                   </div>
                 </m-option>
               </m-select>
-              <m-select
-                prop="users"
-                label="用户"
-                labelWidth="100px"
-                @on-change="handleGroupSelect"
-                v-model="users"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.users.error"
-                :error-msg="rules.users.message"
-                :readonly="false"
-                v-if="modalType === 'user'"
-                placeholder="请选择用户"
-              >
-                <m-option
-                  v-for="(item, index) in db.usersList"
-                  :key="item.userid"
-                  :label="item.userid"
-                  :value="item.userid"
-                >
+              <m-select prop="users" label="User" labelWidth="100px" @on-change="handleGroupSelect" v-model="users"
+                validateEvent @validate="validate" :show-error="rules.users.error" :error-msg="rules.users.message"
+                :readonly="false" v-if="modalType === 'user'" placeholder="Please Select User">
+                <m-option v-for="(item, index) in db.usersList" :key="item.userid" :label="item.userid"
+                  :value="item.userid">
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
-                        <span class="table-td">用户</span>
-                        <span class="table-td">名称</span>
-                        <span class="table-td">备注</span>
+                        <span class="table-td">User</span>
+                        <span class="table-td">Name</span>
+                        <span class="table-td">Note</span>
                       </div>
                     </template>
                     <div class="table-tr">
                       <span class="table-td" :title="item.userid">{{
                         item.userid
                       }}</span>
-                      <span
-                        class="table-td"
-                        :title="`${item.firstname ? item.firstname : ''} ${
-                          item.lastname ? item.lastname : ''
-                        }`"
-                        >{{
-                          `${item.firstname ? item.firstname : ""} ${
-                            item.lastname ? item.lastname : ""
+                      <span class="table-td" :title="`${item.firstname ? item.firstname : ''} ${item.lastname ? item.lastname : ''
+                        }`">{{
+                          `${item.firstname ? item.firstname : ""} ${item.lastname ? item.lastname : ""
                           }`
-                        }}</span
-                      >
+                        }}</span>
                       <span class="table-td" :title="item.comment">
                         {{ item.comment }}
                       </span>
@@ -105,31 +63,17 @@
                   </div>
                 </m-option>
               </m-select>
-              <m-select
-                prop="tokens"
-                label="Api Token"
-                labelWidth="100px"
-                @on-change="handleGroupSelect"
-                v-model="tokens"
-                validateEvent
-                @validate="validate"
-                :show-error="rules.tokens.error"
-                :error-msg="rules.tokens.message"
-                :readonly="false"
-                v-if="modalType === 'apiToken'"
-                placeholder="请选择Api Token"
-              >
-                <m-option
-                  v-for="(item, index) in tokenList"
-                  :key="item.tokenid"
-                  :label="item.tokenid"
-                  :value="item.tokenid"
-                >
+              <m-select prop="tokens" label="Api Token" labelWidth="100px" @on-change="handleGroupSelect"
+                v-model="tokens" validateEvent @validate="validate" :show-error="rules.tokens.error"
+                :error-msg="rules.tokens.message" :readonly="false" v-if="modalType === 'apiToken'"
+                placeholder="Please Select Api Token">
+                <m-option v-for="(item, index) in tokenList" :key="item.tokenid" :label="item.tokenid"
+                  :value="item.tokenid">
                   <div class="table">
                     <template v-if="index === 0">
                       <div class="table-header__tr">
                         <span class="table-td">Api Token</span>
-                        <span class="table-td">备注</span>
+                        <span class="table-td">Note</span>
                       </div>
                     </template>
                     <div class="table-tr">
@@ -143,20 +87,9 @@
                   </div>
                 </m-option>
               </m-select>
-              <m-select
-                prop="roles"
-                label="角色"
-                labelWidth="100px"
-                @on-change="handleRoleSelect"
-                v-model="roles"
-                placeholder="请选择角色"
-              >
-                <m-option
-                  v-for="item in db.rolesList"
-                  :key="item.roleid"
-                  :label="item.roleid"
-                  :value="item.roleid"
-                >
+              <m-select prop="roles" label="Role" labelWidth="100px" @on-change="handleRoleSelect" v-model="roles"
+                placeholder="Please Select Role">
+                <m-option v-for="item in db.rolesList" :key="item.roleid" :label="item.roleid" :value="item.roleid">
                 </m-option>
               </m-select>
             </dd>
@@ -279,7 +212,7 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
     },

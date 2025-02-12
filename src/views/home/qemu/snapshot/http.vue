@@ -13,7 +13,7 @@ export default {
   },
   methods: {
     /**
-     * @param {_dc: 时间戳}
+     * @param {_dc: timestamp}
      */
     querySnapShotList(param) {
       return this.$http
@@ -28,7 +28,7 @@ export default {
         });
     },
     /**
-     * 删除快照
+     * Delete snapshot
      */
     deleteSnapShot() {
       let event = this.createEvent(`action.qemu.snapshot.delete`);
@@ -41,7 +41,7 @@ export default {
           if (res.data) {
             this.done = false;
             this.showDeleteLog = true;
-            //查询删除进度
+            //Query delete progress
             this.queryStatus(res.data);
             this.interVal = setInterval(() => this.queryStatus(res.data), 1000);
           }
@@ -52,7 +52,7 @@ export default {
         });
     },
     /**
-     * 查询删除状态
+     * Query delete status
      */
     queryStatus(pid) {
       return this.$http
@@ -72,7 +72,7 @@ export default {
         });
     },
     /**
-     * 添加快照
+     * Add snapshot
      */
     addSnapShot(param) {
       let event = this.createEvent(`action.qemu.snapshot.add`);
@@ -88,7 +88,7 @@ export default {
             if (res.data) {
               this.done = false;
               this.showDeleteLog = true;
-              //查询删除进度
+              //Query delete progress
               this.queryStatus(res.data);
               this.interVal = setInterval(
                 () => this.queryStatus(res.data),
@@ -102,7 +102,7 @@ export default {
           return Promise.reject(res);
         });
     },
-    //查询虚拟机配置
+    //Query VM configuration
     queryVmConfig(param, snapshot) {
       let _this = this;
       return _this.$http
@@ -120,7 +120,7 @@ export default {
         });
     },
     /**
-     * 添加快照
+     * Add snapshot
      */
     updateSnapShot(snapshotname, param) {
       let event = this.createEvent(`action.qemu.snapshot.update`);
@@ -145,7 +145,7 @@ export default {
         });
     },
     /**
-     * 回滚
+     * Rollback
      */
     rollback(name) {
       let event = this.createEvent(`action.qemu.snapshot.rollback`);
@@ -165,7 +165,7 @@ export default {
           if (res.data) {
             this.done = false;
             this.showDeleteLog = true;
-            //查询删除进度
+            //Query delete progress
             this.queryStatus(res.data);
             this.interVal = setInterval(() => this.queryStatus(res.data), 1000);
           }

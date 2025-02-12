@@ -2,7 +2,7 @@
   <page-template>
     <div slot="toolbar-left">
       <m-button type="primary" @on-click="showModal('edit')" icon="el-icon-edit"
-        >编辑</m-button
+        >Edit</m-button
       >
     </div>
     <div slot="page-content">
@@ -12,8 +12,8 @@
         :show-header="false"
         :default-sort="{ prop: 'label', order: 'ascending' }"
       >
-        <el-table-column label="名称" prop="label" sortable></el-table-column>
-        <el-table-column label="类别" prop="value" sortable></el-table-column>
+        <el-table-column label="Name" prop="label" sortable></el-table-column>
+        <el-table-column label="Category" prop="value" sortable></el-table-column>
       </el-table>
       <edit-dns-modal
         :visible="visible"
@@ -51,7 +51,7 @@ export default {
   data() {
     return {
       visible: false,
-      title: "创建：复制作业",
+      title: "Create: Copy Job",
       selectedList: [],
       isCreate: true,
       param: {},
@@ -82,7 +82,7 @@ export default {
     this.__init__();
   },
   methods: {
-    //初始化查找
+    //Initialize search
     async __init__() {
       let _this = this;
       this.dnsList = [];
@@ -92,16 +92,16 @@ export default {
           this.dnsList.push({
             label:
               dns.indexOf("dns") > -1
-                ? `DNS服务器${dns.match(/(\d)/g)[0]}`
+                ? `DNS Server ${dns.match(/(\d)/g)[0]}`
                 : `${this.$t(dns)}`,
             value: _this.db.dnsObj[dns],
           });
         }
       });
     },
-    //是否展示弹框
+    //Show modal dialog
     showModal(type) {
-      this.title = "编辑：dns";
+      this.title = "Edit: DNS";
       this.param = this.db.dnsObj;
       this.visible = true;
     },

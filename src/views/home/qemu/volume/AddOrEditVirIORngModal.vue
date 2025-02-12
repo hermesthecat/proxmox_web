@@ -1,51 +1,22 @@
 <template>
-  <m-dialog
-    title="添加磁盘"
-    :visible="visible"
-    v-if="visible"
-    @confirm="confirm"
-    @cancel="close"
-    :_style="{
-      width: '946px',
-    }"
-    @close="close"
-  >
+  <m-dialog title="Add Disk" :visible="visible" v-if="visible" @confirm="confirm" @cancel="close" :_style="{
+    width: '946px',
+  }" @close="close">
     <div slot="content" style="max-height: 400px; overflow: auto">
       <div class="m-form__section">
         <dl>
-          <dt>基本信息</dt>
+          <dt>Basic Information</dt>
           <dd>
-            <m-select
-              prop="source"
-              label="选择设备"
-              labelWidth="100px"
-              @on-change="handleSourceSelect"
-              v-model="source"
-              placeholder="请选设备"
-            >
+            <m-select prop="source" label="Select Device" labelWidth="100px" @on-change="handleSourceSelect" v-model="source"
+              placeholder="Please select device">
               <div class="table">
-                <m-option
-                  v-for="item in comboItems"
-                  :key="item.value"
-                  :value="item.value"
-                  :label="item.label"
-                >
+                <m-option v-for="item in comboItems" :key="item.value" :value="item.value" :label="item.label">
                 </m-option>
               </div>
             </m-select>
-            <m-input
-              type="number"
-              labelWidth="100px"
-              label="Limit(Bytes/Period)"
-              v-model="max_bytes"
-            >
+            <m-input type="number" labelWidth="100px" label="Limit(Bytes/Period)" v-model="max_bytes">
             </m-input>
-            <m-input
-              type="number"
-              labelWidth="100px"
-              label="Period(ms)"
-              v-model="period"
-            >
+            <m-input type="number" labelWidth="100px" label="Period(ms)" v-model="period">
             </m-input>
             <div v-show="!max_bytes" class="warning">
               Disabling the limiter can potentially allow a guest to overload
@@ -56,12 +27,7 @@
       </div>
     </div>
     <template slot="footer">
-      <m-button
-        type="primary"
-        style="height: 40px; line-height: 40px; width: 100px"
-        @on-click="confirm()"
-        >确定</m-button
-      >
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px" @on-click="confirm()">Confirm</m-button>
     </template>
   </m-dialog>
 </template>

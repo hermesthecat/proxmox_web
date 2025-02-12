@@ -1,47 +1,23 @@
 <template>
-  <m-dialog
-    title="添加磁盘"
-    :visible="visible"
-    v-if="visible"
-    @confirm="confirm"
-    @cancel="close"
-    :_style="{
-      width: '946px',
-    }"
-    @close="close"
-  >
+  <m-dialog title="Add PCI Device" :visible="visible" v-if="visible" @confirm="confirm" @cancel="close" :_style="{
+    width: '946px',
+  }" @close="close">
     <div slot="content" style="max-height: 400px; overflow: auto">
       <div class="m-form__section">
         <dl>
-          <dt>基本信息</dt>
+          <dt>Basic Information</dt>
           <dd>
-            <m-select
-              prop="host"
-              label="设备"
-              labelWidth="100px"
-              @on-change="handleHostSelect"
-              v-model="host"
-              validateEvent
-              @validate="validate"
-              required
-              :show-error="rules['host'].error"
-              :error-msg="rules['host'].message"
-              :readonly="true"
-              placeholder="请选桥接"
-            >
+            <m-select prop="host" label="Device" labelWidth="100px" @on-change="handleHostSelect" v-model="host"
+              validateEvent @validate="validate" required :show-error="rules['host'].error"
+              :error-msg="rules['host'].message" :readonly="true" placeholder="Please select device">
               <div class="table">
-                <m-option
-                  v-for="(item, index) in db.pciList"
-                  :key="item.id"
-                  :value="item.id"
-                  :label="item.id"
-                >
+                <m-option v-for="(item, index) in db.pciList" :key="item.id" :value="item.id" :label="item.id">
                   <div v-if="index === 0" class="table-tr">
                     <div class="table-td">ID</div>
-                    <div class="table-td">IOMMU组</div>
-                    <div class="table-td">供应商</div>
-                    <div class="table-td">设备</div>
-                    <div class="table-td">中介设备</div>
+                    <div class="table-td">IOMMU Group</div>
+                    <div class="table-td">Vendor</div>
+                    <div class="table-td">Device</div>
+                    <div class="table-td">Mediated Device</div>
                   </div>
                   <div class="table-tr">
                     <div class="table-td" :title="item.id">{{ item.id }}</div>
@@ -54,34 +30,21 @@
                     <div class="table-td" :title="item.device_name">
                       {{ item.device_name }}
                     </div>
-                    <div class="table-td" :title="item.mdev ? '否' : '是'">
-                      {{ item.mdev ? "否" : "是" }}
+                    <div class="table-td" :title="item.mdev ? 'No' : 'Yes'">
+                      {{ item.mdev ? "No" : "Yes" }}
                     </div>
                   </div>
                 </m-option>
               </div>
             </m-select>
-            <m-select
-              prop="mdev"
-              label="MDev类型"
-              labelWidth="100px"
-              @on-change="handleModelSelect"
-              v-model="mdev"
-              :readonly="true"
-              :disabled="mdevDisabled"
-              placeholder="请选缓存"
-            >
+            <m-select prop="mdev" label="MDev Type" labelWidth="100px" @on-change="handleModelSelect" v-model="mdev"
+              :readonly="true" :disabled="mdevDisabled" placeholder="Please select type">
               <div class="table">
-                <m-option
-                  v-for="(item, index) in db.pciMDevList"
-                  :key="index"
-                  :value="item.type"
-                  :label="item.type"
-                >
+                <m-option v-for="(item, index) in db.pciMDevList" :key="index" :value="item.type" :label="item.type">
                   <div v-if="index === 0" class="table-tr">
-                    <div class="table-td">类型</div>
-                    <div class="table-td">可用</div>
-                    <div class="table-td">描述</div>
+                    <div class="table-td">Type</div>
+                    <div class="table-td">Available</div>
+                    <div class="table-td">Description</div>
                   </div>
                   <div class="table-tr">
                     <div class="table-td" :title="item.type">
@@ -97,36 +60,18 @@
                 </m-option>
               </div>
             </m-select>
-            <m-checkbox
-              label="所有功能"
-              v-model="multifunction"
-              labelWidth="100px"
-            ></m-checkbox>
-            <m-checkbox
-              label="主CPU"
-              v-model="xvga"
-              labelWidth="100px"
-            ></m-checkbox>
+            <m-checkbox label="All Functions" v-model="multifunction" labelWidth="100px"></m-checkbox>
+            <m-checkbox label="Primary GPU" v-model="xvga" labelWidth="100px"></m-checkbox>
             <div class="m-form__section"></div>
           </dd>
         </dl>
       </div>
       <div class="m-form__section" v-if="isAdvice">
         <dl>
-          <dt>高级</dt>
+          <dt>Advanced</dt>
           <dd>
-            <m-checkbox
-              label="ROM-Bar"
-              v-model="rombar"
-              labelWidth="100px"
-            ></m-checkbox>
-            <m-checkbox
-              label="PCI-Express"
-              v-model="pcie"
-              :disabled="!mdev"
-              labelWidth="100px"
-              >仅Q35</m-checkbox
-            >
+            <m-checkbox label="ROM-Bar" v-model="rombar" labelWidth="100px"></m-checkbox>
+            <m-checkbox label="PCI-Express" v-model="pcie" :disabled="!mdev" labelWidth="100px">Q35 Only</m-checkbox>
           </dd>
         </dl>
       </div>
@@ -135,15 +80,10 @@
       <div class="label_box">
         <label>
           <input type="checkbox" v-model="isAdvice" />
-          <div>高级</div>
+          <div>Advanced</div>
         </label>
       </div>
-      <m-button
-        type="primary"
-        style="height: 40px; line-height: 40px; width: 100px"
-        @on-click="confirm()"
-        >确定</m-button
-      >
+      <m-button type="primary" style="height: 40px; line-height: 40px; width: 100px" @on-click="confirm()">Confirm</m-button>
     </template>
   </m-dialog>
 </template>
@@ -205,7 +145,7 @@ export default {
         }
       });
     },
-    //解析值
+    //Parse value
     parseValue(value) {
       let values = value.split(","),
         _this = this;
@@ -311,7 +251,7 @@ export default {
       this.rules[prop].message = "";
       if (/^\s*$/.test(value)) {
         this.rules[prop].error = true;
-        this.rules[prop].message = "不能为空";
+        this.rules[prop].message = "Cannot be empty";
         return;
       }
     },

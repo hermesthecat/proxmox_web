@@ -1,12 +1,6 @@
 <template>
-  <component
-    :is="type"
-    :modal-type="modalType"
-    v-if="visible"
-    :visible="visible"
-    :param="param"
-    @close="$emit('close')"
-  ></component>
+  <component :is="type" :modal-type="modalType" v-if="visible" :visible="visible" :param="param"
+    @close="$emit('close')"></component>
 </template>
 <script>
 import AddOrEditDiskModal from "./AddOrEditDiskModal";
