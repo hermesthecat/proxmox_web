@@ -20,8 +20,8 @@
           label="主机"
           labelWidth="100px"
         >
-          <template v-for="(item, index) in nodeList">
-            <m-option :label="item.node" :key="item.node" :value="item.node">
+          <template v-for="(item, index) in nodeList" :key="item.node">
+            <m-option :label="item.node" :value="item.node">
               <div class="table-tr" v-show="index === 0">
                 <div class="table-td">名称</div>
                 <div class="table-td">使用率</div>
